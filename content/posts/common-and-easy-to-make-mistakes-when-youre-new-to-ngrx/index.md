@@ -4,7 +4,7 @@ slug: common-and-easy-to-make-mistakes-when-youre-new-to-ngrx
 description: Writing and refactoring FizzBuzz in NgRx with maintainability in mind
 author: Tim Deschryver
 date: '2019-03-04T09:25:46.919Z'
-tags: 
+tags:
   - NgRx
   - Redux
   - Angular
@@ -56,37 +56,37 @@ In the reducer:
 * Create the reducer function. Inside this function, **we modify the state in a pure way — we don’t mutate properties directly on the state.** Whenever we want to print out the next output, invoked by the `NEXT` action, we increment the counter and create the message. Inside the `switch` statement, the default case is very important. When the reducer retrieves an action it isn’t responsible for (every reducer gets invoked by any action), we return the state as is. Without the default return case, the state would become `undefined`.
 
 ```ts
-export interface State {  
-  counter: number;  
-  message: string;  
+export interface State {
+  counter: number;
+  message: string;
 }
 
-export const initialState: State = {  
-  counter: 1,  
-  message: '',  
+export const initialState: State = {
+  counter: 1,
+  message: '',
 };
 
-export function reducer(state = initialState, action: Action): State {  
-  switch (action.type) {  
-    case 'NEXT':  
-      const counter = state.counter + 1;  
+export function reducer(state = initialState, action: Action): State {
+  switch (action.type) {
+    case 'NEXT':
+      const counter = state.counter + 1;
       let message = '';
 
-      if (counter % 3 === 0) {  
-        message += 'Fizz';  
-      }  
-      if (counter % 5 === 0) {  
-        message += 'Buzz';  
+      if (counter % 3 === 0) {
+        message += 'Fizz';
+      }
+      if (counter % 5 === 0) {
+        message += 'Buzz';
       }
 
-      return {  
-        counter,  
-        message: message || counter.toString(),  
+      return {
+        counter,
+        message: message || counter.toString(),
       };
 
-      default:  
-        return state;  
-  }  
+      default:
+        return state;
+  }
 }
 ```
 
@@ -99,22 +99,22 @@ To get the message from the store, we use the `select` operator. Because `State`
 To trigger a state change, we have to invoke the fizzbuzz reducer. Because we can’t invoke the reducer directly, we use the `dispatch` function. We send the action `NEXT` to the store which will invoke the fizzbuzz reducer, resulting in a new message in the message stream.
 
 ```ts
-@Component({  
-  selector: 'app-root',  
-  template: `  
-    {{ fizzbuzzMessage | async }}  
-  `,  
-})  
-export class AppComponent implements OnInit {  
-  fizzbuzzMessage: Observable<string> = this.store.pipe(  
-    select(state => state.fizzbuzz.message)  
+@Component({
+  selector: 'app-root',
+  template: `
+    {{ fizzbuzzMessage | async }}
+  `,
+})
+export class AppComponent implements OnInit {
+  fizzbuzzMessage: Observable<string> = this.store.pipe(
+    select(state => state.fizzbuzz.message)
   );
 
   constructor(private store: Store<State>) {}
 
-  ngOnInit() {  
-    setInterval(() => this.store.dispatch({ type: 'NEXT' }), 1000);  
-  }  
+  ngOnInit() {
+    setInterval(() => this.store.dispatch({ type: 'NEXT' }), 1000);
+  }
 }
 ```
 
@@ -140,13 +140,13 @@ The above schematic creates the action file and an example action inside of it, 
 import { Action } from '@ngrx/store';
 
 // action enum
-export enum FizzBuzzActionTypes {  
-  Next = '[AppComponent] Next',  
+export enum FizzBuzzActionTypes {
+  Next = '[AppComponent] Next',
 }
 
 // action creator
-export class Next implements Action {  
-  readonly type = FizzBuzzActionTypes.Next;  
+export class Next implements Action {
+  readonly type = FizzBuzzActionTypes.Next;
 }
 
 // actions union type, add more Actions using a pipe '|'
@@ -165,34 +165,34 @@ Before we can create the selector, we first have to provide a `getter` to retrie
 
 ```ts
 // `getter` in the reducer file reducers/fizzbuzz.reducer
-export _const_ getCounter = (_state_: State) => state.counter;
+export const getCounter = (state: State) => state.counter;
 
 // selectors in reducers
 
 // First, select the fizzbuzz state from app state
-export const getFizzBuzzState = createFeatureSelector<  
-  fromFizzbuzz.State  
+export const getFizzBuzzState = createFeatureSelector<
+  fromFizzbuzz.State
 >('fizzbuzz');
 
 // Second, wrap the getter inside a selector
-export const getCounter = createSelector(  
-  getFizzBuzzState,  
-  fromFizzbuzz.getCounter,  
+export const getCounter = createSelector(
+  getFizzBuzzState,
+  fromFizzbuzz.getCounter,
 );
 
 // Third, create the message selector based on the counter state
-export const getMessage = createSelector(  
-  getCounter,  
-  counter => {  
-    let message = '';  
-    if (counter % 3 === 0) {  
-      message += 'Fizz';  
-    }  
-    if (counter % 5 === 0) {  
-      message += 'Buzz';  
+export const getMessage = createSelector(
+  getCounter,
+  counter => {
+    let message = '';
+    if (counter % 3 === 0) {
+      message += 'Fizz';
+    }
+    if (counter % 5 === 0) {
+      message += 'Buzz';
     }
 
-    return message || counter.toString();  
+    return message || counter.toString();
   },
 );
 ```
@@ -201,32 +201,32 @@ export const getMessage = createSelector(
 
 ### The reducer
 
-With the action and the selector created, it’s time to clean up the reducer.  
+With the action and the selector created, it’s time to clean up the reducer.
 This is done by:
 
 * Typing the actions by using the actions union `FizzBuzzActions`. This makes sure that the `switch` statement’s `case` s are valid and will also correctly type the action inside the `case` statement.
-* Replacing the `Next` string with the enum `FizzBuzzActionTypes.Next` .
+* Replacing the `Next` string with the enum `FizzBuzzActionTypes.Next`.
 * Removing the `message` property from the state, since the message is now derived in the `getMessage` selector.
 
 ```ts
-export interface State {  
-  counter: number;  
+export interface State {
+  counter: number;
 }
 
-export const initialState: State = {  
-  counter: 1,  
+export const initialState: State = {
+  counter: 1,
 };
 
-export function reducer(state = initialState, action: FizzBuzzActions): State {  
-  switch (action.type) {  
-    case FizzBuzzActionTypes.Next:  
-      return {  
-        counter: state.counter + 1,  
+export function reducer(state = initialState, action: FizzBuzzActions): State {
+  switch (action.type) {
+    case FizzBuzzActionTypes.Next:
+      return {
+        counter: state.counter + 1,
       };
 
-    default:  
-      return state;  
-  }  
+    default:
+      return state;
+  }
 }
 ```
 
@@ -236,14 +236,14 @@ export function reducer(state = initialState, action: FizzBuzzActions): State {
 
 I’m a big fan of effects and I’m using it to put every piece of logic that isn’t specific to the component’s logic. The most used and known example of this are AJAX requests, but the use cases of effects can be broadened out to everything that is causing your component to become impure.
 
-Inside the `effects/app.effects.ts` file created by the `ng add` command, we’re going to move the logic to dispatch the `Next` action on every second.  
+Inside the `effects/app.effects.ts` file created by the `ng add` command, we’re going to move the logic to dispatch the `Next` action on every second.
 For this, we’re using the RxJS `interval` instead of the `setInterval` method, creating a continuous stream that emits a `Next` Action on each time interval. These actions will be dispatched to the store, invoking the reducer that on his turn triggers the `getMessage` selector resulting in a re-render with the new message output.
 
 ```ts
-@Injectable()  
-export class AppEffects {  
-  @Effect()  
-  fizzbuzzes = interval(1000).pipe(mapTo(new Next()));  
+@Injectable()
+export class AppEffects {
+  @Effect()
+  fizzbuzzes = interval(1000).pipe(mapTo(new Next()));
 }
 ```
 
@@ -257,16 +257,16 @@ With these steps completed, we can now go back to the `AppComponent` and:
 * Use the `getMessage` selector — personally, I also prefer removing the Store’s type. You won’t lose type safety because the selector (and its output) is typed. Plus from my experience, the Store’s type can lead to confusion, this is because at runtime it will contain the whole AppState.
 
 ```ts
-@Component({  
-  selector: 'app-root',  
-  template: `  
-    {{ fizzbuzzes | async }}  
-  `  
-})  
-export class AppComponent {  
+@Component({
+  selector: 'app-root',
+  template: `
+    {{ fizzbuzzes | async }}
+  `
+})
+export class AppComponent {
   fizzbuzzes = this.store.pipe(select(getMessage));
 
-  constructor(private store: Store<{}>) {}  
+  constructor(private store: Store<{}>) {}
 }
 ```
 

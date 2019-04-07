@@ -35,9 +35,13 @@ As a bit of background, [ngx-testing-library](https://github.com/timdeschryver/n
 Before we start let’s make a list of what we’re trying to accomplish after we push a commit:
 
 🔲 Only release when the build passes
+
 🔲 Only release when the push has been made to the master branch
+
 🔲 Release the new version to **npm**
+
 🔲 Release the new version to **GitHub**
+
 🔲 Keep the **CHANGELOG** up to date️
 
 ### CI/CD Server
@@ -165,10 +169,15 @@ If you push a commit to your GitHub repository by using the commit message conve
 Finally, we can start checking a couple of items off our list! So far we have:
 
 ✅ Only release when the build passes
+
 🔲 Only release when the push has been made to the master branch
+
 ✅ Release the new version to **npm**
+
 ✅ Release the new version to **GitHub**
+
 🔲 Keep the **CHANGELOG** up to date️
+
 
 This means there would also be a new release if you push to another branch which is not the master branch. This is something we, and definitely our users, wouldn’t want.
 
@@ -179,10 +188,15 @@ To only release a new version when the master branch receives a push we’ll hav
 This means we can check off another item from our list!
 
 ✅ Only release when the build passes
+
 ✅ Only release when the push has been made to the master branch
+
 ✅ Release the new version to **npm**
+
 ✅ Release the new version to **GitHub**
+
 🔲 Keep the **CHANGELOG** up to date️
+
 
 The last item to tick off is updating the **CHANGELOG** automatically.
 
@@ -201,9 +215,13 @@ If you would want to generate a CHANGELOG, I would suggest taking a look at the 
 With this last step we can check off every item on the list!
 
 ✅ Only release when the build passes
+
 ✅ Only release when the push has been made to the master branch
+
 ✅ Release the new version to NPM
+
 ✅ Release the new version to GitHub
+
 ✅ Keep the CHANGELOG up to date️
 
 ### Result and conclusion
@@ -223,6 +241,7 @@ As a last note I would say go check out [ngx-testing-library](https://github.com
 * use the Angular commit guidelines
 
 ✅ Only release when the build passes
+
 ✅ Only release when the push has been made to the master branch
 
 ![everything turns green and we make a new release](./images/9.png)
@@ -232,6 +251,7 @@ As a last note I would say go check out [ngx-testing-library](https://github.com
 ![npm versions](./images/10.png)
 
 ✅ Release the new version to GitHub
+
 ✅ Keep the CHANGELOG up to date️
 
 ![GitHub release page](./images/11.png)

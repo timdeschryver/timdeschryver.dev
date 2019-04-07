@@ -1,0 +1,155 @@
+/*
+  Name: Horizon
+  Original Author: Jonathan Olaleye (https://github.com/jolaleye/horizon-theme-vscode)
+  Converted: Keziah MOSELLE (https://github.com/KeziahMoselle)
+*/
+
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  background: #1C1E26;
+  color: #E95678;
+}
+
+code.language-text {
+  padding: 0.1em 0.5em !important;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+  text-shadow: none;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+  text-shadow: none;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+pre[class*="language-"] {
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
+}
+
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+}
+
+.token.class-name {
+  color: #FAC29A;
+}
+
+.token.keyword + .token.string,
+.token.attr-value {
+  color: #FAB795;
+}
+
+code.language-javascript,
+.token.attr-name {
+  color: #F09483;
+}
+
+
+.token.placeholder,
+.token.variable {
+  color: #ffcc99;
+}
+
+.token.punctuation {
+  color: #B2B2B2;
+}
+
+.token.plain-text {
+  color: #B2B2B2;
+}
+
+.token.comment {
+  color: #6c6c6f;
+}
+
+.token.namespace {
+  opacity: .7;
+}
+
+.token.tag,
+.token.number {
+  color: #E95678;
+}
+
+.token.tag > .token.punctuation {
+  color: #E95678;
+}
+
+.token.operator {
+  color: #B877DB;
+}
+
+code.language-css,
+code.language-scss,
+.token.boolean,
+.token.string,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.language-scss .token.string,
+.style .token.string,
+.token.keyword,
+.token.control,
+.token.directive,
+.token.unit,
+.token.statement,
+.token.regex,
+.token.atrule {
+  color: #B877DB;
+}
+
+.token.property,
+.token.function {
+  color: #25B0BC;
+}
+
+.token.tag-id,
+.token.selector,
+.token.atrule-id {
+  color: #eeebff;
+}
+
+.token.deleted {
+  text-decoration: line-through;
+}
+
+.token.inserted {
+  border-bottom: 1px dotted #eeebff;
+  text-decoration: none;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+  color: #c4b9fe;
+}
+
+.token.entity {
+  cursor: help;
+}
