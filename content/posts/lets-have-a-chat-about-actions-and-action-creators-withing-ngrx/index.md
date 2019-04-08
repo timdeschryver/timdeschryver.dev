@@ -29,7 +29,7 @@ In order to update to the store state we have to send messages from the applicat
 
 An action is a Plain Old JavaScript Object (POJO), it defines its intention with the `type` property and it has an optional payload. In fact you can define the shape of the action yourself, the only enforcement is that it must have a `type` property and its value must be a string. Other than that the structure of the action can be shaped to your needs, although, I would encourage you to use a `payload` property to add extra data to the action.
 
-> With these type values [Redux Devtools](https://github.com/reduxjs/redux-devtools) provides an event log of everything that has happened inside your application.
+With these type values [Redux Devtools](https://github.com/reduxjs/redux-devtools) provides an event log of everything that has happened inside your application.
 
 An example of an action with and without payload looks as follows:
 
@@ -41,6 +41,17 @@ An example of an action with and without payload looks as follows:
   payload: { dish: 'spaghetti carbonara' }
 }
 ```
+
+> Update 2019–04–05: Action Creators
+> NgRx introduced Action Creators in version 7.4.0, allowing us to create a typed action by using createAction.
+> ```ts
+export const orderFood = createAction(
+  '[Order Page] ORDER FOOD',
+  props<{ dish: string }>()
+);
+```
+
+> To create the action creator, we define the action’s type as the first parameter and use the second parameter to define additional action properties. We don’t need to define an action’s enum as this is accessible via the type property, for example `orderFood.type`. For more info about this change see [Alex Okrushko's](https://twitter.com/AlexOkrushko) post [NgRx: Action creators redesigned](https://blog.angularindepth.com/ngrx-action-creators-redesigned-d396960e46da).
 
 In a typical NgRx application you will probably see these action types defined as `enums`. Doing this has the benefit to typecheck the action types, this is done because a typo is always one keystroke away and can be the cause of frustration for several minutes.
 The refactored version of the actions above would be:
@@ -101,7 +112,7 @@ class OrderFood implements Action {
 }
 ```
 
-> Notice that the payload is set as a readonly property in the constructor.
+Notice that the payload is set as a readonly property in the constructor.
 
 In order to dispatch the action we have to create a new instance of the class:
 
