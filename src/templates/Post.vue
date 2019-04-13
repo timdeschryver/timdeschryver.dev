@@ -30,6 +30,27 @@ export default {
           name: 'author',
           content: this.$page.post.author,
         },
+
+        { name: 'og:title', content: this.$page.post.title },
+        {
+          name: 'og:url',
+          content: process.env.GRIDSOME_BASE_PATH + this.$page.post.path,
+        },
+        { name: 'og:description', content: this.$page.post.description },
+        { name: 'og:type', content: 'article' },
+        {
+          name: 'og:image',
+          content: process.env.GRIDSOME_BASE_PATH + this.$page.post.banner.src,
+        },
+
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:creator', content: '@tim_deschryver' },
+        { name: 'twitter:title', content: this.$page.post.title },
+        { name: 'twitter:description', content: this.$page.post.description },
+        {
+          name: 'twitter:image',
+          content: process.env.GRIDSOME_BASE_PATH + this.$page.post.banner.src,
+        },
       ],
     }
   },
@@ -41,6 +62,7 @@ query Post ($path: String!) {
   post: post (path: $path) {
     title
     path
+    banner
     date (format: "DD MMMM YYYY")
     timeToRead
     description
