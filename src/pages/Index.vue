@@ -28,7 +28,6 @@ section {
 }
 
 a {
-  margin-right: 0.5rem;
   color: #333;
 }
 </style>
