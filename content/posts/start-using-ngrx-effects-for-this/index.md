@@ -16,6 +16,8 @@ bannerCredit:
   'Photo by [Clément Gerbaud](https://unsplash.com/@clement_gerbaud) on
   [Unsplash](https://unsplash.com)'
 published: true
+publisher: Angular In Depth
+publish_url: https://blog.angularindepth.com/start-using-ngrx-effects-for-this-e0b2bd9da165
 ---
 
 You’re probably only using ngrx/effects to handle the communication to an external source by triggering an effect with an NgRx action. But did you know ngrx/effects can be used for more than this?

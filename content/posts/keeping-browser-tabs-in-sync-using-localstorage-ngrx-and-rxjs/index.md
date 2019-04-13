@@ -16,6 +16,8 @@ bannerCredit:
   'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on
   [Unsplash](https://unsplash.com)'
 published: true
+publisher: Angular In Depth
+publish_url: https://blog.angularindepth.com/keeping-browser-tabs-in-sync-using-localstorage-ngrx-and-rxjs-87de3bca4e2c
 ---
 
 In this post, we’re going to take a look at how we can keep our application state in sync when a user has multiple tabs open. We’re going to make this happen by using the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [NgRx](https://ngrx.io/) (Store and Effects), and [RxJS](http://rxjsdocs.com/). A basic knowledge of NgRx is needed to follow the examples.

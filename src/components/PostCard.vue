@@ -1,20 +1,21 @@
 <template>
   <article>
     <h2>
-      <g-link :to="post.path">{{ post.title }}</g-link>
+      <PostLink :post="post"></PostLink>
     </h2>
     <p v-html="post.description"/>
-
     <PostMeta :post="post" :with-tags="true"/>
   </article>
 </template>
 
 <script>
 import PostMeta from '~/components/PostMeta'
+import PostLink from '~/components/PostLink'
 
 export default {
   components: {
     PostMeta,
+    PostLink,
   },
   props: {
     post: {},
@@ -25,10 +26,6 @@ export default {
 <style lang="stylus" scoped>
 p {
   margin-top: 0.5em;
-}
-
-a {
-  text-decoration: none;
 }
 </style>
 

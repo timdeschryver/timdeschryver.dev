@@ -22,6 +22,8 @@
             id
             title
             path
+            publisher
+            publishUrl
         }
       }
     }

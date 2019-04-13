@@ -13,6 +13,8 @@ bannerCredit:
   'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on
   [Unsplash](https://unsplash.com)'
 published: true
+publisher: Angular In Depth
+publish_url: https://blog.angularindepth.com/sharing-data-between-modules-is-peanuts-3f40fcb38dd
 ---
 
 ### The problem
