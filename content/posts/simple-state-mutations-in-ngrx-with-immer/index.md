@@ -2,8 +2,8 @@
 title: Simple state mutations in NGXS with Immer
 slug: simple-state-mutations-in-ngrx-with-immer
 description: >-
-  A follow-up post of "Clean NgRx reducers using Immer". But this time we're
-  using NGXS as our state management library.
+  A follow-up post of "Clean NgRx reducers using Immer". But this time we're using NGXS as our state management library.
+
 author: Tim Deschryver
 date: '2018-06-07T05:55:54.427Z'
 tags:
@@ -12,9 +12,7 @@ tags:
   - NGXS
   - Redux
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/simple-state-mutations-in-ngxs-with-immer-48b908874a5e
@@ -42,7 +40,7 @@ The thing I like most is that it can just be **plugged in wherever needed**. Int
 
 ### About Immer
 
-> Immer (German for: always) is a tiny package that allows you to work with immutable state in a more convenient way. It is based on the [_copy-on-write_](https://en.wikipedia.org/wiki/Copy-on-write)  mechanism.
+> Immer (German for: always) is a tiny package that allows you to work with immutable state in a more convenient way. It is based on the [_copy-on-write_](https://en.wikipedia.org/wiki/Copy-on-write) mechanism.
 
 With Immer you’re treating your state with what they call a draft. This draft can be mutated “in the normal way”, with the JavaScript API. The mutations applied on the draft produce the next state. All this while still having the benefit that the state will remain immutable in the rest of your application. To make this possible Immer relies on [Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) under the hood.
 
@@ -56,7 +54,7 @@ The cart model can be presented as followed:
 
 ```ts
 export interface CartStateModel {
-  cartItems: { [sku: string]: number };
+  cartItems: { [sku: string]: number }
 }
 ```
 
@@ -64,17 +62,17 @@ To edit the state we have to define 3 actions. Just like with NgRx this can be d
 
 ```ts
 export class AddToCart {
-  static readonly type = '[Product List] Add to cart';
+  static readonly type = '[Product List] Add to cart'
   constructor(public payload: { sku: string }) {}
 }
 
 export class RemoveFromCart {
-  static readonly type = '[Product List] Remove from cart';
+  static readonly type = '[Product List] Remove from cart'
   constructor(public payload: { sku: string }) {}
 }
 
 export class EmptyCart {
-  static readonly type = '[Cart] Empty cart';
+  static readonly type = '[Cart] Empty cart'
 }
 ```
 
@@ -90,38 +88,40 @@ Now that we have everything in place we can implement our actions.
 export class CartState {
   @Action(AddToCart)
   addProduct(ctx: StateContext<CartStateModel>, action: AddToCart) {
-    const state = ctx.getState();
+    const state = ctx.getState()
     ctx.setState({
       ...state,
       cartItems: {
         ...state.cartItems,
         [action.payload.sku]: (state.cartItems[action.payload.sku] || 0) + 1,
       },
-    });
+    })
   }
 
   @Action(RemoveFromCart)
   removeProduct(ctx: StateContext<CartStateModel>, action: RemoveFromCart) {
-    const state = ctx.getState();
+    const state = ctx.getState()
     ctx.patchState({
       cartItems: {
         ...state.cartItems,
-        [action.payload.sku]: Math.max((state.cartItems[action.payload.sku] || 0) - 1, 0),
+        [action.payload.sku]: Math.max(
+          (state.cartItems[action.payload.sku] || 0) - 1,
+          0
+        ),
       },
-    });
+    })
   }
 
   @Action(EmptyCart)
   emptyCart(ctx: StateContext<CartStateModel>, action: EmptyCart) {
-    ctx.setState({ cartItems: {} });
+    ctx.setState({ cartItems: {} })
   }
 }
 ```
 
 As we zoom into the `addProduct` method we can see that an action is implemented by using the `Action` decorator, and it has a `StateContext` parameter and our `AddToCart` action. Using the `StateContext` we can retrieve the current `CartStateModel` slice of our application by using the `getState()` method. To edit the state we have to use `setState(T)` from the `StateContext`, which as the name gives away, sets the new state. NGXS does also have the functionality to modify a part of our state by using `patchState(Partial<T>)`. An example can be found inside the `removeProduct` implementation, where we’re only modifying the `cartItems` inside our `CartStateModel`.
 
-If we would use Immer to modify our state, the actions implementation would become:
-_(No other changes are necessary, the rest of the code remains the same!)_
+If we would use Immer to modify our state, the actions implementation would become: _(No other changes are necessary, the rest of the code remains the same!)_
 
 ```ts
 @State<CartStateModel>({
@@ -134,31 +134,30 @@ export class CartState {
   @Action(AddToCart)
   addProduct(ctx: StateContext<CartStateModel>, action: AddToCart) {
     ctx.setState(
-      produce(ctx.getState(), draft => {
-        draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1;
-      }),
-    );
+      produce(ctx.getState(), (draft) => {
+        draft.cartItems[action.payload.sku] =
+          (draft.cartItems[action.payload.sku] || 0) + 1
+      })
+    )
   }
 
   @Action(RemoveFromCart)
   removeProduct(ctx: StateContext<CartStateModel>, action: RemoveFromCart) {
     ctx.setState(
-      produce(ctx.getState(), draft => {
-        const newAmount = draft.cartItems[action.payload.sku] - 1;
+      produce(ctx.getState(), (draft) => {
+        const newAmount = draft.cartItems[action.payload.sku] - 1
         if (newAmount > 0) {
-          draft.cartItems[action.payload.sku] = newAmount;
-          return;
+          draft.cartItems[action.payload.sku] = newAmount
+          return
         }
-        delete draft.cartItems[action.payload.sku];
-      }),
-    );
+        delete draft.cartItems[action.payload.sku]
+      })
+    )
   }
 
   @Action(EmptyCart)
   emptyCart(ctx: StateContext<CartStateModel>, action: EmptyCart) {
-    ctx.setState(
-      produce(ctx.getState(), draft => ({ cartItems: {} })),
-    );
+    ctx.setState(produce(ctx.getState(), (draft) => ({ cartItems: {} })))
   }
 }
 ```
@@ -169,7 +168,7 @@ Notice how easy it is to increment the current amount with Immer.
 
 ```ts
 draft.cartItems[action.payload.sku] =
-   (draft.cartItems[action.payload.sku] || 0) + 1;
+  (draft.cartItems[action.payload.sku] || 0) + 1
 ```
 
 And we can also delete a property (cart item) from our cart by using existing and known JavaScript functionality.
@@ -200,8 +199,8 @@ You can safely start using Immer in some parts of your application. Using Immer 
 
 Just like I said in my previous post, by using immer you won’t lose any benefit of NGXS or NgRx. This means:
 
-* selectors will still be memoized
-* the redux devtools keeps working
+- selectors will still be memoized
+- the redux devtools keeps working
 
 **BUT** be aware that Immer comes with object freezing out of the box in development. This means that it will throw an error if the state is mutated from outside the `produce` function. If you want to mutate your state (which I don’t recommend by the way), you can turn off this feature with `setAutoFreeze(false)`. If the application is built in production mode, this check will automatically be skipped for performance reasons.
 
@@ -218,10 +217,10 @@ I still find Immer a great library, but in contrast to NgRx I think I would quic
 I also think it would be even more handy if we could do the following
 
 ```ts
-
 ctx.setState(
   produce((draft) => {
-    draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1;
+    draft.cartItems[action.payload.sku] =
+      (draft.cartItems[action.payload.sku] || 0) + 1
   })
 )
 ```
@@ -232,7 +231,7 @@ The code from the cart example can be found on [GitHub](https://github.com/timde
 
 ### More resources
 
-[Introduction - NGXS](https://ngxs.gitbook.io/ngxs/ "https://ngxs.gitbook.io/ngxs/")[](https://ngxs.gitbook.io/ngxs/)
+[Introduction - NGXS](https://ngxs.gitbook.io/ngxs/ 'https://ngxs.gitbook.io/ngxs/')[](https://ngxs.gitbook.io/ngxs/)
 
 [Why another state management framework for Angular?](https://medium.com/@amcdnl/why-another-state-management-framework-for-angular-b4b4c19ef664)
 

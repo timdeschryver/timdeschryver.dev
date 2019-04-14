@@ -9,9 +9,7 @@ tags:
   - Redux
   - Angular
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/common-and-easy-to-make-mistakes-when-youre-new-to-ngrx-49404ac973ea
@@ -53,41 +51,41 @@ ng generate @ngrx/schematics:reducer fizzbuzz --reducers=reducers/index.ts --gro
 
 In the reducer:
 
-* We define the fizzbuzz State, with the counter and the message to print out
-* Provide an initial state, to initially load up the start of the application
-* Create the reducer function. Inside this function, **we modify the state in a pure way — we don’t mutate properties directly on the state.** Whenever we want to print out the next output, invoked by the `NEXT` action, we increment the counter and create the message. Inside the `switch` statement, the default case is very important. When the reducer retrieves an action it isn’t responsible for (every reducer gets invoked by any action), we return the state as is. Without the default return case, the state would become `undefined`.
+- We define the fizzbuzz State, with the counter and the message to print out
+- Provide an initial state, to initially load up the start of the application
+- Create the reducer function. Inside this function, **we modify the state in a pure way — we don’t mutate properties directly on the state.** Whenever we want to print out the next output, invoked by the `NEXT` action, we increment the counter and create the message. Inside the `switch` statement, the default case is very important. When the reducer retrieves an action it isn’t responsible for (every reducer gets invoked by any action), we return the state as is. Without the default return case, the state would become `undefined`.
 
 ```ts
 export interface State {
-  counter: number;
-  message: string;
+  counter: number
+  message: string
 }
 
 export const initialState: State = {
   counter: 1,
   message: '',
-};
+}
 
 export function reducer(state = initialState, action: Action): State {
   switch (action.type) {
     case 'NEXT':
-      const counter = state.counter + 1;
-      let message = '';
+      const counter = state.counter + 1
+      let message = ''
 
       if (counter % 3 === 0) {
-        message += 'Fizz';
+        message += 'Fizz'
       }
       if (counter % 5 === 0) {
-        message += 'Buzz';
+        message += 'Buzz'
       }
 
       return {
         counter,
         message: message || counter.toString(),
-      };
+      }
 
-      default:
-        return state;
+    default:
+      return state
   }
 }
 ```
@@ -109,13 +107,13 @@ To trigger a state change, we have to invoke the fizzbuzz reducer. Because we ca
 })
 export class AppComponent implements OnInit {
   fizzbuzzMessage: Observable<string> = this.store.pipe(
-    select(state => state.fizzbuzz.message)
-  );
+    select((state) => state.fizzbuzz.message)
+  )
 
   constructor(private store: Store<State>) {}
 
   ngOnInit() {
-    setInterval(() => this.store.dispatch({ type: 'NEXT' }), 1000);
+    setInterval(() => this.store.dispatch({ type: 'NEXT' }), 1000)
   }
 }
 ```
@@ -139,7 +137,7 @@ ng generate @ngrx/schematics:action fizzbuzz --group=true --spec=false
 The above schematic creates the action file and an example action inside of it, consisting out of an action enum, an action creator, and an action union type. We can modify this to fit our fizzbuzz application as follows:
 
 ```ts
-import { Action } from '@ngrx/store';
+import { Action } from '@ngrx/store'
 
 // action enum
 export enum FizzBuzzActionTypes {
@@ -148,11 +146,11 @@ export enum FizzBuzzActionTypes {
 
 // action creator
 export class Next implements Action {
-  readonly type = FizzBuzzActionTypes.Next;
+  readonly type = FizzBuzzActionTypes.Next
 }
 
 // actions union type, add more Actions using a pipe '|'
-export type FizzBuzzActions = Next;
+export type FizzBuzzActions = Next
 ```
 
 Now, we can remove the magic string `NEXT` inside the fizzbuzz reducer and inside the `AppComponent`.
@@ -167,67 +165,66 @@ Before we can create the selector, we first have to provide a `getter` to retrie
 
 ```ts
 // `getter` in the reducer file reducers/fizzbuzz.reducer
-export const getCounter = (state: State) => state.counter;
+export const getCounter = (state: State) => state.counter
 
 // selectors in reducers
 
 // First, select the fizzbuzz state from app state
-export const getFizzBuzzState = createFeatureSelector<
-  fromFizzbuzz.State
->('fizzbuzz');
+export const getFizzBuzzState = createFeatureSelector<fromFizzbuzz.State>(
+  'fizzbuzz'
+)
 
 // Second, wrap the getter inside a selector
 export const getCounter = createSelector(
   getFizzBuzzState,
-  fromFizzbuzz.getCounter,
-);
+  fromFizzbuzz.getCounter
+)
 
 // Third, create the message selector based on the counter state
 export const getMessage = createSelector(
   getCounter,
-  counter => {
-    let message = '';
+  (counter) => {
+    let message = ''
     if (counter % 3 === 0) {
-      message += 'Fizz';
+      message += 'Fizz'
     }
     if (counter % 5 === 0) {
-      message += 'Buzz';
+      message += 'Buzz'
     }
 
-    return message || counter.toString();
-  },
-);
+    return message || counter.toString()
+  }
+)
 ```
 
 > For more info about selectors see the [official docs](https://ngrx.io/guide/store/selectors) and a previous post [Sharing data between modules is peanuts](./sharing-data-between-modules-is-peanuts).
 
 ### The reducer
 
-With the action and the selector created, it’s time to clean up the reducer.
-This is done by:
+With the action and the selector created, it’s time to clean up the reducer. This is done by:
 
-* Typing the actions by using the actions union `FizzBuzzActions`. This makes sure that the `switch` statement’s `case` s are valid and will also correctly type the action inside the `case` statement.
-* Replacing the `Next` string with the enum `FizzBuzzActionTypes.Next`.
-* Removing the `message` property from the state, since the message is now derived in the `getMessage` selector.
+- Typing the actions by using the actions union `FizzBuzzActions`. This makes sure that the `switch` statement’s `case` s are valid and will also correctly type the action inside the `case` statement.
+- Replacing the `Next` string with the enum `FizzBuzzActionTypes.Next`.
+- Removing the `message` property from the state, since the message is now derived in the `getMessage` selector.
 
 ```ts
 export interface State {
-  counter: number;
+  counter: number
 }
 
 export const initialState: State = {
   counter: 1,
-};
+}
 
 export function reducer(state = initialState, action: FizzBuzzActions): State {
   switch (action.type) {
     case FizzBuzzActionTypes.Next:
       return {
         counter: state.counter + 1,
-      };
+      }
 
     default:
-      return state;
+      return state
   }
 }
 ```
@@ -238,14 +235,13 @@ export function reducer(state = initialState, action: FizzBuzzActions): State {
 
 I’m a big fan of effects and I’m using it to put every piece of logic that isn’t specific to the component’s logic. The most used and known example of this are AJAX requests, but the use cases of effects can be broadened out to everything that is causing your component to become impure.
 
-Inside the `effects/app.effects.ts` file created by the `ng add` command, we’re going to move the logic to dispatch the `Next` action on every second.
-For this, we’re using the RxJS `interval` instead of the `setInterval` method, creating a continuous stream that emits a `Next` Action on each time interval. These actions will be dispatched to the store, invoking the reducer that on his turn triggers the `getMessage` selector resulting in a re-render with the new message output.
+Inside the `effects/app.effects.ts` file created by the `ng add` command, we’re going to move the logic to dispatch the `Next` action on every second. For this, we’re using the RxJS `interval` instead of the `setInterval` method, creating a continuous stream that emits a `Next` Action on each time interval. These actions will be dispatched to the store, invoking the reducer that on his turn triggers the `getMessage` selector resulting in a re-render with the new message output.
 
 ```ts
 @Injectable()
 export class AppEffects {
   @Effect()
-  fizzbuzzes = interval(1000).pipe(mapTo(new Next()));
+  fizzbuzzes = interval(1000).pipe(mapTo(new Next()))
 }
 ```
 
@@ -255,18 +251,18 @@ export class AppEffects {
 
 With these steps completed, we can now go back to the `AppComponent` and:
 
-* Remove the dispatch logic
-* Use the `getMessage` selector — personally, I also prefer removing the Store’s type. You won’t lose type safety because the selector (and its output) is typed. Plus from my experience, the Store’s type can lead to confusion, this is because at runtime it will contain the whole AppState.
+- Remove the dispatch logic
+- Use the `getMessage` selector — personally, I also prefer removing the Store’s type. You won’t lose type safety because the selector (and its output) is typed. Plus from my experience, the Store’s type can lead to confusion, this is because at runtime it will contain the whole AppState.
 
 ```ts
 @Component({
   selector: 'app-root',
   template: `
     {{ fizzbuzzes | async }}
-  `
+  `,
 })
 export class AppComponent {
-  fizzbuzzes = this.store.pipe(select(getMessage));
+  fizzbuzzes = this.store.pipe(select(getMessage))
 
   constructor(private store: Store<{}>) {}
 }
@@ -278,32 +274,32 @@ If you keep these little tips in mind, each boundary inside the application has 
 
 #### Introducing Actions and Action Creators: reducing boilerplate
 
-* by using this convention, we **get rid of a magic string value**
-* we gain **type safety**
-* we don’t have to write an action more than once, we add a small layer of abstraction and follow the **DRY** principle
-* it makes **testing actions easier**, we only have to write one test
-* maintainability bonus: follow the [**Good Action Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) practice introduced by [Mike Ryan](https://twitter.com/MikeRyanDev)
+- by using this convention, we **get rid of a magic string value**
+- we gain **type safety**
+- we don’t have to write an action more than once, we add a small layer of abstraction and follow the **DRY** principle
+- it makes **testing actions easier**, we only have to write one test
+- maintainability bonus: follow the [**Good Action Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) practice introduced by [Mike Ryan](https://twitter.com/MikeRyanDev)
 
 #### Reducers: only store the data once
 
-* this will lead to smaller and **cleaner reducers**
-* we have a **single point of truth**, we don’t have to remember every state property for this state
-* we only have to **test state mutators**
-* readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./clean-ngrx-reducers-using-immer)
+- this will lead to smaller and **cleaner reducers**
+- we have a **single point of truth**, we don’t have to remember every state property for this state
+- we only have to **test state mutators**
+- readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./clean-ngrx-reducers-using-immer)
 
 #### Selectors: used to derive state based on the store state
 
-* **don’t pollute the store state**, use selectors as queries to create view models
-* **keep selectors small** so they can be used to compose bigger selectors
-* since these are just functions that receive state and return some data they are also **easy to test**
-* selectors are **highly performant** because they memoize (cache) the latest execution so they don’t have to re-execute on every state change
-* in-depth bonus: to fully understand the benefits that selectors provide see [**Selectors are more powerful than you think**](https://www.youtube.com/watch?v=E7GKnjGCXzU) by [Alex Okrushko](https://twitter.com/AlexOkrushko)
+- **don’t pollute the store state**, use selectors as queries to create view models
+- **keep selectors small** so they can be used to compose bigger selectors
+- since these are just functions that receive state and return some data they are also **easy to test**
+- selectors are **highly performant** because they memoize (cache) the latest execution so they don’t have to re-execute on every state change
+- in-depth bonus: to fully understand the benefits that selectors provide see [**Selectors are more powerful than you think**](https://www.youtube.com/watch?v=E7GKnjGCXzU) by [Alex Okrushko](https://twitter.com/AlexOkrushko)
 
 #### Effects: used for side effects
 
-* making your **components pure**, thus predictable, easier to reason about
-* fully **unleashes the power RxJS provides**, e.g. cancel pending requests when needed
-* easier to test components, but also provides **separated tests for side effects**
-* architectural bonus: different ways to process actions, [**Patterns and Techniques**](https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5) by [Victor Savkin](https://twitter.com/victorsavkin)
+- making your **components pure**, thus predictable, easier to reason about
+- fully **unleashes the power RxJS provides**, e.g. cancel pending requests when needed
+- easier to test components, but also provides **separated tests for side effects**
+- architectural bonus: different ways to process actions, [**Patterns and Techniques**](https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5) by [Victor Savkin](https://twitter.com/victorsavkin)
 
 To end this post, see the [this Blitz](https://stackblitz.com/edit/ngrx-fizzbuzz-refactored) for the refactored version.

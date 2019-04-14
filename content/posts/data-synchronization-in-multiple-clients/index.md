@@ -2,16 +2,14 @@
 title: Data synchronization in multiple clients
 slug: data-synchronization-in-multiple-clients
 description: >-
-  Often when working with a CRUD heavy application you find yourself or someone
-  else asking the question, what should be done when multiple…
+  Often when working with a CRUD heavy application you find yourself or someone else asking the question, what should be done when multiple…
+
 author: Tim Deschryver
 date: '2018-05-28T18:40:12.485Z'
 tags:
   - Angular
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Scott Webb](https://unsplash.com/@scottwebb) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Scott Webb](https://unsplash.com/@scottwebb) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: ITNEXT
 publish_url: https://itnext.io/ngrx-data-synchronization-in-multiple-clients-df07785c0188
@@ -29,11 +27,11 @@ Once the client receives the message from the server it should be dispatched in 
 I would recommend to use the following data structure for the message, where the payload is an entity.
 
 ```ts
-{  
-   type: "update_user",  
-   payload: {  
-     ...  
-   }  
+{
+   type: "update_user",
+   payload: {
+     ...
+   }
 }
 ```
 
@@ -41,25 +39,25 @@ When the client receives the message, it creates an `Action` from the message.
 This action will be then dispatched to make the change available in the whole application.
 
 ```ts
-this.store.dispatch(new UpdateUser(message.payload));
+this.store.dispatch(new UpdateUser(message.payload))
 ```
 
 In the reducer we use the [@ngrx/entity](https://www.youtube.com/watch?v=JmnsEvoy-gY) adapter to upsert (insert or update) the entity.
 
 ```ts
-switch (action.type) {  
-  ...  
-  case UserActionTypes.UPSERT_USER:  
-    return adapter.upsertOne(action.payload.user, state);  
-  ...  
+switch (action.type) {
+  ...
+  case UserActionTypes.UPSERT_USER:
+    return adapter.upsertOne(action.payload.user, state);
+  ...
 }
 ```
 
 I’m using `upsert` because the message received from the server contains a user object. If the server would return a partial user, we can just update the properties that are changed by using the update method.
 
 ```ts
-switch (action.type) {  
-  ...  
+switch (action.type) {
+  ...
   case UserActionTypes.UPDATE_USER:
     return adapter.updateOne(
       {
@@ -87,9 +85,9 @@ An other option might be to lock the edit screen. This means that once a user op
 
 This might be a simple solution, but this is also my least favorite one because of several points:
 
-* users might accidentally lock screens that others need
-* the user keeps waiting till the screen becomes free
-* it could be possible that different unexpected scenarios might keep the screen locked for no reason, for example if a user loses hes connection or if the computer is shut down for any reason.
+- users might accidentally lock screens that others need
+- the user keeps waiting till the screen becomes free
+- it could be possible that different unexpected scenarios might keep the screen locked for no reason, for example if a user loses hes connection or if the computer is shut down for any reason.
 
 In short, the user experience is terrible.
 

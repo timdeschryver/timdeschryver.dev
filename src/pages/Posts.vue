@@ -38,8 +38,5 @@ export default {
   components: {
     PostCard,
   },
-  metaInfo: {
-    title: 'Posts',
-  },
 }
 </script>

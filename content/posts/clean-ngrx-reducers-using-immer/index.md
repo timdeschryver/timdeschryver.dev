@@ -9,16 +9,13 @@ tags:
   - Redux
   - Angular
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Noah Grezlak](https://unsplash.com/@svbtext) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Noah Grezlak](https://unsplash.com/@svbtext) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/clean-ngrx-reducers-using-immer-7fe4a0d43508
 ---
 
-This weeks post is inspired by another great [This Dot Media](https://www.thisdot.co/) event and the topic this time was state management. There was a small segment about Immer which I found interesting (video is linked at the bottom of this post),
-so I decided to give it a shot with NgRx.
+This weeks post is inspired by another great [This Dot Media](https://www.thisdot.co/) event and the topic this time was state management. There was a small segment about Immer which I found interesting (video is linked at the bottom of this post), so I decided to give it a shot with NgRx.
 
 ### Why Immer
 
@@ -46,7 +43,7 @@ First off, the state, which looks as follows:
 ```ts
 // for each item in our cart we're storing the amount.
 export interface State {
-  cartItems: { [sku: string]: number };
+  cartItems: { [sku: string]: number }
 }
 ```
 
@@ -64,22 +61,25 @@ export function reducer(state = initialState, action: CartActions) {
           ...state.cartItems,
           [action.payload.sku]: (state.cartItems[action.payload.sku] || 0) + 1,
         },
-      };
+      }
 
     case CartActionTypes.RemoveFromCart:
       return {
         ...state,
         cartItems: {
           ...state.cartItems,
-          [action.payload.sku]: Math.max((state.cartItems[action.payload.sku] || 0) - 1, 0),
+          [action.payload.sku]: Math.max(
+            (state.cartItems[action.payload.sku] || 0) - 1,
+            0
+          ),
         },
-      };
+      }
 
     case CartActionTypes.EmptyCart:
-      return initialState;
+      return initialState
 
     default:
-      return state;
+      return state
   }
 }
 ```
@@ -91,40 +91,41 @@ The state remains the same and the reducer becomes:
 export const reducer = produce<State, CartActions>((draft, action) => {
   switch (action.type) {
     case CartActionTypes.AddToCart:
-      draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1;
-      return;
+      draft.cartItems[action.payload.sku] =
+        (draft.cartItems[action.payload.sku] || 0) + 1
+      return
 
     case CartActionTypes.RemoveFromCart:
-      const newAmount = draft.cartItems[action.payload.sku] - 1;
+      const newAmount = draft.cartItems[action.payload.sku] - 1
       if (newAmount > 0) {
-        draft.cartItems[action.payload.sku] = newAmount;
-        return;
+        draft.cartItems[action.payload.sku] = newAmount
+        return
       }
-      delete draft.cartItems[action.payload.sku];
+      delete draft.cartItems[action.payload.sku]
       // or
       // draft.cartItems[action.payload.sku] =
       //   Math.max((draft.cartItems[action.payload.sku] || 0) - 1, 0);
-      return;
+      return
 
     case CartActionTypes.EmptyCart:
-      return initialState;
+      return initialState
   }
-}, initialState);
+}, initialState)
 ```
 
 Let’s highlight some points from the snippet above:
 
-* `produce` is a curried function which expects your reducer function as the first argument, and a second argument for the initial state
-* `draft` is our current `state`, which is typesafe
-* changes made to `draft` produces the next state
-* We can simply edit our item’s amount `draft.cartItems[action.payload.sku] = …`
-* We can simply delete products from our cart  
-    `delete draft.cartItems[action.payload.sku]`
+- `produce` is a curried function which expects your reducer function as the first argument, and a second argument for the initial state
+- `draft` is our current `state`, which is typesafe
+- changes made to `draft` produces the next state
+- We can simply edit our item’s amount `draft.cartItems[action.payload.sku] = …`
+- We can simply delete products from our cart  
+   `delete draft.cartItems[action.payload.sku]`
 
 And some subtle differences which you may have missed:
 
-* we don’t have to return the `draft`, this is because we’re modifying `draft` directly
-* there is no default case, the state doesn’t change and will also be the next state
+- we don’t have to return the `draft`, this is because we’re modifying `draft` directly
+- there is no default case, the state doesn’t change and will also be the next state
 
 To give another example, let’s take a look at how we load the catalog:
 
@@ -132,12 +133,12 @@ To give another example, let’s take a look at how we load the catalog:
 export const reducer = produce<State, CatalogActions>((draft, action) => {
   switch (action.type) {
     case CatalogActionTypes.Load:
-      action.payload.products.forEach(product => {
-        draft.products[product.sku] = product;
-        draft.productSkus.push(product.sku);
-      });
+      action.payload.products.forEach((product) => {
+        draft.products[product.sku] = product
+        draft.productSkus.push(product.sku)
+      })
   }
-}, initialState);
+}, initialState)
 ```
 
 Pretty straight forward, right?
@@ -180,7 +181,7 @@ The code can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer) o
 
 [ngrx/platform](https://github.com/ngrx/platform)
 
-[mweststrate/immer](https://github.com/mweststrate/immer "https://github.com/mweststrate/immer")[](https://github.com/mweststrate/immer)
+[mweststrate/immer](https://github.com/mweststrate/immer 'https://github.com/mweststrate/immer')[](https://github.com/mweststrate/immer)
 
 ### Not to miss
 

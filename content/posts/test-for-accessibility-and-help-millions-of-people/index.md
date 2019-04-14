@@ -9,9 +9,7 @@ tags:
   - accessibility
   - testing
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Paul Green](https://unsplash.com/@pgreen1983) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Paul Green](https://unsplash.com/@pgreen1983) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/test-for-accessibility-and-help-millions-of-people-97d86f72e2c4
@@ -33,9 +31,9 @@ This post does not contain tips and tricks nor a checklist to make your applicat
 
 Before we start let’s first define the term accessible. If you search for accessible on google, these are some few points that you’ll encounter:
 
-* **easy** to approach, reach, enter, speak with, get along with.
-* capable of being used or seen: **available**
-* easily used or accessed by people with disabilities**: adapted** for use by people with disabilities
+- **easy** to approach, reach, enter, speak with, get along with.
+- capable of being used or seen: **available**
+- easily used or accessed by people with disabilities**: adapted** for use by people with disabilities
 
 > An estimated 1 billion people are disabled, about 15% of the world’s population — [World Health Organisation](http://www.who.int/disabilities/world_report/2011/report.pdf)
 
@@ -67,11 +65,9 @@ The next step is to create the `.pa11yci` config file. This file contains the c
   "defaults": {
     "timeout": 10000,
     "wait": 2000,
-    "ignore": [
-      "notice",
-    ]
+    "ignore": ["notice"]
   },
-  "urls": [ "[http://localhost:4000](http://localhost:4000)" ]
+  "urls": ["[http://localhost:4000](http://localhost:4000)"]
 }
 ```
 
@@ -110,14 +106,11 @@ test-accessibility:
 
 #### Pa11y tips
 
-* Run pa11y against local html files without launching a server:
-    `pa11y-ci ./dist/index.html`
-* Instead of defining the URLs manually, refer to a sitemap — [docs](https://github.com/pa11y/pa11y-ci#sitemaps)
-* When adding pa11y to an existing project, set a high threshold number in order to not break the build until all errors are solved:
-    `pa11y-ci --threshold 250`
-* Ignore certain elements you have no control over:
-    `hideElements: '3rd-party-element'`
-* Override the defaults for a specific URL:
+- Run pa11y against local html files without launching a server: `pa11y-ci ./dist/index.html`
+- Instead of defining the URLs manually, refer to a sitemap — [docs](https://github.com/pa11y/pa11y-ci#sitemaps)
+- When adding pa11y to an existing project, set a high threshold number in order to not break the build until all errors are solved: `pa11y-ci --threshold 250`
+- Ignore certain elements you have no control over: `hideElements: '3rd-party-element'`
+- Override the defaults for a specific URL:
 
 ```json
 {
@@ -129,7 +122,7 @@ test-accessibility:
 }
 ```
 
-* It’s even possible to perform some actions before the pa11y tests are run without writing a single line of code.
+- It’s even possible to perform some actions before the pa11y tests are run without writing a single line of code.
 
 ```json
 actions: [
@@ -143,8 +136,8 @@ actions: [
 
 #### Alternatives to pa11y
 
-* [a11y](https://a11yproject.com/)
-* [axe](https://www.deque.com/axe/) — which also has a browser extension
+- [a11y](https://a11yproject.com/)
+- [axe](https://www.deque.com/axe/) — which also has a browser extension
 
 [](./images/2.png)
 
@@ -162,40 +155,40 @@ The default or standard approach:
 
 ```ts
 test('a user can log in', () => {
-  const username = fixture.debugElement.query(By.css('#username'));
-  username.nativeElement.value = 'username';
+  const username = fixture.debugElement.query(By.css('#username'))
+  username.nativeElement.value = 'username'
 
-  const password = fixture.debugElement.query(By.css('input[type=password]'));
-  password.nativeElement.value = '******';
+  const password = fixture.debugElement.query(By.css('input[type=password]'))
+  password.nativeElement.value = '******'
 
-  fixture.detectChanges();
-  expect(component.login()).toBe(true);
-});
+  fixture.detectChanges()
+  expect(component.login()).toBe(true)
+})
 
 // or
 
 test('a user can log in', () => {
-  component.username = 'username';
-  component.password = '********';
-  expect(component.login()).toBe(true);
-});
+  component.username = 'username'
+  component.password = '********'
+  expect(component.login()).toBe(true)
+})
 ```
 
 And now in comparison with ngx-testing-library:
 
 ```ts
 test('a user can log in', () => {
-    const username = getByLabelText('Username');
-    username.value = 'username';
-    input(username);
+  const username = getByLabelText('Username')
+  username.value = 'username'
+  input(username)
 
-    const password = getByLabelText('Password');
-    password.value = '******';
-    input(password);
+  const password = getByLabelText('Password')
+  password.value = '******'
+  input(password)
 
-    submit(getByText('Submit'));
-    expect(login).toHaveBeenCalledTimes(1);
-});
+  submit(getByText('Submit'))
+  expect(login).toHaveBeenCalledTimes(1)
+})
 ```
 
 As you can see in the example above: the library encourages, or even enforces, you to think like a user, making the application more accessible.
@@ -206,12 +199,12 @@ Another way to make sure your components are accessible is to use keyboard event
 
 ```ts
 test('a user can use keyboard arrows to select an item', () => {
-   const dropdown = getByText('Select your favorite color');
-   keyDown(dropdown, { key: 'ArrowDown' });
-   keyDown(dropdown, { key: 'ArrowDown' });
-   keyDown(dropdown, { key: 'ArrowDown' });
-   keyDown(dropdown, { key: 'Enter' });
-});
+  const dropdown = getByText('Select your favorite color')
+  keyDown(dropdown, { key: 'ArrowDown' })
+  keyDown(dropdown, { key: 'ArrowDown' })
+  keyDown(dropdown, { key: 'ArrowDown' })
+  keyDown(dropdown, { key: 'Enter' })
+})
 ```
 
 > _Notice that this becomes a breeze with_ [_ngx-testing-library_](https://github.com/timdeschryver/ngx-testing-library)_._

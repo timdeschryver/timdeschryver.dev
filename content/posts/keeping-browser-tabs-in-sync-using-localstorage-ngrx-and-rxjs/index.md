@@ -2,8 +2,8 @@
 title: Keeping browser tabs in sync using localStorage, NgRx, and RxJS
 slug: keeping-browser-tabs-in-sync-using-localstorage-ngrx-and-rxjs
 description: >-
-  We’re going to take a look at how we can keep state in sync when a user has
-  multiple tabs open.
+  We’re going to take a look at how we can keep state in sync when a user has multiple tabs open.
+
 author: Tim Deschryver
 date: '2018-12-03T09:08:06.254Z'
 tags:
@@ -12,9 +12,7 @@ tags:
   - RxJS
   - Redux
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/keeping-browser-tabs-in-sync-using-localstorage-ngrx-and-rxjs-87de3bca4e2c
@@ -74,7 +72,7 @@ Note that we can’t just simply store and retrieve the actions from the local s
 
 Now that we’ve stored the actions inside our local storage, the next step is to notify the other tabs and dispatch the same actions there. Here again, we’re also going to use an effect. We use the RxJS function [`fromEvent`](https://rxjs-dev.firebaseapp.com/api/index/function/fromEvent) to listen to the browser event [`window.storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Responding_to_storage_changes_with_the_StorageEvent) and get notified when the local storage changes in another tab.
 
-> The [`StorageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent "A StorageEvent is sent to a window when a storage area it has access to is changed within the context of another document.") is fired whenever a change is made to the [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage "The Storage interface of the Web Storage API provides access to a particular domain's session or local storage. It allows, for example, the addition, modification, or deletion of stored data items.") object (note that this event is not fired for sessionStorage changes). This won't work on the same page that is making the changes — it is really a way for other pages on the domain using the storage to sync any changes that are made. Pages on other domains can't access the same storage objects. — MDN web docs
+> The [`StorageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent 'A StorageEvent is sent to a window when a storage area it has access to is changed within the context of another document.') is fired whenever a change is made to the [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage "The Storage interface of the Web Storage API provides access to a particular domain's session or local storage. It allows, for example, the addition, modification, or deletion of stored data items.") object (note that this event is not fired for sessionStorage changes). This won't work on the same page that is making the changes — it is really a way for other pages on the domain using the storage to sync any changes that are made. Pages on other domains can't access the same storage objects. — MDN web docs
 
 ```ts
 @Effect()
@@ -147,31 +145,25 @@ In the grocery list application we already have a meta-reducer which does exactl
 
 ```ts
 export function persistStateReducer(reducer: ActionReducer<State>) {
-    const localStorageKey = '__groceries';
-    return (state: State | undefined, action: Action) => {
-
+  const localStorageKey = '__groceries'
+  return (state: State | undefined, action: Action) => {
     // on state initialization the state is undefined
     // we want to retrieve the state from local storage now
     if (state === undefined) {
-      const persisted = localStorage.getItem(localStorageKey);
+      const persisted = localStorage.getItem(localStorageKey)
 
       // if we got something in local storage return it
       // otherwise use the reducer to instantiate the state
-      return persisted
-        ? JSON.parse(persisted)
-        : reducer(state, action);
+      return persisted ? JSON.parse(persisted) : reducer(state, action)
     }
 
     // on every action we call the "normal" reducer
-    const newState = reducer(state, action);
+    const newState = reducer(state, action)
 
     // update local storage with the new state
-    localStorage.setItem(
-      localStorageKey,
-      JSON.stringify(nextState)
-    );
-    return newState;
-  };
+    localStorage.setItem(localStorageKey, JSON.stringify(nextState))
+    return newState
+  }
 }
 ```
 
@@ -205,10 +197,10 @@ export function updateStateReducer(reducer: ActionReducer<State>) {
   return (state: State | undefined, action: Action) => {
     if (action.type === 'UPDATE_GROCERIES_STATE') {
       // replace the current state with the new state
-      return action.payload.newState;
+      return action.payload.newState
     }
-    return reducer(state, action);
-  };
+    return reducer(state, action)
+  }
 }
 ```
 

@@ -2,8 +2,8 @@
 title: Let's have a chat about Actions and Action Creators within NgRx
 slug: lets-have-a-chat-about-actions-and-action-creators-withing-ngrx
 description: >-
-  I think it's time you and I talk a bit about action creators. But before we
-  get into action creators let's first start with actions.
+  I think it's time you and I talk a bit about action creators. But before we get into action creators let's first start with actions.
+
 author: Tim Deschryver
 date: '2018-07-30T14:20:27.277Z'
 tags:
@@ -11,9 +11,7 @@ tags:
   - Redux
   - Angular
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/lets-have-a-chat-about-actions-and-action-creators-within-ngrx-41277ecc739d
@@ -44,14 +42,16 @@ An example of an action with and without payload looks as follows:
 }
 ```
 
-> Update 2019–04–05: Action Creators
-> NgRx introduced Action Creators in version 7.4.0, allowing us to create a typed action by using createAction.
+> Update 2019–04–05: Action Creators NgRx introduced Action Creators in version 7.4.0, allowing us to create a typed action by using createAction.
+>
 > ```ts
-export const orderFood = createAction(
-  '[Order Page] ORDER FOOD',
-  props<{ dish: string }>()
-);
-```
+> export const orderFood = createAction(
+>   '[Order Page] ORDER FOOD',
+>   props<{ dish: string }>()
+> )
+> ```
+
+````
 
 > To create the action creator, we define the action’s type as the first parameter and use the second parameter to define additional action properties. We don’t need to define an action’s enum as this is accessible via the type property, for example `orderFood.type`. For more info about this change see [Alex Okrushko's](https://twitter.com/AlexOkrushko) post [NgRx: Action creators redesigned](https://blog.angularindepth.com/ngrx-action-creators-redesigned-d396960e46da).
 
@@ -69,7 +69,7 @@ const enum OrderActionTypes {
   type: OrderActionTypes.ORDER_FOOD,
   payload: { dish: 'spaghetti carbonara' }
 }
-```
+````
 
 > SIDE NOTE: Instead of using an ActionTypes `enum` it’s also a possibility to use constants to define the actions, as in `const ORDER_FOOD = ‘[Order Page] ORDER FOOD’`. The behavior will be the same, so feel free to use your preferred way.
 
@@ -78,7 +78,7 @@ Now that we know what an action is, we have to send it to the store. To do this 
 ```ts
 this.store.dispatch({
   type: OrderActionTypes.ORDER_FOOD,
-  payload: { dish: 'spaghetti carbonara' }
+  payload: { dish: 'spaghetti carbonara' },
 })
 ```
 
@@ -96,11 +96,11 @@ The class has a `readonly` type property and via its constructor it gets the pay
 
 ```ts
 class OrderFood implements Action {
-  readonly type = OrderActionTypes.ORDER_FOOD;
-  readonly payload: { dish: string };
+  readonly type = OrderActionTypes.ORDER_FOOD
+  readonly payload: { dish: string }
 
   constructor(dish: string) {
-    this.payload = { dish };
+    this.payload = { dish }
   }
 }
 ```
@@ -127,14 +127,14 @@ The function returns the action object based on the function’s input and sets 
 ```ts
 const orderFood = ({ dish }: { dish: string }) => ({
   type: OrderActionTypes.ORDER_FOOD,
-  payload: { dish }
-});
+  payload: { dish },
+})
 ```
 
 To dispatch the action we call the function:
 
 ```ts
-this.store.dispatch(orderFood({ dish: 'spaghetti carbonara' }));
+this.store.dispatch(orderFood({ dish: 'spaghetti carbonara' }))
 ```
 
 Personally, while this may not be the de facto way, this is my preferred way. Because using a factory function prevents common or easily made mistakes, especially if you’re new to NgRx or Redux in general.
@@ -147,46 +147,42 @@ If you think this is the only reason to use action creators, well… you’re wr
 
 The view layers of the application don’t need to know about action types, these are **encapsulated** inside the action creators. The only places where you would use action types are in the action creators (to create the action object), inside the reducer functions (to know when and how to modify the state) and inside the effects (to invoke side effects).
 
-Unlike reducers, an action creator doesn’t need to be pure. The inside of an action creator is the place where you could add **impure logic**, e.g. adding the current time to the action with `Date.now()`, generating a UUID, etc.
-A small tip that I would give here, is to make these properties overridable which would help you out when you’re writing tests, for example:
+Unlike reducers, an action creator doesn’t need to be pure. The inside of an action creator is the place where you could add **impure logic**, e.g. adding the current time to the action with `Date.now()`, generating a UUID, etc. A small tip that I would give here, is to make these properties overridable which would help you out when you’re writing tests, for example:
 
 ```ts
 const orderFood = ({ dish = '', timestamp = Date.now() } = {}) => ({
   type: OrderActionTypes.ORDER_FOOD,
-  payload: { dish, timestamp }
-});
+  payload: { dish, timestamp },
+})
 ```
 
 Which is used in the application as follows:
 
 ```ts
-orderFood({ dish: 'spaghetti carbonara' });
+orderFood({ dish: 'spaghetti carbonara' })
 ```
 
 And in the tests where you need more control, you can override these values:
 
 ```ts
-orderFood({ dish: 'spaghetti carbonara', timestamp: 47 });
+orderFood({ dish: 'spaghetti carbonara', timestamp: 47 })
 ```
 
 Inside action creators you can make **calculations on the input** instead of just returning the action object.
 
 ```ts
-const orderFood = ({
-  dish = '',
-  extraProp = 1
-} = {}) => ({
+const orderFood = ({ dish = '', extraProp = 1 } = {}) => ({
   type: OrderActionTypes.ORDER_FOOD,
   payload: {
     dish,
     extraProp: difficultCalculation(extraProp),
-  }
-});
+  },
+})
 ```
 
 An action creator helps you and your team to **remember the data which is needed to create an action** via its input. This input can be transformed into the payload property of the action.
 
-Creating the “right” payload structure has the advantage of tightening up your reducer. If we play it smart we can handle several actions at once by using the  fall-through functionality of a switch statement:
+Creating the “right” payload structure has the advantage of tightening up your reducer. If we play it smart we can handle several actions at once by using the fall-through functionality of a switch statement:
 
 ```ts
 function reducer(state, action) {
@@ -197,7 +193,7 @@ function reducer(state, action) {
       return { ...state, ...action.payload }
 
     default:
-      return state;
+      return state
   }
 }
 ```
@@ -217,7 +213,7 @@ function reducer(state, action) {
       return { ...state, ...action.payload }
 
     default:
-      return state;
+      return state
   }
 }
 ```
@@ -226,17 +222,17 @@ You only need to **write the action creator unit test(s) once**, in contrast to 
 
 ```ts
 it('should create an ORDER_FOOD action', () => {
-  const actual = orderFood({ dish: 'spaghetti carbonara' });
+  const actual = orderFood({ dish: 'spaghetti carbonara' })
   const expected = jasmine.objectContaining({
     type: OrderActionTypes.ORDER_FOOD,
     payload: jasmine.objectContaining({
-      dish: 'spaghetti carbonara'
-    })
-  });
+      dish: 'spaghetti carbonara',
+    }),
+  })
 
-  expect(actual).toEqual(expected);
-  expect(actual.payload.timestamp).toBeTruthy();
-});
+  expect(actual).toEqual(expected)
+  expect(actual.payload.timestamp).toBeTruthy()
+})
 ```
 
 ### Conclusion
@@ -245,8 +241,8 @@ By adding a small (but well known) abstraction layer into the NgRx flow, we end 
 
 This is because:
 
-* We remove boilerplate, although this may not seem like it
-* We create a place for impure logic and calculations
-* We make our tests less prone to break due to changes
+- We remove boilerplate, although this may not seem like it
+- We create a place for impure logic and calculations
+- We make our tests less prone to break due to changes
 
 A big thank you to [Nicholas Jamieson](https://twitter.com/ncjamieson) and [Alex Okrushko](https://twitter.com/AlexOkrushko) for taking the time to review this post! 🙌

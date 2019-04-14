@@ -9,9 +9,7 @@ tags:
   - Redux
   - Angular
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Geran de Klerk](https://unsplash.com/@geran) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Geran de Klerk](https://unsplash.com/@geran) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/how-i-test-my-ngrx-selectors-c50b1dc556bc
@@ -61,39 +59,42 @@ Because selectors are pure functions, it can use an optimization technique calle
 These are the selectors which are used in the shopping cart application:
 
 ```ts
-export const getCatalogState = createFeatureSelector<fromCatalog.State>('catalog');
+export const getCatalogState = createFeatureSelector<fromCatalog.State>(
+  'catalog'
+)
 export const getProducts = createSelector(
   getCatalogState,
-  catalog => catalog.products,
-);
+  (catalog) => catalog.products
+)
 export const getProductSkus = createSelector(
   getCatalogState,
-  catalog => catalog.productSkus,
-);
+  (catalog) => catalog.productSkus
+)
 export const getCatalog = createSelector(
   getProductSkus,
   getProducts,
-  (skus, products) => skus.map(sku => products[sku]),
-);
+  (skus, products) => skus.map((sku) => products[sku])
+)
 
-export const getCartState = createFeatureSelector<fromCart.State>('cart');
+export const getCartState = createFeatureSelector<fromCart.State>('cart')
 export const getCartItems = createSelector(
   getCartState,
-  cart => cart.cartItems,
-);
+  (cart) => cart.cartItems
+)
 
 export const getAllCartSummary = createSelector(
   getProducts,
   getCartItems,
   (products, cart): CartItem[] =>
-    Object.keys(cart).map(sku => ({
+    Object.keys(cart).map((sku) => ({
       product: products[sku],
       amount: cart[sku],
-    })),
-);
-export const getCartSummary = createSelector(getAllCartSummary, cart =>
-  cart.filter(item => item.amount > 0),
-);
+    }))
+)
+export const getCartSummary = createSelector(
+  getAllCartSummary,
+  (cart) => cart.filter((item) => item.amount > 0)
+)
 ```
 
 If you’re interested in the whole application you can take a look at the [GitHub repository](https://github.com/timdeschryver/ngrx-immer/tree/ngrx).
@@ -122,7 +123,7 @@ const createProduct = ({
   name: name || `name-${sku}`,
   price,
   image: image || `image-${sku}`,
-});
+})
 
 const createCatalogState = ({
   products = {
@@ -136,7 +137,7 @@ const createCatalogState = ({
     products,
     productSkus,
   },
-});
+})
 
 const createCartState = ({
   cartItems = {
@@ -147,7 +148,7 @@ const createCartState = ({
   cart: {
     cartItems,
   },
-});
+})
 
 const createState = ({
   catalog = createCatalogState(),
@@ -155,13 +156,13 @@ const createState = ({
 } = {}): State => ({
   ...catalog,
   ...cart,
-});
+})
 ```
 
 I use (and like) this approach to prevent fragile tests, because of the following reasons:
 
-* Every test creates its own isolated state, there is no global state
-* It’s possible to override specific properties if needed, but a default state is provided
+- Every test creates its own isolated state, there is no global state
+- It’s possible to override specific properties if needed, but a default state is provided
 
 ### Testing approach #1: “Default”
 
@@ -169,27 +170,27 @@ This is probably the most familiar way of testing selectors, it boils down to ca
 
 ```ts
 test('getProducts', () => {
-  const state = createCatalogState();
-  expect(getProducts(state)).toBe(state.catalog.products);
-});
+  const state = createCatalogState()
+  expect(getProducts(state)).toBe(state.catalog.products)
+})
 
 test('getProductSkus', () => {
-  const state = createCatalogState();
-  expect(getProductSkus(state)).toBe(state.catalog.productSkus);
-});
+  const state = createCatalogState()
+  expect(getProductSkus(state)).toBe(state.catalog.productSkus)
+})
 
 test('getCatalog', () => {
-  const state = createCatalogState();
-  expect(getCatalog(state).length).toBe(3);
-});
+  const state = createCatalogState()
+  expect(getCatalog(state).length).toBe(3)
+})
 
 test('getCartItems', () => {
-  const state = createCartState();
-  expect(getCartItems(state)).toBe(state.cart.cartItems);
-});
+  const state = createCartState()
+  expect(getCartItems(state)).toBe(state.cart.cartItems)
+})
 
 test('getAllCartSummary', () => {
-  const state = createState();
+  const state = createState()
   expect(getAllCartSummary(state)).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -202,12 +203,12 @@ test('getAllCartSummary', () => {
           sku: 'PRODUCT-CCC',
         }),
       }),
-    ]),
-  );
-});
+    ])
+  )
+})
 
 test('getCartSummary', () => {
-  const state = createState();
+  const state = createState()
   expect(getCartSummary(state)).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -215,9 +216,9 @@ test('getCartSummary', () => {
           sku: 'PRODUCT-AAA',
         }),
       }),
-    ]),
-  );
-});
+    ])
+  )
+})
 ```
 
 > We can make use of a reference equality -`toBe` - because the selector simply returns a slice of the store state. These selectors are called getter selectors.
@@ -264,24 +265,26 @@ const testCases = [
     selector: getCartSummary,
     state: createState(),
   },
-];
+]
 
-testCases.forEach(({name, state, selector}) => {
+testCases.forEach(({ name, state, selector }) => {
   test(`${name} with input ${JSON.stringify(state)}`, () => {
-    expect(selector(state)).toMatchSnapshot();
-  });
-});
+    expect(selector(state)).toMatchSnapshot()
+  })
+})
 ```
 
 The `getCartItems` snapshot looks like:
 
 ```ts
-exports[`getCartItems with input {"cart":{"cartItems":{"PRODUCT-AAA":3,"PRODUCT-CCC":0}}} 1`] = `  
+exports[
+  `getCartItems with input {"cart":{"cartItems":{"PRODUCT-AAA":3,"PRODUCT-CCC":0}}} 1`
+] = `  
 Object {  
   "PRODUCT-AAA": 3,  
   "PRODUCT-CCC": 0,  
 }  
-`;
+`
 ```
 
 > TIP: It could be helpful to add the state in the test description by using `JSON.stringify`.
@@ -303,7 +306,7 @@ test('getCartSummary only shows products with an amount', () => {
       amount: 2,
       product: createProduct({ sku: 'baz' }),
     },
-  ];
+  ]
 
   expect(getCartSummary.projector(cartItems)).toEqual(
     expect.arrayContaining([
@@ -317,9 +320,9 @@ test('getCartSummary only shows products with an amount', () => {
           sku: 'baz',
         }),
       }),
-    ]),
-  );
-});
+    ])
+  )
+})
 ```
 
 I use this approach when I’m dealing with selectors that need a lot of state setup or if the selector contains some logic.
@@ -336,9 +339,9 @@ This approach is also useful if you have some logic inside your selector. For ex
 
 ### Conclusion
 
-* A selector can be **unit** tested, you don’t need a (mocked) store in order to test your selectors.
-* Use factory functions to setup state in order to prevent fragile tests.
-* Each one of these approaches has its use case to test your selectors in a NgRx application.
+- A selector can be **unit** tested, you don’t need a (mocked) store in order to test your selectors.
+- Use factory functions to setup state in order to prevent fragile tests.
+- Each one of these approaches has its use case to test your selectors in a NgRx application.
 
 ### Not to miss
 

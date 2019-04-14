@@ -23,31 +23,56 @@ export default {
       title: this.$page.post.title,
       meta: [
         {
+          key: 'description',
           name: 'description',
           content: this.$page.post.description,
         },
         {
+          key: 'keywords',
+          name: 'keywords',
+          content: this.$page.post.tags.join(','),
+        },
+        {
+          key: 'author',
           name: 'author',
           content: this.$page.post.author,
         },
-
-        { name: 'og:title', content: this.$page.post.title },
         {
-          name: 'og:url',
-          content: process.env.GRIDSOME_BASE_PATH + this.$page.post.path,
+          key: 'copyright',
+          name: 'copyright',
+          content: this.$page.post.author,
         },
-        { name: 'og:description', content: this.$page.post.description },
-        { name: 'og:type', content: 'article' },
+
+        { key: 'og:title', name: 'og:title', content: this.$page.post.title },
         {
+          key: 'og:description',
+          name: 'og:description',
+          content: this.$page.post.description,
+        },
+        { key: 'og:type', name: 'og:type', content: 'article' },
+        {
+          key: 'og:image',
           name: 'og:image',
           content: process.env.GRIDSOME_BASE_PATH + this.$page.post.banner.src,
         },
 
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:creator', content: '@tim_deschryver' },
-        { name: 'twitter:title', content: this.$page.post.title },
-        { name: 'twitter:description', content: this.$page.post.description },
         {
+          key: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image',
+        },
+        {
+          key: 'twitter:title',
+          name: 'twitter:title',
+          content: this.$page.post.title,
+        },
+        {
+          key: 'twitter:description',
+          name: 'twitter:description',
+          content: this.$page.post.description,
+        },
+        {
+          key: 'twitter:image',
           name: 'twitter:image',
           content: process.env.GRIDSOME_BASE_PATH + this.$page.post.banner.src,
         },
@@ -68,6 +93,7 @@ query Post ($path: String!) {
     description
     content
     author
+    tags
   }
 }
 </page-query>

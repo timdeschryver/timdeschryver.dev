@@ -2,8 +2,8 @@
 title: Bending TSLint to your needs
 slug: bending-tslint-to-your-needs
 description: >-
-  Using the power of TSLint in an unconventional way to create
-  rxjs-operator-counter.
+  Using the power of TSLint in an unconventional way to create rxjs-operator-counter.
+
 author: Tim Deschryver
 date: '2019-01-10T09:40:10.057Z'
 banner: './images/banner.jpg'
@@ -13,7 +13,7 @@ tags:
   - RxJS
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633 
+publish_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633
 ---
 
 After reading yet another twitter thread asking about the number of RxJS operators used in a project, I thought to myself that creating a small tool that does exactly this could be a fun little project.
@@ -22,10 +22,10 @@ After some time thinking about the best possible way to accomplish this task, I 
 
 I had to:
 
-* iterate over every file
-* search for RxJS operators
-* keep count
-* print out the result
+- iterate over every file
+- search for RxJS operators
+- keep count
+- print out the result
 
 Keeping these smaller tasks in mind I noticed TSLint could be used for the first two tasks, doing most of the heavy lifting for me. This came in handy because I also wanted to dabble with TSLint and AST, or [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree), awesome two birds with one stone!
 
@@ -43,7 +43,7 @@ import * as Lint from 'tslint'
 
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.')
   }
 }
 ```
@@ -85,10 +85,11 @@ class OperatorCounterWalker extends Lint.RuleWalker {
 
     call.arguments
       .filter(ts.isCallExpression)
-      .map(argument => argument.expression as ts.Identifier)
+      .map((argument) => argument.expression as ts.Identifier)
       .filter(Boolean)
-      .forEach(identifier =>
-         this.addFailureAtNode(identifier, identifier.text))
+      .forEach((identifier) =>
+        this.addFailureAtNode(identifier, identifier.text)
+      )
   }
 }
 ```
@@ -118,9 +119,9 @@ export class Rule extends Lint.Rules.AbstractRule {
       new OperatorCounterWalker(sourceFile, this.getOptions())
     )
 
- const hits = failures
-      .map(failure => failure.getFailure())
-      .reduce<{[operator: string]: number}>((counter, operator) => {
+    const hits = failures
+      .map((failure) => failure.getFailure())
+      .reduce<{ [operator: string]: number }>((counter, operator) => {
         counter[operator] = (counter[operator] || 0) + 1
         return counter
       }, {})
@@ -143,11 +144,11 @@ In the library, the first thing to do is to create a custom linter. In order to 
 
 The last piece of the puzzle was to provide the linter configuration, which can usually be found in the `tslint.json`. The only problem here is that I wanted to have a simple command that can be run without the need of adding or changing something in your application. Therefore the only solution was to create and provide this config myself. Instead of creating a `tslint.json` file myself and loading it in, it was easier to do this directly in code.
 
-``` ts
+```ts
 // linter options
 const options: Lint.ILinterOptions = {
-    fix: false,
-    rulesDirectory: path.join(__dirname, 'rules'),
+  fix: false,
+  rulesDirectory: path.join(__dirname, 'rules'),
 }
 
 // load tsconfig
@@ -164,15 +165,15 @@ const rules = new Map<string, Partial<Lint.IOptions>>([
   ],
 ])
 const lintConfiguration = {
-    rules,
-    jsRules: rules,
-    rulesDirectory: [options.rulesDirectory],
-    extends: [''],
-};
+  rules,
+  jsRules: rules,
+  rulesDirectory: [options.rulesDirectory],
+  extends: [''],
+}
 
 // iterate files in the workspace
 const files = Lint.Linter.getFileNames(program)
-files.forEach(file => {
+files.forEach((file) => {
   // get the source code
   const fileContents = program.getSourceFile(file).getFullText()
 
@@ -189,21 +190,21 @@ const results = linter.getResult()
 
 // copy pasted code
 const hits = results.failures
-    .map(x => x.getFailure())
-    .reduce<{[operator: string]: number}>((counter, operator) => {
-      counter[operator] = (counter[operator] || 0) + 1
-      return counter
-    }, {})
+  .map((x) => x.getFailure())
+  .reduce<{ [operator: string]: number }>((counter, operator) => {
+    counter[operator] = (counter[operator] || 0) + 1
+    return counter
+  }, {})
 
 console.log(green().underline(`Results: ${EOL}`))
 
 // sort the results based on the count and the operator name
 Object.entries(hits)
-    .sort(
-      ([key1, count1], [key2, count2]) =>
-        count2 - count1 || key1.localeCompare(key2)
-    )
-    .forEach(([key, count]) => console.log(green().bold(`${key}: ${count}`)))
+  .sort(
+    ([key1, count1], [key2, count2]) =>
+      count2 - count1 || key1.localeCompare(key2)
+  )
+  .forEach(([key, count]) => console.log(green().bold(`${key}: ${count}`)))
 ```
 
 To make it a bit easier to read, I sorted the results and used the [kleur library](https://github.com/lukeed/kleur) to add some color to the printed result.
@@ -244,7 +245,7 @@ import { crawl } from '../src/crawler'
 
 test(`test run`, () => {
   let log = ''
-  console.log = jest.fn(message => (log += message))
+  console.log = jest.fn((message) => (log += message))
   crawl({
     tsConfigPath: './tests/fixtures/tsconfig.json',
   })
@@ -271,7 +272,7 @@ As you can see, a TSQuery selector resembles a CSS selector. This makes queries 
 export class Rule extends Lint.Rules.AbstractRule {
   static ruleName = 'operator-counter'
   static query =
-   'CallExpression[expression.name.name="pipe"] > CallExpression > Identifier'
+    'CallExpression[expression.name.name="pipe"] > CallExpression > Identifier'
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const hits = tsquery(sourceFile, Rule.query, {
@@ -303,15 +304,15 @@ If you want, feel free to use the command `npx rxjs-operator-counter` inside you
 
 #### Resources were helpful
 
-* The [TSLint docs](https://palantir.github.io/tslint/)
-* My first encounters with TSLint: [rxjs-tslint](https://github.com/ReactiveX/rxjs-tslint) by [Minko Gechev](https://twitter.com/mgechev) and [rxjs-tslint-rules](https://github.com/cartant/rxjs-tslint-rules) by [Nicholas Jamieson](https://twitter.com/ncjamieson)
-* [Easier TypeScript tooling with TSQuery](https://medium.com/@phenomnominal/easier-typescript-tooling-with-tsquery-d74f04f2b29d) and [Custom TSLint rules with TSQuery](https://medium.com/@phenomnominal/custom-typescript-lint-rules-with-tsquery-and-tslint-144184b6ff2d) both by [Craig Spence](https://twitter.com/phenomnominal)
-* [YES! I Compiled 1,000,000 TypeScript files in Under 40 Seconds. This is How.](https://medium.com/@urish/yes-i-compiled-1-000-000-typescript-files-in-under-40-seconds-this-is-how-6429a665999c) by [Uri Shaked](https://twitter.com/UriShaked)
-* [AST for Beginners](https://www.youtube.com/watch?v=CFQBHy8RCpg) by [Kent C. Dodds](https://twitter.com/kentcdodds)
+- The [TSLint docs](https://palantir.github.io/tslint/)
+- My first encounters with TSLint: [rxjs-tslint](https://github.com/ReactiveX/rxjs-tslint) by [Minko Gechev](https://twitter.com/mgechev) and [rxjs-tslint-rules](https://github.com/cartant/rxjs-tslint-rules) by [Nicholas Jamieson](https://twitter.com/ncjamieson)
+- [Easier TypeScript tooling with TSQuery](https://medium.com/@phenomnominal/easier-typescript-tooling-with-tsquery-d74f04f2b29d) and [Custom TSLint rules with TSQuery](https://medium.com/@phenomnominal/custom-typescript-lint-rules-with-tsquery-and-tslint-144184b6ff2d) both by [Craig Spence](https://twitter.com/phenomnominal)
+- [YES! I Compiled 1,000,000 TypeScript files in Under 40 Seconds. This is How.](https://medium.com/@urish/yes-i-compiled-1-000-000-typescript-files-in-under-40-seconds-this-is-how-6429a665999c) by [Uri Shaked](https://twitter.com/UriShaked)
+- [AST for Beginners](https://www.youtube.com/watch?v=CFQBHy8RCpg) by [Kent C. Dodds](https://twitter.com/kentcdodds)
 
 #### Bonus
 
-* Run `npx rxjs-operator-counter` on JavaScript files by adding the `allowJs` compiler option
-* Take a look at the [results](https://bigtsquery.firebaseapp.com/query?selector=CallExpression%5Bexpression.name.name%3D%22pipe%22%5D%20%3E%20CallExpression%20%3E%20Identifier) from the TSQuery selector in BigTSQuery, also made by [Uri Shaked](https://twitter.com/UriShaked), that allows you to run TypeScript AST Queries across all public TypeScript code on GitHub.
-* Run `npx ng-app-counter` created by [Rustam](https://medium.com/u/541c855dc583), to count your modules, components, directives, pipes, … The code can be found on [GitHub](https://github.com/Jamaks/ng-app-counter).
-* [dtslint](https://github.com/Microsoft/dtslint): A utility built on TSLint for linting TypeScript declaration files, which also uses TSLint in a smart way.
+- Run `npx rxjs-operator-counter` on JavaScript files by adding the `allowJs` compiler option
+- Take a look at the [results](https://bigtsquery.firebaseapp.com/query?selector=CallExpression%5Bexpression.name.name%3D%22pipe%22%5D%20%3E%20CallExpression%20%3E%20Identifier) from the TSQuery selector in BigTSQuery, also made by [Uri Shaked](https://twitter.com/UriShaked), that allows you to run TypeScript AST Queries across all public TypeScript code on GitHub.
+- Run `npx ng-app-counter` created by [Rustam](https://medium.com/u/541c855dc583), to count your modules, components, directives, pipes, … The code can be found on [GitHub](https://github.com/Jamaks/ng-app-counter).
+- [dtslint](https://github.com/Microsoft/dtslint): A utility built on TSLint for linting TypeScript declaration files, which also uses TSLint in a smart way.

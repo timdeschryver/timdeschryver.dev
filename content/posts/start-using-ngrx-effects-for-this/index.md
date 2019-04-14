@@ -2,8 +2,8 @@
 title: Start using ngrx/effects for this
 slug: start-using-ngrx-effects-for-this
 description: >-
-  You're probably only using ngrx/effects to handle the communication to an
-  external source by triggering an effect with a NgRx action.
+  You're probably only using ngrx/effects to handle the communication to an external source by triggering an effect with a NgRx action.
+
 author: Tim Deschryver
 date: '2018-07-09T13:09:18.090Z'
 tags:
@@ -12,9 +12,7 @@ tags:
   - Redux
   - Effects
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Clément Gerbaud](https://unsplash.com/@clement_gerbaud) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Clément Gerbaud](https://unsplash.com/@clement_gerbaud) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/start-using-ngrx-effects-for-this-e0b2bd9da165
@@ -162,8 +160,7 @@ getOrder = this.actions.pipe(
 
 ### 5. Navigate based on actions
 
-By injecting the Angular router into the effects it’s possible to redirect the user based on certain actions. In the example below we’re sending the user to the homepage when he or she logs out.
-Notice that we’re passing `dispatch: false` to the Effect decorator because we’re not dispatching any event. If we wouldn’t do this, we would be stuck in a infinite loop because the effect is dispatching the same action over and over again.
+By injecting the Angular router into the effects it’s possible to redirect the user based on certain actions. In the example below we’re sending the user to the homepage when he or she logs out. Notice that we’re passing `dispatch: false` to the Effect decorator because we’re not dispatching any event. If we wouldn’t do this, we would be stuck in a infinite loop because the effect is dispatching the same action over and over again.
 
 ```ts
 @Effect({ dispatch: false })

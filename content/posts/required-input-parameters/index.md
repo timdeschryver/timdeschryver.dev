@@ -7,9 +7,7 @@ date: '2018-05-14T14:00:12.814Z'
 tags:
   - Angular
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Jametlene Reskp](https://unsplash.com/@reskp) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Jametlene Reskp](https://unsplash.com/@reskp) on [Unsplash](https://unsplash.com)'
 published: true
 ---
 
@@ -22,10 +20,10 @@ Before we start let’s imagine we’re creating a component `HelloComponent` to
 The first thing that came to my mind was to throw an error when the `person` property would be `null` or `undefined`.
 
 ```ts
-ngOnInit() {  
-  if (this.person === null || this.person === undefined) {  
-    throw new TypeError("The input ‘Person’ is required");  
-  }  
+ngOnInit() {
+  if (this.person === null || this.person === undefined) {
+    throw new TypeError("The input ‘Person’ is required");
+  }
 }
 ```
 
@@ -38,19 +36,19 @@ After: `ERROR TypeError: The input ‘Person’ is required`
 To make the requirement explicit we can use the `selector` in the `@Component` decorator to require that the attribute on our component has to exist.
 
 ```ts
-@Component({  
-    selector: 'hello[person]'  
+@Component({
+    selector: 'hello[person]'
 })
 ```
 
 Resulting in the following error when we start the application or at compile time when the application is build Ahead of Time (AoT), if the `HelloComponent` doesn’t have a `person` attribute.
 
 ```bash
-Error: Template parse errors:  
-'hello' is not a known element:  
-1. If 'hello' is an Angular component, then verify that it is part of this module.  
-2. To allow any element add 'NO_ERRORS_SCHEMA' to the '@NgModule.schemas' of this component. ("[ERROR ->]<hello></hello>"): ng:///AppModule/AppComponent.html@0:0  
-Evaluating src/main.ts  
+Error: Template parse errors:
+'hello' is not a known element:
+1. If 'hello' is an Angular component, then verify that it is part of this module.
+2. To allow any element add 'NO_ERRORS_SCHEMA' to the '@NgModule.schemas' of this component. ("[ERROR ->]<hello></hello>"): ng:///AppModule/AppComponent.html@0:0
+Evaluating src/main.ts
 Booting application
 ```
 
@@ -65,20 +63,22 @@ Below you can find the two put together as well as the StackBlitz project ready 
 _NOTE: I’m using_ `_ngOnInit_` _but like_ [Isaac Mann](https://twitter.com/MannIsaac) _mentioned you could also use_ `_ngOnChanges_`_._
 
 ```ts
-import { Component, Input, OnInit } from '@angular/core';  
-import { Person } from './person';
+import { Component, Input, OnInit } from '@angular/core'
+import { Person } from './person'
 
-@Component({  
-  selector: 'hello[person]',  
-  template: `<h1>Hello {{ person.name }}!</h1>`,  
-})  
-export class HelloComponent implements OnInit {  
-  @Input() person: Person;
+@Component({
+  selector: 'hello[person]',
+  template: `
+    <h1>Hello {{ person.name }}!</h1>
+  `,
+})
+export class HelloComponent implements OnInit {
+  @Input() person: Person
 
-  ngOnInit() {  
-    if (!this.person) {  
-      throw new TypeError("'Person' is required");  
-    }  
-  }  
+  ngOnInit() {
+    if (!this.person) {
+      throw new TypeError("'Person' is required")
+    }
+  }
 }
 ```

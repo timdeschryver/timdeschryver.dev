@@ -8,15 +8,6 @@
   </Layout>
 </template>
 
-<script>
-export default {
-  metaInfo: {
-    title: 'Home',
-  },
-}
-</script>
-
-
 <style lang="stylus" scoped>
 main {
   display: grid;

@@ -2,8 +2,8 @@
 title: Semantically release your Angular library
 slug: semantically-realease-your-angular-library
 description: >-
-  I’m taking you along in my journey towards a fully automated process for
-  releasing a library! Using CircleCI and the semantic-release.
+  I’m taking you along in my journey towards a fully automated process for releasing a library! Using CircleCI and the semantic-release.
+
 author: Tim Deschryver
 date: '2018-10-22T09:13:01.145Z'
 tags:
@@ -11,9 +11,7 @@ tags:
   - Continuous integration
   - Continuous deployment
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Saffu](https://unsplash.com/@saffu) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Saffu](https://unsplash.com/@saffu) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/the-angular-devops-series-semantically-release-your-angular-library-7d78afb4c845
@@ -25,10 +23,10 @@ Are you, like me, getting tired of releasing your Angular library manually? And 
 
 This post is the first post of the **Angular DevOps Series**. The series also includes a post by fellow Angular in Depth writer, [Todd Palmer](https://medium.com/u/11477bb8a02e), who walks you through the details of deploying an Angular application with Travis CI to GitHub pages. And, [Andrew Evans](https://twitter.com/AndrewEvans0102) shows you how to deploy to Firebase with CircleCI.
 
-* [Semantically release your Angular library](https://blog.angularindepth.com/the-angular-devops-series-semantically-release-your-angular-library-7d78afb4c845)
-* [CT/CI with Travis CI and GitHub Pages](https://blog.angularindepth.com/the-angular-devops-series-ct-ci-with-travis-ci-and-github-pages-3c02664f078)
-* [Deploying to Firebase with CircleCI](https://blog.angularindepth.com/deploying-an-angular-site-to-firebase-with-circleci-ed881cb6a2fa)
-* [CT and Code Coverage with TeamCity](https://blog.angularindepth.com/the-angular-devops-series-ct-and-code-coverage-with-teamcity-21e3d0ed77eb)
+- [Semantically release your Angular library](https://blog.angularindepth.com/the-angular-devops-series-semantically-release-your-angular-library-7d78afb4c845)
+- [CT/CI with Travis CI and GitHub Pages](https://blog.angularindepth.com/the-angular-devops-series-ct-ci-with-travis-ci-and-github-pages-3c02664f078)
+- [Deploying to Firebase with CircleCI](https://blog.angularindepth.com/deploying-an-angular-site-to-firebase-with-circleci-ed881cb6a2fa)
+- [CT and Code Coverage with TeamCity](https://blog.angularindepth.com/the-angular-devops-series-ct-and-code-coverage-with-teamcity-21e3d0ed77eb)
 
 ### Introduction
 
@@ -56,13 +54,13 @@ The first step towards automation is having a CI server. It will run the tests, 
 
 In my quest for automation I quickly stumbled upon [semantic-release](https://github.com/semantic-release/semantic-release). I had already encountered this library in some OSS projects and heard good stuff about it. After giving it a quick glance it seemed like it had everything I needed and more, so I decided to go with it.
 
-Like the name _semantic-release_ implies, this tool will release your library using the [semantic versioning specification](https://semver.org/) (**SemVer**). In short SemVer is giving a meaning to the version number, it translates the version number to **MAJOR.MINOR.PATCH**,  also known as **BREAKING.FEATURE.PATCH**.
+Like the name _semantic-release_ implies, this tool will release your library using the [semantic versioning specification](https://semver.org/) (**SemVer**). In short SemVer is giving a meaning to the version number, it translates the version number to **MAJOR.MINOR.PATCH**, also known as **BREAKING.FEATURE.PATCH**.
 
 1. **MAJOR** version when you make an **incompatible** API change
 2. **MINOR** version when you add functionality in a **backwards-compatible** manner
 3. **PATCH** version when you make **backwards-compatible** bug fixes
 
-Based on the **commit messages**, semantic-release increments one or none of these versions. These commit messages must follow the  [Angular commit message convention](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). An example is as follows, where the header is required and the body and footer are optional:
+Based on the **commit messages**, semantic-release increments one or none of these versions. These commit messages must follow the [Angular commit message convention](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). An example is as follows, where the header is required and the body and footer are optional:
 
 ```bash
 <type>(<scope>): <subject>
@@ -92,8 +90,7 @@ Chef Louis has been fired, all dishes must go to chef Bob
 
 To help you out, you can either use [commitizen](https://github.com/commitizen/cz-cli) or [commitlint](https://github.com/marionebl/commitlint) to follow this convention.
 
-Oof, it seems like we have been derailed a bit here, back to semantic-release.
-To setup semantic-release inside your project we first have to install the **cli** globally or use the `npx` command. After this we can start setting up semantic-release with `semantic-release init`. You will have to answer a couple of questions but after this you’re good to go.
+Oof, it seems like we have been derailed a bit here, back to semantic-release. To setup semantic-release inside your project we first have to install the **cli** globally or use the `npx` command. After this we can start setting up semantic-release with `semantic-release init`. You will have to answer a couple of questions but after this you’re good to go.
 
 ```bash
 npm i semantic-release-cli -g
@@ -115,9 +112,9 @@ If you’re using CircleCI you can generate a token at [https://circleci.com/acc
 
 The `semantic-release init` command changes the following items in the `package.json` file:
 
-* changes the version number to `0.0.0-development`. I’ve changed this to `0.0.0-semantically-released` to make it clear that we’re using semantic versioning
-* adds the GitHub repository in `package.json`
-* also adds a `semantic-release` script in `package.json`
+- changes the version number to `0.0.0-development`. I’ve changed this to `0.0.0-semantically-released` to make it clear that we’re using semantic versioning
+- adds the GitHub repository in `package.json`
+- also adds a `semantic-release` script in `package.json`
 
 Because we’re releasing a library which is located in the `projects` folder, e.g. `./projects/ngx-testing-library`, we’ll also have to make these changes manually inside the project’s `package.json`, eg `./projects/ngx-testing-library/package.json`. This is because the project’s `package.json` will be used when we release a new version of the library.
 
@@ -129,12 +126,12 @@ If I add the release script to my existing config, it looks like this:
 
 Without going into too much detail, the above configuration will do the following:
 
-* install all the dependencies and cache them to not have to install them in every step and in every build;
-* run a linter, after the install step;
-* run the tests for the library, after the install step;
-* build the library and cache the `dist` folder, after the lint and library tests;
-* test the example application, after the library has been build;
-* make a new release based on the cached `dist` folder, after the example application tests ;
+- install all the dependencies and cache them to not have to install them in every step and in every build;
+- run a linter, after the install step;
+- run the tests for the library, after the install step;
+- build the library and cache the `dist` folder, after the lint and library tests;
+- test the example application, after the library has been build;
+- make a new release based on the cached `dist` folder, after the example application tests ;
 
 This build process can be seen (live), if you go to the workflows tab.
 
@@ -146,7 +143,7 @@ This will release our whole directory, but we **only want to release our library
 
 ### Configuring CircleCI
 
-To enable **CircleCI** you can login using your GitHub account. Once you’re logged in you can enable CircleCI on a per-project basis. This can be done by going to the [Add project tab](https://circleci.com/add-projects/gh/username). Go to your project and click on **Set up project**  and follow the instructions on the page.
+To enable **CircleCI** you can login using your GitHub account. Once you’re logged in you can enable CircleCI on a per-project basis. This can be done by going to the [Add project tab](https://circleci.com/add-projects/gh/username). Go to your project and click on **Set up project** and follow the instructions on the page.
 
 ![projects tab](./images/2.png)
 
@@ -180,7 +177,6 @@ Finally, we can start checking a couple of items off our list! So far we have:
 
 🔲 Keep the **CHANGELOG** up to date️
 
-
 This means there would also be a new release if you push to another branch which is not the master branch. This is something we, and definitely our users, wouldn’t want.
 
 ### Configuring the release step
@@ -198,7 +194,6 @@ This means we can check off another item from our list!
 ✅ Release the new version to **GitHub**
 
 🔲 Keep the **CHANGELOG** up to date️
-
 
 The last item to tick off is updating the **CHANGELOG** automatically.
 
@@ -236,11 +231,11 @@ As a last note I would say go check out [ngx-testing-library](https://github.com
 
 #### TLDR
 
-* use `semantic-release` and `semantic-release-cli`
-* configure the CI build steps inside `./.circleci/config.yml`
-* configure semantic-release to only release the `dist` folder via `pkgRoot`
-* configure the CircleCI environment variables
-* use the Angular commit guidelines
+- use `semantic-release` and `semantic-release-cli`
+- configure the CI build steps inside `./.circleci/config.yml`
+- configure semantic-release to only release the `dist` folder via `pkgRoot`
+- configure the CircleCI environment variables
+- use the Angular commit guidelines
 
 ✅ Only release when the build passes
 

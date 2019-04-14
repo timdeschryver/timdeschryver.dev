@@ -2,8 +2,8 @@
 title: Exploring Drag and Drop with the new Angular Material CDK
 slug: exploring-drag-and-drop-with-the-new-angular-material-cdk
 description: >-
-  Drag and Drop is a new feature in the new Angular Material CDK. Let’s explore
-  it together!
+  Drag and Drop is a new feature in the new Angular Material CDK. Let’s explore it together!
+
 author: Tim Deschryver
 date: '2018-10-04T15:31:20.103Z'
 tags:
@@ -12,9 +12,7 @@ tags:
   - Material
   - CDK
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Maria Imelda](https://unsplash.com/@unleashed_) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Maria Imelda](https://unsplash.com/@unleashed_) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
@@ -37,18 +35,18 @@ npm install @angular/material@7.0.0-rc.1
 Next, we can import the `DragDropModule` into our module:
 
 ```ts
-import { NgModule } from '[@angular/core](http://twitter.com/angular/core "Twitter profile for @angular/core")';
-import { BrowserModule } from '[@angular/platform-browser](http://twitter.com/angular/platform-browser "Twitter profile for @angular/platform-browser")';
-import { DragDropModule } from '[@angular/cdk](http://twitter.com/angular/cdk "Twitter profile for @angular/cdk")/drag-drop';
+import { NgModule } from '[@angular/core](http://twitter.com/angular/core "Twitter profile for @angular/core")'
+import { BrowserModule } from '[@angular/platform-browser](http://twitter.com/angular/platform-browser "Twitter profile for @angular/platform-browser")'
+import { DragDropModule } from '[@angular/cdk](http://twitter.com/angular/cdk "Twitter profile for @angular/cdk")/drag-drop'
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component'
 
 @NgModule({
   imports: [BrowserModule, DragDropModule],
   declarations: [AppComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 Now that we’ve imported the module we can create our first draggable component by using the `cdkDrag` directive.
@@ -159,29 +157,24 @@ Let’s take it a step further and create the simple task board.
 To do this, we’ll split up the `items` array into three smaller arrays; one for the new items, the second for the active items, and the last one for the items that are done.
 
 ```ts
-newItems = [
- 'Item 0',
- 'Item 1',
- 'Item 2',
- 'Item 3',
-]
+newItems = ['Item 0', 'Item 1', 'Item 2', 'Item 3']
 
-activeItems = [
- 'Item 4',
-]
+activeItems = ['Item 4']
 
-doneItems = [
- 'Item 5',
- 'Item 6',
- 'Item 7',
-]
+doneItems = ['Item 5', 'Item 6', 'Item 7']
 ```
 
 We need to display three separate lists and for each list we’ll create its own drop zone. We can bind the arrays to a drop zone by using the `cdkDropData` input.
 
 ```html
-<div cdkDrop #new="cdkDrop" [cdkDropData]="newItems" [cdkDropConnectedTo]="[active]" (cdkDropDropped)="dropped($event)">
-   <div *ngFor="let item of newItems" cdkDrag>{{ item }}</div>
+<div
+  cdkDrop
+  #new="cdkDrop"
+  [cdkDropData]="newItems"
+  [cdkDropConnectedTo]="[active]"
+  (cdkDropDropped)="dropped($event)"
+>
+  <div *ngFor="let item of newItems" cdkDrag>{{ item }}</div>
 </div>
 ```
 
@@ -191,46 +184,52 @@ With the `[cdkDropConnectedTo]` input property we can connect a `cdkDrop` list i
 
 In our task board example these are the connections we have to make:
 
-* the `new` list to the `active` list;
-* the `active` list to the `new` and `done` list;
-* the `done` list to the `active` list;
+- the `new` list to the `active` list;
+- the `active` list to the `new` and `done` list;
+- the `done` list to the `active` list;
 
 In other words, you can drag a `new` item to `active`, from `active` to `done`, and in reversed order. But you can’t drag a `new` item to the `done` list without passing through the `active` list. Combined this gives the following result:
 
 ```html
 <div class="board">
- <div class="column">
-  <h3>New</h3>
-  <div cdkDrop #new="cdkDrop"
-    [cdkDropData]="newItems"
-    [cdkDropConnectedTo]="[active]"
-    (cdkDropDropped)="dropped($event)"
-   >
-   <div *ngFor="let item of newItems" cdkDrag> {{ item }} </div>
+  <div class="column">
+    <h3>New</h3>
+    <div
+      cdkDrop
+      #new="cdkDrop"
+      [cdkDropData]="newItems"
+      [cdkDropConnectedTo]="[active]"
+      (cdkDropDropped)="dropped($event)"
+    >
+      <div *ngFor="let item of newItems" cdkDrag> {{ item }} </div>
+    </div>
   </div>
- </div>
 
-<div class="column">
-  <h3>Active</h3>
-  <div cdkDrop #active="cdkDrop"
-    [cdkDropData]="activeItems"
-    [cdkDropConnectedTo]="[new, done]"
-    (cdkDropDropped)="dropped($event)"
-   >
-   <div *ngFor="let item of activeItems" cdkDrag> {{ item }} </div>
+  <div class="column">
+    <h3>Active</h3>
+    <div
+      cdkDrop
+      #active="cdkDrop"
+      [cdkDropData]="activeItems"
+      [cdkDropConnectedTo]="[new, done]"
+      (cdkDropDropped)="dropped($event)"
+    >
+      <div *ngFor="let item of activeItems" cdkDrag> {{ item }} </div>
+    </div>
   </div>
- </div>
 
-<div class="column">
-  <h3>Done</h3>
-  <div cdkDrop #done="cdkDrop"
-    [cdkDropData]="doneItems"
-    [cdkDropConnectedTo]="[active]"
-    (cdkDropDropped)="dropped($event)"
-   >
-   <div *ngFor="let item of doneItems" cdkDrag> {{ item }} </div>
+  <div class="column">
+    <h3>Done</h3>
+    <div
+      cdkDrop
+      #done="cdkDrop"
+      [cdkDropData]="doneItems"
+      [cdkDropConnectedTo]="[active]"
+      (cdkDropDropped)="dropped($event)"
+    >
+      <div *ngFor="let item of doneItems" cdkDrag> {{ item }} </div>
+    </div>
   </div>
- </div>
 </div>
 ```
 
@@ -295,7 +294,7 @@ dropped(event: CdkDragDrop<string[]>) {
 
 #### Extra 1: Output events, intercepting when an item is `Entered` and `Exited`
 
-Another part of the drag and drop API is knowing when an item is being added to the drop zone and when an item has been removed from the drop zone. This can be done with the `cdkDropEntered`  and `cdkDropExited` functions, both are events on the `cdkDrop` element, just like `cdkDropDropped` as we’ve seen before.
+Another part of the drag and drop API is knowing when an item is being added to the drop zone and when an item has been removed from the drop zone. This can be done with the `cdkDropEntered` and `cdkDropExited` functions, both are events on the `cdkDrop` element, just like `cdkDropDropped` as we’ve seen before.
 
 ```ts
 <div cdkDrop #new="cdkDrop"
@@ -350,10 +349,10 @@ In the examples above we simply have some text as our items, but imagine having 
 
 ```html
 <div cdkDrop #new="cdkDrop">
-   <div *ngFor="let item of newItems" cdkDrag>
-        New item: {{ item }}
-        <div *cdkDragPreview>{{ item }}</div>
-    </div>
+  <div *ngFor="let item of newItems" cdkDrag>
+    New item: {{ item }}
+    <div *cdkDragPreview>{{ item }}</div>
+  </div>
 </div>
 ```
 
@@ -385,7 +384,9 @@ specialUseCase(drag?: CdkDrag, drop?: CdkDrop) {
 And in the HTML template:
 
 ```html
-<div cdkDrop #done="cdkDrop"
+<div
+  cdkDrop
+  #done="cdkDrop"
   [cdkDropData]="doneItems"
   [cdkDropConnectedTo]="[active]"
   (cdkDropDropped)="dropped($event)"

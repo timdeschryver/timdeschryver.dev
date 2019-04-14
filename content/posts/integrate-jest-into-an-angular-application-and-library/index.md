@@ -2,8 +2,8 @@
 title: Integrate Jest into an Angular application and library
 slug: integrate-jest-into-an-angular-application-and-library
 description: >-
-  Follow me in this play-by-play guide and let's integrate Jest within your
-  Angular project!
+  Follow me in this play-by-play guide and let's integrate Jest within your Angular project!
+
 author: Tim Deschryver
 date: '2018-08-15T09:20:53.786Z'
 tags:
@@ -12,9 +12,7 @@ tags:
   - Jest
   - Library
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Andras Vas](https://unsplash.com/@wasdrew) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Andras Vas](https://unsplash.com/@wasdrew) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/integrate-jest-into-an-angular-application-and-library-163b01d977ce
@@ -22,21 +20,21 @@ publish_url: https://blog.angularindepth.com/integrate-jest-into-an-angular-appl
 
 ### Why Jest
 
-* Sensible faster; parallelized test runs
-* Snapshot testing; to make sure your UI does not change unexpectedly
-* Rich CLI options; only run failed tests, filter on filename and/or test name, only run related tests since the latest commit
-* Readable and useful tests reports
-* Sandboxed tests; which means automatic global state resets
-* Built in code coverage
-* Personally I also like that I don’t need a browser in order to run my tests
+- Sensible faster; parallelized test runs
+- Snapshot testing; to make sure your UI does not change unexpectedly
+- Rich CLI options; only run failed tests, filter on filename and/or test name, only run related tests since the latest commit
+- Readable and useful tests reports
+- Sandboxed tests; which means automatic global state resets
+- Built in code coverage
+- Personally I also like that I don’t need a browser in order to run my tests
 
 ### What is Jest
 
 > Zero configuration testing platform
 
-* [Jest](https://facebook.github.io/jest/) is a test framework created by Facebook
-* The number one test framework in React applications
-* A testing framework for big and small teams
+- [Jest](https://facebook.github.io/jest/) is a test framework created by Facebook
+- The number one test framework in React applications
+- A testing framework for big and small teams
 
 ### Creating an Angular application
 
@@ -44,13 +42,11 @@ The first thing to do is to create an application. Using the Angular CLI, we can
 
 ng new my-awesome-app
 
-> If you don’t got the Angular CLI installed, you can install it globally with
-> `npm install @angular/cli -g`.
+> If you don’t got the Angular CLI installed, you can install it globally with `npm install @angular/cli -g`.
 
 After the Angular CLI has scaffolded our project let’s make sure everything works.
 
-cd my-awesome-app
-npm start
+cd my-awesome-app npm start
 
 When we navigate to [http://localhost:4200](http://localhost:4200) we should see our application.
 
@@ -113,8 +109,7 @@ If we now run `npm test`, our tests are using the Jest runner and better yet eve
 
 all 3 tests are still succeeding
 
-I think now would be the perfect time to remove all the [Karma](https://github.com/karma-runner/karma) dependencies and configuration files, just to have our project cleaner.
-We can remove all the Karma dependencies with the following command
+I think now would be the perfect time to remove all the [Karma](https://github.com/karma-runner/karma) dependencies and configuration files, just to have our project cleaner. We can remove all the Karma dependencies with the following command
 
 ```bash
 npm uninstall karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter
@@ -126,10 +121,10 @@ Our tests are still using Jasmine and while Jasmine is mostly compatible with Je
 
 ```ts
 test(`the title is 'my-awesome-app'`, async(() => {
-  const fixture = TestBed.createComponent(AppComponent);
-  const app = fixture.debugElement.componentInstance;
-  expect(app.title).toEqual('my-awesome-app');
-}));
+  const fixture = TestBed.createComponent(AppComponent)
+  const app = fixture.debugElement.componentInstance
+  expect(app.title).toEqual('my-awesome-app')
+}))
 ```
 
 Because we’ve refactored our tests by using the Jest syntax, we could also remove the [Jasmine](https://github.com/jasmine/jasmine) dependencies. If and only if you’re not using [Protractor](https://github.com/angular/protractor) (you could be using [Cypress](https://github.com/cypress-io/cypress) for example) for your end to end tests. This is because Protractor is using Jasmine for its end to end tests.
@@ -186,18 +181,18 @@ the library is being build
 Finally! With our library built, we can use our library inside our application. Therefor we have to import our library, this can be done by adding the library’s module to the `imports` of our `AppModule`.
 
 ```ts
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core'
 
-import { MyAwesomeLibModule } from 'my-awesome-lib';
+import { MyAwesomeLibModule } from 'my-awesome-lib'
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component'
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, MyAwesomeLibModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -213,8 +208,8 @@ With our application working let’s re-run our tests to make sure we didn’t b
 ```ts
 TestBed.configureTestingModule({
   declarations: [AppComponent],
-  imports: [MyAwesomeLibModule]
-}).compileComponents();
+  imports: [MyAwesomeLibModule],
+}).compileComponents()
 ```
 
 > HINT: in a “real world scenario” you would probably want to run the tests first before running your application.
@@ -241,27 +236,27 @@ Instead of configuring Jest in the `package.json` we’ll create a new file `jes
 module.exports = {
   preset: 'jest-preset-angular',
   setupTestFrameworkScriptFile: '<rootDir>/setupJest.ts',
-};
+}
 ```
 
 With our base config ready, the next step is to create two config files, one for our library `jest.lib.config.js` and the other one for our application `jest.app.config.js`.
 
 ```ts
 // `jest.lib.config.js`
-const baseConfig = require('./jest.base.config');
+const baseConfig = require('./jest.base.config')
 
 module.exports = {
   ...baseConfig,
   roots: ['<rootDir>/projects'],
-};
+}
 
 // `jest.app.config.js`
-const baseConfig = require('./jest.base.config');
+const baseConfig = require('./jest.base.config')
 
 module.exports = {
   ...baseConfig,
   roots: ['<rootDir>/src'],
-};
+}
 ```
 
 As you can see we’re importing the base configuration from `jest.base.config.js`. We’re also extending the configuration with the `roots` property to specify the directory that Jest should use to search for its files.
@@ -287,13 +282,13 @@ If we take a look at the error message, we can see that Jest is having some trou
 
 ```ts
 // `jest.app.config.js`
-const baseConfig = require('./jest.base.config');
+const baseConfig = require('./jest.base.config')
 
 module.exports = {
   ...baseConfig,
   roots: ['<rootDir>/src'],
-  modulePaths: ['<rootDir>/dist']
-};
+  modulePaths: ['<rootDir>/dist'],
+}
 ```
 
 ![](./images/11.png)
@@ -316,7 +311,7 @@ To make it ourselves easy we can create a command that test both our library and
 
 As last note I want to quickly mention that it’s also a possibility to use Jest and Jasmine side-by-side. For example you can keep using Jasmine for your existing code base and use Jest when you create a new library.
 
-To see this in action you can always take a peek at [ngx-testing-library,](https://github.com/timdeschryver/ngx-testing-library)  and while you’re there you might as well give it as⭐️.
+To see this in action you can always take a peek at [ngx-testing-library,](https://github.com/timdeschryver/ngx-testing-library) and while you’re there you might as well give it as⭐️.
 
 A big thank you to [Adrian Fâciu](https://twitter.com/adrianfaciu) for taking the time to review this post! 🙌
 

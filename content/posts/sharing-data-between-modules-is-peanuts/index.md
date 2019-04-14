@@ -9,9 +9,7 @@ tags:
   - NgRx
   - Redux
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)'
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/sharing-data-between-modules-is-peanuts-3f40fcb38dd
@@ -46,12 +44,12 @@ To build up to the solution we’ll be creating a small application, where a who
 
 ```ts
 export interface State {
-  family:{
+  family: {
     familyMembers: {
       [id: string]: {
-        id: string;
-        name: string;
-        avatar: string;
+        id: string
+        name: string
+        avatar: string
       }
     }
   }
@@ -61,27 +59,28 @@ export interface State {
 Resulting in:
 
 ```json
-{  
-  "family": {  
-    "familyMembers": {  
-      "dad": {  
-        "id": "dad",  
-        "name": "Bob",  
-        "avatar": "👨"  
-      },  
-      "daughter": {  
-        "id": "daughter",  
-        "name": "Emily",  
-        "avatar": "👧"  
-      },  
-      ...  
-    }  
-  },  
-  "router": {...}  
+{
+  "family": {
+    "familyMembers": {
+      "dad": {
+        "id": "dad",
+        "name": "Bob",
+        "avatar": "👨"
+      },
+      "daughter": {
+        "id": "daughter",
+        "name": "Emily",
+        "avatar": "👧"
+      },
+      ...
+    }
+  },
+  "router": {...}
 }
 ```
 
 #### The root selectors
+
 To start off simple, the first step is to create the **selectors** to select the family members to create a landing page.
 
 ![](./images/1.png)
@@ -98,7 +97,7 @@ Resulting in the following home page:
 
 ![](./images/3.png)
 
-#### The feature state  
+#### The feature state
 
 Since this is a grocery application, the feature state will consist of the groceries and a visibility filter to show or hide checked off groceries. We’ll lazily load this module, meaning that the code won’t be loaded during the initial load but will be once the user navigates to the groceries page.
 
@@ -107,22 +106,22 @@ Since this is a grocery application, the feature state will consist of the groce
 When the feature module is loaded, NgRx will append the feature’s reducers to the current reducers. This results in the following state tree:
 
 ```json
-{  
-  "family": {...},  
-  "router": {...},  
-  "groceries": {  
-    "groceries": {  
-      "ids": [],  
-      "entities": {}  
-    },  
-    "visibility": {  
-      "showCheckedOffGroceries": false  
-    }  
-  }  
+{
+  "family": {...},
+  "router": {...},
+  "groceries": {
+    "groceries": {
+      "ids": [],
+      "entities": {}
+    },
+    "visibility": {
+      "showCheckedOffGroceries": false
+    }
+  }
 }
 ```
 
-#### The feature module  
+#### The feature module
 
 The groceries state is added to the state tree as `groceries` because this is how I defined it.
 
@@ -130,7 +129,7 @@ The groceries state is added to the state tree as `groceries` because this is ho
 
 [https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/groceries.module.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/groceries.module.ts)
 
-#### The feature selectors  
+#### The feature selectors
 
 Now that we know how the feature state looks, we can write the selectors to select the data.
 
@@ -180,10 +179,10 @@ We don’t need anything more, so we can create our family view:
 
 As you can already see in the examples above sharing data between modules can be peanuts if selectors are used. This comes with the extra benefit that:
 
-* it’s fast, selectors are memoized
-* you can keep your state compact, it’s possible to derive data inside selectors
-* you can re-use selectors, because selectors are composable
-* components aren’t tightly coupled with the state tree anymore, making it easier to modify the state tree structure
+- it’s fast, selectors are memoized
+- you can keep your state compact, it’s possible to derive data inside selectors
+- you can re-use selectors, because selectors are composable
+- components aren’t tightly coupled with the state tree anymore, making it easier to modify the state tree structure
 
 Keep in mind that if a feature module is being lazy loaded, that in order to select the data, the module must have been loaded.
 

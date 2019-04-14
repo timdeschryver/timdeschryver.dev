@@ -2,8 +2,9 @@
 title: Introducing ngx-testing-library
 slug: introducing-ngx-testing-library
 description: >-
-  An adapter around dom-testing-library to provide lightweight utility functions
-  to test Angular components.
+  An adapter around dom-testing-library to provide lightweight utility functions to test Angular components.
+  
+
 author: Tim Deschryver
 date: '2018-06-18T14:27:19.273Z'
 tags:
@@ -11,9 +12,7 @@ tags:
   - Testing
   - Library
 banner: './images/banner.jpg'
-bannerCredit:
-  'Photo by [Gary Bendig](https://unsplash.com/@kris_ricepees) on
-  [Unsplash](https://unsplash.com)'
+bannerCredit: 'Photo by [Gary Bendig](https://unsplash.com/@kris_ricepees) on [Unsplash](https://unsplash.com)'
 published: true
 ---
 
@@ -21,9 +20,7 @@ published: true
 
 A couple of months ago [Kent C. Dodds](https://twitter.com/kentcdodds) created a testing library for react called [react-testing-library](https://github.com/kentcdodds/react-testing-library), which includes simple and complete React DOM testing utilities.
 
-He wanted to provide a solution to writing tests without testing implementation details. With the mindset that you would rather want to test your application in a way how your users are using the application, by encouraging good testing and software practices. With a result of making your tests less prone to break due to implementation changes in order to keep moving forward and not slowing down development, because your tests are “suddenly” failing. You can find more details in hes blog post, [Introducing the react-testing-library](https://blog.kentcdodds.com/introducing-the-react-testing-library-e3a274307e65).
-
-[Introducing the react-testing-library 🐐](https://blog.kentcdodds.com/introducing-the-react-testing-library-e3a274307e65)
+He wanted to provide a solution to writing tests without testing implementation details. With the mindset that you would rather want to test your application in a way how your users are using the application, by encouraging good testing and software practices. With a result of making your tests less prone to break due to implementation changes in order to keep moving forward and not slowing down development, because your tests are “suddenly” failing. You can find more details in hes blog post, [Introducing the react-testing-library 🐐](https://blog.kentcdodds.com/introducing-the-react-testing-library-e3a274307e65).
 
 The library is focused on writing your tests on actual DOM nodes, because of this it makes a real good base to use across different frameworks.
 
@@ -33,13 +30,13 @@ As a nice man as he, [Kent C. Dodds](https://twitter.com/kentcdodds) is, he refa
 
 The dom-testing-library mainly consists of query functions to find DOM elements. For this it uses the [`querySelector`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) and [`querySelectorAll`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll) functions from the JavaScript API, remember that this is possible because it uses the actual DOM. The query functions provided by this library are the following:
 
-* [`getByLabelText`](https://github.com/kentcdodds/dom-testing-library#getbylabeltext)
-* [`getByPlaceholderText`](https://github.com/kentcdodds/dom-testing-library#getbyplaceholdertext)
-* [`getByText`](https://github.com/kentcdodds/dom-testing-library#getbytext)
-* [`getByAltText`](https://github.com/kentcdodds/dom-testing-library#getbyalttext)
-* [`getByTitle`](https://github.com/kentcdodds/dom-testing-library#getbytitle)
-* [`getByValue`](https://github.com/kentcdodds/dom-testing-library#getbyvalue)
-* [`getByTestId`](https://github.com/kentcdodds/dom-testing-library#getbytestid)
+- [`getByLabelText`](https://github.com/kentcdodds/dom-testing-library#getbylabeltext)
+- [`getByPlaceholderText`](https://github.com/kentcdodds/dom-testing-library#getbyplaceholdertext)
+- [`getByText`](https://github.com/kentcdodds/dom-testing-library#getbytext)
+- [`getByAltText`](https://github.com/kentcdodds/dom-testing-library#getbyalttext)
+- [`getByTitle`](https://github.com/kentcdodds/dom-testing-library#getbytitle)
+- [`getByValue`](https://github.com/kentcdodds/dom-testing-library#getbyvalue)
+- [`getByTestId`](https://github.com/kentcdodds/dom-testing-library#getbytestid)
 
 The library also comes with handy helpers to fire DOM events with [`fireEvent`](https://github.com/kentcdodds/dom-testing-library#fireevent). And if you‘re dealing with asynchronous code, e.g. a http request, it also has you covered with [`wait`](https://github.com/kentcdodds/dom-testing-library#wait) and [`waitForElement`](https://github.com/kentcdodds/dom-testing-library#waitforelement).
 
@@ -56,37 +53,38 @@ Let’s take a look how this looks like if we were testing a simple counter comp
 ```ts
 it('should increment and decrement', async () => {
   // setup the test via the template syntax
-  const { getByText, getByTestId, click } =
-    await createComponent('<counter [counter]="10"></counter>', {
+  const { getByText, getByTestId, click } = await createComponent(
+    '<counter [counter]="10"></counter>',
+    {
       declarations: [CounterComponent],
-    });
+    }
+  )
 
   // or via the component type
-  const { getByText, getByTestId, click } =
-    await createComponent(
-      {
-        component: CounterComponent,
-        parameters: {
-          counter: 10,
-        },
+  const { getByText, getByTestId, click } = await createComponent(
+    {
+      component: CounterComponent,
+      parameters: {
+        counter: 10,
       },
-      {
-        declarations: [CounterComponent],
-      },
-    );
+    },
+    {
+      declarations: [CounterComponent],
+    }
+  )
 
   // click the increment button using the fireEvent click function
   // this will also trigger change detection
-  click(getByText('+'));
+  click(getByText('+'))
   // find the element based on its text
-  expect(getByText('Current Count: 11')).toBeTruthy();
+  expect(getByText('Current Count: 11')).toBeTruthy()
   // find the element via its data-testid attribute
-  expect(getByTestId('count').textContent).toBe('Current Count: 11');
+  expect(getByTestId('count').textContent).toBe('Current Count: 11')
 
-  click(getByText('-'));
-  expect(getByText('Current Count: 10')).toBeTruthy();
-  expect(getByTestId('count').textContent).toBe('Current Count: 10');
-});
+  click(getByText('-'))
+  expect(getByText('Current Count: 10')).toBeTruthy()
+  expect(getByTestId('count').textContent).toBe('Current Count: 10')
+})
 ```
 
 > Note that this library can be used with every test runner, whether it is Jasmine, Jest, or your favorite test runner.
@@ -95,12 +93,18 @@ And if we were testing a login form, it would look like as follows:
 
 ```ts
 test('login form submits', async () => {
-  const fakeUser = { username: 'jackiechan', password: 'hiya! 🥋' };
+  const fakeUser = { username: 'jackiechan', password: 'hiya! 🥋' }
   const handleLogin = {
     emit: jest.fn(),
-  };
+  }
 
-  const { container, getByLabelText, getByText, input, submit } = await createComponent(
+  const {
+    container,
+    getByLabelText,
+    getByText,
+    input,
+    submit,
+  } = await createComponent(
     {
       component: LoginFormComponent,
       parameters: {
@@ -110,30 +114,29 @@ test('login form submits', async () => {
     {
       declarations: [LoginFormComponent],
       imports: [ReactiveFormsModule],
-    },
-  );
+    }
+  )
 
-  const usernameNode = getByLabelText(/username/i) as HTMLInputElement;
-  const passwordNode = getByLabelText(/password/i) as HTMLInputElement;
-  const submitButtonNode = getByText(/submit/i);
-  const formNode = container.querySelector('form');
+  const usernameNode = getByLabelText(/username/i) as HTMLInputElement
+  const passwordNode = getByLabelText(/password/i) as HTMLInputElement
+  const submitButtonNode = getByText(/submit/i)
+  const formNode = container.querySelector('form')
 
-  usernameNode.value = fakeUser.username;
-  input(usernameNode);
+  usernameNode.value = fakeUser.username
+  input(usernameNode)
 
-  passwordNode.value = fakeUser.password;
-  input(passwordNode);
+  passwordNode.value = fakeUser.password
+  input(passwordNode)
 
-  submit(formNode);
+  submit(formNode)
 
-  expect(handleLogin.emit).toHaveBeenCalledTimes(1);
-  expect(handleLogin.emit).toHaveBeenCalledWith(fakeUser);
-  expect(submitButtonNode.type).toBe('submit');
-});
+  expect(handleLogin.emit).toHaveBeenCalledTimes(1)
+  expect(handleLogin.emit).toHaveBeenCalledWith(fakeUser)
+  expect(submitButtonNode.type).toBe('submit')
+})
 ```
 
-To get a bit more in depth, I’m referring you to the GitHub repository at [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library). While it is still a work in progress, I’m confident that it provides the basic utilities to make your tests resilient to change.
-I would say come take a look and as always, feedback is more than welcome!
+To get a bit more in depth, I’m referring you to the GitHub repository at [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library). While it is still a work in progress, I’m confident that it provides the basic utilities to make your tests resilient to change. I would say come take a look and as always, feedback is more than welcome!
 
 ### Not to miss
 
