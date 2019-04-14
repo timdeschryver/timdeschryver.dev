@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@gridsome/plugin-google-analytics": "^0.1.0",
+    "@gridsome/plugin-sitemap": "^0.1.1",
     "@gridsome/remark-prismjs": "^0.0.4",
     "@gridsome/source-filesystem": "^0.3.0",
     "@gridsome/transformer-remark": "^0.2.0",

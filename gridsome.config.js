@@ -7,6 +7,7 @@
 module.exports = {
   siteName: 'Tim Deschryver',
   titleTemplate: '%s',
+  siteUrl: 'https://timdeschryver.dev',
   siteDescription: `Tim Deschryver's experiences and thoughts on programming`,
   plugins: [
     {
@@ -23,6 +24,21 @@ module.exports = {
         id: 'UA-137353884-1',
         debug: {
           sendHitTask: process.env.NODE_ENV === 'production',
+        },
+      },
+    },
+    {
+      use: '@gridsome/plugin-sitemap',
+      options: {
+        cacheTime: 600000,
+        config: {
+          '/': {
+            priority: 1.0,
+          },
+          '/posts/*': {
+            changefreq: 'weekly',
+            priority: 0.5,
+          },
         },
       },
     },
