@@ -9,7 +9,7 @@ tags:
   - Gridsome
 banner: './images/banner.jpg'
 bannerCredit: 'Photo by [Joshua Fuller](https://unsplash.com/@joshuafuller) on [Unsplash](https://unsplash.com)'
-published: false
+published: true
 ---
 
 ### Social media cards
@@ -162,3 +162,9 @@ query Post($path: String!) {
 ```
 
 > For more information see the [Gridsome blog](https://gridsome.org/docs/head)
+
+### The end result
+
+This is how it will look like if you tweet this post on Twitter ![Image of the tweet](./images/tweet.png)
+
+And if you share it on Slack, this is how it looks like ![Image of the slack mesasge](./images/slack.png)
