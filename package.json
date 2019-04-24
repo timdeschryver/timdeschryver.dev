@@ -9,7 +9,7 @@
     "now-build": "npm run build"
   },
   "lint-staged": {
-    "*.{vue,js}": [
+    "*.{vue,js,md}": [
       "eslint --fix",
       "git add"
     ]
