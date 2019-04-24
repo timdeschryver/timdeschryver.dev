@@ -13,6 +13,7 @@ module.exports = {
     'prettier/standard',
     'prettier/vue',
   ],
+  plugins: ['markdown'],
   rules: {
     'vue/no-v-html': false,
     // Only allow debugger in development

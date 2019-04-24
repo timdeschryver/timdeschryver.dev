@@ -1,5 +1,5 @@
 ---
-title: 'Angular: Build once deploy to multiple environments'
+title: 'Angular: Build once deploy to multiple environments 🚀'
 slug: angular-build-once-deploy-to-multiple-environments
 description: In our quest to build a twelve-factor app where we build once and deploy to multiple environment we encountered some problems, but we managed to solve them. Read here how we did it.
 author: Tim Deschryver
