@@ -1,12 +1,12 @@
 <template>
-  <Layout>
+  <Layout :twitter="twitter">
     <article>
       <div class="post-title">
         <h1>{{ $page.post.title }}</h1>
-        <PostMeta :post="$page.post"/>
+        <PostMeta :post="$page.post" />
       </div>
 
-      <div v-html="$page.post.content"/>
+      <div v-html="$page.post.content" />
     </article>
   </Layout>
 </template>
@@ -17,6 +17,16 @@ import PostMeta from '~/components/PostMeta'
 export default {
   components: {
     PostMeta,
+  },
+  computed: {
+    twitter() {
+      return {
+        url: `${process.env.GRIDSOME_BASE_PATH}/posts/${this.$page.post.slug}`,
+        text: this.$page.post.title,
+        hashtags: this.$page.post.tags,
+        tweetId: this.$page.post.tweetId,
+      }
+    },
   },
   metaInfo() {
     return {
@@ -85,6 +95,7 @@ export default {
 <page-query>
 query Post ($path: String!) {
   post: post (path: $path) {
+    slug
     title
     path
     banner
@@ -94,13 +105,13 @@ query Post ($path: String!) {
     content
     author
     tags
+    tweetId
   }
 }
 </page-query>
 
 <style lang="stylus" scoped>
-.post-title {
-  padding: calc((var(--space) / 2)) 0 calc((var(--space) / 2));
-  text-align: center;
-}
+.post-title
+  padding calc((var(--space) / 2)) 0 calc((var(--space) / 2))
+  text-align center
 </style>

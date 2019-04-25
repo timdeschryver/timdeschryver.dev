@@ -1,24 +1,29 @@
 <template>
   <Layout>
-    <section>
-      <a href="https://twitter.com/tim_deschryver">Twitter</a> |
-      <a href="https://github.com/timdeschryver">GitHub</a> |
-      <a href="https://medium.com/@timdeschryver">Medium</a>
-    </section>
+    <div class="wrapper">
+      <SocialLinks />
+    </div>
   </Layout>
 </template>
 
-<style lang="stylus" scoped>
-main {
-  display: grid;
-  height: 100%;
-}
+<script>
+import SocialLinks from '~/components/SocialLinks.vue'
 
-section {
-  margin: auto;
+export default {
+  components: {
+    SocialLinks,
+  },
 }
+</script>
 
-a {
-  color: #333;
-}
+<style lang="styl">
+.wrapper
+  text-align center
+  transform translateY(35vh)
+  @media screen and (max-height: 450px)
+    transform translateY(30vh)
+  @media screen and (max-height: 280px)
+    transform translateY(25vh)
+  @media screen and (max-height: 220px)
+    transform translateY(2vh)
 </style>

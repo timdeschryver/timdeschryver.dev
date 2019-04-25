@@ -15,7 +15,7 @@ export default function(Vue, { router, head }) {
 
   head.link.push({
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css?family=Comfortaa|Poiret One',
+    href: 'https://fonts.googleapis.com/css?family=Comfortaa|Poiret One|Gugi',
   })
 
   head.meta.push({
