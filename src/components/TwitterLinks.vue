@@ -1,7 +1,26 @@
 <template>
   <div v-if="tweetId" class="share-links">
-    <a :href="retweet">Retweet</a>, <a :href="like">Like</a>,
-    <a :href="reply">Reply</a>, or <a :href="share">Share</a> on Twitter
+    <a
+      :href="retweet"
+      onclick="window.open(this.href, 'twitter-retweet', 'width=550,height=235');return false;"
+      >Retweet</a
+    >,
+    <a
+      :href="like"
+      onclick="window.open(this.href, 'twitter-like', 'width=550,height=235');return false;"
+      >Like</a
+    >,
+    <a
+      :href="reply"
+      onclick="window.open(this.href, 'twitter-tweet', 'width=550,height=235');return false;"
+      >Reply</a
+    >, or
+    <a
+      :href="share"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"
+      >Share</a
+    >
+    on Twitter
   </div>
   <div v-else class="share-links"> <a :href="share">Share</a> on Twitter </div>
 </template>
