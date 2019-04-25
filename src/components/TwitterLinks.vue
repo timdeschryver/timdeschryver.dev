@@ -1,28 +1,14 @@
 <template>
   <div v-if="tweetId" class="share-links">
-    <a
-      :href="retweet"
-      onclick="window.open(this.href, 'twitter-retweet', 'width=550,height=235');return false;"
-      >Retweet</a
-    >,
-    <a
-      :href="like"
-      onclick="window.open(this.href, 'twitter-like', 'width=550,height=235');return false;"
-      >Like</a
-    >,
-    <a
-      :href="reply"
-      onclick="window.open(this.href, 'twitter-tweet', 'width=550,height=235');return false;"
-      >Reply</a
-    >, or
-    <a
-      :href="share"
-      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"
-      >Share</a
-    >
+    <a :href="retweet" @click.prevent="tweet">Retweet</a>,
+    <a :href="like" @click.prevent="tweet">Like</a>,
+    <a :href="reply" @click.prevent="tweet">Reply</a>, or
+    <a :href="share" @click.prevent="tweet">Share</a>
     on Twitter
   </div>
-  <div v-else class="share-links"> <a :href="share">Share</a> on Twitter </div>
+  <div v-else class="share-links">
+    <a :href="share" @click.prevent="tweet">Share</a> on Twitter
+  </div>
 </template>
 
 <script>
@@ -75,6 +61,11 @@ export default {
         .join('&')
 
       return `https://twitter.com/share?${queryString}`
+    },
+  },
+  methods: {
+    tweet: function(event) {
+      window.open(event.target.href, `twitter-share`, 'width=550,height=300')
     },
   },
 }
