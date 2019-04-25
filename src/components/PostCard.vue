@@ -3,8 +3,8 @@
     <h2>
       <PostLink :post="post"></PostLink>
     </h2>
-    <p v-html="post.description"/>
-    <PostMeta :post="post" :with-tags="true"/>
+    <p v-html="post.description" />
+    <PostMeta :post="post" :with-tags="true" />
   </article>
 </template>
 
@@ -24,8 +24,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-p {
-  margin-top: 0.5em;
-}
+p
+  margin-top 0.5em
 </style>
-

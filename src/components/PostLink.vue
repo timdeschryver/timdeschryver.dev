@@ -5,7 +5,8 @@
     :data-publisher="post.publisher"
     rel="external"
     referrerpolicy="origin"
-  >[{{ post.publisher }}] {{ post.title }}</a>
+    >[{{ post.publisher }}] {{ post.title }}</a
+  >
 
   <g-link v-else :to="post.path">{{ post.title }}</g-link>
 </template>
@@ -19,16 +20,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-a {
-  color: #000;
+a
+  color #333
 
-  &[data-publisher='Angular In Depth'] {
-    color: #C7311E;
-  }
+  &[data-publisher='Angular In Depth']
+    color #C7311E
 
-  &[data-publisher='ITNEXT'] {
-    color: #3D79AD;
-  }
-}
+  &[data-publisher='ITNEXT']
+    color #3D79AD
 </style>
-

@@ -75,5 +75,5 @@ export default {
 .share-links
   a
     color #333
-    font-weight: 900
+    font-weight 900
 </style>

@@ -17,3 +17,7 @@ export default {
 }
 </script>
 
+<style lang="styl">
+small
+  color #838383
+</style>
