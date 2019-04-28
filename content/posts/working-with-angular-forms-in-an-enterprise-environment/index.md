@@ -329,7 +329,7 @@ export class ErrorMessageContainerComponent {
 }
 ```
 
-We also have a `humanizeFormMessages` pipe to map the error to a human friendly message.
+We also have a `humanizeFormMessages` pipe to map the error to a human friendly message. We inject `FormMessages`, containing the default messages. An enterprise environment wouldn't be an enterprise environment if there are no exceptions to the default behavior, that's why we made it possible to override the default messages with case-specific messages.
 
 ```ts
 @Pipe({ name: 'humanizeFormMessages' })

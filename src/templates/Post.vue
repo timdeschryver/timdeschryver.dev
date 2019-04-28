@@ -1,6 +1,8 @@
 <template>
   <Layout :twitter="twitter">
     <article>
+      <Publisher :publisher="$page.post.publisher" />
+
       <div class="post-title">
         <h1>{{ $page.post.title }}</h1>
         <PostMeta :post="$page.post" />
@@ -13,10 +15,12 @@
 
 <script>
 import PostMeta from '~/components/PostMeta'
+import Publisher from '~/components/Publisher'
 
 export default {
   components: {
     PostMeta,
+    Publisher,
   },
   computed: {
     twitter() {
@@ -106,11 +110,12 @@ query Post ($path: String!) {
     author
     tags
     tweetId
+    publisher
   }
 }
 </page-query>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .post-title
   padding calc((var(--space) / 2)) 0 calc((var(--space) / 2))
   text-align center

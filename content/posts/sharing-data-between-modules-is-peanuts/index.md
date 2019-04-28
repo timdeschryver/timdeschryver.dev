@@ -85,13 +85,9 @@ To start off simple, the first step is to create the **selectors** to select the
 
 ![](./images/1.png)
 
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/selectors/index.selectors.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/selectors/index.selectors.ts)
-
 Inside the component, use the created `getFamilyMembers` selector to retrieve the list of family members from the store. Because this is an observable we have to use the `async` pipe to get the value of the family member list. Notice that we also use the Angular 6.1 `keyvalue` pipe. This is only needed because the state is stored in a normalized way and is simply plucked from the state tree. We could have also transformed the objects into an array in the selector, making it so the `keyvalue` pipe is not necessary.
 
 ![](./images/2.png)
-
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/pages/home-page.component.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/pages/home-page.component.ts)
 
 Resulting in the following home page:
 
@@ -127,23 +123,17 @@ The groceries state is added to the state tree as `groceries` because this is ho
 
 ![](./images/4.png)
 
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/groceries.module.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/groceries.module.ts)
-
 #### The feature selectors
 
 Now that we know how the feature state looks, we can write the selectors to select the data.
 
 ![](./images/5.png)
 
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/base.selectors.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/base.selectors.ts)
-
 Notice that we’re using `createFeatureSelector` to select the state of `groceries`. Here again we have to pass `groceries` as a parameter to select the groceries slice from the state tree. Also notice the `fromGroceries.selectAll` method to select all the groceries, this is a baked in selector that comes with [@ngrx/entity](https://github.com/ngrx/platform/tree/master/docs/entity).
 
 With this done we can create our first selector that returns derived data. We’ll use the `getGroceries` selector and return the groceries grouped by family member which makes it easier to lookup the groceries for a specific family member later.
 
 ![](./images/6.png)
-
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/base.selectors.ts#L30](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/base.selectors.ts#L30)
 
 **Creating selectors for a grocery page specific to a family member  
 **With our state and groceries selectors in place we can create the grocery page for a family member. This page will be accessible via `/groceries/:id`, e.g. `/groceries/mom`. To show the groceries of the mom in this case we’ll have to pluck the family member id from the URL, select the family member from the store, and finally select the groceries of the family member from the store.
@@ -153,8 +143,6 @@ Time for a little recap before we continue: we defined the family members state 
 Time to write the selectors needed to create the grocery page.
 
 ![](./images/7.png)
-
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/grocery-family-member-page.selectors.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/grocery-family-member-page.selectors.ts)
 
 Notice that we also filter out the groceries based on if they are checked off or not. We also add an extra `checkedOff` boolean property to make it easier to work with in our view, in comparison to a nullable date.
 
@@ -168,8 +156,6 @@ With these selectors in place we can use `getActiveFamilyMember` and `getVisible
 Just like before, the `getFamilyMembers` selector from the root module is being used and also the base selector `getGroceriesByFamilyMember`.
 
 ![](./images/9.png)
-
-[https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/grocery-family-page.selectors.ts](https://github.com/timdeschryver/ngrx-family-grocery-list/blob/master/src/app/groceries/selectors/grocery-family-page.selectors.ts)
 
 We don’t need anything more, so we can create our family view:
 
