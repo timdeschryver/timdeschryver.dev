@@ -446,11 +446,6 @@ test('login form submits using the component syntax', async () => {
 })
 ```
 
-## Small tips
-
-- Use `form.setValue()` over `form.patchValue()` - create a form model that represents the form to shorten the feedback loop. Get instant errors if your shape doesn’t reflect the form’s shape.
-- Take the time to understand `FormGroup` and `FormArray`, play with them for a bit before using them blindly.
-
 ## Some of the resources that helped us to tackle this problem
 
 - [Angular Forms – AngularConnect 2017](https://www.youtube.com/watch?v=CD_t3m2WMM8&) by [Kara Erickson](https://twitter.com/karaforthewin)

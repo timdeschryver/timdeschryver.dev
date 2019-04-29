@@ -10,7 +10,6 @@ tags:
   - development
   - productivity
 banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Chau Cédric](https://unsplash.com/@cchau) on [Unsplash](https://unsplash.com)'
 published: false
 publisher: Angular In Depth
 publish_url: ''
@@ -135,4 +134,6 @@ To understand and remember something in-depth, have a scenario and the flow you 
 
 The above tips won't make you a better engineer overnight. What they do, is allowing you to focus on the coding part while you're writing code. The best way to learn something is to focus on one task at a time. If you take the time to practice and master the above tips, you will execute all of the tasks around coding without thinking about it. This will lead to small wins and more coding time. I believe the best way to become better at writing code is to practice, practice and practice, the writing code skills will come automatically over time, we just want to become better at a shorter time. Knowing your way around and not waste time makes it also more fun and practical to pair program with other engineers, plus you'll look more skilled.
 
-Be great and go get them.
+Recently I learned the Japanese word **kaizen**, which I find is a suitable ending to this post. The word **kaizen** translates to improvement. It's the philosophy of **continuous improvement of working practices, personal efficiency by small incremental improvements**.
+
+![Image of kaizen](./images/banner.jpg)
