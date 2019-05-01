@@ -26,7 +26,37 @@ As a newly formed team starting on a new project we agreed that we would use [Re
 
 We starting writing input form fields containing all of the orchestration code that is responsible for the field’s behavior. The first iteration of these fields consisted of passing the form control and form group as input to these controls. While this worked at the beginning, it wasn’t great. We always had to be reminded to pass down the form group to the form field as this wasn’t the default “Angular way”. For some of the controls we ended up with an internal form inside the form field component that had to be kept in sync with the main component, with all the problems and nasty placeholder that came with it.
 
-After some iterations we learned about [Control Value Accessor](https://angular.io/api/forms/ControlValueAccessor)s and this opened up possibilities together with [NgControl](https://angular.io/api/forms/NgControl). This combination allowed us to use our custom form fields just as we would have previously but with more functionality inside of them. The code also looked cleaner. Think of a standardized behavior and visualization for developers as well as our users, e.g. form validation, and binding the label to the input field. For each type of control we created our own implementation and ended up with an abstract class `BaseFormField` , containing generic code that we needed in each of our form fields.
+After some iterations we learned about [Control Value Accessor](https://angular.io/api/forms/ControlValueAccessor)s and this opened up possibilities together with [NgControl](https://angular.io/api/forms/NgControl). From the Angular docs we can see that a CVA has the following API:
+
+```ts
+interface ControlValueAccessor {
+  /**
+  * Writes a new value to the element.
+  *
+  * This method is called by the forms API to write to the view when programmatic changes from model to view are requested.
+  */
+  writeValue(obj: any): void
+  /**
+  * Registers a callback function that is called when the control's value changes in the UI.
+  *
+  * This method is called by the forms API on initialization to update the form model when values propagate from the view to the model.
+  * When implementing the `registerOnChange` method in your own value accessor, save the given function so your class calls it at the appropriate time.
+  */
+  registerOnChange(fn: any): void
+  /**
+  * Registers a callback function is called by the forms API on initialization to update the form model on blur.
+  *
+  * When implementing `registerOnTouched` in your own value accessor, save the given function so your class calls it when the control should be considered blurred or "touched".
+  */
+  registerOnTouched(fn: any): void
+  /**
+  * Function that is called by the forms API when the control status changes to or from 'DISABLED'. Depending on the status, it enables or disables the appropriate DOM element.
+  */
+  setDisabledState(isDisabled: boolean)?: void
+}
+```
+
+This combination allowed us to use our custom form fields just as we would have previously but with more functionality inside of them. The code also looked cleaner. Think of a standardized behavior and visualization for developers as well as our users, e.g. form validation, and binding the label to the input field. For each type of control we created our own implementation and ended up with an abstract class `BaseFormField` , containing generic code that we needed in each of our form fields.
 
 ```ts
 export abstract class BaseFormField implements ControlValueAccessor, DoCheck {
