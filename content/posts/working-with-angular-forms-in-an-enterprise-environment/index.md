@@ -36,6 +36,7 @@ interface ControlValueAccessor {
   * This method is called by the forms API to write to the view when programmatic changes from model to view are requested.
   */
   writeValue(obj: any): void
+
   /**
   * Registers a callback function that is called when the control's value changes in the UI.
   *
@@ -43,12 +44,14 @@ interface ControlValueAccessor {
   * When implementing the `registerOnChange` method in your own value accessor, save the given function so your class calls it at the appropriate time.
   */
   registerOnChange(fn: any): void
+
   /**
   * Registers a callback function is called by the forms API on initialization to update the form model on blur.
   *
   * When implementing `registerOnTouched` in your own value accessor, save the given function so your class calls it when the control should be considered blurred or "touched".
   */
   registerOnTouched(fn: any): void
+
   /**
   * Function that is called by the forms API when the control status changes to or from 'DISABLED'. Depending on the status, it enables or disables the appropriate DOM element.
   */
@@ -484,3 +487,4 @@ test('login form submits using the component syntax', async () => {
 - [Angular: Nested template driven form](https://medium.com/@a.yurich.zuev/angular-nested-template-driven-form-4a3de2042475) by [Alexey Zuev](https://twitter.com/yurzui)
 - [Unleash the power 💪of Forms with Angular’s Reactive Forms](https://blog.angularindepth.com/unleash-the-power-of-forms-with-angulars-reactive-forms-d6be5918f408) by [Siddharth Ajmera](https://twitter.com/SiddAjmera)
 - [Dive into Reactive Forms](https://blog.angularindepth.com/dive-into-reactive-forms-cfc9adbb4467) by [Reactive Fox](https://twitter.com/thekiba_io)
+- The Control Value Accessor  -  Like A Wormhole In Space For Your Forms, Only More Useful by [Jennifer Wadella ](https://twitter.com/likeOMGitsFEDAY) -  this was a recent talk at ng-conf 2019 so keep an eye for this video to come out.
