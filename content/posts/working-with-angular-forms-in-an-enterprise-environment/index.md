@@ -24,7 +24,7 @@ As a newly formed team starting on a new project we agreed that we would use [Re
 
 ## Input form fields
 
-We starting writing input form fields containing all of the orchestration code that is responsible for the field’s behavior. The first iteration of these fields consisted of passing the form control and form group as input to these controls. While this worked at the beginning, it wasn’t great. We always had to be reminded to pass down the form group to the form field as this wasn’t the default “Angular way”. For some of the controls we ended up with an internal form inside the form field component that had to be kept in sync with the main component, with all the problems and nasty placeholder that came with it.
+We starting writing input form fields containing all of the orchestration code that is responsible for the field’s behavior. The first iteration of these fields consisted of passing the form control and form group as input to these controls. While this worked at the beginning, it wasn’t great. We always had to be reminded to pass down the form group to the form field as this wasn’t the default “Angular way”. For some of the controls we ended up with an internal form inside the form field component that had to be kept in sync with the main component, with all the problems and nasty code that came with it.
 
 After some iterations we learned about [Control Value Accessor](https://angular.io/api/forms/ControlValueAccessor)s and this opened up possibilities together with [NgControl](https://angular.io/api/forms/NgControl). From the Angular docs we can see that a CVA has the following API:
 
@@ -130,6 +130,13 @@ export abstract class BaseFormField implements ControlValueAccessor, DoCheck {
   }
 }
 ```
+
+As you can see, we're also using these form field components to implement a generic behavior across form fields:
+
+- We bind the label to the correct form field, we do this by generating a unique id for each form field
+- When a form field is optional, we append it to the form field's label
+- We show validation messages in a generic way, with the option to override the default validation messages when needed
+- When a form is disabled, we disable the form field
 
 An implementation of a checkbox list looks as follows:
 
@@ -487,4 +494,4 @@ test('login form submits using the component syntax', async () => {
 - [Angular: Nested template driven form](https://medium.com/@a.yurich.zuev/angular-nested-template-driven-form-4a3de2042475) by [Alexey Zuev](https://twitter.com/yurzui)
 - [Unleash the power 💪of Forms with Angular’s Reactive Forms](https://blog.angularindepth.com/unleash-the-power-of-forms-with-angulars-reactive-forms-d6be5918f408) by [Siddharth Ajmera](https://twitter.com/SiddAjmera)
 - [Dive into Reactive Forms](https://blog.angularindepth.com/dive-into-reactive-forms-cfc9adbb4467) by [Reactive Fox](https://twitter.com/thekiba_io)
-- The Control Value Accessor  -  Like A Wormhole In Space For Your Forms, Only More Useful by [Jennifer Wadella ](https://twitter.com/likeOMGitsFEDAY) -  this was a recent talk at ng-conf 2019 so keep an eye for this video to come out.
+- [The Control Value Accessor  -  Like A Wormhole In Space For Your Forms, Only More Useful](https://www.youtube.com/watch?v=kVbLSN0AW-Y) by [Jennifer Wadella ](https://twitter.com/likeOMGitsFEDAY)
