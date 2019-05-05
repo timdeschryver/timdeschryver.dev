@@ -87,6 +87,8 @@ export function initConfig(configService: AppConfigService) {
 export class AppModule {}
 ```
 
+> For more info and a complete example of an implementation I highly recommend [Juri Strumpflohner](https://twitter.com/@juristr)'s blog [Compile-time vs. Runtime configuration of your Angular App](https://juristr.com/blog/2018/01/ng-app-runtime-config/)
+
 At first this seemed like a good solution and after implementing it, it did what it supposed to do and it worked. We were happy.
 
 Until at a specific moment where we needed to have access to our config from outside components and services, we had other configuration objects depending on the config file at the start up. We needed to create a configuration object to load a module, an example is that we needed to load `ApplicationInsightsModule` at startup. We tried to chain multiple `APP_INITIALIZER` providers in the hope we didn't have to start over. Unfortunately, we discovered that the config wasn't loaded at the time when we needed it. We tried multiple ways to get around it without changing our solution with the `APP_INITIALIZER` provider, but without any success.

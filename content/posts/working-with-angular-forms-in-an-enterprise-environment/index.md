@@ -59,7 +59,7 @@ interface ControlValueAccessor {
 }
 ```
 
-This combination allowed us to use our custom form fields just as we would have previously but with more functionality inside of them. The code also looked cleaner. Think of a standardized behavior and visualization for developers as well as our users, e.g. form validation, and binding the label to the input field. For each type of control we created our own implementation and ended up with an abstract class `BaseFormField` , containing generic code that we needed in each of our form fields.
+This combination allowed us to use our custom form fields just as we would have previously but with more functionality inside of them. The code also looked a lot cleaner. Think of a standardized behavior and visualization for developers as well as for our users, e.g. form validation, and binding the label to the correct input field. For each type of control we created our own implementation and ended up with an abstract class `BaseFormField` , containing generic code that we needed in each of our form fields.
 
 ```ts
 export abstract class BaseFormField implements ControlValueAccessor, DoCheck {
