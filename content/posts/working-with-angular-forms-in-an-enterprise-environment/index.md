@@ -9,9 +9,10 @@ tags:
   - Forms
 banner: './images/banner.jpg'
 bannerCredit: 'Photo by [Will O](https://unsplash.com/@blnk_kanvas) on [Unsplash](https://unsplash.com)'
-published: false
+published: true
 publisher: Angular In Depth
-publish_url: ''
+publish_url: https://blog.angularindepth.com/working-with-angular-forms-in-an-enterprise-environment-8279df4ae6fd
+tweet_id: '1126070177098080256'
 ---
 
 At our company we struggled with Angular Forms at the start. This is because we dived in head first, without talking about how we would want to use it throughout out projects. This post shows how we're currently using Angular Forms to be more productive.
