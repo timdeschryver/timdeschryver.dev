@@ -435,7 +435,7 @@ export class ChildFormComponent implements OnInit {
 
 ## Testing forms
 
-To test our forms we’re using [@angular-extensions/testing-library](https://github.com/angular-extensions/testing-library), which is an Angular wrapper around [dom-testing-library](https://github.com/kentcdodds/dom-testing-library). This prevents us from testing implementation details and test our forms the way our users would use them.
+To test our forms we’re using [@angular-extensions/testing-library](https://github.com/testing-library/angular-testing-library), which is an Angular wrapper around [dom-testing-library](https://github.com/testing-library/angular-testing-library). This prevents us from testing implementation details and test our forms the way our users would use them.
 
 We navigate to the form fields by using the form labels, we submit forms by clicking on the submit button. We don't care about the methods from the form component, we care about what our users see.
 
@@ -446,15 +446,10 @@ test('login form submits using the component syntax', async () => {
     emit: jest.fn(),
   }
 
-  const { getByLabelText, getByText, input } = await createComponent(
+  const { getByLabelText, getByText, input } = await render(
+    LoginFormComponent,
     {
-      component: LoginFormComponent,
-      parameters: {
-        login,
-      },
-    },
-    {
-      declarations: [LoginFormComponent],
+      componentProperties: { login },
       imports: [ReactiveFormsModule],
     }
   )
