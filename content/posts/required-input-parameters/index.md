@@ -3,11 +3,10 @@ title: Required @Input() properties
 slug: required-input-parameters
 description: How to create required input parameters
 author: Tim Deschryver
-date: '2018-05-14T14:00:12.814Z'
-tags:
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Jametlene Reskp](https://unsplash.com/@reskp) on [Unsplash](https://unsplash.com)'
+date: 2018-05-14T14:00:12.814Z
+tags: Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Jametlene Reskp](https://unsplash.com/@reskp) on [Unsplash](https://unsplash.com)
 published: true
 ---
 

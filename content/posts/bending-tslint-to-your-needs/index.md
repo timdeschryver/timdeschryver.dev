@@ -1,16 +1,11 @@
 ---
 title: Bending TSLint to your needs
 slug: bending-tslint-to-your-needs
-description: >-
-  Using the power of TSLint in an unconventional way to create rxjs-operator-counter.
-
+description: Using the power of TSLint in an unconventional way to create rxjs-operator-counter.
 author: Tim Deschryver
-date: '2019-01-10T09:40:10.057Z'
-banner: './images/banner.jpg'
-tags:
-  - TypeScript
-  - TSLint
-  - RxJS
+date: 2019-01-10T09:40:10.057Z
+banner: ./images/banner.jpg
+tags: TypeScript, TSLint, RxJS
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633
@@ -85,11 +80,9 @@ class OperatorCounterWalker extends Lint.RuleWalker {
 
     call.arguments
       .filter(ts.isCallExpression)
-      .map((argument) => argument.expression as ts.Identifier)
+      .map(argument => argument.expression as ts.Identifier)
       .filter(Boolean)
-      .forEach((identifier) =>
-        this.addFailureAtNode(identifier, identifier.text)
-      )
+      .forEach(identifier => this.addFailureAtNode(identifier, identifier.text))
   }
 }
 ```
@@ -115,12 +108,10 @@ If you took a close look at the walker implementation above, you already noticed
 ```ts
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    const failures = this.applyWithWalker(
-      new OperatorCounterWalker(sourceFile, this.getOptions())
-    )
+    const failures = this.applyWithWalker(new OperatorCounterWalker(sourceFile, this.getOptions()))
 
     const hits = failures
-      .map((failure) => failure.getFailure())
+      .map(failure => failure.getFailure())
       .reduce<{ [operator: string]: number }>((counter, operator) => {
         counter[operator] = (counter[operator] || 0) + 1
         return counter
@@ -173,7 +164,7 @@ const lintConfiguration = {
 
 // iterate files in the workspace
 const files = Lint.Linter.getFileNames(program)
-files.forEach((file) => {
+files.forEach(file => {
   // get the source code
   const fileContents = program.getSourceFile(file).getFullText()
 
@@ -190,7 +181,7 @@ const results = linter.getResult()
 
 // copy pasted code
 const hits = results.failures
-  .map((x) => x.getFailure())
+  .map(x => x.getFailure())
   .reduce<{ [operator: string]: number }>((counter, operator) => {
     counter[operator] = (counter[operator] || 0) + 1
     return counter
@@ -200,10 +191,7 @@ console.log(green().underline(`Results: ${EOL}`))
 
 // sort the results based on the count and the operator name
 Object.entries(hits)
-  .sort(
-    ([key1, count1], [key2, count2]) =>
-      count2 - count1 || key1.localeCompare(key2)
-  )
+  .sort(([key1, count1], [key2, count2]) => count2 - count1 || key1.localeCompare(key2))
   .forEach(([key, count]) => console.log(green().bold(`${key}: ${count}`)))
 ```
 
@@ -245,7 +233,7 @@ import { crawl } from '../src/crawler'
 
 test(`test run`, () => {
   let log = ''
-  console.log = jest.fn((message) => (log += message))
+  console.log = jest.fn(message => (log += message))
   crawl({
     tsConfigPath: './tests/fixtures/tsconfig.json',
   })
@@ -271,8 +259,7 @@ As you can see, a TSQuery selector resembles a CSS selector. This makes queries 
 ```ts
 export class Rule extends Lint.Rules.AbstractRule {
   static ruleName = 'operator-counter'
-  static query =
-    'CallExpression[expression.name.name="pipe"] > CallExpression > Identifier'
+  static query = 'CallExpression[expression.name.name="pipe"] > CallExpression > Identifier'
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const hits = tsquery(sourceFile, Rule.query, {
@@ -280,13 +267,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     })
     return hits.map(
       (operator: ts.Identifier) =>
-        new Lint.RuleFailure(
-          sourceFile,
-          operator.getStart(),
-          operator.getEnd(),
-          operator.text,
-          Rule.ruleName
-        )
+        new Lint.RuleFailure(sourceFile, operator.getStart(), operator.getEnd(), operator.text, Rule.ruleName),
     )
   }
 }

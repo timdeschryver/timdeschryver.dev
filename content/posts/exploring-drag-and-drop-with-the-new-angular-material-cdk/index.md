@@ -1,18 +1,12 @@
 ---
 title: Exploring Drag and Drop with the new Angular Material CDK
 slug: exploring-drag-and-drop-with-the-new-angular-material-cdk
-description: >-
-  Drag and Drop is a new feature in the new Angular Material CDK. Let’s explore it together!
-
+description: Drag and Drop is a new feature in the new Angular Material CDK. Let’s explore it together!
 author: Tim Deschryver
-date: '2018-10-04T15:31:20.103Z'
-tags:
-  - Angular
-  - Angular Material
-  - Material
-  - CDK
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Maria Imelda](https://unsplash.com/@unleashed_) on [Unsplash](https://unsplash.com)'
+date: 2018-10-04T15:31:20.103Z
+tags: Angular, Angular Material, Material, CDK
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Maria Imelda](https://unsplash.com/@unleashed_) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
@@ -167,13 +161,7 @@ doneItems = ['Item 5', 'Item 6', 'Item 7']
 We need to display three separate lists and for each list we’ll create its own drop zone. We can bind the arrays to a drop zone by using the `cdkDropData` input.
 
 ```html
-<div
-  cdkDrop
-  #new="cdkDrop"
-  [cdkDropData]="newItems"
-  [cdkDropConnectedTo]="[active]"
-  (cdkDropDropped)="dropped($event)"
->
+<div cdkDrop #new="cdkDrop" [cdkDropData]="newItems" [cdkDropConnectedTo]="[active]" (cdkDropDropped)="dropped($event)">
   <div *ngFor="let item of newItems" cdkDrag>{{ item }}</div>
 </div>
 ```
@@ -201,7 +189,7 @@ In other words, you can drag a `new` item to `active`, from `active` to `done`, 
       [cdkDropConnectedTo]="[active]"
       (cdkDropDropped)="dropped($event)"
     >
-      <div *ngFor="let item of newItems" cdkDrag> {{ item }} </div>
+      <div *ngFor="let item of newItems" cdkDrag>{{ item }}</div>
     </div>
   </div>
 
@@ -214,7 +202,7 @@ In other words, you can drag a `new` item to `active`, from `active` to `done`, 
       [cdkDropConnectedTo]="[new, done]"
       (cdkDropDropped)="dropped($event)"
     >
-      <div *ngFor="let item of activeItems" cdkDrag> {{ item }} </div>
+      <div *ngFor="let item of activeItems" cdkDrag>{{ item }}</div>
     </div>
   </div>
 
@@ -227,7 +215,7 @@ In other words, you can drag a `new` item to `active`, from `active` to `done`, 
       [cdkDropConnectedTo]="[active]"
       (cdkDropDropped)="dropped($event)"
     >
-      <div *ngFor="let item of doneItems" cdkDrag> {{ item }} </div>
+      <div *ngFor="let item of doneItems" cdkDrag>{{ item }}</div>
     </div>
   </div>
 </div>

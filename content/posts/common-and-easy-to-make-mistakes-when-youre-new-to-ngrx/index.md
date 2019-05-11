@@ -3,13 +3,10 @@ title: Common and easy-to-make mistakes when you’re new to NgRx
 slug: common-and-easy-to-make-mistakes-when-youre-new-to-ngrx
 description: Writing and refactoring FizzBuzz in NgRx with maintainability in mind
 author: Tim Deschryver
-date: '2019-03-04T09:25:46.919Z'
-tags:
-  - NgRx
-  - Redux
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on [Unsplash](https://unsplash.com)'
+date: 2019-03-04T09:25:46.919Z
+tags: NgRx,Redux, Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/common-and-easy-to-make-mistakes-when-youre-new-to-ngrx-49404ac973ea
@@ -106,9 +103,7 @@ To trigger a state change, we have to invoke the fizzbuzz reducer. Because we ca
   `,
 })
 export class AppComponent implements OnInit {
-  fizzbuzzMessage: Observable<string> = this.store.pipe(
-    select((state) => state.fizzbuzz.message)
-  )
+  fizzbuzzMessage: Observable<string> = this.store.pipe(select(state => state.fizzbuzz.message))
 
   constructor(private store: Store<State>) {}
 
@@ -155,7 +150,7 @@ export type FizzBuzzActions = Next
 
 Now, we can remove the magic string `NEXT` inside the fizzbuzz reducer and inside the `AppComponent`.
 
-> For more information about actions see the [official docs](https://ngrx.io/guide/store/actions) and a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./lets-have-a-chat-about-actions-and-action-creators-within-ngrx).
+> For more information about actions see the [official docs](https://ngrx.io/guide/store/actions) and a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./posts/lets-have-a-chat-about-actions-and-action-creators-within-ngrx).
 
 ### Using selectors and derived state
 
@@ -170,20 +165,18 @@ export const getCounter = (state: State) => state.counter
 // selectors in reducers
 
 // First, select the fizzbuzz state from app state
-export const getFizzBuzzState = createFeatureSelector<fromFizzbuzz.State>(
-  'fizzbuzz'
-)
+export const getFizzBuzzState = createFeatureSelector<fromFizzbuzz.State>('fizzbuzz')
 
 // Second, wrap the getter inside a selector
 export const getCounter = createSelector(
   getFizzBuzzState,
-  fromFizzbuzz.getCounter
+  fromFizzbuzz.getCounter,
 )
 
 // Third, create the message selector based on the counter state
 export const getMessage = createSelector(
   getCounter,
-  (counter) => {
+  counter => {
     let message = ''
     if (counter % 3 === 0) {
       message += 'Fizz'
@@ -193,11 +186,11 @@ export const getMessage = createSelector(
     }
 
     return message || counter.toString()
-  }
+  },
 )
 ```
 
-> For more info about selectors see the [official docs](https://ngrx.io/guide/store/selectors) and a previous post [Sharing data between modules is peanuts](./sharing-data-between-modules-is-peanuts).
+> For more info about selectors see the [official docs](https://ngrx.io/guide/store/selectors) and a previous post [Sharing data between modules is peanuts](./posts/sharing-data-between-modules-is-peanuts).
 
 ### The reducer
 
@@ -245,7 +238,7 @@ export class AppEffects {
 }
 ```
 
-> For more info about effects see the [official docs](https://ngrx.io/guide/effects) and for more effects usages see [Start using ngrx/effects for this](./start-using-ngrx-effects-for-this).
+> For more info about effects see the [official docs](https://ngrx.io/guide/effects) and for more effects usages see [Start using ngrx/effects for this](./posts/start-using-ngrx-effects-for-this).
 
 ### The new component
 
@@ -285,7 +278,7 @@ If you keep these little tips in mind, each boundary inside the application has 
 - this will lead to smaller and **cleaner reducers**
 - we have a **single point of truth**, we don’t have to remember every state property for this state
 - we only have to **test state mutators**
-- readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./clean-ngrx-reducers-using-immer)
+- readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer)
 
 #### Selectors: used to derive state based on the store state
 

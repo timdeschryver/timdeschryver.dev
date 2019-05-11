@@ -1,18 +1,12 @@
 ---
 title: Integrate Jest into an Angular application and library
 slug: integrate-jest-into-an-angular-application-and-library
-description: >-
-  Follow me in this play-by-play guide and let's integrate Jest within your Angular project!
-
+description: Follow me in this play-by-play guide and let's integrate Jest within your Angular project!
 author: Tim Deschryver
-date: '2018-08-15T09:20:53.786Z'
-tags:
-  - Angular
-  - Testing
-  - Jest
-  - Library
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Andras Vas](https://unsplash.com/@wasdrew) on [Unsplash](https://unsplash.com)'
+date: 2018-08-15T09:20:53.786Z
+tags: Angular, Testing, Jest, Library
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Andras Vas](https://unsplash.com/@wasdrew) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/integrate-jest-into-an-angular-application-and-library-163b01d977ce

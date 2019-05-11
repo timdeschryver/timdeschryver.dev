@@ -3,12 +3,12 @@ title: Working with Angular forms in an enterprise environment
 slug: working-with-angular-forms-in-an-enterprise-environment
 description: At our company we struggled with Angular Forms at the start. This is because we dived in head first, without talking about how we would want to use it throughout out projects. This post shows how we're currently using Angular Forms to be more productive.
 author: Tim Deschryver
-date: '2019-04-23T08:00:00.000Z'
+date: 2019-04-23T08:00:00.000Z
 tags:
   - Angular
   - Forms
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Will O](https://unsplash.com/@blnk_kanvas) on [Unsplash](https://unsplash.com)'
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Will O](https://unsplash.com/@blnk_kanvas) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/working-with-angular-forms-in-an-enterprise-environment-8279df4ae6fd
@@ -90,9 +90,7 @@ export abstract class BaseFormField implements ControlValueAccessor, DoCheck {
   ngDoCheck() {
     if (this.controlDir.control instanceof FormControl) {
       // check if this field is required or not to display a 'required label'
-      const validator =
-        this.controlDir.control.validator &&
-        this.controlDir.control.validator(new FormControl(''))
+      const validator = this.controlDir.control.validator && this.controlDir.control.validator(new FormControl(''))
       this.required =
         Boolean(validator && validator.hasOwnProperty('required')) ||
         Boolean(validator && validator.hasOwnProperty('selectedCount'))
@@ -100,11 +98,7 @@ export abstract class BaseFormField implements ControlValueAccessor, DoCheck {
   }
 
   get hasErrors() {
-    return (
-      this.controlDir.control &&
-      this.controlDir.control.touched &&
-      this.controlDir.control.errors
-    )
+    return this.controlDir.control && this.controlDir.control.touched && this.controlDir.control.errors
   }
 
   // implementation of `ControlValueAccessor`
@@ -146,9 +140,7 @@ An implementation of a checkbox list looks as follows:
   selector: 'checkbox-list',
   template: `
     <div class="form-part" [class.field-error]="hasErrors">
-      <label *ngIf="label"
-        >{{ label }}<small *ngIf="!required"> (Optional)</small></label
-      >
+      <label *ngIf="label">{{ label }}<small *ngIf="!required"> (Optional)</small></label>
       <div class="checkbox-list" [ngClass]="alignment">
         <div class="checkbox-placeholder" *ngFor="let item of items">
           <mat-checkbox
@@ -160,24 +152,17 @@ An implementation of a checkbox list looks as follows:
           </mat-checkbox>
         </div>
       </div>
-      <error-message-container
-        [control]="controlDir.control"
-        [errorMessages]="errorMessages"
-      >
+      <error-message-container [control]="controlDir.control" [errorMessages]="errorMessages">
       </error-message-container>
     </div>
   `,
 })
-export class CheckboxListComponent extends BaseListField {
+export class CheckboxListComponent extends BaseFormField {
   @Input() items: Item[]
   @Input() alignment: 'horizontal' | 'vertical' = 'horizontal'
 
   isChecked(value: any) {
-    return (
-      this.controlDir.control &&
-      this.controlDir.control.value &&
-      this.controlDir.control.value.includes(value)
-    )
+    return this.controlDir.control && this.controlDir.control.value && this.controlDir.control.value.includes(value)
   }
 
   change(event: MatCheckboxChange, value: any) {
@@ -193,12 +178,7 @@ export class CheckboxListComponent extends BaseListField {
 The checkbox list field component can be used like a normal input field:
 
 ```html
-<checkbox-list
-  formControlName="allergies"
-  label="Allergies"
-  alignment="horizontal"
-  [items]="allergies"
-></checkbox-list>
+<checkbox-list formControlName="allergies" label="Allergies" alignment="horizontal" [items]="allergies"></checkbox-list>
 ```
 
 ## Form directives
@@ -265,8 +245,7 @@ CVA’s allows us to create common reusable components, think of a generic perso
     },
   ],
 })
-export class PersonSimpleComponent
-  implements OnDestroy, ControlValueAccessor, Validator {
+export class PersonSimpleComponent implements OnDestroy, ControlValueAccessor, Validator {
   destroy = new Subject()
   form = this.fb.group({
     name: [null, [Validators.required, Validators.minLength(2)]],
@@ -320,8 +299,7 @@ export class PersonSimpleComponent
 This allows us to use this component inside our parent form::
 
 ```html
-<person-simple formControlName="person1"></person-simple>
-<person-simple formControlName="person2"></person-simple>
+<person-simple formControlName="person1"></person-simple> <person-simple formControlName="person2"></person-simple>
 ```
 
 These two persons are defined in the parent’s form group as form controls:
@@ -356,10 +334,7 @@ There was already a glance visible about validation in the previous code snippet
 @Component({
   selector: 'error-message-container',
   template: `
-    <div
-      class="error-message"
-      [style.visibility]="control.touched ? 'visible' : 'hidden'"
-    >
+    <div class="error-message" [style.visibility]="control.touched ? 'visible' : 'hidden'">
       {{ control.errors | humanizeMessages: errorMessages }}
     </div>
   `,
@@ -377,10 +352,7 @@ We also have a `humanizeFormMessages` pipe to map the error to a human friendly 
 export class HumanizeFormMessagesPipe implements PipeTransform {
   constructor(@Inject(FormMessages) private messages) {}
 
-  transform(
-    validationErrors: ValidationErrors,
-    overriddenMessages: { [key: string]: string }
-  ) {
+  transform(validationErrors: ValidationErrors, overriddenMessages: { [key: string]: string }) {
     if (!validationErrors) {
       return ''
     }
@@ -393,9 +365,7 @@ export class HumanizeFormMessagesPipe implements PipeTransform {
 
     const messageKey = Object.keys(validationErrors)[0]
     const getMessage = messages[messageKey]
-    const message = getMessage
-      ? getMessage(validationErrors[messageKey])
-      : 'Invalid field'
+    const message = getMessage ? getMessage(validationErrors[messageKey]) : 'Invalid field'
     return message
   }
 }
@@ -412,9 +382,7 @@ To implement this, use the [FormGroupDirective](https://angular.io/api/forms/For
   selector: 'child-form',
   templateUrl: './child-form.component.html',
   styleUrls: ['./child-form.component.scss'],
-  viewProviders: [
-    { provide: ControlContainer, useExisting: FormGroupDirective },
-  ],
+  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }],
 })
 export class ChildFormComponent implements OnInit {
   form = this.fb.group({
@@ -422,10 +390,7 @@ export class ChildFormComponent implements OnInit {
     lastName: [null, [Validators.required]],
   })
 
-  constructor(
-    private parentForm: FormGroupDirective,
-    private fb: FormBuilder
-  ) {}
+  constructor(private parentForm: FormGroupDirective, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.parentForm.form.addControl('person', this.form)
@@ -446,13 +411,10 @@ test('login form submits using the component syntax', async () => {
     emit: jest.fn(),
   }
 
-  const { getByLabelText, getByText, input } = await render(
-    LoginFormComponent,
-    {
-      componentProperties: { login },
-      imports: [ReactiveFormsModule],
-    }
-  )
+  const { getByLabelText, getByText, input } = await render(LoginFormComponent, {
+    componentProperties: { login },
+    imports: [ReactiveFormsModule],
+  })
 
   input(getByLabelText('Username'), {
     target: {

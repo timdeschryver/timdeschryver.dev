@@ -1,18 +1,12 @@
 ---
 title: Introducing ngx-testing-library
 slug: introducing-ngx-testing-library
-description: >-
-  An adapter around dom-testing-library to provide lightweight utility functions to test Angular components.
-  
-
+description: An adapter around dom-testing-library to provide lightweight utility functions to test Angular components.
 author: Tim Deschryver
-date: '2018-06-18T14:27:19.273Z'
-tags:
-  - Angular
-  - Testing
-  - Library
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Gary Bendig](https://unsplash.com/@kris_ricepees) on [Unsplash](https://unsplash.com)'
+date: 2018-06-18T14:27:19.273Z
+tags: Angular, Testing, Library
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Gary Bendig](https://unsplash.com/@kris_ricepees) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
@@ -53,12 +47,9 @@ Let’s take a look how this looks like if we were testing a simple counter comp
 ```ts
 it('should increment and decrement', async () => {
   // setup the test via the template syntax
-  const { getByText, getByTestId, click } = await createComponent(
-    '<counter [counter]="10"></counter>',
-    {
-      declarations: [CounterComponent],
-    }
-  )
+  const { getByText, getByTestId, click } = await createComponent('<counter [counter]="10"></counter>', {
+    declarations: [CounterComponent],
+  })
 
   // or via the component type
   const { getByText, getByTestId, click } = await createComponent(
@@ -70,7 +61,7 @@ it('should increment and decrement', async () => {
     },
     {
       declarations: [CounterComponent],
-    }
+    },
   )
 
   // click the increment button using the fireEvent click function
@@ -98,13 +89,7 @@ test('login form submits', async () => {
     emit: jest.fn(),
   }
 
-  const {
-    container,
-    getByLabelText,
-    getByText,
-    input,
-    submit,
-  } = await createComponent(
+  const { container, getByLabelText, getByText, input, submit } = await createComponent(
     {
       component: LoginFormComponent,
       parameters: {
@@ -114,7 +99,7 @@ test('login form submits', async () => {
     {
       declarations: [LoginFormComponent],
       imports: [ReactiveFormsModule],
-    }
+    },
   )
 
   const usernameNode = getByLabelText(/username/i) as HTMLInputElement

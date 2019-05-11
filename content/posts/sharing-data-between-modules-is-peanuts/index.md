@@ -3,13 +3,10 @@ title: Sharing data between modules is peanuts
 slug: sharing-data-between-modules-is-peanuts
 description: A dive into NgRx selectors
 author: Tim Deschryver
-date: '2018-09-10T19:36:50.348Z'
-tags:
-  - Angular
-  - NgRx
-  - Redux
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)'
+date: 2018-09-10T19:36:50.348Z
+tags: Angular, NgRx, Redux
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/sharing-data-between-modules-is-peanuts-3f40fcb38dd
@@ -178,9 +175,9 @@ A big thank you to [Nate Lapinski](https://twitter.com/nate_lapinski), [Max Wiza
 
 ### Here are some more resources if you want to know more
 
-[Parameterized selectors](./parameterized-selectors)
+[Parameterized selectors](./posts/parameterized-selectors)
 
-[Normalizing state](./normalizing-state)
+[Normalizing state](./posts/normalizing-state)
 
 [Advanced NgRx](https://slides.com/gerardsans/angularsp-advanced-ngrx#/)
 

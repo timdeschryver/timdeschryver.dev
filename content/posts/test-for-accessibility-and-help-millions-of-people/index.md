@@ -3,13 +3,10 @@ title: Test for accessibility and help millions of people
 slug: test-for-accessibility-and-help-millions-of-people
 description: Essential tools for maximum accessibility
 author: Tim Deschryver
-date: '2018-10-11T06:54:50.799Z'
-tags:
-  - a11y
-  - accessibility
-  - testing
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Paul Green](https://unsplash.com/@pgreen1983) on [Unsplash](https://unsplash.com)'
+date: 2018-10-11T06:54:50.799Z
+tags: a11y, accessibility, testing
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Paul Green](https://unsplash.com/@pgreen1983) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/test-for-accessibility-and-help-millions-of-people-97d86f72e2c4
@@ -46,7 +43,7 @@ As a use case we’re going to focus on the Angular NgRx Material Starter Projec
 $ npm install pa11y -g
 $ pa11y [https://tomastrajan.github.io/angular-ngrx-material-starter](https://tomastrajan.github.io/angular-ngrx-material-starter)
 
-[](./images/0.gif)
+![](./images/0.gif)
 
 we see pa11y running
 
@@ -86,7 +83,7 @@ These scripts are needed to build and serve our application first before we can 
 
 Now if we do `npm run accessibility`,we get an overview with errors, just like before.
 
-[](./images/1.png)
+![](./images/1.png)
 
 pa11y-ci is showing errors
 
@@ -139,7 +136,7 @@ actions: [
 - [a11y](https://a11yproject.com/)
 - [axe](https://www.deque.com/axe/) — which also has a browser extension
 
-[](./images/2.png)
+![](./images/2.png)
 
 axe browser extensions after analyzing a page
 

@@ -1,17 +1,12 @@
 ---
 title: Semantically release your Angular library
-slug: semantically-realease-your-angular-library
-description: >-
-  I’m taking you along in my journey towards a fully automated process for releasing a library! Using CircleCI and the semantic-release.
-
+slug: semantically-release-your-angular-library
+description: I’m taking you along in my journey towards a fully automated process for releasing a library! Using CircleCI and the semantic-release.
 author: Tim Deschryver
-date: '2018-10-22T09:13:01.145Z'
-tags:
-  - Library
-  - Continuous integration
-  - Continuous deployment
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Saffu](https://unsplash.com/@saffu) on [Unsplash](https://unsplash.com)'
+date: 2018-10-22T09:13:01.145Z
+tags: Library, Continuous Integration, Continuous Deployment
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Saffu](https://unsplash.com/@saffu) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/the-angular-devops-series-semantically-release-your-angular-library-7d78afb4c845
@@ -207,7 +202,7 @@ These release notes can be seen via the release page in a GitHub repository, for
 
 If you would want to generate a CHANGELOG, I would suggest taking a look at the [standard-version](https://github.com/conventional-changelog/standard-version) library. For an example you can always take a look at the [angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter) project.
 
-[changelog referenecs to the release page](./images/8.png)
+![changelog referenecs to the release page](./images/8.png)
 
 With this last step we can check off every item on the list!
 

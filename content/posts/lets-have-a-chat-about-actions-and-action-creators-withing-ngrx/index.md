@@ -1,17 +1,12 @@
 ---
 title: Let's have a chat about Actions and Action Creators within NgRx
-slug: lets-have-a-chat-about-actions-and-action-creators-withing-ngrx
-description: >-
-  I think it's time you and I talk a bit about action creators. But before we get into action creators let's first start with actions.
-
+slug: lets-have-a-chat-about-actions-and-action-creators-within-ngrx
+description: I think it's time you and I talk a bit about action creators. But before we get into action creators let's first start with actions.
 author: Tim Deschryver
-date: '2018-07-30T14:20:27.277Z'
-tags:
-  - NgRx
-  - Redux
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on [Unsplash](https://unsplash.com)'
+date: 2018-07-30T14:20:27.277Z
+tags: NgRx, Redux, Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/lets-have-a-chat-about-actions-and-action-creators-within-ngrx-41277ecc739d
@@ -45,10 +40,7 @@ An example of an action with and without payload looks as follows:
 > Update 2019–04–05: Action Creators NgRx introduced Action Creators in version 7.4.0, allowing us to create a typed action by using createAction.
 >
 > ```ts
-> export const orderFood = createAction(
->   '[Order Page] ORDER FOOD',
->   props<{ dish: string }>()
-> )
+> export const orderFood = createAction('[Order Page] ORDER FOOD', props<{ dish: string }>())
 > ```
 
 ````

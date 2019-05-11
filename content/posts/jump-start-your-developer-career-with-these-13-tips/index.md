@@ -3,13 +3,9 @@ title: Jump start your developer career with these 13 tips
 slug: jump-start-your-developer-career-with-these-13-tips
 description: I believe that to become a better engineer it all comes down to practice, practice and more practice. Especially when you just started your career. The problem is that when you're just getting started, there is much more to it than just writing lines of code.
 author: Tim Deschryver
-date: '2019-04-23T08:00:00.000Z'
-tags:
-  - career
-  - level-up
-  - development
-  - productivity
-banner: './images/banner.jpg'
+date: 2019-04-23T08:00:00.000Z
+tags: career, level-up, development, productivity
+banner: ./images/banner.jpg
 published: false
 publisher: Angular In Depth
 publish_url: ''

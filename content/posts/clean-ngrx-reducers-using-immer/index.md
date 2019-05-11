@@ -3,13 +3,10 @@ title: Clean NgRx reducers using Immer
 slug: clean-ngrx-reducers-using-immer
 description: Declutter your reducers with Immer
 author: Tim Deschryver
-date: '2018-06-04T12:06:31.034Z'
-tags:
-  - NgRx
-  - Redux
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Noah Grezlak](https://unsplash.com/@svbtext) on [Unsplash](https://unsplash.com)'
+date: 2018-06-04T12:06:31.034Z
+tags: NgRx, Redux, Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Noah Grezlak](https://unsplash.com/@svbtext) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/clean-ngrx-reducers-using-immer-7fe4a0d43508
@@ -68,10 +65,7 @@ export function reducer(state = initialState, action: CartActions) {
         ...state,
         cartItems: {
           ...state.cartItems,
-          [action.payload.sku]: Math.max(
-            (state.cartItems[action.payload.sku] || 0) - 1,
-            0
-          ),
+          [action.payload.sku]: Math.max((state.cartItems[action.payload.sku] || 0) - 1, 0),
         },
       }
 
@@ -91,8 +85,7 @@ The state remains the same and the reducer becomes:
 export const reducer = produce<State, CartActions>((draft, action) => {
   switch (action.type) {
     case CartActionTypes.AddToCart:
-      draft.cartItems[action.payload.sku] =
-        (draft.cartItems[action.payload.sku] || 0) + 1
+      draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
       return
 
     case CartActionTypes.RemoveFromCart:
@@ -133,7 +126,7 @@ To give another example, let’s take a look at how we load the catalog:
 export const reducer = produce<State, CatalogActions>((draft, action) => {
   switch (action.type) {
     case CatalogActionTypes.Load:
-      action.payload.products.forEach((product) => {
+      action.payload.products.forEach(product => {
         draft.products[product.sku] = product
         draft.productSkus.push(product.sku)
       })

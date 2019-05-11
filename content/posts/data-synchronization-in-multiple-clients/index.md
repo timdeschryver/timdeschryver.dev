@@ -1,15 +1,12 @@
 ---
 title: Data synchronization in multiple clients
 slug: data-synchronization-in-multiple-clients
-description: >-
-  Often when working with a CRUD heavy application you find yourself or someone else asking the question, what should be done when multiple…
-
+description: Often when working with a CRUD heavy application you find yourself or someone else asking the question, what should be done when multiple users are using the same screens at the same time.
 author: Tim Deschryver
-date: '2018-05-28T18:40:12.485Z'
-tags:
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Scott Webb](https://unsplash.com/@scottwebb) on [Unsplash](https://unsplash.com)'
+date: 2018-05-28T18:40:12.485Z
+tags: Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Scott Webb](https://unsplash.com/@scottwebb) on [Unsplash](https://unsplash.com)
 published: true
 publisher: ITNEXT
 publish_url: https://itnext.io/ngrx-data-synchronization-in-multiple-clients-df07785c0188

@@ -1,19 +1,23 @@
 {
-  "name": "my-website",
-  "private": true,
+  "name": "timdeschryver.dev",
+  "description": "timdeschryver.dev",
+  "version": "0.0.1",
   "scripts": {
-    "build": "gridsome build",
-    "develop": "gridsome develop",
-    "explore": "gridsome explore",
-    "now-build": "npm run build"
+    "dev": "sapper dev",
+    "build": "sapper build --legacy",
+    "preexport": "rm -rf static/posts && copyfiles \"content/posts/**\" -e \"content/posts/**/*.md\" static -u=1",
+    "export": "sapper export --legacy",
+    "start": "node __sapper__/build",
+    "test": "run-p --race dev cy:run",
+    "now-build": "npm run export"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && lint-staged"
+      "pre-commit": "npm run export && lint-staged"
     }
   },
   "lint-staged": {
-    "*.{vue,js}": [
+    "*.{svelte,js}": [
       "eslint --fix",
       "git add"
     ],
@@ -23,23 +27,41 @@
     ]
   },
   "dependencies": {
-    "@gridsome/plugin-google-analytics": "^0.1.0",
-    "@gridsome/plugin-sitemap": "^0.1.1",
-    "@gridsome/remark-prismjs": "^0.0.4",
-    "@gridsome/source-filesystem": "^0.3.0",
-    "@gridsome/transformer-remark": "^0.2.0",
-    "gridsome": "^0.5.0"
+    "@polka/send": "^0.4.0",
+    "@sveltejs/site-kit": "^1.0.4",
+    "compression": "^1.7.1",
+    "glob": "^7.1.4",
+    "marked": "^0.6.2",
+    "polka": "^0.5.0",
+    "prismjs": "^1.16.0",
+    "sirv": "^0.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-eslint": "^3.5.1",
-    "@vue/eslint-config-prettier": "^4.0.1",
-    "@vue/eslint-config-standard": "^4.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
+    "copyfiles": "^2.1.0",
+    "date-fns": "^1.30.1",
+    "dotenv-extended": "^2.4.0",
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.2",
-    "husky": "^1.3.1",
-    "lint-staged": "^8.1.5",
-    "prettier": "^1.16.4",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2"
-  }
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-svelte3": "^1.1.0",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.17.0",
+    "rollup": "^1.0.0",
+    "rollup-plugin-babel": "^4.0.2",
+    "rollup-plugin-commonjs": "^9.1.6",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-svelte": "^5.0.1",
+    "rollup-plugin-terser": "^4.0.4",
+    "sapper": "^0.26",
+    "svelte": "^3.0.0"
+  },
+  "license": "MIT"
 }

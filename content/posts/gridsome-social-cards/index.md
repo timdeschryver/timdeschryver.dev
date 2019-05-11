@@ -1,14 +1,12 @@
 ---
-title: 'Social media cards with Vue and Gridsome'
+title: Social media cards with Vue and Gridsome
 slug: gridsome-social-cards
 description: It's easy to create metadata tags with Gridsome, I was so happy with it that I wanted to write this post 😃. There is also a page in the docs on how to create metadata tags, but let's translate the theory into a real world example.
 author: Tim Deschryver
-date: '2019-04-15T14:00:00.000Z'
-tags:
-  - Vue
-  - Gridsome
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Joshua Fuller](https://unsplash.com/@joshuafuller) on [Unsplash](https://unsplash.com)'
+date: 2019-04-15T14:00:00.000Z
+tags: Vue, Gridsome
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Joshua Fuller](https://unsplash.com/@joshuafuller) on [Unsplash](https://unsplash.com)
 published: true
 tweet_id: '1117777550992920577'
 ---
@@ -23,35 +21,23 @@ The snippet below shows an example on how this looks like, as you can see, there
 <head>
   <!-- Open Graph -->
   <meta name="og:title" content="Social media cards with Vue and Gridsome" />
-  <meta
-    name="og:url"
-    content="https://timdeschryver.dev/posts/gridsome-social-cards"
-  />
+  <meta name="og:url" content="https://timdeschryver.dev/posts/gridsome-social-cards" />
   <meta
     name="og:description"
     content="It's easy to create metadata tags with Gridsome, I was so happy with it that I wanted to write this post 😃. There is also a page in the docs on how to create metadata tags, but let's translate the theory into a real world example."
   />
   <meta name="og:type" content="article" />
-  <meta
-    name="og:image"
-    content="https://timdeschryver.dev/assets/static/gridsome-social-cards-banner.jpg"
-  />
+  <meta name="og:image" content="https://timdeschryver.dev/assets/static/gridsome-social-cards-banner.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@tim_deschryver" />
-  <meta
-    name="twitter:title"
-    content="Social media cards with Vue and Gridsome"
-  />
+  <meta name="twitter:title" content="Social media cards with Vue and Gridsome" />
   <meta
     name="twitter:description"
     content="It's easy to create metadata tags with Gridsome, I was so happy with it that I wanted to write this post 😃. There is also a page in the docs on how to create metadata tags, but let's translate the theory into a real world example."
   />
-  <meta
-    name="twitter:image"
-    content="https://timdeschryver.dev/assets/static/gridsome-social-cards-banner.jpg"
-  />
+  <meta name="twitter:image" content="https://timdeschryver.dev/assets/static/gridsome-social-cards-banner.jpg" />
 </head>
 ```
 

@@ -3,13 +3,10 @@ title: Normalizing state
 slug: normalizing-state
 description: A quick look at state normalization.
 author: Tim Deschryver
-date: '2018-04-30T14:08:47.867Z'
-tags:
-  - NgRx
-  - Redux
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Michael Aleo](https://unsplash.com/@mjaleo) on [Unsplash](https://unsplash.com)'
+date: 2018-04-30T14:08:47.867Z
+tags: NgRx, Redux, Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Michael Aleo](https://unsplash.com/@mjaleo) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
@@ -45,12 +42,9 @@ export function reducer(state, action) {
   switch (action.typed) {
     case '[CUSTOMER DETAIL PAGE] Edit Customer':
       return {
-        customers: state.customers.map((c) =>
-          c.id === action.payload.id ? action.payload : c
-        ),
+        customers: state.customers.map(c => (c.id === action.payload.id ? action.payload : c)),
         selectedCustomer:
-          state.selectedCustomer &&
-          state.selectedCustomer.id === action.payload.id
+          state.selectedCustomer && state.selectedCustomer.id === action.payload.id
             ? action.payload
             : state.selectedCustomer,
       }
@@ -62,12 +56,12 @@ export function reducer(state, action) {
 
 export const selectedCustomers = createSelector(
   selectCustomersState,
-  (state) => state.customers
+  state => state.customers,
 )
 
 export const selectedSelectedCustomers = createSelector(
   selectCustomersState,
-  (state) => state.selectedCustomer
+  state => state.selectedCustomer,
 )
 ```
 
@@ -97,12 +91,12 @@ export function reducer(state, action) {
 
 export const selectedCustomers = createSelector(
   selectCustomersState,
-  (state) => Object.values(state.customers)
+  state => Object.values(state.customers),
 )
 
 export const selectedSelectedCustomers = createSelector(
   selectCustomersState,
-  (state) => state.customers[state.selectedCustomerId]
+  state => state.customers[state.selectedCustomerId],
 )
 ```
 

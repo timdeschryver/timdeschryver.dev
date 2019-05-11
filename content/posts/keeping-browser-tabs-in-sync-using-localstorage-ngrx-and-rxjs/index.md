@@ -1,18 +1,12 @@
 ---
 title: Keeping browser tabs in sync using localStorage, NgRx, and RxJS
 slug: keeping-browser-tabs-in-sync-using-localstorage-ngrx-and-rxjs
-description: >-
-  We’re going to take a look at how we can keep state in sync when a user has multiple tabs open.
-
+description: We’re going to take a look at how we can keep state in sync when a user has multiple tabs open.
 author: Tim Deschryver
-date: '2018-12-03T09:08:06.254Z'
-tags:
-  - Angular
-  - NgRx
-  - RxJS
-  - Redux
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)'
+date: 2018-12-03T09:08:06.254Z
+tags: Angular, NgRx, RxJS, Redux
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/keeping-browser-tabs-in-sync-using-localstorage-ngrx-and-rxjs-87de3bca4e2c
@@ -22,7 +16,7 @@ In this post, we’re going to take a look at how we can keep our application st
 
 There are two ways of syncing state that I know of. One of them is to send the actions from one tab to another tab, the other is to send the (partial) state from one tab to another tab. While both of these ways have very similar implementations, they both shine in their own way.
 
-As a starting point, we’re going to pick up where we left off in a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./lets-have-a-chat-about-actions-and-action-creators-within-ngrx) where we created a simple grocery list.
+As a starting point, we’re going to pick up where we left off in a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./posts/lets-have-a-chat-about-actions-and-action-creators-within-ngrx) where we created a simple grocery list.
 
 ### Syncing state by sending actions from one tab to another tab
 

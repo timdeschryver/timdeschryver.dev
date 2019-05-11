@@ -1,24 +1,18 @@
 ---
 title: Simple state mutations in NGXS with Immer
 slug: simple-state-mutations-in-ngrx-with-immer
-description: >-
-  A follow-up post of "Clean NgRx reducers using Immer". But this time we're using NGXS as our state management library.
-
+description: A follow-up post of "Clean NgRx reducers using Immer". But this time we're using NGXS as our state management library.
 author: Tim Deschryver
-date: '2018-06-07T05:55:54.427Z'
-tags:
-  - Angular
-  - NgRx
-  - NGXS
-  - Redux
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on [Unsplash](https://unsplash.com)'
+date: 2018-06-07T05:55:54.427Z
+tags: Angular, NgRx, NGXS, Redux
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/simple-state-mutations-in-ngxs-with-immer-48b908874a5e
 ---
 
-Recently I wrote [Clean NgRx reducers using Immer](./clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!
+Recently I wrote [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!
 
 ### NGXS
 
@@ -104,10 +98,7 @@ export class CartState {
     ctx.patchState({
       cartItems: {
         ...state.cartItems,
-        [action.payload.sku]: Math.max(
-          (state.cartItems[action.payload.sku] || 0) - 1,
-          0
-        ),
+        [action.payload.sku]: Math.max((state.cartItems[action.payload.sku] || 0) - 1, 0),
       },
     })
   }
@@ -134,30 +125,29 @@ export class CartState {
   @Action(AddToCart)
   addProduct(ctx: StateContext<CartStateModel>, action: AddToCart) {
     ctx.setState(
-      produce(ctx.getState(), (draft) => {
-        draft.cartItems[action.payload.sku] =
-          (draft.cartItems[action.payload.sku] || 0) + 1
-      })
+      produce(ctx.getState(), draft => {
+        draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
+      }),
     )
   }
 
   @Action(RemoveFromCart)
   removeProduct(ctx: StateContext<CartStateModel>, action: RemoveFromCart) {
     ctx.setState(
-      produce(ctx.getState(), (draft) => {
+      produce(ctx.getState(), draft => {
         const newAmount = draft.cartItems[action.payload.sku] - 1
         if (newAmount > 0) {
           draft.cartItems[action.payload.sku] = newAmount
           return
         }
         delete draft.cartItems[action.payload.sku]
-      })
+      }),
     )
   }
 
   @Action(EmptyCart)
   emptyCart(ctx: StateContext<CartStateModel>, action: EmptyCart) {
-    ctx.setState(produce(ctx.getState(), (draft) => ({ cartItems: {} })))
+    ctx.setState(produce(ctx.getState(), draft => ({ cartItems: {} })))
   }
 }
 ```
@@ -167,8 +157,7 @@ The difference here is that we’re mutating the state directly, well to be hone
 Notice how easy it is to increment the current amount with Immer.
 
 ```ts
-draft.cartItems[action.payload.sku] =
-  (draft.cartItems[action.payload.sku] || 0) + 1
+draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
 ```
 
 And we can also delete a property (cart item) from our cart by using existing and known JavaScript functionality.
@@ -210,7 +199,7 @@ In order to use Immer you’ll have to install it first via `npm install immer`,
 
 ### Conclusion
 
-My conclusion is a bit different as in [Clean NgRx reducers using Immer](clean-ngrx-reducers-using-immer).
+My conclusion is a bit different as in [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer).
 
 I still find Immer a great library, but in contrast to NgRx I think I would quicker use Immer with NGXS. Because to me it goes hand in hand with the NGXS mindset.
 
@@ -218,10 +207,9 @@ I also think it would be even more handy if we could do the following
 
 ```ts
 ctx.setState(
-  produce((draft) => {
-    draft.cartItems[action.payload.sku] =
-      (draft.cartItems[action.payload.sku] || 0) + 1
-  })
+  produce(draft => {
+    draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
+  }),
 )
 ```
 

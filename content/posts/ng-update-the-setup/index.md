@@ -1,19 +1,18 @@
 ---
-title: 'ng update: the setup'
+title: ng update: the setup
 slug: ng-update-the-setup
 description: Let your library automatically update with ng update
 author: Tim Deschryver
-date: '2018-05-21T14:00:16.553Z'
-tags:
-  - Angular
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Victor Lozano](https://unsplash.com/@prozpris) on [Unsplash](https://unsplash.com)'
+date: 2018-05-21T14:00:16.553Z
+tags: Angular
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Victor Lozano](https://unsplash.com/@prozpris) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
 With the Angular 6 release, already a couple weeks ago, the CLI package `@angular/cli` also received an update (also version 6). You will probably already have heard of it or even used it, but this update of the CLI introduced a new command `ng update`. In short this updates your application and its dependencies by taking a look if any of the dependencies in your `package.json` has a new version available. For more details about Angular 6 release you can take a look at the resources at the bottom of this post.
 
-If you want to automatically let the CLI update your own library when a user runs `ng update` you’ll have to plug into the `ng-update` hook. As an example we’re going to use [frontal](https://github.com/timdeschryver/frontal)_— a selectbox/dropdown component based on_ [_downshift_](https://github.com/paypal/downshift)\_ — _which is currently on version 1.0.0 and after running `ng update` we want to have version 2.0.0 beta installed. There are also some popular packages where you can take a peek: [RxJs](https://github.com/ReactiveX/rxjs), [angular/material2](https://github.com/angular/material2) and recently the [NgRx packages](https://github.com/ngrx/platform).
+If you want to automatically let the CLI update your own library when a user runs `ng update` you’ll have to plug into the `ng-update` hook. As an example we’re going to use [frontal](https://github.com/timdeschryver/frontal)_— a selectbox/dropdown component based on_ [_downshift_](https://github.com/paypal/downshift) - which is currently on version 1.0.0 and after running `ng update` we want to have version 2.0.0 beta installed. There are also some popular packages where you can take a peek: [RxJs](https://github.com/ReactiveX/rxjs), [angular/material2](https://github.com/angular/material2) and recently the [NgRx packages](https://github.com/ngrx/platform).
 
 Enough of the what, let’s take a look at the how!
 
@@ -40,12 +39,7 @@ In the `schematics` value there is a property for each migration, the property n
 This is the function which is called during `ng update`. In the [implementation](https://github.com/timdeschryver/frontal/blob/master/migrations/2_0_0/index.ts) below, the dependency version will be updated in the `package.json`. Note that it’s also possible to do more than just upgrading the version number, for instance if we take a look at [angular/material2](https://github.com/angular/material2/blob/master/src/lib/schematics/update/update.ts#L36) it also runs some linter rules.
 
 ```ts
-import {
-  Rule,
-  SchematicContext,
-  Tree,
-  SchematicsException,
-} from '@angular-devkit/schematics'
+import { Rule, SchematicContext, Tree, SchematicsException } from '@angular-devkit/schematics'
 
 export default function(): Rule {
   return (tree: Tree, context: SchematicContext) => {
@@ -93,10 +87,7 @@ It is possible to [test](https://github.com/timdeschryver/frontal/blob/master/__
 
 ```ts
 import { Tree } from '@angular-devkit/schematics'
-import {
-  SchematicTestRunner,
-  UnitTestTree,
-} from '@angular-devkit/schematics/testing'
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing'
 import * as path from 'path'
 
 const packagePath = '/package.json'
@@ -110,7 +101,7 @@ function setup() {
         "dependencies": {
           "frontal": "1.0.0"
         }
-      }`
+      }`,
   )
 
   return {

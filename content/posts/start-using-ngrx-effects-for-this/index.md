@@ -1,18 +1,12 @@
 ---
 title: Start using ngrx/effects for this
 slug: start-using-ngrx-effects-for-this
-description: >-
-  You're probably only using ngrx/effects to handle the communication to an external source by triggering an effect with a NgRx action.
-
+description: You're probably only using ngrx/effects to handle the communication to an external source by triggering an effect with a NgRx action.
 author: Tim Deschryver
-date: '2018-07-09T13:09:18.090Z'
-tags:
-  - Angular
-  - NgRx
-  - Redux
-  - Effects
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Clément Gerbaud](https://unsplash.com/@clement_gerbaud) on [Unsplash](https://unsplash.com)'
+date: 2018-07-09T13:09:18.090Z
+tags: Angular, NgRx, Redux, Effects
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Clément Gerbaud](https://unsplash.com/@clement_gerbaud) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
 publish_url: https://blog.angularindepth.com/start-using-ngrx-effects-for-this-e0b2bd9da165

@@ -1,15 +1,12 @@
 ---
-title: 'Angular: Build once deploy to multiple environments 🚀'
+title: Angular: Build once deploy to multiple environments 🚀
 slug: angular-build-once-deploy-to-multiple-environments
 description: In our quest to build a twelve-factor app where we build once and deploy to multiple environment we encountered some problems, but we managed to solve them. Read here how we did it.
 author: Tim Deschryver
-date: '2019-04-24T08:00:00.000Z'
-tags:
-  - Angular
-  - DevOps
-  - CI/CD
-banner: './images/banner.jpg'
-bannerCredit: 'Photo by [Chau Cédric](https://unsplash.com/@an_ku_sh) on [Unsplash](https://unsplash.com)'
+date: 2019-04-24T08:00:00.000Z
+tags: Angular, DevOps, CI/CD
+banner: ./images/banner.jpg
+bannerCredit: Photo by [Chau Cédric](https://unsplash.com/@an_ku_sh) on [Unsplash](https://unsplash.com)
 published: false
 publisher: Angular In Depth
 publish_url: ''
@@ -103,15 +100,15 @@ The code below loads the config file via the [`fetch API`](https://developer.moz
 
 ```ts
 fetch('/assets/config.json')
-  .then((response) => response.json())
-  .then((config) => {
+  .then(response => response.json())
+  .then(config => {
     if (environment.production) {
       enableProdMode()
     }
 
     platformBrowserDynamic([{ provide: APP_CONFIG, useValue: config }])
       .bootstrapModule(AppModule)
-      .catch((err) => console.error(err))
+      .catch(err => console.error(err))
   })
 ```
 
