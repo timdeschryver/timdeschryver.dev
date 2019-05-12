@@ -5,14 +5,21 @@
 
 <style>
   .intro {
+    color: var(--text-color-50);
     text-align: center;
     font-size: 1.3em;
     margin-top: 25%;
   }
 
   :global(.intro a) {
-    color: var(--color-text);
-    border: none;
+    color: var(--text-color-50);
+    transition: all 200ms ease-in;
+    border-color: transparent;
+  }
+
+  :global(.intro a):hover {
+    color: var(--text-color);
+    border-color: currentColor;
   }
 </style>
 

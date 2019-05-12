@@ -56,6 +56,10 @@
   footer {
     border-top: 2px var(--prime-color) solid;
   }
+
+  .footer-social-links {
+    font-weight: 900;
+  }
 </style>
 
 <header>
@@ -74,7 +78,7 @@
 
 {#if segment !== undefined}
   <footer>
-    <div>
+    <div class="footer-social-links">
       <div>Follow me on:</div>
       <SocialLinks separator="&" />
     </div>
