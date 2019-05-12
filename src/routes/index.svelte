@@ -1,5 +1,6 @@
 <script>
   import SocialLinks from '../components/SocialLinks.svelte'
+  import Head from '../components/Head.svelte'
 </script>
 
 <style>
@@ -14,6 +15,8 @@
     border: none;
   }
 </style>
+
+<Head title="Tim Deschryver" />
 
 <section class="intro">
   <SocialLinks />

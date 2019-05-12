@@ -10,9 +10,6 @@ import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-textile'
 import 'prismjs/components/prism-graphql'
 import 'prismjs/components/prism-yaml'
-require('dotenv-extended').load({
-  path: '.env.' + process.env.NODE_ENV,
-})
 
 const langs = {
   bash: 'bash',
@@ -79,7 +76,11 @@ export function posts() {
           return `<pre class='language-text'><code>${source}</code></pre>`
         }
 
-        const highlighted = PrismJS.highlight(source, PrismJS.languages[plang], lang)
+        const highlighted = PrismJS.highlight(
+          source,
+          PrismJS.languages[plang],
+          lang,
+        )
 
         return `<pre class='language-${plang}'><code>${highlighted}</code></pre>`
       }
@@ -94,16 +95,24 @@ export function posts() {
         return `
           <h${level}>
             <span id="${fragment}" class="offset-anchor"></span>
-            <a href="posts/${metadata.slug}#${fragment}" class="anchor" aria-hidden="true"></a>
+            <a href="posts/${
+              metadata.slug
+            }#${fragment}" class="anchor" aria-hidden="true"></a>
             ${text}
           </h${level}>`
       }
 
-      const html = marked(content.replace(/^\t+/gm, match => match.split('\t').join('  ')), { renderer })
+      const html = marked(
+        content.replace(/^\t+/gm, match => match.split('\t').join('  ')),
+        { renderer },
+      )
 
       const date = new Date(metadata.date)
       const diff = differenceInDays(new Date(), date)
-      const dateFormat = diff <= 7 ? distanceInWordsToNow(date, new Date()) + ' ago' : format(date, 'MMMM Do YYYY')
+      const dateFormat =
+        diff <= 7
+          ? distanceInWordsToNow(date, new Date()) + ' ago'
+          : format(date, 'MMMM Do YYYY')
 
       const published = metadata.published === 'true'
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))

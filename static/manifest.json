@@ -1,8 +1,8 @@
 {
   "name": "Tim Deschryver",
   "short_name": "timdeschryver",
-  "description": "Tim Deschryver's experiences and thoughts on programming",
-  "theme_color": "#000000",
+  "description": "Tim Deschryver's experiences and thoughts on coding",
+  "theme_color": "#efd403",
   "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/",

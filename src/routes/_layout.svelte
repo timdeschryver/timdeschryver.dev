@@ -1,6 +1,13 @@
 <script>
+  import { afterUpdate } from 'svelte'
   import SocialLinks from '../components/SocialLinks.svelte'
   export let segment
+
+  afterUpdate(async () => {
+    gtag('config', process.env.GA_TRACKING_ID, {
+      page_path: window.location.pathname,
+    })
+  })
 </script>
 
 <style>
@@ -68,7 +75,7 @@
 {#if segment !== undefined}
   <footer>
     <div>
-      Follow me on:
+      <div>Follow me on:</div>
       <SocialLinks separator="&" />
     </div>
   </footer>

@@ -8,6 +8,11 @@ import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
 
 const mode = process.env.NODE_ENV || 'production'
+
+require('dotenv-extended').load({
+  path: '.env.' + mode,
+})
+
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
 
@@ -19,6 +24,10 @@ export default {
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.GA_TRACKING_ID': JSON.stringify(
+          process.env.GA_TRACKING_ID,
+        ),
+        'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
       }),
       svelte({
         dev,
@@ -66,6 +75,10 @@ export default {
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.GA_TRACKING_ID': JSON.stringify(
+          process.env.GA_TRACKING_ID,
+        ),
+        'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
       }),
       svelte({
         generate: 'ssr',
@@ -75,7 +88,8 @@ export default {
       commonjs(),
     ],
     external: Object.keys(pkg.dependencies).concat(
-      require('module').builtinModules || Object.keys(process.binding('natives')),
+      require('module').builtinModules ||
+        Object.keys(process.binding('natives')),
     ),
   },
 
@@ -87,6 +101,10 @@ export default {
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.GA_TRACKING_ID': JSON.stringify(
+          process.env.GA_TRACKING_ID,
+        ),
+        'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
       }),
       commonjs(),
       !dev && terser(),

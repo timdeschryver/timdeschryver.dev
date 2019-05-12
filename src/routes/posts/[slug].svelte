@@ -10,6 +10,7 @@
 </script>
 
 <script>
+  import Banner from '../../components/Banner.svelte'
   export let post
 </script>
 
@@ -32,7 +33,8 @@
   <meta name="og:image" content={post.metadata.banner} />
 </svelte:head>
 
-<article class="post prism-dark">
+<article class="post">
+  <Banner publisher={post.metadata.publisher} />
   <h2>{post.metadata.title}</h2>
   {@html post.html}
 </article>
