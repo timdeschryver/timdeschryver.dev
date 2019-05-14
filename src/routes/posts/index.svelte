@@ -51,7 +51,13 @@
   }
 
   [data-publisher='Angular In Depth'] {
-    background-image: linear-gradient(to right, var(--aid-color), var(--aid-color) 50%, transparent 50%, transparent);
+    background-image: linear-gradient(
+      to right,
+      var(--aid-color),
+      var(--aid-color) 50%,
+      transparent 50%,
+      transparent
+    );
   }
 
   [data-publisher='Angular In Depth']:hover {
@@ -97,10 +103,16 @@
     <li>
       <h2>
         {#if post.metadata.publisher}
-          <a href={post.metadata.publish_url} data-publisher={post.metadata.publisher}> {post.metadata.title} - {post.metadata.publisher}</a>
+          <a
+            href={post.metadata.publish_url}
+            data-publisher={post.metadata.publisher}>
+             {post.metadata.title} - {post.metadata.publisher}
+          </a>
           <a href="/posts/{post.metadata.slug}" style="display:none;visibility:hidden">keep</a>
         {:else}
-          <a rel="prefetch" href="/posts/{post.metadata.slug}">{post.metadata.title}</a>
+          <a rel="prefetch" href="/posts/{post.metadata.slug}">
+            {post.metadata.title}
+          </a>
         {/if}
       </h2>
       <small>{post.metadata.dateFormat}</small>

@@ -131,7 +131,11 @@ There are some times were you would need to access some store state inside your 
 shipOrder = this.actions.pipe(
   ofType<ShipOrder>(ActionTypes.ShipOrder),
   map(action => action.payload),
-  withLatestFrom(this.store.pipe(select(getUserName))),
+  concatMap(action =>
+    of(action).pipe(
+      withLatestFrom(store.pipe(select(getUserName)))
+    )
+  ),
   map([payload, username] => {
     ...
   })
@@ -144,7 +148,11 @@ To take it a step further, we can use the data retrieved by the selector in orde
 @Effect()
 getOrder = this.actions.pipe(
   ofType<GetOrder>(ActionTypes.GetOrder),
-  withLatestFrom(this.store.pipe(select(getOrders))),
+  withLatestFrom(action =>
+    of(action).pipe(
+      this.store.pipe(select(getOrders))
+    )
+  ),
   filter(([{payload}, orders]) => !!orders[payload.orderId])
   mergeMap([{payload}] => {
     ...
