@@ -108,10 +108,14 @@
             data-publisher={post.metadata.publisher}>
              {post.metadata.title} - {post.metadata.publisher}
           </a>
-          <a href="/posts/{post.metadata.slug}" style="display:none;visibility:hidden">keep</a>
+          <a
+            href="/posts/{post.metadata.slug}"
+            style="display:none;visibility:hidden">
+            keep
+          </a>
         {:else}
           <a rel="prefetch" href="/posts/{post.metadata.slug}">
-            {post.metadata.title}
+             {post.metadata.title}
           </a>
         {/if}
       </h2>
@@ -120,3 +124,6 @@
     </li>
   {/each}
 </ul>
+
+<a href="/rss.xml" style="display:none;visibility:hidden">keep</a>
+<a href="/posts/rss.xml" style="display:none;visibility:hidden">keep</a>

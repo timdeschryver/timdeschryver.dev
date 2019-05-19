@@ -4,9 +4,11 @@
   export let segment
 
   afterUpdate(async () => {
-    gtag('config', process.env.GA_TRACKING_ID, {
-      page_path: window.location.pathname,
-    })
+    if (typeof gtag === 'function') {
+      gtag('config', process.env.GA_TRACKING_ID, {
+        page_path: window.location.pathname,
+      })
+    }
   })
 </script>
 
@@ -43,7 +45,8 @@
   nav .nav-item {
     background: var(--prime-color);
     padding: 2px 4px;
-    color: #fff;
+    color: var(--background-color);
+    border: 1px solid;
     box-shadow: 2px 2px var(--prime-color-shadow);
     transition: all 0.2s ease-in-out;
     font-size: 1.5em;
