@@ -125,5 +125,8 @@
   {/each}
 </ul>
 
-<a href="/rss.xml" style="display:none;visibility:hidden">keep</a>
-<a href="/posts/rss.xml" style="display:none;visibility:hidden">keep</a>
+<a href="/sitemap.xml" style="display:none;visibility:hidden">sitemap</a>
+<a href="/rss.xml" style="display:none;visibility:hidden">rss feed</a>
+<a href="/posts/rss.xml" style="display:none;visibility:hidden">
+  posts rss feed
+</a>
