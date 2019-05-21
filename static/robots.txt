@@ -1,2 +1,3 @@
+Sitemap: https://timdeschryver.dev/sitemap.xml
 User-agent: *
 Disallow:
