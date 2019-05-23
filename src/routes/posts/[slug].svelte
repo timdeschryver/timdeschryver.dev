@@ -1,4 +1,5 @@
-<script context="module">  export async function preload({ params }) {
+<script context="module">
+  export async function preload({ params }) {
     const res = await this.fetch(`posts/${params.slug}.json`)
     if (res.ok) {
       return { post: await res.json() }

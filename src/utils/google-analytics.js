@@ -1,4 +1,4 @@
-export const googleAnalytics = gaID => {
+export function googleAnalytics() {
   window.dataLayer = window.dataLayer || []
   window.gtag = function() {
     dataLayer.push(arguments)

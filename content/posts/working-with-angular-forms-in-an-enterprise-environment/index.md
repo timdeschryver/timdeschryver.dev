@@ -4,9 +4,7 @@ slug: working-with-angular-forms-in-an-enterprise-environment
 description: At our company we struggled with Angular Forms at the start. This is because we dived in head first, without talking about how we would want to use it throughout out projects. This post shows how we're currently using Angular Forms to be more productive.
 author: Tim Deschryver
 date: 2019-04-23T08:00:00.000Z
-tags:
-  - Angular
-  - Forms
+tags: Angular, Forms, Enterprise, Angular Forms, Reactive Forms
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Will O](https://unsplash.com/@blnk_kanvas) on [Unsplash](https://unsplash.com)
 published: true
