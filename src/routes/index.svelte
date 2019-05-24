@@ -28,4 +28,3 @@
 <section class="intro">
   <SocialLinks />
 </section>
-

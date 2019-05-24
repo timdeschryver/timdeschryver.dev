@@ -30,7 +30,7 @@
     );
     background-position: 100% 0;
     background-size: 201% 100%;
-    transition: all 447ms ease-in;
+    transition: all var(--transition-duration) ease-in-out;
   }
 
   a:hover {
@@ -85,10 +85,12 @@
   p {
     margin-top: calc(var(--spacing) / 3);
     color: var(--text-color-50);
+    transition: color var(--transition-duration) ease-in-out;
   }
 
   small {
     color: var(--text-color-70);
+    transition: color var(--transition-duration) ease-in-out;
   }
 
   h2 {

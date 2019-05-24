@@ -39,11 +39,15 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
 
     <title>Tim Deschryver</title>
-
     %sapper.styles% %sapper.head%
   </head>
   <body>
     <div id="sapper">%sapper.html%</div>
+
+    <script>
+      document.body.className =
+        (localStorage && localStorage.getItem('__theme')) || 'sunrise'
+    </script>
     %sapper.scripts%
   </body>
 </html>

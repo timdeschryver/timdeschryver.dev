@@ -1,8 +1,5 @@
 :root {
-  --background-color: #fff;
-  --text-color: #333;
-  --text-color-50: #666;
-  --text-color-70: #888;
+  --content-width: 47rem;
   --text-font: 'Karla', sans-serif;
   --head-font: 'Comfortaa', cursive;
   --prime-color: rgba(239, 212, 3, 1);
@@ -10,6 +7,7 @@
   --prime-color-text: rgba(0, 0, 0, 0.5);
   --link-color: var(--prime-color);
   --spacing: 1.5em;
+  --transition-duration: 347ms;
 
   --aid-color: rgba(199, 35, 30, 1);
   --aid-color-text: rgba(255, 255, 255, 0.8);
@@ -35,7 +33,6 @@
 
 html,
 body {
-  height: 100%;
   background: var(--background-color);
   color: var(--text-color);
   font-family: var(--text-font);
@@ -44,7 +41,27 @@ body {
 }
 
 html {
+  height: 100%;
   box-sizing: border-box;
+}
+
+body {
+  min-height: 100%;
+  transition: all var(--transition-duration) ease-in;
+}
+
+body.sunrise {
+  --background-color: #fff;
+  --text-color: #333;
+  --text-color-50: #666;
+  --text-color-70: #888;
+}
+
+body.sunset {
+  --background-color: #333;
+  --text-color: #fff;
+  --text-color-50: #eee;
+  --text-color-70: #ccc;
 }
 
 ul {
@@ -94,4 +111,8 @@ p {
 ::selection {
   background: var(--prime-color);
   color: #fff;
+}
+
+svg {
+  stroke: var(--prime-color);
 }
