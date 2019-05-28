@@ -11,7 +11,7 @@ require('dotenv-extended').load({
 export default {
   input: './src/lambda/server.js',
   output: {
-    file: './dist/lambda/server.js',
+    file: './src/lambda/server.out.js',
     format: 'cjs',
   },
   plugins: [

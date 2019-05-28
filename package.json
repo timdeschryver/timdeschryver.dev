@@ -11,11 +11,11 @@
     "export:lambda": "rollup -c rollup.lambda.config.js",
     "start": "node __sapper__/build",
     "test": "run-p --race dev cy:run",
-    "now-build": "npm run export && npm run export:lambda"
+    "now-build": "npm run export"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run export && lint-staged"
+      "pre-commit": "npm run export && lint-staged && npm run export:lambda"
     }
   },
   "lint-staged": {
