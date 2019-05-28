@@ -1,10 +1,62 @@
-import { generate } from '../utils/sitemap'
+import gql from 'graphql-tag'
+import ApolloClient from 'apollo-boost'
 
-export function get(req, res) {
+export async function get(req, res) {
   res.writeHead(200, {
     'Cache-Control': `max-age=0, s-max-age=${600}`, // 10 minutes
     'Content-Type': 'application/xml',
   })
 
-  res.end(generate())
+  const baseUrl = req ? `http://${req.headers['host']}` : ''
+  res.end(await generate(baseUrl))
+}
+
+async function generate(baseUrl) {
+  const client = new ApolloClient({
+    fetch: require('node-fetch'),
+    uri: baseUrl + '/graphql',
+  })
+
+  const response = await client.query({
+    query: gql`
+      query {
+        posts(published: true) {
+          metadata {
+            slug
+          }
+        }
+      }
+    `,
+  })
+
+  const lastMod = `<lastmod>${new Date().toISOString()}</lastmod>`
+  return `<?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+    xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" 
+    xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+    xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" 
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" 
+    xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    <url>
+      <loc>https://timdeschryver.dev</loc>
+      <priority>1.0</priority>
+      ${lastMod}
+    </url>
+    <url>
+      <loc>https://timdeschryver.dev/posts</loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.64</priority>
+      ${lastMod}
+    </url>
+    ${response.data.posts
+      .map(
+        post => `<url>
+          <loc>https://timdeschryver.dev/posts/${post.metadata.slug}</loc>
+          <changefreq>weekly</changefreq>
+          <priority>0.8</priority>
+          ${lastMod}
+        </url>`,
+      )
+      .join('\n')}
+  </urlset>`
 }

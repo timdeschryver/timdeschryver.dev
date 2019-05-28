@@ -122,7 +122,7 @@
   }
 
   @media (max-width: 800px) {
-    :global(h1) {
+    div:not([data-page='home']) h1 {
       transform: translateX(24px);
       transition: all var(--transition-duration) ease-in-out;
       transition-delay: 111ms;
@@ -130,91 +130,93 @@
   }
 </style>
 
-<header>
-  <h1>
-    <a href="/">Tim Deschryver</a>
-  </h1>
+<div data-page={segment || 'home'}>
+  <header>
+    <h1>
+      <a href="/">Tim Deschryver</a>
+    </h1>
 
-  <nav>
-    <a href="posts" class="nav-item">Posts</a>
-  </nav>
-</header>
+    <nav>
+      <a href="posts" class="nav-item">Posts</a>
+    </nav>
+  </header>
 
-{#if segment !== undefined && theme !== undefined}
-  <aside data-page={segment || 'home'}>
-    <ul>
-      <li>
-        {#if theme === 'sunrise'}
-          <button
-            role="presentation"
-            aria-label="sunrise"
-            out:fly={{ y: 147, duration: 347 }}
-            in:fade={{ delay: 348 }}
-            on:click={() => setTheme('sunset')}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-sunset">
-              <path d="M17 18a5 5 0 0 0-10 0" />
-              <line x1="12" y1="9" x2="12" y2="2" />
-              <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
-              <line x1="1" y1="18" x2="3" y2="18" />
-              <line x1="21" y1="18" x2="23" y2="18" />
-              <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
-              <line x1="23" y1="22" x2="1" y2="22" />
-              <polyline points="16 5 12 9 8 5" />
-            </svg>
-          </button>
-        {:else}
-          <button
-            role="presentation"
-            aria-label="sunset"
-            out:fly={{ y: -147, duration: 347 }}
-            in:fade={{ delay: 348 }}
-            on:click={() => setTheme('sunrise')}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-sunrise">
-              <path d="M17 18a5 5 0 0 0-10 0" />
-              <line x1="12" y1="2" x2="12" y2="9" />
-              <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
-              <line x1="1" y1="18" x2="3" y2="18" />
-              <line x1="21" y1="18" x2="23" y2="18" />
-              <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
-              <line x1="23" y1="22" x2="1" y2="22" />
-              <polyline points="8 6 12 2 16 6" />
-            </svg>
-          </button>
-        {/if}
-      </li>
-    </ul>
-  </aside>
-{/if}
+  {#if segment !== undefined && theme !== undefined}
+    <aside>
+      <ul>
+        <li>
+          {#if theme === 'sunrise'}
+            <button
+              role="presentation"
+              aria-label="sunrise"
+              out:fly={{ y: 147, duration: 347 }}
+              in:fade={{ delay: 348 }}
+              on:click={() => setTheme('sunset')}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-sunset">
+                <path d="M17 18a5 5 0 0 0-10 0" />
+                <line x1="12" y1="9" x2="12" y2="2" />
+                <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
+                <line x1="1" y1="18" x2="3" y2="18" />
+                <line x1="21" y1="18" x2="23" y2="18" />
+                <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
+                <line x1="23" y1="22" x2="1" y2="22" />
+                <polyline points="16 5 12 9 8 5" />
+              </svg>
+            </button>
+          {:else}
+            <button
+              role="presentation"
+              aria-label="sunset"
+              out:fly={{ y: -147, duration: 347 }}
+              in:fade={{ delay: 348 }}
+              on:click={() => setTheme('sunrise')}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-sunrise">
+                <path d="M17 18a5 5 0 0 0-10 0" />
+                <line x1="12" y1="2" x2="12" y2="9" />
+                <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
+                <line x1="1" y1="18" x2="3" y2="18" />
+                <line x1="21" y1="18" x2="23" y2="18" />
+                <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
+                <line x1="23" y1="22" x2="1" y2="22" />
+                <polyline points="8 6 12 2 16 6" />
+              </svg>
+            </button>
+          {/if}
+        </li>
+      </ul>
+    </aside>
+  {/if}
 
-<main>
-  <slot />
-</main>
+  <main>
+    <slot />
+  </main>
 
-{#if segment !== undefined}
-  <footer>
-    <div class="footer-social-links">
-      <div>Follow me on:</div>
-      <SocialLinks separator="&" />
-    </div>
-  </footer>
-{/if}
+  {#if segment !== undefined}
+    <footer>
+      <div class="footer-social-links">
+        <div>Follow me on:</div>
+        <SocialLinks separator="&" />
+      </div>
+    </footer>
+  {/if}
+</div>

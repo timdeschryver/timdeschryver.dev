@@ -1,14 +1,29 @@
 <script context="module">
-  export async function preload() {
-    const res = await this.fetch(`posts.json`)
-    if (res.ok) {
-      const posts = await res.json()
-      return {
-        posts: posts.filter(p => p.metadata.published),
-      }
-    }
+  import gql from 'graphql-tag'
+  import ApolloClient from 'apollo-boost'
 
-    this.error(404, 'Not found')
+  export async function preload() {
+    const client = new ApolloClient({
+      fetch: this.fetch,
+    })
+
+    const response = await client.query({
+      query: gql`
+        query {
+          posts(published: true) {
+            metadata {
+              publisher
+              publish_url
+              slug
+              title
+              description
+              date(displayAs: "human")
+            }
+          }
+        }
+      `,
+    })
+    return response.data
   }
 </script>
 
@@ -121,14 +136,8 @@
           </a>
         {/if}
       </h2>
-      <small>{post.metadata.dateFormat}</small>
+      <small>{post.metadata.date}</small>
       <p>{post.metadata.description}</p>
     </li>
   {/each}
 </ul>
-
-<a href="/sitemap.xml" style="display:none;visibility:hidden">sitemap</a>
-<a href="/rss.xml" style="display:none;visibility:hidden">rss feed</a>
-<a href="/posts/rss.xml" style="display:none;visibility:hidden">
-  posts rss feed
-</a>

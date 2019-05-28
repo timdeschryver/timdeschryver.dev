@@ -28,3 +28,5 @@
 <section class="intro">
   <SocialLinks />
 </section>
+
+<a href="links" style="display:none; visibility:hidden">hidden links</a>

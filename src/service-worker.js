@@ -46,7 +46,10 @@ self.addEventListener('fetch', event => {
   if (!url.protocol.startsWith('http')) {
     return
   }
-  if (url.hostname.includes('googletagmanager')) {
+  if (
+    url.hostname.includes('googletagmanager') ||
+    url.hostname.includes('google-analytics')
+  ) {
     return
   }
 

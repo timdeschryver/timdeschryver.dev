@@ -7,6 +7,14 @@
       "src": "package.json",
       "use": "@now/static-build",
       "config": { "distDir": "__sapper__/export" }
+    },
+    {
+      "src": "dist/lambda/server.js",
+      "use": "@now/node",
+      "config": {
+        "includeFiles": ["../../content/posts/**/*.md"]
+      }
     }
-  ]
+  ],
+  "routes": [{ "src": "/graphql", "dest": "dist/lambda/server.js" }]
 }

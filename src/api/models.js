@@ -1,6 +1,5 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs'
 import { join, extname, dirname } from 'path'
-import { format, differenceInDays, distanceInWordsToNow } from 'date-fns'
 import { extract_frontmatter } from '@sveltejs/site-kit/utils/markdown.js'
 import marked from 'marked'
 import PrismJS from 'prismjs'
@@ -107,13 +106,6 @@ export function posts() {
         { renderer },
       )
 
-      const date = new Date(metadata.date)
-      const diff = differenceInDays(new Date(), date)
-      const dateFormat =
-        diff <= 7
-          ? distanceInWordsToNow(date, new Date()) + ' ago'
-          : format(date, 'MMMM Do YYYY')
-
       const published = metadata.published === 'true'
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))
       const banner = join(process.env.BASE_PATH, assetsSrc, metadata.banner)
@@ -122,7 +114,13 @@ export function posts() {
 
       return {
         html,
-        metadata: { ...metadata, date, dateFormat, published, tags, banner },
+        metadata: {
+          ...metadata,
+          date: new Date(metadata.date),
+          published,
+          tags,
+          banner,
+        },
       }
     })
     .sort((a, b) => (a.metadata.date < b.metadata.date ? 1 : -1))

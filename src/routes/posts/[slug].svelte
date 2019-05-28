@@ -1,10 +1,35 @@
-<script context="module">  export async function preload({ params }) {
-    const res = await this.fetch(`posts/${params.slug}.json`)
-    if (res.ok) {
-      return { post: await res.json() }
-    }
+<script context="module">
+  import gql from 'graphql-tag'
+  import ApolloClient from 'apollo-boost'
 
-    this.error(404, 'Not found')
+  export async function preload({ params }) {
+    const client = new ApolloClient({
+      fetch: this.fetch,
+    })
+
+    const response = await client.query({
+      query: gql`
+        query($slug: String!) {
+          post(slug: $slug) {
+            html
+            metadata {
+              author
+              publisher
+              publish_url
+              title
+              description
+              banner
+              tags
+            }
+          }
+        }
+      `,
+      variables: {
+        slug: params.slug,
+      },
+    })
+
+    return response.data || this.error(404)
   }
 </script>
 
