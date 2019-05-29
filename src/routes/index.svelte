@@ -13,7 +13,7 @@
 
   :global(.intro a) {
     color: var(--text-color-50);
-    transition: all 200ms ease-in;
+    transition: all var(--transition-duration) ease-in;
     border-color: transparent;
   }
 

@@ -72,7 +72,7 @@
     color: var(--background-color);
     border: 1px solid;
     box-shadow: 2px 2px var(--prime-color-shadow);
-    transition: all 0.2s ease-in-out;
+    transition: all var(--transition-duration) ease-in-out;
     font-size: 1.5em;
   }
 

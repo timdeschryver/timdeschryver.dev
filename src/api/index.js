@@ -7,5 +7,36 @@ export const apolloServerConfig = {
   resolvers,
   context: { posts: posts() },
   introspection: true,
-  playground: true,
+  playground: {
+    settings: {},
+    tabs: [
+      {
+        endpoint: '/graphql',
+        name: 'All Posts',
+        query: `query {
+  posts(published: true) {
+    metadata {
+      title
+      description
+      author
+      slug
+      date(displayAs: "human")
+    }
+  }
+}`,
+      },
+      {
+        endpoint: '/graphql',
+        name: 'One Post',
+        query: `query {
+  post(slug: "start-using-ngrx-effects-for-this") {
+    html,
+    metadata {
+      author
+    }
+  }
+}`,
+      },
+    ],
+  },
 }
