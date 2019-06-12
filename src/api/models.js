@@ -64,7 +64,7 @@ export function posts() {
       }
 
       renderer.image = function(href, _title, text) {
-        const src = join(assetsSrc, href)
+        const src = href.startsWith('http') ? href : join(assetsSrc, href)
         return `<img src="${src}" alt="${text}" loading="lazy"/>`
       }
 

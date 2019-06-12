@@ -137,7 +137,7 @@ function posts() {
       };
 
       renderer.image = function(href, _title, text) {
-        const src = path.join(assetsSrc, href);
+        const src = href.startsWith('http') ? href : path.join(assetsSrc, href);
         return `<img src="${src}" alt="${text}" loading="lazy"/>`
       };
 
