@@ -45,14 +45,14 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    posts: (parent, { published }, { posts }) => {
+    posts: (_parent, { published }, { posts }) => {
       if (published === undefined) {
         return posts
       }
 
       return posts.filter(post => post.metadata.published === published)
     },
-    post: (parent, { slug }, { posts }) =>
+    post: (_parent, { slug }, { posts }) =>
       posts.find(post => post.metadata.slug === slug),
   },
 
@@ -79,6 +79,12 @@ const resolvers = {
         return dateFormatted
       }
       return metadata.date.toString()
+    },
+    canonical_url(metadata) {
+      return (
+        metadata.canonical_url ||
+        `https://timdeschryver.dev/posts/${metadata.slug}`
+      )
     },
   },
 };
