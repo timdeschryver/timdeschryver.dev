@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/common-and-easy-to-make-mistakes-when-youre-new-to-ngrx-49404ac973ea
+canonical_url: https://blog.angularindepth.com/common-and-easy-to-make-mistakes-when-youre-new-to-ngrx-49404ac973ea
 ---
 
 This post is aimed at newcomers to NgRx.
@@ -103,7 +103,9 @@ To trigger a state change, we have to invoke the fizzbuzz reducer. Because we ca
   `,
 })
 export class AppComponent implements OnInit {
-  fizzbuzzMessage: Observable<string> = this.store.pipe(select(state => state.fizzbuzz.message))
+  fizzbuzzMessage: Observable<string> = this.store.pipe(
+    select(state => state.fizzbuzz.message),
+  )
 
   constructor(private store: Store<State>) {}
 
@@ -165,7 +167,9 @@ export const getCounter = (state: State) => state.counter
 // selectors in reducers
 
 // First, select the fizzbuzz state from app state
-export const getFizzBuzzState = createFeatureSelector<fromFizzbuzz.State>('fizzbuzz')
+export const getFizzBuzzState = createFeatureSelector<fromFizzbuzz.State>(
+  'fizzbuzz',
+)
 
 // Second, wrap the getter inside a selector
 export const getCounter = createSelector(

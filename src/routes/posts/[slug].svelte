@@ -1,5 +1,4 @@
-<script context="module">
-  import gql from 'graphql-tag'
+<script context="module">  import gql from 'graphql-tag'
   import ApolloClient from 'apollo-boost'
 
   export async function preload({ params }) {
@@ -15,7 +14,7 @@
             metadata {
               author
               publisher
-              publish_url
+              canonical_url
               title
               description
               banner
@@ -45,12 +44,20 @@
   <meta name="copyright" content={post.metadata.author} />
   <meta name="description" content={post.metadata.description} />
   <meta name="keywords" content={post.metadata.tags.join(',')} />
+  <meta name="image" content={post.metadata.banner} />
+
+  {#if post.metadata.canonical_url}
+    <meta name="canonical" content={post.metadata.canonical_url} />
+  {/if}
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content={post.metadata.banner} />
   <meta name="twitter:title" content={post.metadata.title} />
   <meta name="twitter:description" content={post.metadata.description} />
 
+  <meta
+    name="og:url"
+    content={'https://timdeschryver.dev/posts/' + post.metadata.slug} />
   <meta name="og:title" content={post.metadata.title} />
   <meta name="og:description" content={post.metadata.description} />
   <meta name="og:type" content="article" />

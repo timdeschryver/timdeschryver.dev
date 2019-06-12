@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/lets-have-a-chat-about-actions-and-action-creators-within-ngrx-41277ecc739d
+canonical_url: https://blog.angularindepth.com/lets-have-a-chat-about-actions-and-action-creators-within-ngrx-41277ecc739d
 ---
 
 I think it’s time you and I talk a bit about action creators. But before we get into action creators let’s first start with actions, define what they are and why they are needed.
@@ -40,7 +40,10 @@ An example of an action with and without payload looks as follows:
 > Update 2019–04–05: Action Creators NgRx introduced Action Creators in version 7.4.0, allowing us to create a typed action by using createAction.
 >
 > ```ts
-> export const orderFood = createAction('[Order Page] ORDER FOOD', props<{ dish: string }>())
+> export const orderFood = createAction(
+>   '[Order Page] ORDER FOOD',
+>   props<{ dish: string }>(),
+> )
 > ```
 
 ````

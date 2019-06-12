@@ -8,7 +8,7 @@ tags: career, level-up, development, productivity
 banner: ./images/banner.jpg
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/jump-start-your-developer-career-with-these-13-tips-8003091eb30d
+canonical_url: https://blog.angularindepth.com/jump-start-your-developer-career-with-these-13-tips-8003091eb30d
 ---
 
 I believe that to become a better engineer it all comes down to practice, practice and more practice. Especially when you just started your career. The problem is that when you're just getting started, there is much more to it than just writing lines of code.

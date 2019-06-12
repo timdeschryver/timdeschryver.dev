@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Ryan Grewell](https://unsplash.com/@ryangrewell) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/ngrx-parameterized-selector-e3f610529f8
+canonical_url: https://blog.angularindepth.com/ngrx-parameterized-selector-e3f610529f8
 ---
 
 > How can I select an entity from the store by its id?
@@ -38,8 +38,12 @@ this.counter = this.store.pipe(select(fromRoot.getCount, { multiply: 2 }))
 Keep in mind that a selector is memoized, meaning it will cache the result from the last parameters. If you would re-use the above selector but with other another `props` value, it would clear the previous cache. If both selectors would be used at the same time, as in the example below, the selector would be invoked with every `props` value, thus the memoization would be more or less useless.
 
 ```ts
-this.counter2 = this.store.pipe(select(fromRoot.getCount, { id: 'counter2', multiply: 2 }))
-this.counter4 = this.store.pipe(select(fromRoot.getCount, { id: 'counter4', multiply: 4 }))
+this.counter2 = this.store.pipe(
+  select(fromRoot.getCount, { id: 'counter2', multiply: 2 }),
+)
+this.counter4 = this.store.pipe(
+  select(fromRoot.getCount, { id: 'counter4', multiply: 4 }),
+)
 ```
 
 Every time the counter value changes in the above example, the selector would be invoked 2 times, one time for `counter2`, the other time for `counter4`. To allow memoization we can use a factory function to create the selector.
@@ -55,8 +59,12 @@ export const getCount = () =>
 And in our component we can invoke the factory function `fromRoot.getCount()` to create a new selector instance for each counter, allowing each instance to have its own cache.
 
 ```ts
-this.counter2 = this.store.pipe(select(fromRoot.getCount(), { id: 'counter2', multiply: 2 }))
-this.counter4 = this.store.pipe(select(fromRoot.getCount(), { id: 'counter4', multiply: 4 }))
+this.counter2 = this.store.pipe(
+  select(fromRoot.getCount(), { id: 'counter2', multiply: 2 }),
+)
+this.counter4 = this.store.pipe(
+  select(fromRoot.getCount(), { id: 'counter4', multiply: 4 }),
+)
 ```
 
 ### Static parameter
@@ -149,7 +157,9 @@ this.customer = store.pipe(select(customers.getSelectedCustomer))
 Another possibility would be to use [@ngrx/router-store](https://github.com/ngrx/platform/blob/master/docs/router-store/README.md), this module connects the route with the store. In other words, all the route information will be available in the store thus also in the selectors. After installing the `ngrx/router-store` module and having it imported in our `AppModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters _(_`_customerId_` _in our case)._ Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, he or she would see the customer’s details of customer 47. The selector looks roughly the same:
 
 ```ts
-export const selectRouterState = createFeatureSelector<RouterReducerState>('router')
+export const selectRouterState = createFeatureSelector<RouterReducerState>(
+  'router',
+)
 
 export const selectRouteParameters = createSelector(
   selectRouterState,

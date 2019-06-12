@@ -8,7 +8,7 @@ banner: ./images/banner.jpg
 tags: TypeScript, TSLint, RxJS
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633
+canonical_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633
 ---
 
 After reading yet another twitter thread asking about the number of RxJS operators used in a project, I thought to myself that creating a small tool that does exactly this could be a fun little project.
@@ -108,7 +108,9 @@ If you took a close look at the walker implementation above, you already noticed
 ```ts
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    const failures = this.applyWithWalker(new OperatorCounterWalker(sourceFile, this.getOptions()))
+    const failures = this.applyWithWalker(
+      new OperatorCounterWalker(sourceFile, this.getOptions()),
+    )
 
     const hits = failures
       .map(failure => failure.getFailure())
@@ -191,7 +193,10 @@ console.log(green().underline(`Results: ${EOL}`))
 
 // sort the results based on the count and the operator name
 Object.entries(hits)
-  .sort(([key1, count1], [key2, count2]) => count2 - count1 || key1.localeCompare(key2))
+  .sort(
+    ([key1, count1], [key2, count2]) =>
+      count2 - count1 || key1.localeCompare(key2),
+  )
   .forEach(([key, count]) => console.log(green().bold(`${key}: ${count}`)))
 ```
 
@@ -259,7 +264,8 @@ As you can see, a TSQuery selector resembles a CSS selector. This makes queries 
 ```ts
 export class Rule extends Lint.Rules.AbstractRule {
   static ruleName = 'operator-counter'
-  static query = 'CallExpression[expression.name.name="pipe"] > CallExpression > Identifier'
+  static query =
+    'CallExpression[expression.name.name="pipe"] > CallExpression > Identifier'
 
   apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     const hits = tsquery(sourceFile, Rule.query, {
@@ -267,7 +273,13 @@ export class Rule extends Lint.Rules.AbstractRule {
     })
     return hits.map(
       (operator: ts.Identifier) =>
-        new Lint.RuleFailure(sourceFile, operator.getStart(), operator.getEnd(), operator.text, Rule.ruleName),
+        new Lint.RuleFailure(
+          sourceFile,
+          operator.getStart(),
+          operator.getEnd(),
+          operator.text,
+          Rule.ruleName,
+        ),
     )
   }
 }

@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Geran de Klerk](https://unsplash.com/@geran) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/how-i-test-my-ngrx-selectors-c50b1dc556bc
+canonical_url: https://blog.angularindepth.com/how-i-test-my-ngrx-selectors-c50b1dc556bc
 ---
 
 In this post I’m going to show you how I test my selectors by putting the selectors from a previous post [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer), where we created a small shopping cart application, under test. In the application there is a collection of products (the catalog) and the cart items, together they form the state of the application.
@@ -56,7 +56,9 @@ Because selectors are pure functions, it can use an optimization technique calle
 These are the selectors which are used in the shopping cart application:
 
 ```ts
-export const getCatalogState = createFeatureSelector<fromCatalog.State>('catalog')
+export const getCatalogState = createFeatureSelector<fromCatalog.State>(
+  'catalog',
+)
 export const getProducts = createSelector(
   getCatalogState,
   catalog => catalog.products,
@@ -108,7 +110,12 @@ I do still test the more complicated selectors, e.g. selectors with calculations
 Before we’re going to create the tests, let’s create some factory functions to set up our state in each test.
 
 ```ts
-const createProduct = ({ sku = '', name = '', image = '', price = 1 } = {}): Product => ({
+const createProduct = ({
+  sku = '',
+  name = '',
+  image = '',
+  price = 1,
+} = {}): Product => ({
   sku: sku,
   name: name || `name-${sku}`,
   price,
@@ -140,7 +147,10 @@ const createCartState = ({
   },
 })
 
-const createState = ({ catalog = createCatalogState(), cart = createCartState() } = {}): State => ({
+const createState = ({
+  catalog = createCatalogState(),
+  cart = createCartState(),
+} = {}): State => ({
   ...catalog,
   ...cart,
 })
@@ -264,7 +274,9 @@ testCases.forEach(({ name, state, selector }) => {
 The `getCartItems` snapshot looks like:
 
 ```ts
-exports[`getCartItems with input {"cart":{"cartItems":{"PRODUCT-AAA":3,"PRODUCT-CCC":0}}} 1`] = `  
+exports[
+  `getCartItems with input {"cart":{"cartItems":{"PRODUCT-AAA":3,"PRODUCT-CCC":0}}} 1`
+] = `  
 Object {  
   "PRODUCT-AAA": 3,  
   "PRODUCT-CCC": 0,  

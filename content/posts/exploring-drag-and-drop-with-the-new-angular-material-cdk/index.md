@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Maria Imelda](https://unsplash.com/@unleashed_) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
+canonical_url: https://blog.angularindepth.com/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
 ---
 
 I’ve heard that Angular Material had a new drag and drop CDK in their upcoming version. Now with the first Angular and Angular Material release candidate being released, I think it’s time to explore some of the new stuff. I’m really looking forward to this and I’m assuming you’re too, so let’s not waste any time and let’s get started. We’ll start of with a simple example and build our way up to a simple task board.
@@ -161,7 +161,13 @@ doneItems = ['Item 5', 'Item 6', 'Item 7']
 We need to display three separate lists and for each list we’ll create its own drop zone. We can bind the arrays to a drop zone by using the `cdkDropData` input.
 
 ```html
-<div cdkDrop #new="cdkDrop" [cdkDropData]="newItems" [cdkDropConnectedTo]="[active]" (cdkDropDropped)="dropped($event)">
+<div
+  cdkDrop
+  #new="cdkDrop"
+  [cdkDropData]="newItems"
+  [cdkDropConnectedTo]="[active]"
+  (cdkDropDropped)="dropped($event)"
+>
   <div *ngFor="let item of newItems" cdkDrag>{{ item }}</div>
 </div>
 ```

@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Will O](https://unsplash.com/@blnk_kanvas) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/working-with-angular-forms-in-an-enterprise-environment-8279df4ae6fd
+canonical_url: https://blog.angularindepth.com/working-with-angular-forms-in-an-enterprise-environment-8279df4ae6fd
 tweet_id: '1126070177098080256'
 ---
 

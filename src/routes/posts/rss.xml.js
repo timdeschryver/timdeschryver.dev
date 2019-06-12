@@ -51,6 +51,9 @@ ${response.data.posts
         <title><![CDATA[ ${post.metadata.title} ]]></title>
         <description><![CDATA[ ${post.metadata.description} ]]></description>
         <link>https://timdeschryver.dev/posts/${post.metadata.slug}</link>
+        <guid isPermaLink="false">https://timdeschryver.dev/posts/${
+          post.metadata.slug
+        }</guid>
         <pubDate>${post.metadata.date}</pubDate>
         <content:encoded>${post.html}></content:encoded>
       </item>

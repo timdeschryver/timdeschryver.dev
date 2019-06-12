@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Saffu](https://unsplash.com/@saffu) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/the-angular-devops-series-semantically-release-your-angular-library-7d78afb4c845
+canonical_url: https://blog.angularindepth.com/the-angular-devops-series-semantically-release-your-angular-library-7d78afb4c845
 ---
 
 Are you, like me, getting tired of releasing your Angular library manually? And how about keeping that CHANGELOG up to date? In this post I’m taking you along in my journey towards a fully automated process for my [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) library!

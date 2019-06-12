@@ -35,7 +35,7 @@ export const resolvers = {
             : format(metadata.date, 'MMMM Do YYYY')
         return dateFormatted
       }
-      return metadata.date
+      return metadata.date.toString()
     },
   },
 }

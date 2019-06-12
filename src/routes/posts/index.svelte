@@ -1,5 +1,4 @@
-<script context="module">
-  import gql from 'graphql-tag'
+<script context="module">  import gql from 'graphql-tag'
   import ApolloClient from 'apollo-boost'
 
   export async function preload() {
@@ -13,7 +12,7 @@
           posts(published: true) {
             metadata {
               publisher
-              publish_url
+              canonical_url
               slug
               title
               description
@@ -121,7 +120,7 @@
       <h2>
         {#if post.metadata.publisher}
           <a
-            href={post.metadata.publish_url}
+            href={post.metadata.canonical_url}
             data-publisher={post.metadata.publisher}>
              {post.metadata.title} - {post.metadata.publisher}
           </a>

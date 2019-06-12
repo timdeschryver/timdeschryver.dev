@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/simple-state-mutations-in-ngxs-with-immer-48b908874a5e
+canonical_url: https://blog.angularindepth.com/simple-state-mutations-in-ngxs-with-immer-48b908874a5e
 ---
 
 Recently I wrote [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!
@@ -98,7 +98,10 @@ export class CartState {
     ctx.patchState({
       cartItems: {
         ...state.cartItems,
-        [action.payload.sku]: Math.max((state.cartItems[action.payload.sku] || 0) - 1, 0),
+        [action.payload.sku]: Math.max(
+          (state.cartItems[action.payload.sku] || 0) - 1,
+          0,
+        ),
       },
     })
   }
@@ -126,7 +129,8 @@ export class CartState {
   addProduct(ctx: StateContext<CartStateModel>, action: AddToCart) {
     ctx.setState(
       produce(ctx.getState(), draft => {
-        draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
+        draft.cartItems[action.payload.sku] =
+          (draft.cartItems[action.payload.sku] || 0) + 1
       }),
     )
   }
@@ -157,7 +161,8 @@ The difference here is that we’re mutating the state directly, well to be hone
 Notice how easy it is to increment the current amount with Immer.
 
 ```ts
-draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
+draft.cartItems[action.payload.sku] =
+  (draft.cartItems[action.payload.sku] || 0) + 1
 ```
 
 And we can also delete a property (cart item) from our cart by using existing and known JavaScript functionality.
@@ -208,7 +213,8 @@ I also think it would be even more handy if we could do the following
 ```ts
 ctx.setState(
   produce(draft => {
-    draft.cartItems[action.payload.sku] = (draft.cartItems[action.payload.sku] || 0) + 1
+    draft.cartItems[action.payload.sku] =
+      (draft.cartItems[action.payload.sku] || 0) + 1
   }),
 )
 ```

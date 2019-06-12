@@ -39,7 +39,7 @@ const typeDefs = gql`
     bannerCredit: String
     published: Boolean
     publisher: String
-    publish_url: String
+    canonical_url: String
   }
 `;
 
@@ -78,7 +78,7 @@ const resolvers = {
             : dateFns.format(metadata.date, 'MMMM Do YYYY');
         return dateFormatted
       }
-      return metadata.date
+      return metadata.date.toString()
     },
   },
 };
