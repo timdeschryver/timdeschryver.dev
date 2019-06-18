@@ -1,7 +1,6 @@
 <script>
   import { afterUpdate, onMount } from 'svelte'
   import { fly, fade } from 'svelte/transition'
-  import SocialLinks from '../components/SocialLinks.svelte'
   export let segment
   let theme
 
@@ -82,9 +81,7 @@
 
   footer {
     border-top: 2px var(--prime-color) solid;
-  }
-
-  .footer-social-links {
+    flex-direction: row-reverse;
     font-weight: 900;
   }
 
@@ -95,6 +92,10 @@
     outline: none;
     cursor: pointer;
     margin: 0;
+  }
+
+  a.social-link {
+    border: none;
   }
 
   aside {
@@ -213,10 +214,9 @@
 
   {#if segment !== undefined}
     <footer>
-      <div class="footer-social-links">
-        <div>Follow me on:</div>
-        <SocialLinks separator="&" />
-      </div>
+      <a href="https://twitter.com/tim_deschryver" class="social-link">
+        @tim_deschryver
+      </a>
     </footer>
   {/if}
 </div>

@@ -1,5 +1,4 @@
 <script>
-  import SocialLinks from '../components/SocialLinks.svelte'
   import Head from '../components/Head.svelte'
 </script>
 
@@ -11,13 +10,13 @@
     margin-top: 25%;
   }
 
-  :global(.intro a) {
-    color: var(--text-color-50);
+  a.social-link {
     transition: all var(--transition-duration) ease-in;
     border-color: transparent;
+    color: var(--text-color-50);
   }
 
-  :global(.intro a):hover {
+  a.social-link:hover {
     color: var(--text-color);
     border-color: currentColor;
   }
@@ -26,7 +25,9 @@
 <Head title="Tim Deschryver" />
 
 <section class="intro">
-  <SocialLinks />
+  <a href="https://twitter.com/tim_deschryver" class="social-link">Twitter</a>
+  |
+  <a href="https://github.com/timdeschryver" class="social-link">GitHub</a>
 </section>
 
 <a href="links" style="display:none; visibility:hidden">hidden links</a>
