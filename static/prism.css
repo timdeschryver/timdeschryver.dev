@@ -15,7 +15,8 @@ code[class*='language-'] {
   color: #8fbcbb;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-family: 'VictorMono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
+    monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;

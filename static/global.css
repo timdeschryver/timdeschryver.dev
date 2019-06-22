@@ -1,3 +1,5 @@
+@import './fonts/VictorMono/font-face.css';
+
 :root {
   --content-width: 47rem;
   --text-font: 'Karla', sans-serif;
@@ -115,4 +117,8 @@ p {
 
 svg {
   stroke: var(--prime-color);
+}
+
+code {
+  font-family: 'VictorMono', Consolas;
 }

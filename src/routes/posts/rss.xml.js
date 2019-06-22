@@ -39,11 +39,14 @@ async function generate(baseUrl) {
 <title><![CDATA[ Tim Deschryver ]]></title>
 <description><![CDATA[ Posts written by Tim Deschryver ]]></description>
 <link>https://timdeschryver.dev/posts</link>
+<atom:link href="https://timdeschryver.dev/posts/rss.xml" rel="self" type="application/rss+xml"/>
 <image>
   <url>https://timdeschryver.dev/favicons/favicon-32x32.png</url>
   <title>Tim Deschryver</title>
   <link>https://timdeschryver.dev/posts</link>
 </image>
+<language>en-us</language>
+<lastBuildDate>${new Date()}</lastBuildDate>
 ${response.data.posts
   .map(
     post => `
