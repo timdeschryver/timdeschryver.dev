@@ -124,11 +124,6 @@
             data-publisher={post.metadata.publisher}>
              {post.metadata.title} - {post.metadata.publisher}
           </a>
-          <a
-            href="/posts/{post.metadata.slug}"
-            style="display:none;visibility:hidden">
-            keep
-          </a>
         {:else}
           <a rel="prefetch" href="/posts/{post.metadata.slug}">
              {post.metadata.title}

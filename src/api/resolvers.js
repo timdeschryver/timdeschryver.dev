@@ -3,7 +3,7 @@ import { format, differenceInDays, distanceInWordsToNow } from 'date-fns'
 export const resolvers = {
   Query: {
     posts: (_parent, { published }, { posts }) => {
-      if (published === undefined) {
+      if (published === null) {
         return posts
       }
 

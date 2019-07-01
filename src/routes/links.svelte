@@ -9,7 +9,7 @@
     const response = await client.query({
       query: gql`
         query {
-          posts(published: true) {
+          posts(published: null) {
             metadata {
               publisher
               canonical_url
@@ -30,8 +30,12 @@
   export let posts
 </script>
 
-<a href="/posts/rss.xml">RSS Feed</a>
-<a href="/sitemap.xml">Sitemap</a>
-{#each posts as post}
-  <a href="/posts/{post.metadata.slug}"> {post.metadata.title} </a>
-{/each}
+<ul>
+  <li><a href="/posts/rss.xml">RSS Feed</a></li>
+  <li><a href="/sitemap.xml">Sitemap</a></li>
+  {#each posts as post}
+  <li>
+    <a href="/posts/{post.metadata.slug}"> {post.metadata.title} </a>
+  </li>
+  {/each}
+</ul>

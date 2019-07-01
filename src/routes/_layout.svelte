@@ -60,7 +60,12 @@
     border-bottom: 2px var(--prime-color) solid;
   }
 
+  header h1 {
+    transition: all var(--transition-duration) ease-in-out;
+  }
+
   header a {
+    transition: all var(--transition-duration) ease-in-out;
     color: var(--text-color);
     border: none;
   }
@@ -125,7 +130,6 @@
   @media (max-width: 800px) {
     div:not([data-page='home']) h1 {
       transform: translateX(24px);
-      transition: all var(--transition-duration) ease-in-out;
       transition-delay: 111ms;
     }
   }
@@ -138,7 +142,7 @@
     </h1>
 
     <nav>
-      <a href="posts" class="nav-item">Posts</a>
+      <a rel="prefetch"  href="posts" class="nav-item">Posts</a>
     </nav>
   </header>
 
