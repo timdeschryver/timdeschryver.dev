@@ -37,6 +37,12 @@
   export let post
 </script>
 
+<style>
+:global(article li) {
+  list-style-type: initial;
+}
+</style>
+
 <svelte:head>
   <title>{post.metadata.title}</title>
 
