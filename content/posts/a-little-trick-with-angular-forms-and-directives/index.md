@@ -1,16 +1,20 @@
 ---
 title: A little trick with Angular forms and directives 🃏
 slug: a-little-trick-with-angular-forms-and-directives
-description: Imagine a procedure where a form gets more restrictive over time. How would you handle this? Can you keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)? We had this problem and came up with the following solution.
+description: Imagine having a form that you want to use at multiple places inside your application. The form will have the same layout but the validation will be different. In our case, this form is used in a procedure and in each step of the procedure the form gets more restrictive.s? Can you keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)? We had this problem and came up with the following solution.
 author: Tim Deschryver
-date: 2019-07-27T00:00:00.000Z
+date: 2019-07-29T16:28:00.000Z
 tags: Angular, Forms
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Julius Drost](https://unsplash.com/@juliusdrost) on [Unsplash](https://unsplash.com)
-published: false
+published: true
+publisher: Angular In Depth
+canonical_url: https://blog.angularindepth.com/a-little-trick-with-angular-forms-and-directives-137e2c53f25
 ---
 
-Imagine a procedure where a form gets more restrictive over time. How would you handle this? Can you keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)? We had this problem and came up with the following solution.
+Imagine having a form that you want to use at multiple places inside your application. The form will have the same layout but the validation will be different.
+
+In our case, this form is used in a multi-step procedure and in each step of the procedure the form gets more restrictive. Can you keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)? We had this problem and came up with the following solution.
 
 ### The form
 
@@ -94,7 +98,7 @@ To make this small example complete, this is how you would use the person compon
 <!-- Only the name is required -->
 <person></person>
 
-<!-- The name and the contactInfo is required -->
+<!-- The name and the contactInfo are required -->
 <person stage-one></person>
 
 <!-- All fields are required -->
