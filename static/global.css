@@ -1,8 +1,9 @@
 @import './fonts/VictorMono/font-face.css';
+@import './fonts/Inter/font-face.css';
 
 :root {
   --content-width: 47rem;
-  --text-font: 'Karla', sans-serif;
+  --text-font: 'Inter', sans-serif;
   --head-font: 'Comfortaa', cursive;
   --prime-color: rgba(239, 212, 3, 1);
   --prime-color-shadow: rgba(239, 212, 3, 0.7);
