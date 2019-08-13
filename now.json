@@ -12,7 +12,7 @@
       "src": "src/lambda/server.out.js",
       "use": "@now/node",
       "config": {
-        "includeFiles": ["../../content/posts/**/*.md"]
+        "includeFiles": ["posts/**/*.md"]
       }
     }
   ],

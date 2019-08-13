@@ -1,28 +1,10 @@
-<script context="module">  import gql from 'graphql-tag'
-  import ApolloClient from 'apollo-boost'
-
-  export async function preload() {
-    const client = new ApolloClient({
-      fetch: this.fetch,
-    })
-
-    const response = await client.query({
-      query: gql`
-        query {
-          posts(published: true) {
-            metadata {
-              publisher
-              canonical_url
-              slug
-              title
-              description
-              date(displayAs: "human")
-            }
-          }
-        }
-      `,
-    })
-    return response.data
+<script context="module">  export async function preload() {
+    const res = await this.fetch(`posts.json`)
+    if (res.ok) {
+      const { posts } = await res.json()
+      return { posts }
+    }
+    this.error(500, 'Something went wrong...')
   }
 </script>
 

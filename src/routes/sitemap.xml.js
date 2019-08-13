@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import ApolloClient from 'apollo-boost'
+import { client } from '../apollo-client'
 
 export async function get(req, res) {
   res.writeHead(200, {
@@ -7,17 +7,12 @@ export async function get(req, res) {
     'Content-Type': 'application/xml',
   })
 
-  const baseUrl = req ? `http://${req.headers['host']}` : ''
-  res.end(await generate(baseUrl))
+  const map = await generate(req)
+  res.end(map)
 }
 
-async function generate(baseUrl) {
-  const client = new ApolloClient({
-    fetch: require('node-fetch'),
-    uri: baseUrl + '/graphql',
-  })
-
-  const response = await client.query({
+async function generate(req) {
+  const response = await client(req).query({
     query: gql`
       query {
         posts(published: true) {
