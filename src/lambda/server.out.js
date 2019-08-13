@@ -7,7 +7,6 @@ var gql = _interopDefault(require('graphql-tag'));
 var dateFns = require('date-fns');
 var fs = require('fs');
 var path = require('path');
-var markdown_js = require('@sveltejs/site-kit/utils/markdown.js');
 var marked = _interopDefault(require('marked'));
 var PrismJS = _interopDefault(require('prismjs'));
 require('prismjs/components/prism-bash');
@@ -123,12 +122,28 @@ function getFiles(dir, extension) {
   return [].concat(...files)
 }
 
+function extractFrontmatter(markdown) {
+  const match = /---\r?\n([\s\S]+?)\r?\n---/.exec(markdown);
+  const frontMatter = match[1];
+  const content = markdown.slice(match[0].length);
+
+  const metadata = {};
+  frontMatter.split('\n').forEach(pair => {
+    const colonIndex = pair.indexOf(':');
+    metadata[pair.slice(0, colonIndex).trim()] = pair
+      .slice(colonIndex + 1)
+      .trim();
+  });
+
+  return { metadata, content }
+}
+
 function posts() {
   const files = getFiles('./content/posts', '.md');
   return files
     .map(file => {
       const markdown = fs.readFileSync(file, 'utf-8');
-      const { content, metadata } = markdown_js.extract_frontmatter(markdown);
+      const { content, metadata } = extractFrontmatter(markdown);
       const assetsSrc = path.dirname(file.replace('content', ''));
       const renderer = new marked.Renderer();
 

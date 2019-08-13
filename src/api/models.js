@@ -1,6 +1,5 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs'
 import { join, extname, dirname } from 'path'
-import { extract_frontmatter } from '@sveltejs/site-kit/utils/markdown.js'
 import marked from 'marked'
 import PrismJS from 'prismjs'
 import 'prismjs/components/prism-bash'
@@ -44,12 +43,28 @@ function getFiles(dir, extension) {
   return [].concat(...files)
 }
 
+function extractFrontmatter(markdown) {
+  const match = /---\r?\n([\s\S]+?)\r?\n---/.exec(markdown)
+  const frontMatter = match[1]
+  const content = markdown.slice(match[0].length)
+
+  const metadata = {}
+  frontMatter.split('\n').forEach(pair => {
+    const colonIndex = pair.indexOf(':')
+    metadata[pair.slice(0, colonIndex).trim()] = pair
+      .slice(colonIndex + 1)
+      .trim()
+  })
+
+  return { metadata, content }
+}
+
 export function posts() {
   const files = getFiles('./content/posts', '.md')
   return files
     .map(file => {
       const markdown = readFileSync(file, 'utf-8')
-      const { content, metadata } = extract_frontmatter(markdown)
+      const { content, metadata } = extractFrontmatter(markdown)
       const assetsSrc = dirname(file.replace('content', ''))
       const renderer = new marked.Renderer()
 

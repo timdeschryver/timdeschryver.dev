@@ -30,7 +30,6 @@ export default {
     'path',
     'fs',
     'marked',
-    '@sveltejs/site-kit/utils/markdown.js',
     'prismjs',
     'prismjs/components/prism-bash',
     'prismjs/components/prism-typescript',
