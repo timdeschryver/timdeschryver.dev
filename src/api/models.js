@@ -60,7 +60,7 @@ function extractFrontmatter(markdown) {
 }
 
 export function posts() {
-  const files = getFiles('./content/posts', '.md')
+  const files = getFiles(process.env.POSTS_PATH, '.md')
   return files
     .map(file => {
       const markdown = readFileSync(file, 'utf-8')

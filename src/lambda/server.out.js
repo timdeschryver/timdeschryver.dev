@@ -139,7 +139,7 @@ function extractFrontmatter(markdown) {
 }
 
 function posts() {
-  const files = getFiles('./content/posts', '.md');
+  const files = getFiles("../../posts", '.md');
   return files
     .map(file => {
       const markdown = fs.readFileSync(file, 'utf-8');

@@ -19,6 +19,7 @@ export default {
       'process.browser': false,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
+      'process.env.POSTS_PATH': JSON.stringify('../../posts'),
     }),
     json(),
     commonjs(),
