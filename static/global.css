@@ -5,8 +5,8 @@
   --content-width: 47rem;
   --text-font: 'Inter', sans-serif;
   --head-font: 'Comfortaa', cursive;
-  --prime-color: rgba(239, 212, 3, 1);
-  --prime-color-shadow: rgba(239, 212, 3, 0.7);
+  --prime-color: rgba(248, 196, 0, 1);
+  --prime-color-shadow: rgba(248, 196, 0, 0.7);
   --prime-color-text: rgba(0, 0, 0, 0.5);
   --link-color: var(--prime-color);
   --spacing: 1.5em;
