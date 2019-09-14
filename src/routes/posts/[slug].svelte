@@ -18,6 +18,12 @@
 :global(article li) {
   list-style-type: initial;
 }
+
+:global(iframe) {
+  width: 120%;
+  height: 600px;
+  margin-left: -10%;
+}
 </style>
 
 <svelte:head>
