@@ -19,6 +19,16 @@
   list-style-type: initial;
 }
 
+:global(h1 .anchor, h2 .anchor, h3 .anchor, h4 .anchor){
+  text-decoration: none;
+  color: inherit;
+  border: none;
+}
+
+:global(h1:hover .anchor::before, h2:hover .anchor::before, h3:hover .anchor::before, h4:hover .anchor::before){
+  content: '#';
+}
+
 :global(iframe) {
   width: 120%;
   height: 600px;
