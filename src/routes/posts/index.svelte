@@ -74,6 +74,16 @@
     color: var(--itnext-color-text);
   }
 
+  [data-publisher='Newline'] {
+    background-image: linear-gradient(
+      to right,
+      var(--newline-color),
+      var(--newline-color) 50%,
+      transparent 50%,
+      transparent
+    );
+  }
+
   li:not(:first-child) {
     margin-top: 3em;
   }

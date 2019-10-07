@@ -10,6 +10,10 @@
       href: 'https://itnext.io/',
       src: 'publishers/itnext_banner.png',
     },
+    ['Newline']: {
+      href: 'https://www.newline.co/',
+      src: 'publishers/newline_banner.png',
+    },
   }
 
   const details = publisherData[publisher]
@@ -31,12 +35,16 @@
   [data-publisher='ITNEXT'] {
     background: var(--itnext-color);
   }
+
+  [data-publisher='Newline'] {
+    background: var(--newline-color);
+  }
 </style>
 
 {#if publisher}
-  <div data-publisher={publisher}>
-    <a href={details.href}>
-      <img src={details.src} alt={publisher} />
-    </a>
-  </div>
+<div data-publisher="{publisher}">
+  <a href="{details.href}">
+    <img src="{details.src}" alt="{publisher}" />
+  </a>
+</div>
 {/if}

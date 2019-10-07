@@ -17,6 +17,9 @@
 
   --itnext-color: rgba(61, 121, 173, 1);
   --itnext-color-text: rgba(255, 255, 255, 0.5);
+
+  --newline-color: rgba(0, 255, 225, 0.26);
+  --newline-color-text: rgba(255, 255, 255, 0.5);
 }
 
 * {

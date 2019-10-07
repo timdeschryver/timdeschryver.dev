@@ -184,14 +184,13 @@ function posts() {
 
       renderer.heading = (text, level, rawtext) => {
         const fragment = slugify(rawtext);
+        const anchor = `posts/${metadata.slug}#${fragment}`;
 
         return `
-          <h${level}>
-            <span id="${fragment}" class="offset-anchor"></span>
-            <a href="posts/${
-              metadata.slug
-            }#${fragment}" class="anchor" aria-hidden="true"></a>
-            ${text}
+          <h${level} id="${fragment}">
+            <a href="${anchor}" class="anchor" aria-hidden="true">
+              ${text}
+            </a>
           </h${level}>`
       };
 
