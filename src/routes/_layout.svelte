@@ -153,6 +153,7 @@
           {#if theme === 'sunrise'}
             <button
               role="presentation"
+              title="Change theme to dark theme"
               aria-label="sunrise"
               out:fly={{ y: 147, duration: 347 }}
               in:fade={{ delay: 348 }}
@@ -181,6 +182,7 @@
           {:else}
             <button
               role="presentation"
+              title="Change theme to light theme"
               aria-label="sunset"
               out:fly={{ y: -147, duration: 347 }}
               in:fade={{ delay: 348 }}

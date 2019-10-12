@@ -1,5 +1,5 @@
-@import './fonts/VictorMono/font-face.css';
 @import './fonts/Inter/font-face.css';
+@import './fonts/Cascadia/font-face.css';
 
 :root {
   --content-width: 47rem;
@@ -61,6 +61,7 @@ body.sunrise {
   --text-color: #333;
   --text-color-50: #666;
   --text-color-70: #888;
+  --font-weight: 300;
 }
 
 body.sunset {
@@ -68,6 +69,7 @@ body.sunset {
   --text-color: #fff;
   --text-color-50: #eee;
   --text-color-70: #ccc;
+  --font-weight: 100;
 }
 
 ul {
@@ -104,6 +106,7 @@ a {
   color: var(--link-color);
   padding: 0 0 1px 0;
   border-bottom: 1px solid currentColor;
+  font-weight: initial;
 }
 
 blockquote {
@@ -113,6 +116,13 @@ blockquote {
 
 p {
   cursor: default;
+}
+
+p,
+ul {
+  font-weight: var(--font-weight);
+  transition-property: font-weight;
+  transition-delay: var(--transition-duration);
 }
 
 ::selection {
@@ -125,5 +135,5 @@ svg {
 }
 
 code {
-  font-family: 'VictorMono', Consolas;
+  font-family: 'Cascadia';
 }
