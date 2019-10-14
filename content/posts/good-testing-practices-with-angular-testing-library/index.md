@@ -9,7 +9,6 @@ banner: ./images/banner.jpeg
 bannerCredit: Photo by [Liudmyla Denysiuk](https://unsplash.com/@hedgehog90) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Newline
-canonical_url: https://www.newline.co/@timdeschryver/good-testing-practices-with-angular-testing-library--7ecb6210
 ---
 
 [`Angular Testing Library`](https://testing-library.com/docs/angular-testing-library/intro) provides utility functions to interact with Angular components, in the same way as a user would. This brings more maintainability to our tests, gives us more confidence that our component does what it's supposed to do, and it improves the accessibility which is better for our users. All these benefits, plus you'll see that it's fun to write tests in this way.

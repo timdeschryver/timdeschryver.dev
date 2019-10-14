@@ -8,7 +8,6 @@
   --prime-color: rgba(248, 196, 0, 1);
   --prime-color-shadow: rgba(248, 196, 0, 0.7);
   --prime-color-text: rgba(0, 0, 0, 0.5);
-  --link-color: var(--prime-color);
   --spacing: 1.5em;
   --transition-duration: 347ms;
 
@@ -103,10 +102,9 @@ h4 {
 
 a {
   text-decoration: none;
-  color: var(--link-color);
+  color: var(--prime-color);
   padding: 0 0 1px 0;
-  border-bottom: 1px solid currentColor;
-  font-weight: initial;
+  border-bottom: 3px solid currentColor;
 }
 
 blockquote {
@@ -116,13 +114,6 @@ blockquote {
 
 p {
   cursor: default;
-}
-
-p,
-ul {
-  font-weight: var(--font-weight);
-  transition-property: font-weight;
-  transition-delay: var(--transition-duration);
 }
 
 ::selection {

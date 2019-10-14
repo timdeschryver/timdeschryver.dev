@@ -34,6 +34,19 @@
   height: 600px;
   margin-left: -10%;
 }
+
+:global(.post p, .post ul) {
+  font-weight: var(--font-weight);
+  transition-property: font-weight;
+  transition-delay: var(--transition-duration);
+}
+
+
+:global(.post a) {
+  color: inherit;
+  border-bottom-color: var(--prime-color)
+}
+
 </style>
 
 <svelte:head>
