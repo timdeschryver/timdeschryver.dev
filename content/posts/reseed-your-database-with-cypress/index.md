@@ -5,7 +5,7 @@ description: By using a Cypress task it's possible to run code JavaScript code i
 author: Tim Deschryver
 date: 2019-10-14T08:00:00.000Z
 tags: Cypress, Testing
-banner: ./images/banner.jpg
+banner: ./images/banner.jpeg
 bannerCredit: Photo by [Francesco Gallarotti](https://unsplash.com/@gallarotti) on [Unsplash](https://unsplash.com)
 published: true
 ---
