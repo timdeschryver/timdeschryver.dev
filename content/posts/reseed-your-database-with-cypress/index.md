@@ -39,7 +39,7 @@ We can listen to tasks when we bind the `task` event inside the `plugins/index.j
 To register multiple tasks, we pass an object of our tasks as parameter.
 The property names are used to execute the task later on in our tests, and the value must be a `Promise` wherein the task logic lives.
 
-```ts
+```ts{3-10}:plugins/index.js
 module.exports = on => {
   on('task', {
     'db:teardown': () => {
@@ -62,7 +62,7 @@ To run the task we can use the `cy.task(taskName)` method.
 In our case, we want to reseed the database before running each test.
 Therefore, we use the `beforeEach` hook inside the `support/index.js` file.
 
-```ts
+```ts:support/index.js
 beforeEach(() => {
   cy.task('db:teardown')
   cy.task('db:seed')
@@ -76,7 +76,7 @@ For most of the cases this will be enough, but for the cases that are taking lon
 
 To change it at a global level, change the default timeout inside `cypress.json`.
 
-```json
+```json:cypress.json
 {
   "defaultCommandTimeout": 120000
 }

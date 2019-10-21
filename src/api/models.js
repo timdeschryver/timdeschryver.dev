@@ -1,7 +1,7 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs'
 import { join, extname, dirname } from 'path'
 import marked from 'marked'
-import PrismJS from 'prismjs'
+import highlightCode from 'gatsby-remark-prismjs/highlight-code'
 import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/components/prism-json'
@@ -84,19 +84,49 @@ export function posts() {
       }
 
       renderer.code = (source, lang) => {
-        const plang = langs[lang || 'txt']
-        if (!plang) {
-          console.warn('did not found a language for: ' + lang)
+        lang = lang || 'txt'
+
+        const lineIndex = lang.indexOf('{')
+        const fileIndex = lang.indexOf(':')
+
+        const language =
+          lineIndex !== -1 || fileIndex !== -1
+            ? lang
+                .substring(
+                  0,
+                  Math.min(...[lineIndex, fileIndex].filter(i => i !== -1)),
+                )
+                .trim()
+            : lang
+        const prismLanguage = langs[language]
+        const file =
+          fileIndex !== -1 ? lang.substr(lang.indexOf(':') + 1).trim() : ''
+
+        const lineNumberRegExp = /{([^}]+)}/g
+        const linesHighlight = []
+        let curMatch
+        while ((curMatch = lineNumberRegExp.exec(lang))) {
+          let [min, max] = curMatch[1].split('-').map(Number)
+          max = max || min
+          while (min <= max) {
+            linesHighlight.push(min++)
+          }
+        }
+
+        if (!prismLanguage) {
+          console.warn('did not found a language for: ' + language)
           return `<pre class='language-text'><code>${source}</code></pre>`
         }
 
-        const highlighted = PrismJS.highlight(
+        const highlighted = highlightCode(
+          prismLanguage,
           source,
-          PrismJS.languages[plang],
-          lang,
-        )
+          linesHighlight,
+        ).replace(/gatsby-highlight-code-line/g, 'line-highlight')
 
-        return `<pre class='language-${plang}'><code>${highlighted}</code></pre>`
+        const codeBlock = `<code>${highlighted}</code>`
+        const fileBlock = file ? `<div class="file">${file}</div>` : ''
+        return `<pre class='language-${prismLanguage}'>${codeBlock}${fileBlock}</pre>`
       }
 
       renderer.codespan = source => {

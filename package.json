@@ -36,12 +36,15 @@
     "apollo-server-express": "^2.6.3",
     "apollo-server-micro": "^2.6.3",
     "compression": "^1.7.1",
+    "gatsby-remark-prismjs": "^3.3.20",
+    "gatsby-transformer-remark": "^2.6.30",
     "glob": "^7.1.4",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",
     "marked": "^0.6.2",
     "polka": "^0.5.0",
     "prismjs": "^1.16.0",
+    "remark": "^11.0.1",
     "sirv": "^0.4.0"
   },
   "devDependencies": {

@@ -17,6 +17,7 @@ code[class*='language-'] {
   text-shadow: none;
   font-family: 'Cascadia', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
     monospace;
+  position: relative;
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -94,7 +95,6 @@ pre[class*='language-'] {
 .language-css .token.string,
 .style .token.string {
   color: var(--prime-color);
-  background: #2e3440;
 }
 .token.atrule,
 .token.attr-value,
@@ -130,15 +130,20 @@ pre[class*='language-'] > code[class*='language-'] {
   z-index: 1;
 }
 .line-highlight {
+  background: rgba(255, 255, 255, 0.1);
+  display: block;
+  margin: 0px -1em;
+  padding: 0px 0.5em;
+  border-left: 0.5em solid rgba(0, 0, 0, 0.5);
+}
+/*********************************************************
+* File positioning
+*/
+.file {
   position: absolute;
-  left: 0;
+  top: 0;
   right: 0;
-  padding: inherit 0;
-  margin-top: 1em;
-  background: #434c5e 52;
-  box-shadow: inset 5px 0 0 #434c5e 52;
-  z-index: 0;
-  pointer-events: none;
-  line-height: inherit;
-  white-space: pre;
+  padding: 0.2em;
+  margin: 0;
+  border: 1px solid;
 }
