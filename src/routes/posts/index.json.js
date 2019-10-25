@@ -8,7 +8,7 @@ export async function get(req, res) {
         posts(published: true) {
           metadata {
             publisher
-            canonical_url
+            publish_url
             slug
             title
             description

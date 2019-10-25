@@ -98,10 +98,6 @@
     color: var(--text-color-70);
     transition: color var(--transition-duration) ease-in-out;
   }
-
-  h2 {
-    font-weight: normal;
-  }
 </style>
 
 <Head title="Posts" />
@@ -112,7 +108,7 @@
       <h2>
         {#if post.metadata.publisher}
           <a
-            href={post.metadata.canonical_url}
+            href={post.metadata.publish_url}
             data-publisher={post.metadata.publisher}>
              {post.metadata.title} - {post.metadata.publisher}
           </a>

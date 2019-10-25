@@ -10,6 +10,7 @@ bannerCredit: Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on [Uns
 published: true
 publisher: Angular In Depth
 canonical_url: https://blog.angularindepth.com/simple-state-mutations-in-ngxs-with-immer-48b908874a5e
+publish_url: https://blog.angularindepth.com/simple-state-mutations-in-ngxs-with-immer-48b908874a5e
 ---
 
 Recently I wrote [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!

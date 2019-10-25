@@ -10,6 +10,7 @@ bannerCredit: Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on [Unsp
 published: true
 publisher: Angular In Depth
 canonical_url: https://blog.angularindepth.com/lets-have-a-chat-about-actions-and-action-creators-within-ngrx-41277ecc739d
+publish_url: https://blog.angularindepth.com/lets-have-a-chat-about-actions-and-action-creators-within-ngrx-41277ecc739d
 ---
 
 I think it’s time you and I talk a bit about action creators. But before we get into action creators let’s first start with actions, define what they are and why they are needed.

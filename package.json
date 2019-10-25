@@ -19,7 +19,7 @@
     }
   },
   "lint-staged": {
-    "*.{svelte,js,md}": [
+    "*.{svelte,js}": [
       "eslint --fix",
       "git add"
     ],

@@ -3,7 +3,7 @@ title: Don't miss out on css variables
 slug: do-not-miss-out-on-css-variables
 published: true
 description: At first when I heard of css variables, I was a bit skeptical. Why would anyone use it if there are extension languages as scss, sass, less and stylus. After several years, I stated to notice more and more peoples using it, writing about it and talking about it. I was missing out on something... After a while of using it, I was hooked.
-tags: webdev, css, javascript
+tags: webdev, css, javascript, css variables
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Andrew Neel](https://unsplash.com/@andrewtneel) on [Unsplash](https://unsplash.com)
 author: Tim Deschryver

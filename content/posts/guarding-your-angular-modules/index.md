@@ -4,12 +4,12 @@ slug: guarding-your-angular-modules
 description: A lot of Angular modules need to be imported with a static forRoot() function, via this function it allows us to configure the module. But sometimes we make the mistake to use the forRoot function more than once throughout an application. We might not notice it when this happens but often it is the cause of unexpected behavior, which is sadly hard to debug. In this post, we'll look into a solution.
 author: Tim Deschryver
 date: 2019-09-16T12:00:00.000Z
-tags: Angular, Module
+tags: Angular, forRoot, NgModule, Module
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Roméo A.](https://unsplash.com/@gronemo) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/guarding-your-angular-modules-f5f71ed0b06b
+publish_url: https://blog.angularindepth.com/guarding-your-angular-modules-f5f71ed0b06b
 ---
 
 A lot of Angular modules need to be imported with a static `forRoot()` function, via this function it allows us to configure the module.

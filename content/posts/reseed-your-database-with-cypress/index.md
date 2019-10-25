@@ -4,7 +4,7 @@ slug: reseed-your-database-with-cypress
 description: By using a Cypress task it's possible to run code JavaScript code in Node.js. We can leverage this API to reseed a database with data we're in control of. Having control over the data allows us to write specific and isolated scenarios to run tests against.
 author: Tim Deschryver
 date: 2019-10-14T08:00:00.000Z
-tags: Cypress, Testing
+tags: Cypress, Testing, Reseed, Database
 banner: ./images/banner.jpeg
 bannerCredit: Photo by [Francesco Gallarotti](https://unsplash.com/@gallarotti) on [Unsplash](https://unsplash.com)
 published: true

@@ -10,6 +10,7 @@ bannerCredit: Photo by [Geran de Klerk](https://unsplash.com/@geran) on [Unsplas
 published: true
 publisher: Angular In Depth
 canonical_url: https://blog.angularindepth.com/how-i-test-my-ngrx-selectors-c50b1dc556bc
+publish_url: https://blog.angularindepth.com/how-i-test-my-ngrx-selectors-c50b1dc556bc
 ---
 
 In this post I’m going to show you how I test my selectors by putting the selectors from a previous post [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer), where we created a small shopping cart application, under test. In the application there is a collection of products (the catalog) and the cart items, together they form the state of the application.

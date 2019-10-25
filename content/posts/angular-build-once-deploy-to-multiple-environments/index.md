@@ -4,12 +4,12 @@ slug: angular-build-once-deploy-to-multiple-environments
 description: In our quest to build a twelve-factor app where we build once and deploy to multiple environment we encountered some problems, but we managed to solve them. Read here how we did it.
 author: Tim Deschryver
 date: 2019-05-20T13:00:00.000Z
-tags: Angular, DevOps, CI/CD
+tags: Angular, DevOps, CI/CD, Build
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Chau Cédric](https://unsplash.com/@an_ku_sh) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/angular-build-once-deploy-to-multiple-environments-5466f00e5402
+publish_url: https://blog.angularindepth.com/angular-build-once-deploy-to-multiple-environments-5466f00e5402
 ---
 
 ### [The twelve-factor app](https://12factor.net/)
