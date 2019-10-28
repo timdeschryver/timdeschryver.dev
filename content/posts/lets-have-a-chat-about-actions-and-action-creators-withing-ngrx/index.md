@@ -105,8 +105,8 @@ If we just create the action object from the constructor’s input, we can short
 
 ```ts
 class OrderFood implements Action {
-  readonly type = OrderActionTypes.ORDER_FOOD;
-  constructor(_readonly_ payload: { dish: string }) {}
+  readonly type = OrderActionTypes.ORDER_FOOD
+  constructor(readonly payload: { dish: string }) {}
 }
 ```
 
