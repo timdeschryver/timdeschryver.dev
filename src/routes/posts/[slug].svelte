@@ -19,32 +19,43 @@
   list-style-type: initial;
 }
 
-:global(h1 .anchor, h2 .anchor, h3 .anchor, h4 .anchor){
+:global(article h1 .anchor, article h2 .anchor, article h3 .anchor, article h4 .anchor, article h5 .anchor){
   text-decoration: none;
   color: inherit;
   border: none;
 }
 
-:global(h1:hover .anchor::before, h2:hover .anchor::before, h3:hover .anchor::before, h4:hover .anchor::before){
+:global(article h1:hover .anchor::before, article h2:hover .anchor::before, article h3:hover .anchor::before, article h4:hover .anchor::before, article h5:hover .anchor::before){
   content: '#';
 }
 
-:global(iframe) {
+:global(article iframe) {
   width: 120%;
   height: 600px;
   margin-left: -10%;
 }
 
-:global(.post p, .post ul) {
+:global(article p, article ul) {
   font-weight: var(--font-weight);
   transition-property: font-weight;
   transition-delay: var(--transition-duration);
 }
 
+:global(article table) {
+  width: 100%;
+}
 
-:global(.post a) {
+:global(article th, article td) {
+  text-align: left;
+}
+
+:global(article a) {
   color: inherit;
   border-bottom-color: var(--prime-color)
+}
+
+:global(article h3 + *, article h4 + *, article h5 + *) {
+    margin-top: calc(var(--spacing) / 2);
 }
 
 </style>
@@ -73,7 +84,7 @@
   <meta name="og:image" content={post.metadata.banner} />
 </svelte:head>
 
-<article class="post">
+<article>
   <Banner publisher={post.metadata.publisher} />
   <h2>{post.metadata.title}</h2>
   {@html post.html}

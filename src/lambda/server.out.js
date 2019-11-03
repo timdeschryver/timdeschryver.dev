@@ -70,15 +70,9 @@ const resolvers = {
   },
   PostMetadata: {
     date(metadata, { displayAs }) {
-      if (displayAs === 'human') {
-        const diff = dateFns.differenceInDays(new Date(), metadata.date);
-        const dateFormatted =
-          diff <= 7
-            ? dateFns.distanceInWordsToNow(metadata.date, new Date()) + ' ago'
-            : dateFns.format(metadata.date, 'MMMM Do YYYY');
-        return dateFormatted
-      }
-      return metadata.date.toString()
+      return displayAs === 'human'
+        ? dateFns.format(metadata.date, 'MMMM Do YYYY')
+        : metadata.date.toString()
     },
     canonical_url(metadata) {
       return (
@@ -149,13 +143,14 @@ function posts() {
       const renderer = new marked.Renderer();
 
       renderer.link = (href, title, text) => {
-        let title_attr = '';
+        const href_attr = `href="${href}"`;
+        const title_attr = title ? `title="${title}"` : '';
+        const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : '';
+        const attributes = [href_attr, title_attr, prefetch_attr]
+          .filter(Boolean)
+          .join(' ');
 
-        if (title !== null) {
-          title_attr = ` title="${title}"`;
-        }
-
-        return `<a href="${href}"${title_attr}>${text}</a>`
+        return `<a ${attributes}>${text}</a>`
       };
 
       renderer.image = function(href, _title, text) {
@@ -186,11 +181,14 @@ function posts() {
         const linesHighlight = [];
         let curMatch;
         while ((curMatch = lineNumberRegExp.exec(lang))) {
-          let [min, max] = curMatch[1].split('-').map(Number);
-          max = max || min;
-          while (min <= max) {
-            linesHighlight.push(min++);
-          }
+          let parts = curMatch[1].split(',');
+          parts.forEach(p => {
+            let [min, max] = p.split('-').map(Number);
+            max = max || min;
+            while (min <= max) {
+              linesHighlight.push(min++);
+            }
+          });
         }
 
         if (!prismLanguage) {
@@ -214,13 +212,22 @@ function posts() {
       };
 
       renderer.heading = (text, level, rawtext) => {
-        const fragment = slugify(rawtext);
+        const anchorRegExp = /{([^}]+)}/g;
+
+        const anchorOverwrite = anchorRegExp.exec(rawtext);
+        const fragment = anchorOverwrite
+          ? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
+          : slugify(rawtext);
         const anchor = `posts/${metadata.slug}#${fragment}`;
 
         return `
           <h${level} id="${fragment}">
             <a href="${anchor}" class="anchor" aria-hidden="true">
-              ${text}
+              ${
+                text.includes('{')
+                  ? text.substring(0, text.indexOf('{') - 1)
+                  : text
+              }
             </a>
           </h${level}>`
       };

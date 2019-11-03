@@ -1,4 +1,4 @@
-import { format, differenceInDays, distanceInWordsToNow } from 'date-fns'
+import { format } from 'date-fns'
 
 export const resolvers = {
   Query: {
@@ -27,15 +27,9 @@ export const resolvers = {
   },
   PostMetadata: {
     date(metadata, { displayAs }) {
-      if (displayAs === 'human') {
-        const diff = differenceInDays(new Date(), metadata.date)
-        const dateFormatted =
-          diff <= 7
-            ? distanceInWordsToNow(metadata.date, new Date()) + ' ago'
-            : format(metadata.date, 'MMMM Do YYYY')
-        return dateFormatted
-      }
-      return metadata.date.toString()
+      return displayAs === 'human'
+        ? format(metadata.date, 'MMMM Do YYYY')
+        : metadata.date.toString()
     },
     canonical_url(metadata) {
       return (

@@ -41,7 +41,7 @@
   }
 </style>
 
-{#if publisher}
+{#if publisher && details}
 <div data-publisher="{publisher}">
   <a href="{details.href}">
     <img src="{details.src}" alt="{publisher}" />
