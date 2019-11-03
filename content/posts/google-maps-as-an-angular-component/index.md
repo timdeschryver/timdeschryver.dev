@@ -1,7 +1,7 @@
 ---
 title: Google Maps is now an Angular component
 slug: google-maps-as-an-angular-component
-description: The pearl-lullaby (v9.0.0-rc.0) introduces the second official @angular/component component, a Google Maps component. In this post, we take a look at getting started with the Google Maps component.
+description: The Angular Component pearl-lullaby (v9.0.0-rc.0) release introduces the second official @angular/component component, a Google Maps component. In this post, we take a look at getting started with the Google Maps component.
 author: Tim Deschryver
 date: 2019-11-03T13:45:00.000Z
 tags: Angular, Material, Component, Google Maps
@@ -10,7 +10,7 @@ bannerCredit: Photo by [Capturing the human heart.](https://unsplash.com/@dead__
 published: true
 ---
 
-The [pearl-lullaby (v9.0.0-rc.0)](https://github.com/angular/components/releases/tag/9.0.0-rc.0) introduces the second official `@angular/component` component, a Google Maps component.
+The new Angular Component [pearl-lullaby (v9.0.0-rc.0)](https://github.com/angular/components/releases/tag/9.0.0-rc.0) introduces the second official `@angular/component` component, a Google Maps component.
 In this post, we take a look at getting with the Google Maps component.
 
 > Earlier this year, we changed the name of this repo to "angular/components" to emphasize our goal
@@ -343,8 +343,8 @@ We bind the `mapClick()` method to the marker and pass the marker reference to t
 </map-marker>
 ```
 
-Finally, we also have a reference to the `MapInfoWindow` component inside our component.
-We can do this by using the [`@ViewChild`](https://angular.io/api/core/ViewChild) decorator.
+Finally, we also have to add a reference to the `MapInfoWindow` component inside our component,
+we can do this by using the [`@ViewChild`](https://angular.io/api/core/ViewChild) decorator.
 By having the reference to the info window and the marker, we can open the info window by using the `infoWindow.open()` method.
 
 ```ts{2, 5}
@@ -375,7 +375,7 @@ export class AppComponent implements OnInit {
 
 #### Methods and getters {#info-window-mehods}
 
-By using the `infoWindow` property, that has a reference to the `MapInfoWindow` component we can make use of its following methods and getters
+By using the `infoWindow` property, that has a reference to the `MapInfoWindow` component we can make use of its following methods and getters:
 
 | Property      | Description                                                                                                                                                    |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
