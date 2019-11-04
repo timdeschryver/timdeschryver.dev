@@ -11,7 +11,7 @@ published: true
 ---
 
 The new Angular Component [pearl-lullaby (v9.0.0-rc.0)](https://github.com/angular/components/releases/tag/9.0.0-rc.0) introduces the second official `@angular/component` component, a Google Maps component.
-In this post, we take a look at getting with the Google Maps component.
+In this post, we take a look at getting started with the Google Maps component.
 
 > Earlier this year, we changed the name of this repo to "angular/components" to emphasize our goal
 > to provide more than Material Design components. The 9.0.0 release includes one of the next new
@@ -21,7 +21,7 @@ I'm really looking forward to the team broadening up the repository to create co
 We already saw a [`YouTube Player` component](https://github.com/angular/components/tree/master/src/youtube-player) in [v8.2.0](https://github.com/angular/components/releases/tag/8.2.0), which is explored in [Craig](https://twitter.com/phenomnominal)'s [article](https://dev.to/phenomnominal/the-new-angular-youtube-player-component-2cn6).
 
 These new integrations with existing JavaScript APIs are making it easier for us to do our jobs,
-and I'm curious in other new components that will be released in the upcoming versions!
+and I'm curious about the other new components that will be released in the upcoming versions!
 
 ### Setup
 

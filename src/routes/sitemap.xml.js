@@ -35,19 +35,20 @@ async function generate(req) {
     <url>
       <loc>https://timdeschryver.dev</loc>
       <priority>1.0</priority>
+      <changefreq>daily</changefreq>
       ${lastMod}
     </url>
     <url>
       <loc>https://timdeschryver.dev/posts</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.64</priority>
+      <changefreq>daily</changefreq>
+      <priority>0.6</priority>
       ${lastMod}
     </url>
     ${response.data.posts
       .map(
         post => `<url>
           <loc>https://timdeschryver.dev/posts/${post.metadata.slug}</loc>
-          <changefreq>weekly</changefreq>
+          <changefreq>daily</changefreq>
           <priority>0.8</priority>
           ${lastMod}
         </url>`,
