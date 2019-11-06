@@ -65,6 +65,7 @@
 
   <meta name="author" content={post.metadata.author} />
   <meta name="copyright" content={post.metadata.author} />
+  <meta name="title" content={post.metadata.title} />
   <meta name="description" content={post.metadata.description} />
   <meta name="keywords" content={post.metadata.tags.join(',')} />
   <meta name="image" content={post.metadata.banner} />
