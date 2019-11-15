@@ -36,7 +36,7 @@ code[class*='language-']::selection,
 pre[class*='language-']::mozselection,
 code[class*='language-']::mozselection {
   text-shadow: none;
-  background: #2e3440;
+  background: var(--background-color-code);
 }
 @media print {
   pre[class*='language-'],
@@ -47,14 +47,15 @@ code[class*='language-']::mozselection {
 pre[class*='language-'] {
   padding: 1em;
   margin: 0.5em 0;
+  border-radius: 0.3em;
   overflow: auto;
-  background: #2e3440;
+  background: var(--background-color-code);
 }
 :not(pre) > code[class*='language-'] {
   padding: 0.1em 0.3em;
   border-radius: 0.3em;
-  color: #d8dee9;
-  background: #2e3440;
+  color: var(--text-color);
+  background: var(--background-color-code);
 }
 /*********************************************************
 * Tokens
@@ -129,11 +130,11 @@ pre[class*='language-'] > code[class*='language-'] {
   z-index: 1;
 }
 .line-highlight {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 0, 0.1);
   display: block;
   margin: 0px -1em;
   padding: 0px 0.5em;
-  border-left: 0.5em solid rgba(0, 0, 0, 0.5);
+  border-left: 0.5em solid rgba(0, 0, 0, 0.2);
 }
 /*********************************************************
 * File positioning
@@ -144,5 +145,7 @@ pre[class*='language-'] > code[class*='language-'] {
   right: 0;
   padding: 0.2em;
   margin: 0;
-  border: 1px solid;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  border-radius: 0.3em;
 }

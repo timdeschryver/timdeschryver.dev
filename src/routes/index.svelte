@@ -13,7 +13,7 @@
   a.social-link {
     transition: all var(--transition-duration) ease-in;
     border-color: transparent;
-    color: var(--text-color-50);
+    color: var(--text-color);
   }
 
   a.social-link:hover {

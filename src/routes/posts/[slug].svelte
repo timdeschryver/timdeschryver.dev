@@ -41,6 +41,10 @@
   transition-delay: var(--transition-duration);
 }
 
+:global(article code) {
+  transition: all var(--transition-duration) ease-in-out;
+}
+
 :global(article table) {
   width: 100%;
 }
