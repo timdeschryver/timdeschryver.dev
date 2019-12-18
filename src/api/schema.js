@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Query {
     posts(published: Boolean): [Post]
     post(slug: String): Post
+    snippets: [Snippet]
   }
 
   type Post {
@@ -24,5 +25,16 @@ export const typeDefs = gql`
     publisher: String
     publish_url: String
     canonical_url: String
+  }
+
+  type Snippet {
+    html(htmlEntities: Boolean = false): String
+    metadata: SnippetMetadata
+  }
+
+  type SnippetMetadata {
+    title: String
+    date(displayAs: String): String
+    tags: [String]
   }
 `

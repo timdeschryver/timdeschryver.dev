@@ -106,6 +106,7 @@ h5 {
   line-height: 1.2;
   font-family: var(--head-font);
   cursor: default;
+  letter-spacing: 0.033em;
 }
 
 a {
@@ -139,4 +140,14 @@ code {
 
 .no-margin {
   margin: 0;
+}
+
+.anchor {
+  text-decoration: none;
+  color: inherit;
+  border: none;
+}
+
+.anchor:hover::before {
+  content: '#';
 }

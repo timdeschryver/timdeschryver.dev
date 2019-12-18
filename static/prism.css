@@ -46,7 +46,6 @@ code[class*='language-']::mozselection {
 }
 pre[class*='language-'] {
   padding: 1em;
-  margin: 0.5em 0;
   border-radius: 0.3em;
   overflow: auto;
   background: var(--background-color-code);

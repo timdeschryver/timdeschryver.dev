@@ -110,11 +110,11 @@
           <a
             href={post.metadata.publish_url}
             data-publisher={post.metadata.publisher}>
-             {post.metadata.title} - {post.metadata.publisher}
+            {post.metadata.title} - {post.metadata.publisher}
           </a>
         {:else}
           <a rel="prefetch" href="/posts/{post.metadata.slug}">
-             {post.metadata.title}
+            {post.metadata.title}
           </a>
         {/if}
       </h2>

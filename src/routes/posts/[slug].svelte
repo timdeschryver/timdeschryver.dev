@@ -15,53 +15,42 @@
 </script>
 
 <style>
-:global(article li) {
-  list-style-type: initial;
-}
+  :global(article li) {
+    list-style-type: initial;
+  }
 
-:global(article h1 .anchor, article h2 .anchor, article h3 .anchor, article h4 .anchor, article h5 .anchor){
-  text-decoration: none;
-  color: inherit;
-  border: none;
-}
+  :global(article iframe) {
+    width: 120%;
+    height: 600px;
+    margin-left: -10%;
+  }
 
-:global(article h1:hover .anchor::before, article h2:hover .anchor::before, article h3:hover .anchor::before, article h4:hover .anchor::before, article h5:hover .anchor::before){
-  content: '#';
-}
+  :global(article p, article ul) {
+    font-weight: var(--font-weight);
+    transition-property: font-weight;
+    transition-delay: var(--transition-duration);
+  }
 
-:global(article iframe) {
-  width: 120%;
-  height: 600px;
-  margin-left: -10%;
-}
+  :global(article code) {
+    transition: all var(--transition-duration) ease-in-out;
+  }
 
-:global(article p, article ul) {
-  font-weight: var(--font-weight);
-  transition-property: font-weight;
-  transition-delay: var(--transition-duration);
-}
+  :global(article table) {
+    width: 100%;
+  }
 
-:global(article code) {
-  transition: all var(--transition-duration) ease-in-out;
-}
+  :global(article th, article td) {
+    text-align: left;
+  }
 
-:global(article table) {
-  width: 100%;
-}
+  :global(article a) {
+    color: inherit;
+    border-bottom-color: var(--prime-color);
+  }
 
-:global(article th, article td) {
-  text-align: left;
-}
-
-:global(article a) {
-  color: inherit;
-  border-bottom-color: var(--prime-color)
-}
-
-:global(article h3 + *, article h4 + *, article h5 + *) {
+  :global(article h3 + *, article h4 + *, article h5 + *) {
     margin-top: calc(var(--spacing) / 2);
-}
-
+  }
 </style>
 
 <svelte:head>

@@ -1,11 +1,11 @@
 import { typeDefs } from './schema'
 import { resolvers } from './resolvers'
-import { posts } from './models'
+import { posts, snippets } from './models'
 
 export const apolloServerConfig = {
   typeDefs,
   resolvers,
-  context: { posts: posts() },
+  context: { posts: posts(), snippets: snippets() },
   introspection: true,
   playground: {
     settings: {},
