@@ -123,7 +123,7 @@
 
   @media (max-width: 850px) {
     aside ul {
-      transform: translateY(-59px);
+      transform: translateY(-48px);
       position: absolute;
     }
   }

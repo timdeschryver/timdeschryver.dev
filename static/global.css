@@ -109,6 +109,10 @@ h5 {
   letter-spacing: 0.033em;
 }
 
+h1 {
+  letter-spacing: 0em;
+}
+
 a {
   text-decoration: none;
   color: var(--prime-color);
