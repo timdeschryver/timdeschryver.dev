@@ -140,7 +140,7 @@ function parseFileToHtmlAndMeta(file, anchorPrefix) {
 
     const codeBlock = `<code>${highlighted}</code>`
     const fileBlock = file ? `<div class="file">${file}</div>` : ''
-    return `<pre class='language-${prismLanguage}'>${codeBlock}${fileBlock}</pre>`
+    return `${fileBlock}<pre class='language-${prismLanguage}'>${codeBlock}</pre>`
   }
 
   renderer.codespan = source => {

@@ -30,6 +30,7 @@ code[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  border: 1px solid;
 }
 pre[class*='language-']::selection,
 code[class*='language-']::selection,
@@ -46,7 +47,6 @@ code[class*='language-']::mozselection {
 }
 pre[class*='language-'] {
   padding: 1em;
-  border-radius: 0.3em;
   overflow: auto;
   background: var(--background-color-code);
 }
@@ -139,12 +139,19 @@ pre[class*='language-'] > code[class*='language-'] {
 * File positioning
 */
 .file {
-  position: absolute;
+  border: 1px solid;
+  text-align: right;
+  padding: 0.2em 0.4em;
+  color: #8fbcbb;
+  /* position: absolute;
   top: 0;
   right: 0;
   padding: 0.2em;
   margin: 0;
-  border-bottom: 1px solid;
   border-left: 1px solid;
-  border-radius: 0.3em;
+  border-radius: 0.3em; */
+}
+
+.file + pre {
+  margin-top: 0;
 }
