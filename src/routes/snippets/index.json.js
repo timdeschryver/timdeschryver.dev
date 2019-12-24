@@ -9,7 +9,9 @@ export async function get(req, res) {
           html
           metadata {
             title
+            slug
             tags
+            image
           }
         }
       }

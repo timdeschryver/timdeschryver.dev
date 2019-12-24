@@ -10,9 +10,23 @@
 /*********************************************************
 * General
 */
+
+body.sunrise pre[class*='language-'],
+body.sunset code[class*='language-'] {
+  --background-color-code: #fafafa;
+}
+
+body.sunset pre[class*='language-'],
+body.sunset code[class*='language-'] {
+  --background-color-code: #333;
+}
+
 pre[class*='language-'],
 code[class*='language-'] {
-  color: #8fbcbb;
+  --code-color: rgba(143, 188, 187, 1);
+  --code-color-bg: rgba(143, 188, 187, 0.2);
+
+  color: var(--code-color);
   text-shadow: none;
   font-family: 'Cascadia', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
     monospace;
@@ -46,9 +60,14 @@ code[class*='language-']::mozselection {
   }
 }
 pre[class*='language-'] {
-  padding: 1em;
   overflow: auto;
   background: var(--background-color-code);
+}
+pre > code {
+  width: 100%;
+  padding: 1em;
+  display: block;
+  margin-top: 0;
 }
 :not(pre) > code[class*='language-'] {
   padding: 0.1em 0.3em;
@@ -118,6 +137,21 @@ pre[class*='language-'] {
 .token.entity {
   cursor: help;
 }
+
+pre.language-markup .token {
+  color: var(--prime-color-shadow);
+}
+pre.language-markup .token.tag {
+  color: var(--prime-color);
+}
+pre.language-markup .token.attr-value {
+  color: var(--code-color);
+}
+pre.language-json .token.property,
+pre.language-json .token.operator,
+pre.language-json .token.token.punctuation {
+  color: var(--code-color);
+}
 /*********************************************************
 * Line highlighting
 */
@@ -139,19 +173,9 @@ pre[class*='language-'] > code[class*='language-'] {
 * File positioning
 */
 .file {
-  border: 1px solid;
+  border-bottom: 2px solid;
   text-align: right;
   padding: 0.2em 0.4em;
-  color: #8fbcbb;
-  /* position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.2em;
-  margin: 0;
-  border-left: 1px solid;
-  border-radius: 0.3em; */
-}
-
-.file + pre {
-  margin-top: 0;
+  color: var(--code-color);
+  background: var(--code-color-bg);
 }

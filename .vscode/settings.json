@@ -1,0 +1,10 @@
+{
+  "filewatcher.commands": [
+    {
+      "match": "\\.md",
+      "isAsync": true,
+      "cmd": "touch ${workspaceRoot}/src/api/index.js",
+      "event": "onFileChange"
+    }
+  ]
+}

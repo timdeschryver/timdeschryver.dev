@@ -2,7 +2,7 @@
 @import './fonts/Cascadia/font-face.css';
 
 :root {
-  --content-width: 47rem;
+  --content-width: 52rem;
   --text-font: 'Inter', sans-serif;
   --head-font: 'Comfortaa', cursive;
   --prime-color: rgba(248, 196, 0, 1);
@@ -57,7 +57,6 @@ body {
 
 body.sunrise {
   --background-color: #fbfaf7;
-  --background-color-code: #fff9ea;
   --text-color: #252525;
   --text-color-50: #555;
   --text-color-70: #888;
@@ -66,7 +65,6 @@ body.sunrise {
 
 body.sunset {
   --background-color: #252525;
-  --background-color-code: #333;
   --text-color: #fbfaf7;
   --text-color-50: #ddd;
   --text-color-70: #bbb;
@@ -110,7 +108,7 @@ h5 {
 }
 
 h1 {
-  letter-spacing: 0em;
+  letter-spacing: -0.0047em;
 }
 
 a {

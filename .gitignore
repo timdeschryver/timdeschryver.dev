@@ -38,3 +38,4 @@ src/.temp
 
 /__sapper__/
 static/posts
+static/snippets

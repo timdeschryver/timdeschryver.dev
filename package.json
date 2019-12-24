@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",
-    "preexport": "rm -rf static/posts && copyfiles \"content/posts/**\" static -u 1",
+    "preexport": "npm run export:posts && npm run export:snippets",
     "export": "sapper export --legacy",
+    "export:posts": "rm -rf static/posts && copyfiles \"content/posts/**\" static -u 1",
+    "export:snippets": "rm -rf static/snippets && copyfiles \"content/snippets/**\" static -u 1",
     "export:lambda": "rollup -c rollup.lambda.config.js",
     "start": "node __sapper__/build",
     "test": "run-p --race dev cy:run",
@@ -15,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run export && lint-staged && npm run export:lambda"
+      "pre-commit": "npm run export && npm run export:lambda  && lint-staged"
     }
   },
   "lint-staged": {
@@ -73,8 +75,8 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-svelte": "^5.0.1",
     "rollup-plugin-terser": "^4.0.4",
-    "sapper": "^0.26",
-    "svelte": "^3.0.0"
+    "sapper": "^0.27.9",
+    "svelte": "^3.6.9"
   },
   "license": "MIT"
 }

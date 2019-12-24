@@ -34,6 +34,8 @@ export const typeDefs = gql`
 
   type SnippetMetadata {
     title: String
+    slug: String
+    image: String
     date(displayAs: String): String
     tags: [String]
   }

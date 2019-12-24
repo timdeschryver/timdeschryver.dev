@@ -42,7 +42,7 @@
     margin-left: auto;
     margin-right: auto;
     max-width: var(--content-width);
-    padding: 0.75em 1.3125em;
+    padding: 0.75em 1.047em;
   }
 
   header,
@@ -75,7 +75,7 @@
     padding: 2px 4px;
     color: var(--background-color);
     border: 1px solid;
-    border-radius: .3rem;
+    border-radius: 0.3rem;
     box-shadow: 2px 2px var(--prime-color-shadow);
     transition: all var(--transition-duration) ease-in-out;
     font-size: 1.5em;
@@ -105,7 +105,7 @@
   }
 
   aside {
-    max-width: calc(var(--content-width) + 13rem);
+    max-width: calc(var(--content-width) + 8rem);
     margin: auto;
   }
 
@@ -115,20 +115,20 @@
     transition: all var(--transition-duration) ease-in-out;
   }
 
-  @media (max-width: 1050px) {
+  @media (max-width: 1100px) {
     aside ul {
       margin-left: 10px;
     }
   }
 
-  @media (max-width: 850px) {
+  @media (max-width: 925px) {
     aside ul {
       transform: translateY(-48px);
       position: absolute;
     }
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 880px) {
     div:not([data-page='home']) h1 {
       transform: translateX(24px);
       transition-delay: 111ms;
@@ -143,7 +143,7 @@
     </h1>
 
     <nav>
-      <a rel="prefetch"  href="posts" class="nav-item">Posts</a>
+      <a rel="prefetch" href="posts" class="nav-item">Posts</a>
     </nav>
   </header>
 

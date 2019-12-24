@@ -100,7 +100,7 @@
   }
 </style>
 
-<Head title="Posts" />
+<Head title="Posts - Tim Deschryver" />
 
 <ul>
   {#each posts as post}

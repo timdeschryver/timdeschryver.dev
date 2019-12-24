@@ -28,7 +28,15 @@ export function posts() {
     .map(file => {
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(
         file,
-        (_level, metadata) => `posts/${metadata.slug}`,
+        (_level, metadata, text) => {
+          const anchorRegExp = /{([^}]+)}/g
+          const anchorOverwrite = anchorRegExp.exec(text)
+          const fragment = anchorOverwrite
+            ? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
+            : slugify(text)
+
+          return { anchor: `posts/${metadata.slug}#${fragment}`, fragment }
+        },
       )
 
       const published = metadata.published === 'true'
@@ -55,10 +63,20 @@ export function snippets() {
   const files = getFiles(process.env.SNIPPETS_PATH, '.md')
   return files
     .map(file => {
-      const { html, metadata } = parseFileToHtmlAndMeta(file, level =>
-        level == 2 ? `snippets` : '',
+      const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(
+        file,
+        (level, metadata) =>
+          level == 2
+            ? {
+                anchor: `snippets/${metadata.slug}`,
+                fragment: metadata.slug,
+              }
+            : {},
       )
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))
+      const image = join(process.env.BASE_PATH, assetsSrc, metadata.image)
+        .replace(/\\/g, '/')
+        .replace('/', '//')
 
       return {
         html,
@@ -66,13 +84,14 @@ export function snippets() {
           ...metadata,
           date: new Date(metadata.date),
           tags,
+          image,
         },
       }
     })
     .sort(sortByDate)
 }
 
-function parseFileToHtmlAndMeta(file, anchorPrefix) {
+function parseFileToHtmlAndMeta(file, anchorAndFragment) {
   const markdown = readFileSync(file, 'utf-8')
   const { content, metadata } = extractFrontmatter(markdown)
   const assetsSrc = dirname(file.replace('content', ''))
@@ -140,7 +159,7 @@ function parseFileToHtmlAndMeta(file, anchorPrefix) {
 
     const codeBlock = `<code>${highlighted}</code>`
     const fileBlock = file ? `<div class="file">${file}</div>` : ''
-    return `${fileBlock}<pre class='language-${prismLanguage}'>${codeBlock}</pre>`
+    return `<pre class='language-${prismLanguage}'>${fileBlock}${codeBlock}</pre>`
   }
 
   renderer.codespan = source => {
@@ -152,17 +171,10 @@ function parseFileToHtmlAndMeta(file, anchorPrefix) {
       ? text.substring(0, text.indexOf('{') - 1)
       : text
 
-    const anchorStart = anchorPrefix(level, metadata)
-    if (!anchorStart) {
+    const { anchor, fragment } = anchorAndFragment(level, metadata, rawtext)
+    if (!anchor) {
       return `<h${level}>${headingText}</h${level}>`
     }
-
-    const anchorRegExp = /{([^}]+)}/g
-    const anchorOverwrite = anchorRegExp.exec(rawtext)
-    const fragment = anchorOverwrite
-      ? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
-      : slugify(rawtext)
-    const anchor = `${anchorStart}#${fragment}`
 
     return `
       <h${level} id="${fragment}">
