@@ -379,7 +379,7 @@ const apolloServerConfig = {
     settings: {},
     tabs: [
       {
-        endpoint: '/graphql',
+        endpoint: '/api/graphql',
         name: 'All Posts',
         query: `query {
   posts(published: true) {
@@ -394,7 +394,7 @@ const apolloServerConfig = {
 }`,
       },
       {
-        endpoint: '/graphql',
+        endpoint: '/api/graphql',
         name: 'One Post',
         query: `query {
   post(slug: "start-using-ngrx-effects-for-this") {
@@ -411,4 +411,4 @@ const apolloServerConfig = {
 
 const server = new apolloServerMicro.ApolloServer(apolloServerConfig)
 
-module.exports = server.createHandler()
+module.exports = server.createHandler({ path: '/api/graphql' })
