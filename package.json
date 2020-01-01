@@ -8,8 +8,8 @@
     "prebuild": "npm run copy:blog && npm run copy:snippets",
     "build": "sapper export --legacy",
     "build:lambda": "rollup -c rollup.lambda.config.js",
-    "copy:blog": "rm -rf static/blog && copyfiles \"content/blog/**\" static -u 1 && rm -rf api/content/blog && copyfiles \"content/blog/**\" api",
-    "copy:snippets": "rm -rf static/snippets && copyfiles \"content/snippets/**\" static -u 1  && rm -rf api/content/snippets && copyfiles \"content/snippets/**\" api",
+    "copy:blog": "rm -rf static/blog && copyfiles \"content/blog/**\" static -u 1i",
+    "copy:snippets": "rm -rf static/snippets && copyfiles \"content/snippets/**\" static -u 1",
     "start": "node __sapper__/build",
     "test": "run-p --race dev cy:run"
   },
