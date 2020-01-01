@@ -37,6 +37,7 @@ src/.temp
 ## Sapper
 
 /__sapper__/
+api/content
 static/posts
 static/blog
 static/snippets
