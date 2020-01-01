@@ -19,7 +19,7 @@ export default {
       'process.browser': false,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
-      'process.env.BLOG_PATH': JSON.stringify('../../posts'),
+      'process.env.BLOG_PATH': JSON.stringify('../../blog'),
       'process.env.SNIPPETS_PATH': JSON.stringify('../../snippets'),
     }),
     json(),

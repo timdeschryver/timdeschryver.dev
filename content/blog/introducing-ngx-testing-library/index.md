@@ -47,9 +47,12 @@ Let’s take a look how this looks like if we were testing a simple counter comp
 ```ts
 it('should increment and decrement', async () => {
   // setup the test via the template syntax
-  const { getByText, getByTestId, click } = await createComponent('<counter [counter]="10"></counter>', {
-    declarations: [CounterComponent],
-  })
+  const { getByText, getByTestId, click } = await createComponent(
+    '<counter [counter]="10"></counter>',
+    {
+      declarations: [CounterComponent],
+    },
+  )
 
   // or via the component type
   const { getByText, getByTestId, click } = await createComponent(
@@ -89,7 +92,13 @@ test('login form submits', async () => {
     emit: jest.fn(),
   }
 
-  const { container, getByLabelText, getByText, input, submit } = await createComponent(
+  const {
+    container,
+    getByLabelText,
+    getByText,
+    input,
+    submit,
+  } = await createComponent(
     {
       component: LoginFormComponent,
       parameters: {

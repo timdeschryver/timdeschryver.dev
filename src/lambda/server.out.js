@@ -126,7 +126,7 @@ const langs = {
 };
 
 function posts() {
-  const files = getFiles("../../posts", '.md');
+  const files = getFiles("../../blog", '.md');
   return files
     .map(file => {
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
