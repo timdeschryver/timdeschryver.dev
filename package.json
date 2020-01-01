@@ -11,8 +11,7 @@
     "copy:posts": "rm -rf static/posts && copyfiles \"content/posts/**\" static -u 1",
     "copy:snippets": "rm -rf static/snippets && copyfiles \"content/snippets/**\" static -u 1",
     "start": "node __sapper__/build",
-    "test": "run-p --race dev cy:run",
-    "now-build": "npm run export"
+    "test": "run-p --race dev cy:run"
   },
   "husky": {
     "hooks": {
