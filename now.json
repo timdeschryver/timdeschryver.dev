@@ -6,9 +6,6 @@
   "functions": {
     "api/graphql.js": {
       "includeFiles": "content/**/*.md"
-    },
-    "src/api/graphql-function.js": {
-      "includeFiles": "content/**/*.md"
     }
   }
 }
