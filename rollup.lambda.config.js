@@ -11,7 +11,7 @@ require('dotenv-extended').load({
 export default {
   input: './src/lambda/server.js',
   output: {
-    file: './src/lambda/server.out.js',
+    file: './api/graphql.js',
     format: 'cjs',
   },
   plugins: [
@@ -19,8 +19,8 @@ export default {
       'process.browser': false,
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
-      'process.env.BLOG_PATH': JSON.stringify('../../blog'),
-      'process.env.SNIPPETS_PATH': JSON.stringify('../../snippets'),
+      'process.env.BLOG_PATH': JSON.stringify('../content/blog'),
+      'process.env.SNIPPETS_PATH': JSON.stringify('../content/snippets'),
     }),
     json(),
     commonjs(),
