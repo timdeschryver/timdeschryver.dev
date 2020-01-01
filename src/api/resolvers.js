@@ -25,7 +25,7 @@ export const resolvers = {
     canonical_url(metadata) {
       return (
         metadata.canonical_url ||
-        `https://timdeschryver.dev/posts/${metadata.slug}`
+        `https://timdeschryver.dev/blog/${metadata.slug}`
       )
     },
   },

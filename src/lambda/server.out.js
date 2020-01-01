@@ -82,7 +82,7 @@ const resolvers = {
     canonical_url(metadata) {
       return (
         metadata.canonical_url ||
-        `https://timdeschryver.dev/posts/${metadata.slug}`
+        `https://timdeschryver.dev/blog/${metadata.slug}`
       )
     },
   },
@@ -129,18 +129,17 @@ function posts() {
   const files = getFiles("../../posts", '.md');
   return files
     .map(file => {
-      const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(
-        file,
-        (_level, metadata, text) => {
+      const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
+        createAnchorAndFragment: (_level, metadata, text) => {
           const anchorRegExp = /{([^}]+)}/g;
           const anchorOverwrite = anchorRegExp.exec(text);
           const fragment = anchorOverwrite
             ? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
             : slugify(text);
 
-          return { anchor: `posts/${metadata.slug}#${fragment}`, fragment }
+          return { anchor: `blog/${metadata.slug}#${fragment}`, fragment }
         },
-      );
+      });
 
       const published = metadata.published === 'true';
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p));
@@ -166,16 +165,22 @@ function snippets() {
   const files = getFiles("../../snippets", '.md');
   return files
     .map(file => {
-      const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(
-        file,
-        (level, metadata) =>
+      const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
+        createAnchorAndFragment: (level, metadata) =>
           level == 2
             ? {
                 anchor: `snippets/${metadata.slug}`,
                 fragment: metadata.slug,
               }
             : {},
-      );
+        createHeadingParts: metadata => {
+          return [
+            metadata.image
+              ? `<a href="snippets/${metadata.image}" download>Download</a>`
+              : '',
+          ]
+        },
+      });
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p));
       const image = path.join("https://timdeschryver.dev", assetsSrc, metadata.image)
         .replace(/\\/g, '/')
@@ -194,7 +199,10 @@ function snippets() {
     .sort(sortByDate)
 }
 
-function parseFileToHtmlAndMeta(file, anchorAndFragment) {
+function parseFileToHtmlAndMeta(
+  file,
+  { createAnchorAndFragment = () => {}, createHeadingParts = () => [] },
+) {
   const markdown = fs.readFileSync(file, 'utf-8');
   const { content, metadata } = extractFrontmatter(markdown);
   const assetsSrc = path.dirname(file.replace('content', ''));
@@ -261,8 +269,11 @@ function parseFileToHtmlAndMeta(file, anchorAndFragment) {
     ).replace(/gatsby-highlight-code-line/g, 'line-highlight');
 
     const codeBlock = `<code>${highlighted}</code>`;
-    const fileBlock = file ? `<div class="file">${file}</div>` : '';
-    return `<pre class='language-${prismLanguage}'>${fileBlock}${codeBlock}</pre>`
+    const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean);
+    const heading = headingParts.length
+      ? `<div class="code-heading">${headingParts.join(' ')}</div>`
+      : '';
+    return `<pre class='language-${prismLanguage}'>${heading}${codeBlock}</pre>`
   };
 
   renderer.codespan = source => {
@@ -274,7 +285,11 @@ function parseFileToHtmlAndMeta(file, anchorAndFragment) {
       ? text.substring(0, text.indexOf('{') - 1)
       : text;
 
-    const { anchor, fragment } = anchorAndFragment(level, metadata, rawtext);
+    const { anchor, fragment } = createAnchorAndFragment(
+      level,
+      metadata,
+      rawtext,
+    );
     if (!anchor) {
       return `<h${level}>${headingText}</h${level}>`
     }

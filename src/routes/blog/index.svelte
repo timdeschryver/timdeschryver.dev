@@ -1,5 +1,5 @@
 <script context="module">  export async function preload() {
-    const res = await this.fetch(`posts.json`)
+    const res = await this.fetch(`blog.json`)
     if (res.ok) {
       const { posts } = await res.json()
       return { posts }
@@ -100,7 +100,7 @@
   }
 </style>
 
-<Head title="Posts - Tim Deschryver" />
+<Head title="Blog - Tim Deschryver" />
 
 <ul>
   {#each posts as post}
@@ -113,7 +113,7 @@
             {post.metadata.title} - {post.metadata.publisher}
           </a>
         {:else}
-          <a rel="prefetch" href="/posts/{post.metadata.slug}">
+          <a rel="prefetch" href="/blog/{post.metadata.slug}">
             {post.metadata.title}
           </a>
         {/if}

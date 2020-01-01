@@ -416,7 +416,7 @@ export class AppComponent implements OnInit {
 The upcoming version of Angular brings us a whole range of positive changes and new possibilities.
 We were already looking forward to the Ivy release in Angular v9, but now we'll also look forward to the new release of `@angular/components`.
 
-Besides the new `MapComponent` there will also be an integration with the Clipboard API within the Angular CDK, as explored in [Use the new Angular Clipboard CDK to interact with the clipboard](/posts/use-the-new-angular-clipboard-cdk-to-interact-with-the-clipboard).
+Besides the new `MapComponent` there will also be an integration with the Clipboard API within the Angular CDK, as explored in [Use the new Angular Clipboard CDK to interact with the clipboard](./blog/use-the-new-angular-clipboard-cdk-to-interact-with-the-clipboard).
 
 The Angular component is very new, that's why the documentation and example code is minimal.
 Because the Angular implementation follows the Google Maps API specs, we can take a look at the [rich documentation](https://developers.google.com/maps/documentation/javascript/tutorial) from the JavaScript API.

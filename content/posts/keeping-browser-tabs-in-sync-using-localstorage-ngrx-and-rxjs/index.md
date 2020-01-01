@@ -17,7 +17,7 @@ In this post, we’re going to take a look at how we can keep our application st
 
 There are two ways of syncing state that I know of. One of them is to send the actions from one tab to another tab, the other is to send the (partial) state from one tab to another tab. While both of these ways have very similar implementations, they both shine in their own way.
 
-As a starting point, we’re going to pick up where we left off in a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./posts/lets-have-a-chat-about-actions-and-action-creators-within-ngrx) where we created a simple grocery list.
+As a starting point, we’re going to pick up where we left off in a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./blog/lets-have-a-chat-about-actions-and-action-creators-within-ngrx) where we created a simple grocery list.
 
 ### Syncing state by sending actions from one tab to another tab
 

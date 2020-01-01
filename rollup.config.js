@@ -79,7 +79,7 @@ export default {
           process.env.GA_TRACKING_ID,
         ),
         'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
-        'process.env.POSTS_PATH': JSON.stringify('./content/posts'),
+        'process.env.BLOG_PATH': JSON.stringify('./content/posts'),
         'process.env.SNIPPETS_PATH': JSON.stringify('./content/snippets'),
       }),
       svelte({

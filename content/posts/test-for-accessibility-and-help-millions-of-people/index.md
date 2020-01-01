@@ -44,9 +44,7 @@ As a use case we’re going to focus on the Angular NgRx Material Starter Projec
 $ npm install pa11y -g
 $ pa11y [https://tomastrajan.github.io/angular-ngrx-material-starter](https://tomastrajan.github.io/angular-ngrx-material-starter)
 
-![](./images/0.gif)
-
-we see pa11y running
+![pa11y running](./images/0.gif)
 
 To get the most from pa11y, [pa11y-ci](https://github.com/pa11y/pa11y-ci) is needed. As the name already gives away, it does the same thing but is focused on running during a CI build. Pa11y-ci is also more customizable, and this can be done via a config file (`.pa11yci` by default). The following steps show you how to integrate pa11y-ci into your CI build:
 
@@ -84,9 +82,7 @@ These scripts are needed to build and serve our application first before we can 
 
 Now if we do `npm run accessibility`,we get an overview with errors, just like before.
 
-![](./images/1.png)
-
-pa11y-ci is showing errors
+![pa11y-ci is logs errors](./images/1.png)
 
 With this in place all that is left to do is to add this command as a step in the CI build. Here is an example with CircleCI:
 
@@ -137,9 +133,7 @@ actions: [
 - [a11y](https://a11yproject.com/)
 - [axe](https://www.deque.com/axe/) — which also has a browser extension
 
-![](./images/2.png)
-
-axe browser extensions after analyzing a page
+![axe browser extensions after analyzing a page](./images/2.png)
 
 ### Dom-testing-library
 

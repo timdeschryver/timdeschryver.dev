@@ -105,7 +105,7 @@
   }
 
   aside {
-    max-width: calc(var(--content-width) + 8rem);
+    max-width: calc(var(--content-width) + 11rem);
     margin: auto;
   }
 
@@ -121,14 +121,14 @@
     }
   }
 
-  @media (max-width: 925px) {
+  @media (max-width: 995px) {
     aside ul {
       transform: translateY(-48px);
       position: absolute;
     }
   }
 
-  @media (max-width: 880px) {
+  @media (max-width: 890px) {
     div:not([data-page='home']) h1 {
       transform: translateX(24px);
       transition-delay: 111ms;
@@ -143,7 +143,7 @@
     </h1>
 
     <nav>
-      <a rel="prefetch" href="posts" class="nav-item">Posts</a>
+      <a rel="prefetch" href="blog" class="nav-item">Blog</a>
     </nav>
   </header>
 

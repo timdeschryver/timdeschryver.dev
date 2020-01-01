@@ -1,11 +1,11 @@
 <script context="module">  export async function preload({ params }) {
-    const res = await this.fetch(`posts/${params.slug}.json`)
+    const res = await this.fetch(`blog/${params.slug}.json`)
 
     if (res.ok) {
       const { post } = await res.json()
       return { post }
     }
-    this.redirect(302, `${process.env.BASE_PATH}/posts`)
+    this.redirect(302, `${process.env.BASE_PATH}/blog`)
   }
 </script>
 
@@ -15,6 +15,11 @@
 </script>
 
 <style>
+  header p {
+    margin-top: 0;
+    font-size: 0.83em;
+  }
+
   :global(article li) {
     list-style-type: initial;
   }
@@ -48,13 +53,13 @@
     border-bottom-color: var(--prime-color);
   }
 
-  :global(article h3 + *, article h4 + *, article h5 + *) {
+  :global(article h3 + p, article h4 + p, article h5 + p) {
     margin-top: calc(var(--spacing) / 2);
   }
 </style>
 
 <svelte:head>
-  <title>{post.metadata.title}</title>
+  <title>{post.metadata.title} - Tim Deschryver</title>
 
   <meta name="author" content={post.metadata.author} />
   <meta name="copyright" content={post.metadata.author} />
@@ -71,7 +76,7 @@
 
   <meta
     name="og:url"
-    content={'https://timdeschryver.dev/posts/' + post.metadata.slug} />
+    content={'https://timdeschryver.dev/blog/' + post.metadata.slug} />
   <meta name="og:title" content={post.metadata.title} />
   <meta name="og:description" content={post.metadata.description} />
   <meta name="og:type" content="article" />
@@ -80,6 +85,9 @@
 
 <article>
   <Banner publisher={post.metadata.publisher} />
-  <h2>{post.metadata.title}</h2>
+  <header>
+    <h2>{post.metadata.title}</h2>
+    <p>{post.metadata.date}</p>
+  </header>
   {@html post.html}
 </article>

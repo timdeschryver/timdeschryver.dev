@@ -7,6 +7,7 @@
   --head-font: 'Comfortaa', cursive;
   --prime-color: rgba(248, 196, 0, 1);
   --prime-color-shadow: rgba(248, 196, 0, 0.7);
+  --prime-color-bg: rgba(248, 196, 0, 0.1);
   --prime-color-text: rgba(0, 0, 0, 0.5);
   --spacing: 1.5em;
   --transition-duration: 347ms;
@@ -105,10 +106,27 @@ h5 {
   font-family: var(--head-font);
   cursor: default;
   letter-spacing: 0.033em;
+  position: relative;
 }
 
 h1 {
   letter-spacing: -0.0047em;
+}
+
+h2 {
+  font-size: 2.1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
+h5 {
+  font-size: 1.1rem;
 }
 
 a {
@@ -116,6 +134,11 @@ a {
   color: var(--prime-color);
   padding: 0 0 1px 0;
   border-bottom: 3px solid currentColor;
+}
+
+a[download] {
+  border-bottom: none;
+  font-weight: 900;
 }
 
 blockquote {
@@ -148,8 +171,21 @@ code {
   text-decoration: none;
   color: inherit;
   border: none;
+  position: relative;
 }
 
-.anchor:hover::before {
-  content: '#';
+@media (min-width: 910px) {
+  .anchor:before {
+    content: '#';
+    position: absolute;
+    left: -2.2rem;
+    color: var(--prime-color);
+  }
+}
+
+@media (max-width: 909px) {
+  .anchor:hover:before {
+    content: '#';
+    color: var(--prime-color);
+  }
 }

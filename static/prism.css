@@ -46,6 +46,9 @@ code[class*='language-'] {
   hyphens: none;
   border: 1px solid;
 }
+pre[class*='language-'] {
+  border-color: var(--prime-color);
+}
 pre[class*='language-']::selection,
 code[class*='language-']::selection,
 pre[class*='language-']::mozselection,
@@ -60,7 +63,6 @@ code[class*='language-']::mozselection {
   }
 }
 pre[class*='language-'] {
-  overflow: auto;
   background: var(--background-color-code);
 }
 pre > code {
@@ -68,6 +70,7 @@ pre > code {
   padding: 1em;
   display: block;
   margin-top: 0;
+  overflow: auto;
 }
 :not(pre) > code[class*='language-'] {
   padding: 0.1em 0.3em;
@@ -152,6 +155,10 @@ pre.language-json .token.operator,
 pre.language-json .token.token.punctuation {
   color: var(--code-color);
 }
+pre.language-typescript .token.string,
+pre.language-javacript .token.string {
+  color: var(--prime-color-shadow);
+}
 /*********************************************************
 * Line highlighting
 */
@@ -163,7 +170,7 @@ pre[class*='language-'] > code[class*='language-'] {
   z-index: 1;
 }
 .line-highlight {
-  background: rgba(255, 255, 0, 0.1);
+  background: var(--prime-color-bg);
   display: block;
   margin: 0px -1em;
   padding: 0px 0.5em;
@@ -172,10 +179,10 @@ pre[class*='language-'] > code[class*='language-'] {
 /*********************************************************
 * File positioning
 */
-.file {
+.code-heading {
   border-bottom: 2px solid;
   text-align: right;
   padding: 0.2em 0.4em;
-  color: var(--code-color);
-  background: var(--code-color-bg);
+  background: var(--prime-color-bg);
+  color: var(--prime-color);
 }

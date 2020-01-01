@@ -32,13 +32,13 @@ async function generate(req) {
 <rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
 <channel>
 <title><![CDATA[ Tim Deschryver ]]></title>
-<description><![CDATA[ Posts written by Tim Deschryver ]]></description>
-<link>https://timdeschryver.dev/posts</link>
-<atom:link href="https://timdeschryver.dev/posts/rss.xml" rel="self" type="application/rss+xml"/>
+<description><![CDATA[ Blog by Tim Deschryver ]]></description>
+<link>https://timdeschryver.dev/blog</link>
+<atom:link href="https://timdeschryver.dev/blog/rss.xml" rel="self" type="application/rss+xml"/>
 <image>
   <url>https://timdeschryver.dev/favicons/favicon-32x32.png</url>
   <title>Tim Deschryver</title>
-  <link>https://timdeschryver.dev/posts</link>
+  <link>https://timdeschryver.dev/blog</link>
 </image>
 <language>en-us</language>
 <lastBuildDate>${new Date()}</lastBuildDate>
@@ -48,8 +48,8 @@ ${response.data.posts
       <item>
         <title><![CDATA[ ${post.metadata.title} ]]></title>
         <description><![CDATA[ ${post.metadata.description} ]]></description>
-        <link>https://timdeschryver.dev/posts/${post.metadata.slug}</link>
-        <guid isPermaLink="false">https://timdeschryver.dev/posts/${
+        <link>https://timdeschryver.dev/blog/${post.metadata.slug}</link>
+        <guid isPermaLink="false">https://timdeschryver.dev/blog/${
           post.metadata.slug
         }</guid>
         <pubDate>${post.metadata.date}</pubDate>
