@@ -25,7 +25,7 @@ export const resolvers = {
     canonical_url(metadata) {
       return (
         metadata.canonical_url ||
-        `https://timdeschryver.dev/posts/${metadata.slug}`
+        `https://timdeschryver.dev/blog/${metadata.slug}`
       )
     },
   },
@@ -51,6 +51,6 @@ function html(content, { htmlEntities }) {
 
 function date(metadata, { displayAs }) {
   return displayAs === 'human'
-    ? format(metadata.date, 'MMMM Do YYYY')
+    ? format(metadata.date, 'MMMM Do, YYYY')
     : metadata.date.toString()
 }

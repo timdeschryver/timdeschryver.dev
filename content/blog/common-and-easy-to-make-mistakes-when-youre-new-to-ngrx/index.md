@@ -153,7 +153,7 @@ export type FizzBuzzActions = Next
 
 Now, we can remove the magic string `NEXT` inside the fizzbuzz reducer and inside the `AppComponent`.
 
-> For more information about actions see the [official docs](https://ngrx.io/guide/store/actions) and a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./posts/lets-have-a-chat-about-actions-and-action-creators-within-ngrx).
+> For more information about actions see the [official docs](https://ngrx.io/guide/store/actions) and a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./blog/lets-have-a-chat-about-actions-and-action-creators-within-ngrx).
 
 ### Using selectors and derived state
 
@@ -195,7 +195,7 @@ export const getMessage = createSelector(
 )
 ```
 
-> For more info about selectors see the [official docs](https://ngrx.io/guide/store/selectors) and a previous post [Sharing data between modules is peanuts](./posts/sharing-data-between-modules-is-peanuts).
+> For more info about selectors see the [official docs](https://ngrx.io/guide/store/selectors) and a previous post [Sharing data between modules is peanuts](./blog/sharing-data-between-modules-is-peanuts).
 
 ### The reducer
 
@@ -227,7 +227,7 @@ export function reducer(state = initialState, action: FizzBuzzActions): State {
 }
 ```
 
-> For more info about reducers see the [official docs](https://ngrx.io/guide/store/reducers) and for more info about state normalization see a previous post [Normalizing state](./posts/normalizing-state).
+> For more info about reducers see the [official docs](https://ngrx.io/guide/store/reducers) and for more info about state normalization see a previous post [Normalizing state](./blog/normalizing-state).
 
 ### Using effects
 
@@ -243,7 +243,7 @@ export class AppEffects {
 }
 ```
 
-> For more info about effects see the [official docs](https://ngrx.io/guide/effects) and for more effects usages see [Start using ngrx/effects for this](./posts/start-using-ngrx-effects-for-this).
+> For more info about effects see the [official docs](https://ngrx.io/guide/effects) and for more effects usages see [Start using ngrx/effects for this](./blog/start-using-ngrx-effects-for-this).
 
 ### The new component
 
@@ -283,7 +283,7 @@ If you keep these little tips in mind, each boundary inside the application has 
 - this will lead to smaller and **cleaner reducers**
 - we have a **single point of truth**, we don’t have to remember every state property for this state
 - we only have to **test state mutators**
-- readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./posts/clean-ngrx-reducers-using-immer)
+- readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer)
 
 #### Selectors: used to derive state based on the store state
 

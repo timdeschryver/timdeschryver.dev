@@ -11,7 +11,7 @@ export const apolloServerConfig = {
     settings: {},
     tabs: [
       {
-        endpoint: '/graphql',
+        endpoint: '/api/graphql',
         name: 'All Posts',
         query: `query {
   posts(published: true) {
@@ -26,7 +26,7 @@ export const apolloServerConfig = {
 }`,
       },
       {
-        endpoint: '/graphql',
+        endpoint: '/api/graphql',
         name: 'One Post',
         query: `query {
   post(slug: "start-using-ngrx-effects-for-this") {

@@ -14,7 +14,7 @@
 
 <ul>
   <li>
-    <a href="/posts/rss.xml">RSS Feed</a>
+    <a href="/blog/rss.xml">RSS Feed</a>
   </li>
   <li>
     <a href="/sitemap.xml">Sitemap</a>
@@ -24,7 +24,7 @@
   </li>
   {#each posts as post}
     <li>
-      <a href="/posts/{post.metadata.slug}">{post.metadata.title}</a>
+      <a href="/blog/{post.metadata.slug}">{post.metadata.title}</a>
     </li>
   {/each}
 </ul>

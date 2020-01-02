@@ -12,7 +12,7 @@
     content="Tim Deschryver's experiences and thoughts on coding" />
   <meta
     name="keywords"
-    content="Angular, NgRx, TypeScript, Blogger, Tim, Deschryver, Tim
+    content="Angular, NgRx, TypeScript, Blog, Blogger, Tim, Deschryver, Tim
     Deschryver, Belgium" />
 
   {#if social}

@@ -42,9 +42,12 @@ export function reducer(state, action) {
   switch (action.typed) {
     case '[CUSTOMER DETAIL PAGE] Edit Customer':
       return {
-        customers: state.customers.map(c => (c.id === action.payload.id ? action.payload : c)),
+        customers: state.customers.map(c =>
+          c.id === action.payload.id ? action.payload : c,
+        ),
         selectedCustomer:
-          state.selectedCustomer && state.selectedCustomer.id === action.payload.id
+          state.selectedCustomer &&
+          state.selectedCustomer.id === action.payload.id
             ? action.payload
             : state.selectedCustomer,
       }

@@ -39,7 +39,12 @@ In the `schematics` value there is a property for each migration, the property n
 This is the function which is called during `ng update`. In the [implementation](https://github.com/timdeschryver/frontal/blob/master/migrations/2_0_0/index.ts) below, the dependency version will be updated in the `package.json`. Note that it’s also possible to do more than just upgrading the version number, for instance if we take a look at [angular/material2](https://github.com/angular/material2/blob/master/src/lib/schematics/update/update.ts#L36) it also runs some linter rules.
 
 ```ts
-import { Rule, SchematicContext, Tree, SchematicsException } from '@angular-devkit/schematics'
+import {
+  Rule,
+  SchematicContext,
+  Tree,
+  SchematicsException,
+} from '@angular-devkit/schematics'
 
 export default function(): Rule {
   return (tree: Tree, context: SchematicContext) => {
@@ -87,7 +92,10 @@ It is possible to [test](https://github.com/timdeschryver/frontal/blob/master/__
 
 ```ts
 import { Tree } from '@angular-devkit/schematics'
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing'
+import {
+  SchematicTestRunner,
+  UnitTestTree,
+} from '@angular-devkit/schematics/testing'
 import * as path from 'path'
 
 const packagePath = '/package.json'

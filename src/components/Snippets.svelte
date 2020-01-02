@@ -2,10 +2,12 @@
   export let snippets
 </script>
 
-<ul>
-  {#each snippets as snippet}
-    <li>
-      {@html snippet.html}
-    </li>
-  {/each}
-</ul>
+{#each snippets as snippet, index}
+  <article>
+    {@html snippet.html}
+
+    {#if index < snippets.length - 1}
+      <hr />
+    {/if}
+  </article>
+{/each}

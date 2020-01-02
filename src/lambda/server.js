@@ -3,4 +3,4 @@ import { apolloServerConfig } from '../api'
 
 const server = new ApolloServer(apolloServerConfig)
 
-module.exports = server.createHandler()
+module.exports = server.createHandler({ path: '/api/graphql' })

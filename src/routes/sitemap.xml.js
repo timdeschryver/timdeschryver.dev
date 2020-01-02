@@ -39,7 +39,13 @@ async function generate(req) {
       ${lastMod}
     </url>
     <url>
-      <loc>https://timdeschryver.dev/posts</loc>
+      <loc>https://timdeschryver.dev/snippets</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+      ${lastMod}
+    </url>
+    <url>
+      <loc>https://timdeschryver.dev/blog</loc>
       <changefreq>daily</changefreq>
       <priority>0.6</priority>
       ${lastMod}
@@ -47,7 +53,7 @@ async function generate(req) {
     ${response.data.posts
       .map(
         post => `<url>
-          <loc>https://timdeschryver.dev/posts/${post.metadata.slug}</loc>
+          <loc>https://timdeschryver.dev/blog/${post.metadata.slug}</loc>
           <changefreq>daily</changefreq>
           <priority>0.8</priority>
           ${lastMod}

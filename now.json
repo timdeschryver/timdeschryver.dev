@@ -2,19 +2,10 @@
   "version": 2,
   "name": "timdeschryver.dev",
   "alias": ["timdeschryver.dev", "www.timdeschryver.dev"],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build",
-      "config": { "distDir": "__sapper__/export" }
-    },
-    {
-      "src": "src/lambda/server.out.js",
-      "use": "@now/node",
-      "config": {
-        "includeFiles": ["posts/**/*.md"]
-      }
+  "redirects": [{ "source": "/posts/(.*)", "destination": "/blog/$1" }],
+  "functions": {
+    "api/graphql.js": {
+      "includeFiles": "content/**/*.md"
     }
-  ],
-  "routes": [{ "src": "/graphql", "dest": "src/lambda/server.out.js" }]
+  }
 }

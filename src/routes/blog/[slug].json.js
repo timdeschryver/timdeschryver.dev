@@ -15,6 +15,7 @@ export async function get(req, res) {
             description
             banner
             tags
+            date(displayAs: "human")
           }
         }
       }
@@ -32,9 +33,7 @@ export async function get(req, res) {
     let str = `${req.params.slug} not found.
       Go back to <a href="${
         process.env.BASE_PATH
-      }">home</a> or browse <a href="${
-      process.env.BASE_PATH
-    }/posts">my posts</a>.
+      }">home</a> or browse <a href="${process.env.BASE_PATH}/blog">blog</a>.
     `
     res.writeHead(404, {
       'Content-Type': 'text/html',

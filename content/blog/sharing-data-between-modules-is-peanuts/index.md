@@ -176,9 +176,9 @@ A big thank you to [Nate Lapinski](https://twitter.com/nate_lapinski), [Max Wiza
 
 ### Here are some more resources if you want to know more
 
-[Parameterized selectors](./posts/parameterized-selectors)
+[Parameterized selectors](./blog/parameterized-selectors)
 
-[Normalizing state](./posts/normalizing-state)
+[Normalizing state](./blog/normalizing-state)
 
 [Advanced NgRx](https://slides.com/gerardsans/angularsp-advanced-ngrx#/)
 
