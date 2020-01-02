@@ -51,6 +51,6 @@ function html(content, { htmlEntities }) {
 
 function date(metadata, { displayAs }) {
   return displayAs === 'human'
-    ? format(metadata.date, 'MMMM Do YYYY')
+    ? format(metadata.date, 'MMMM Do, YYYY')
     : metadata.date.toString()
 }

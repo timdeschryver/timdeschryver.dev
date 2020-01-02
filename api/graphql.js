@@ -112,7 +112,7 @@ function html(content, { htmlEntities }) {
 
 function date(metadata, { displayAs }) {
   return displayAs === 'human'
-    ? dateFns.format(metadata.date, 'MMMM Do YYYY')
+    ? dateFns.format(metadata.date, 'MMMM Do, YYYY')
     : metadata.date.toString()
 }
 
