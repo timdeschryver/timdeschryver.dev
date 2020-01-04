@@ -1,5 +1,5 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs'
-import { join, extname, dirname } from 'path'
+import { join, extname, dirname, sep } from 'path'
 import marked from 'marked'
 import highlightCode from 'gatsby-remark-prismjs/highlight-code'
 import 'prismjs/components/prism-bash'
@@ -26,6 +26,9 @@ export function posts() {
   const files = getFiles(process.env.BLOG_PATH, '.md')
   return files
     .map(file => {
+      const folder = dirname(file)
+        .split(sep)
+        .pop()
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
         createAnchorAndFragment: (_level, metadata, text) => {
           const anchorRegExp = /{([^}]+)}/g
@@ -48,6 +51,7 @@ export function posts() {
         html,
         metadata: {
           ...metadata,
+          folder,
           date: new Date(metadata.date),
           published,
           tags,

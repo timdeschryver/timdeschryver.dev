@@ -221,7 +221,9 @@
 
   {#if segment !== undefined}
     <footer>
-      <a href="https://twitter.com/tim_deschryver" class="social-link">
+      <a
+        href="https://twitter.com/intent/follow?screen_name=tim_deschryver"
+        class="social-link">
         @tim_deschryver
       </a>
     </footer>
