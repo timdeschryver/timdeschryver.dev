@@ -28,6 +28,7 @@ export default {
           process.env.GA_TRACKING_ID,
         ),
         'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
+        'process.env.TD_SLACK_HOOK': JSON.stringify(process.env.TD_SLACK_HOOK),
       }),
       svelte({
         dev,
@@ -81,6 +82,7 @@ export default {
         'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
         'process.env.BLOG_PATH': JSON.stringify('./content/blog'),
         'process.env.SNIPPETS_PATH': JSON.stringify('./content/snippets'),
+        'process.env.TD_SLACK_HOOK': JSON.stringify(process.env.TD_SLACK_HOOK),
       }),
       svelte({
         generate: 'ssr',
@@ -107,6 +109,7 @@ export default {
           process.env.GA_TRACKING_ID,
         ),
         'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
+        'process.env.TD_SLACK_HOOK': JSON.stringify(process.env.TD_SLACK_HOOK),
       }),
       commonjs(),
       !dev && terser(),

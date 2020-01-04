@@ -14,6 +14,7 @@ export const typeDefs = gql`
 
   type PostMetadata {
     title: String
+    folder: String
     slug: String
     description: String
     author: String

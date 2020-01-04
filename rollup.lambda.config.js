@@ -21,6 +21,7 @@ export default {
       'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH),
       'process.env.BLOG_PATH': JSON.stringify('./content/blog'),
       'process.env.SNIPPETS_PATH': JSON.stringify('./content/snippets'),
+      'process.env.TD_SLACK_HOOK': JSON.stringify(process.env.TD_SLACK_HOOK),
     }),
     json(),
     commonjs(),

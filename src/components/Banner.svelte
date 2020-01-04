@@ -20,7 +20,7 @@
 </script>
 
 <style>
-  div {
+  section {
     text-align: center;
   }
 
@@ -42,9 +42,9 @@
 </style>
 
 {#if publisher && details}
-<div data-publisher="{publisher}">
-  <a href="{details.href}">
-    <img src="{details.src}" alt="{publisher}" />
-  </a>
-</div>
+  <section data-publisher={publisher}>
+    <a href={details.href}>
+      <img src={details.src} alt={publisher} />
+    </a>
+  </section>
 {/if}

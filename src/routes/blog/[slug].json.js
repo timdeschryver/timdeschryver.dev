@@ -15,6 +15,7 @@ export async function get(req, res) {
             description
             banner
             tags
+            folder
             date(displayAs: "human")
           }
         }
