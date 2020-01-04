@@ -34,6 +34,7 @@ const typeDefs = gql`
 
   type PostMetadata {
     title: String
+    folder: String
     slug: String
     description: String
     author: String
@@ -133,6 +134,10 @@ function posts() {
   const files = getFiles('./content/blog', '.md')
   return files
     .map(file => {
+      const folder = path
+        .dirname(file)
+        .split(path.sep)
+        .pop()
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
         createAnchorAndFragment: (_level, metadata, text) => {
           const anchorRegExp = /{([^}]+)}/g
@@ -156,6 +161,7 @@ function posts() {
         html,
         metadata: {
           ...metadata,
+          folder,
           date: new Date(metadata.date),
           published,
           tags,

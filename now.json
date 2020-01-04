@@ -7,5 +7,10 @@
     "api/graphql.js": {
       "includeFiles": "content/**/*.md"
     }
+  },
+  "build": {
+    "env": {
+      "TD_SLACK_HOOK": "@td_slack_hook"
+    }
   }
 }

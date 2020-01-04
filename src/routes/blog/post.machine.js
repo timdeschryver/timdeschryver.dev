@@ -26,11 +26,21 @@ const messageMachine = Machine(
         invoke: {
           id: 'post-message',
           src: invokePostMessage,
-          onDone: 'success',
-          onError: 'success',
+          onError: {
+            target: 'failure',
+            actions: evt => {
+              alert(`Something went wrong`)
+            },
+          },
+          onDone: {
+            target: 'success',
+          },
         },
       },
       success: {
+        type: 'final',
+      },
+      failure: {
         type: 'final',
       },
       cancelled: {
@@ -144,49 +154,46 @@ export const postMachine = Machine(
   },
 )
 
-function invokePostMessage(context) {
-  return fetch(
-    'https://hooks.slack.com/services/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',
-    {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        blocks: [
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `*Message:*\n${context.message}`,
-            },
-          },
-          {
-            type: 'divider',
-          },
-          context.text
-            ? {
-                type: 'section',
-                text: {
-                  type: 'mrkdwn',
-                  text: `*Selection:*\n${context.text}`,
-                },
-              }
-            : undefined,
-          {
-            type: 'context',
-            elements: [
-              {
-                text: `${context.username || 'Anonymous'} | ${context.url}`,
-                type: 'mrkdwn',
-              },
-            ],
-          },
-        ].filter(Boolean),
-        icon_emoji: ':robot_face:',
-        username: 'timdeschryver.dev',
-      }),
+async function invokePostMessage(context) {
+  return fetch(process.env.TD_SLACK_HOOK, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  )
+    body: JSON.stringify({
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `*Message:*\n${context.message}`,
+          },
+        },
+        {
+          type: 'divider',
+        },
+        context.text
+          ? {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `*Selection:*\n${context.text}`,
+              },
+            }
+          : undefined,
+        {
+          type: 'context',
+          elements: [
+            {
+              text: `${context.username || 'Anonymous'} | ${context.url}`,
+              type: 'mrkdwn',
+            },
+          ],
+        },
+      ].filter(Boolean),
+      icon_emoji: ':robot_face:',
+      username: 'timdeschryver.dev',
+    }),
+  })
 }
