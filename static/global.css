@@ -138,11 +138,6 @@ a {
   border-bottom: 3px solid currentColor;
 }
 
-a[download] {
-  border-bottom: none;
-  font-weight: 900;
-}
-
 blockquote {
   border-left: 2px solid var(--prime-color);
   padding-left: 2em;

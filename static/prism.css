@@ -180,9 +180,19 @@ pre[class*='language-'] > code[class*='language-'] {
 * File positioning
 */
 .code-heading {
+  display: flex;
+  justify-content: flex-end;
   border-bottom: 2px solid;
-  text-align: right;
   padding: 0.2em 0.4em;
   background: var(--prime-color-bg);
   color: var(--prime-color);
+}
+
+.code-heading > * {
+  margin: 0 0.4em;
+}
+
+.code-heading > a {
+  border-bottom: none;
+  font-weight: 900;
 }

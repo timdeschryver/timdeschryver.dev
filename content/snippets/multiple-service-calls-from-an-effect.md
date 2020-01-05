@@ -1,7 +1,7 @@
 ---
 title: Multiple service calls from an Effect
 slug: multiple-service-calls-from-an-effect
-image: ./images/multiple-service-calls-from-an-effect.png
+image: snippets/images/multiple-service-calls-from-an-effect.png
 date: 2019-12-18
 tags: ngrx, effects, angular
 ---
