@@ -1,4 +1,5 @@
-<script context="module">  export async function preload({ params }) {
+<script context="module">
+  export async function preload({ params }) {
     const res = await this.fetch('snippets.json')
 
     if (res.ok) {
@@ -32,10 +33,10 @@
 
 <svelte:head>
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:description" content={snippet.metadata.title} />
+  <meta name="twitter:title" content={snippet.metadata.title} />
   <meta name="twitter:image" content={snippet.metadata.image} />
 
-  <meta name="og:description" content={snippet.metadata.title} />
+  <meta name="og:title" content={snippet.metadata.title} />
   <meta name="og:image" content={snippet.metadata.image} />
 </svelte:head>
 

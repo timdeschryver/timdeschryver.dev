@@ -203,10 +203,7 @@ function snippets() {
         },
       })
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))
-      const image = path
-        .join('https://timdeschryver.dev', assetsSrc, metadata.image)
-        .replace(/\\/g, '/')
-        .replace('/', '//')
+      const image = `${'https://timdeschryver.dev'}/${metadata.image}`
 
       return {
         html,
