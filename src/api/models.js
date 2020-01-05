@@ -93,9 +93,7 @@ export function snippets() {
         },
       })
       const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))
-      const image = join(process.env.BASE_PATH, assetsSrc, metadata.image)
-        .replace(/\\/g, '/')
-        .replace('/', '//')
+      const image = `${process.env.BASE_PATH}/${metadata.image}`
 
       return {
         html,

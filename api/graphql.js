@@ -187,7 +187,17 @@ function snippets() {
         createHeadingParts: metadata => {
           return [
             metadata.image
-              ? `<a href="snippets/${metadata.image}" download>Download</a>`
+              ? `<a href="${metadata.image}" download>Download</a>`
+              : '',
+            metadata.image
+              ? `<a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/intent/tweet?text=${
+                  metadata.title
+                }&via=tim_deschryver&url=${'https://timdeschryver.dev'}/snippets/${
+                  metadata.slug
+                }">Share</a>`
               : '',
           ]
         },
@@ -283,7 +293,7 @@ function parseFileToHtmlAndMeta(
     const codeBlock = `<code>${highlighted}</code>`
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean)
     const heading = headingParts.length
-      ? `<div class="code-heading">${headingParts.join(' ')}</div>`
+      ? `<div class="code-heading">${headingParts.join('•')}</div>`
       : ''
     return `<pre class='language-${prismLanguage}'>${heading}${codeBlock}</pre>`
   }
