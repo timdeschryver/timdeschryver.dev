@@ -3,7 +3,7 @@ title: Managing different slices of the same NgRx state
 slug: managing-different-slices-of-the-same-ngrx-state
 description: In this article, we'll iterate over an implementation to introduce multiple independent instances of a NgRx store slice. In an application, these instances can be represented by a tab-like interface. To come to a solution we'll use the Angular Router, NgRx Effects, and NgRx Router Store. We'll also see meta-reducers, helper reducer functions, and smart and dumb components.
 author: Tim Deschryver
-date: 2020-01-06T10:00:00.000Z
+date: 2020-01-06T19:00:00.000Z
 tags: Angular, NgRx, Effects, State
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Ricardo Gomez Angel](https://unsplash.com/@ripato) on [Unsplash](https://unsplash.com)
