@@ -141,9 +141,6 @@ pre > code {
   cursor: help;
 }
 
-pre.language-markup .token {
-  color: var(--prime-color-shadow);
-}
 pre.language-markup .token.tag {
   color: var(--prime-color);
 }
@@ -154,10 +151,6 @@ pre.language-json .token.property,
 pre.language-json .token.operator,
 pre.language-json .token.token.punctuation {
   color: var(--code-color);
-}
-pre.language-typescript .token.string,
-pre.language-javacript .token.string {
-  color: var(--prime-color-shadow);
 }
 /*********************************************************
 * Line highlighting
