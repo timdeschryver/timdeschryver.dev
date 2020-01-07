@@ -17,7 +17,7 @@ To come to a solution we'll use the [Angular Router](https://angular.io/guide/ro
 ### The problem
 
 You need to create multiple of the same components and each component has its own state.
-If the component only consisted of local, or component, state, one might [tackle component state reactively](https://www.youtube.com/watch?v=JMLMpENUfQI), another one could wait for [a new NgRx package](https://github.com/ngrx/platform/issues/2187) to emerge.
+If the component only consisted of local, or component, state, one might [tackle component state reactively](https://www.youtube.com/watch?v=I8uaHMs8rw0), another one could wait for [a new NgRx package](https://github.com/ngrx/platform/issues/2187) to emerge.
 
 But because our components will be destroyed - if the tab isn't active - we can't rely on local state, as the state will be destroyed together with the component. In other words, the [local state has the same lifetime as the component](https://dev.to/rxjs/research-on-reactive-ephemeral-state-in-component-oriented-frameworks-38lk).
 
