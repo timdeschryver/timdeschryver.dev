@@ -70,7 +70,7 @@ export const addToCart = createAction(
   props<{ sku: string }>(),
 )
 export const removeFromCart = createAction(
-  '[Product List] Remove to cart',
+  '[Product List] Remove from cart',
   props<{ sku: string }>(),
 )
 ```
