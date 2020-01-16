@@ -9,8 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/common-and-easy-to-make-mistakes-when-youre-new-to-ngrx-49404ac973ea
-publish_url: https://blog.angularindepth.com/common-and-easy-to-make-mistakes-when-youre-new-to-ngrx-49404ac973ea
 ---
 
 This post is aimed at newcomers to NgRx.

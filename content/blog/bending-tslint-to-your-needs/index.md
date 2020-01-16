@@ -8,8 +8,6 @@ banner: ./images/banner.jpg
 tags: TypeScript, TSLint, RxJS
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633
-publish_url: https://blog.angularindepth.com/bending-tslint-to-your-needs-6ae0a51e633
 ---
 
 After reading yet another twitter thread asking about the number of RxJS operators used in a project, I thought to myself that creating a small tool that does exactly this could be a fun little project.

@@ -106,17 +106,12 @@
   {#each posts as post}
     <li>
       <h2>
-        {#if post.metadata.publisher}
-          <a
-            href={post.metadata.publish_url}
-            data-publisher={post.metadata.publisher}>
-            {post.metadata.title} - {post.metadata.publisher}
-          </a>
-        {:else}
-          <a rel="prefetch" href="/blog/{post.metadata.slug}">
-            {post.metadata.title}
-          </a>
-        {/if}
+        <a
+          rel="prefetch"
+          href={post.metadata.publish_url || `/blog/${post.metadata.slug}`}
+          data-publisher={post.metadata.publisher}>
+          {post.metadata.title}{post.metadata.publisher ? ' -' + post.metadata.publisher : ''}
+        </a>
       </h2>
       <small>{post.metadata.date}</small>
       <p>{post.metadata.description}</p>

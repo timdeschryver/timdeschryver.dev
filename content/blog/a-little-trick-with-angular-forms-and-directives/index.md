@@ -9,7 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Julius Drost](https://unsplash.com/@juliusdrost) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/a-little-trick-with-angular-forms-and-directives-137e2c53f25
 ---
 
 Imagine having a form that you want to use at multiple places inside your application. The form will have the same layout but the validation will be different.

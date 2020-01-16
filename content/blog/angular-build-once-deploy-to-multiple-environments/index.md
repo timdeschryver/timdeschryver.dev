@@ -9,7 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Chau Cédric](https://unsplash.com/@an_ku_sh) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-publish_url: https://blog.angularindepth.com/angular-build-once-deploy-to-multiple-environments-5466f00e5402
 ---
 
 ### [The twelve-factor app](https://12factor.net/)

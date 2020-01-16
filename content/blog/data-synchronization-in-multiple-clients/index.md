@@ -9,7 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Scott Webb](https://unsplash.com/@scottwebb) on [Unsplash](https://unsplash.com)
 published: true
 publisher: ITNEXT
-publish_url: https://itnext.io/ngrx-data-synchronization-in-multiple-clients-df07785c0188
 ---
 
 Often when working with a CRUD heavy application you find yourself or someone else asking the question, what should be done when multiple users (admins) are modifying the same data.

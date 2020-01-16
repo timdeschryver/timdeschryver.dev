@@ -9,8 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Paul Green](https://unsplash.com/@pgreen1983) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/test-for-accessibility-and-help-millions-of-people-97d86f72e2c4
-publish_url: https://blog.angularindepth.com/test-for-accessibility-and-help-millions-of-people-97d86f72e2c4
 ---
 
 Nearly 1 in 7 people have a disability, therefore it is important to make sure your application or website is accessible for everyone. This probably also means that it will increase the user experience of the common user and (SEO) bots. Along the way you’ll notice that this will bring more satisfaction and enjoyment during development and again when you deliver the product: making everyone happier, from developer, to management, to user.

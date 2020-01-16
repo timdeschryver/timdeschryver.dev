@@ -9,8 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Maria Imelda](https://unsplash.com/@unleashed_) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
-publish_url: https://blog.angularindepth.com/exploring-drag-and-drop-with-the-angular-material-cdk-2e0237857290
 ---
 
 I’ve heard that Angular Material had a new drag and drop CDK in their upcoming version. Now with the first Angular and Angular Material release candidate being released, I think it’s time to explore some of the new stuff. I’m really looking forward to this and I’m assuming you’re too, so let’s not waste any time and let’s get started. We’ll start of with a simple example and build our way up to a simple task board.

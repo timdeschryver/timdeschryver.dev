@@ -9,8 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Noah Grezlak](https://unsplash.com/@svbtext) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/clean-ngrx-reducers-using-immer-7fe4a0d43508
-publish_url: https://blog.angularindepth.com/clean-ngrx-reducers-using-immer-7fe4a0d43508
 ---
 
 This weeks post is inspired by another great [This Dot Media](https://www.thisdot.co/) event and the topic this time was state management. There was a small segment about Immer which I found interesting (video is linked at the bottom of this post), so I decided to give it a shot with NgRx.

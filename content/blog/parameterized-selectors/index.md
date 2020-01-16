@@ -9,8 +9,6 @@ banner: ./images/banner.jpg
 bannerCredit: Photo by [Ryan Grewell](https://unsplash.com/@ryangrewell) on [Unsplash](https://unsplash.com)
 published: true
 publisher: Angular In Depth
-canonical_url: https://blog.angularindepth.com/ngrx-parameterized-selector-e3f610529f8
-publish_url: https://blog.angularindepth.com/ngrx-parameterized-selector-e3f610529f8
 ---
 
 > How can I select an entity from the store by its id?
