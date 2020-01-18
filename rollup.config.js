@@ -10,12 +10,12 @@ import pkg from './package.json'
 const mode = process.env.NODE_ENV || 'production'
 
 require('dotenv-extended').load({
-  path: '.env.' + mode,
+  path: '.env',
 })
 
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
-console.log('[config]:', mode, process.env.BASE_PATH)
+console.log('[config]:', process.env.BASE_PATH, process.env.GA_TRACKING_ID)
 
 export default {
   client: {

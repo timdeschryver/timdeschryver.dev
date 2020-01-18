@@ -10,7 +10,9 @@
   },
   "build": {
     "env": {
-      "TD_SLACK_HOOK": "@td_slack_hook"
+      "TD_SLACK_HOOK": "@td_slack_hook",
+      "GA_TRACKING_ID": "@td_ga_tracking_id",
+      "BASE_PATH": "https://timdeschryver.dev"
     }
   }
 }

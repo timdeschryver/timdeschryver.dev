@@ -5,7 +5,7 @@ import json from 'rollup-plugin-json'
 const mode = process.env.NODE_ENV || 'production'
 
 require('dotenv-extended').load({
-  path: '.env.' + mode,
+  path: '.env',
 })
 
 export default {
