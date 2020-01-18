@@ -83,11 +83,7 @@ export function snippets() {
               ? `<a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://twitter.com/intent/tweet?text=${
-                  metadata.title
-                }&via=tim_deschryver&url=${process.env.BASE_PATH}/snippets/${
-                  metadata.slug
-                }">Share</a>`
+                href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${process.env.BASE_PATH}/snippets/${metadata.slug}">Share</a>`
               : '',
           ]
         },

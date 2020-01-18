@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev",
-    "prebuild": "npm run copy:blog && npm run copy:snippets",
+    "prebuild": "node --version && npm run copy:blog && npm run copy:snippets",
     "build": "sapper export --legacy",
     "build:lambda": "rollup -c rollup.lambda.config.js",
     "copy:blog": "rm -rf static/blog && copyfiles \"content/blog/**\" static -u 1",
@@ -15,7 +15,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && npm run build:lambda && lint-staged"
+      "pre-commit": "npm run build && lint-staged"
     }
   },
   "dependencies": {
