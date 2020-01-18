@@ -29,14 +29,25 @@
   })
 </script>
 
-<Head title="Snippets - Tim Deschryver" social={false} />
-
 <svelte:head>
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={snippet.metadata.title} />
-  <meta name="twitter:image" content={snippet.metadata.image} />
+  <title>Snippets - Tim Deschryver</title>
 
-  <meta name="og:title" content={snippet.metadata.title} />
+  <meta name="author" content={snippet.metadata.author} />
+  <meta name="copyright" content={snippet.metadata.author} />
+  <meta name="title" content={snippet.metadata.title} />
+  <meta name="keywords" content={snippet.metadata.tags.join(',')} />
+  <meta name="image" content={snippet.metadata.image} />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={snippet.metadata.image} />
+  <meta name="twitter:title" content="Tim Deschryver's Snippets" />
+  <meta name="twitter:description" content={snippet.metadata.title} />
+  <meta name="twitter:label1" content="Snippet by" />
+  <meta name="twitter:data1" content={snippet.metadata.author} />
+
+  <meta name="og:title" content="Tim Deschryver's Snippets" />
+  <meta name="og:description" content={snippet.metadata.title} />
+  <meta name="og:type" content="article" />
   <meta name="og:image" content={snippet.metadata.image} />
 </svelte:head>
 

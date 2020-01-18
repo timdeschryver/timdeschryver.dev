@@ -164,6 +164,8 @@
   <meta name="twitter:image" content={post.metadata.banner} />
   <meta name="twitter:title" content={post.metadata.title} />
   <meta name="twitter:description" content={post.metadata.description} />
+  <meta name="twitter:label1" content="Written by" />
+  <meta name="twitter:data1" content={post.metadata.author} />
 
   <meta
     name="og:url"

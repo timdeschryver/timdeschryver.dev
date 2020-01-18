@@ -12,6 +12,7 @@ export async function get(req, res) {
             slug
             tags
             image
+            author
           }
         }
       }

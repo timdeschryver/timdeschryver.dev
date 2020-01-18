@@ -39,5 +39,6 @@ export const typeDefs = gql`
     image: String
     date(displayAs: String): String
     tags: [String]
+    author: String
   }
 `
