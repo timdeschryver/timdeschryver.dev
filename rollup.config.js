@@ -15,6 +15,7 @@ require('dotenv-extended').load({
 
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
+console.log('[config]:', mode, process.env.BASE_PATH)
 
 export default {
   client: {
