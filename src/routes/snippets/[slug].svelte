@@ -1,5 +1,4 @@
-<script context="module">
-  export async function preload({ params }) {
+<script context="module">  export async function preload({ params }) {
     const res = await this.fetch('snippets.json')
 
     if (res.ok) {

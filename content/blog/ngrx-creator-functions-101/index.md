@@ -535,7 +535,7 @@ npm install @ngrx/schematics --save-dev
 
 #### More info about the typings
 
-[Alex Okrushko](https://twitter.com/alexokrushko) gave a talk [[Magical TypeScript features](https://www.youtube.com/watch?v=T-vQoI_AM9E)] at Angular Toronto, that covers a lot of the NgRx typings and how they work.
+[Alex Okrushko](https://twitter.com/alexokrushko) gave a talk [Magical TypeScript features](https://www.youtube.com/watch?v=T-vQoI_AM9E) at Angular Toronto, that covers a lot of the NgRx typings and how they work.
 
 ### Conclusion
 

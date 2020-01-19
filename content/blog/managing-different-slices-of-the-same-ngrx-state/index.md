@@ -43,7 +43,7 @@ If we only want to show one counter instance at a time, things become complex.
 A quick solution is to use css and hide the inactive counter instances.
 Note that we don't make the counter component aware that it has to be shown or not, this is done in the parent counters component. The counter component is only aware of its counter value, while the counters component manages the counter instances and keeps a record of the active instance.
 
-```html{3}{9-13}:counters-page.component.html
+```html{3,9-13}:counters-page.component.html
 <div
   *ngFor="let counter of counters$ | async | keyvalue"
   [data-state]="counterState(counter.key)"
@@ -241,10 +241,7 @@ export const selectRouteParams = createSelector(
 )
 
 export const selectRouterParam = (paramName: string) =>
-  createSelector(
-    selectRouteParams,
-    params => params[paramName],
-  )
+  createSelector(selectRouteParams, params => params[paramName])
 ```
 
 > If you're using the default NgRx serializer, you can make use of the [built-in router selectors](https://ngrx.io/guide/router-store/selectors#router-selectors)
@@ -544,8 +541,14 @@ export const reducer = createReducer<CountersState>(
   mutableOn(initializeCounter, (state, action) => {
     state.counters[action.counterId] = { count: 0 }
   }),
-  mutableOn(increment, reduceCounter(countState => countState.count++)),
-  mutableOn(decrement, reduceCounter(countState => countState.count--)),
+  mutableOn(
+    increment,
+    reduceCounter(countState => countState.count++),
+  ),
+  mutableOn(
+    decrement,
+    reduceCounter(countState => countState.count--),
+  ),
 )
 ```
 
@@ -687,8 +690,14 @@ export const reducer = createReducer<CountersState>(
   mutableOn(closeClicked, (state, action) => {
     delete state.counters[action.counterId]
   }),
-  mutableOn(increment, reduceCounter(countState => countState.count++)),
-  mutableOn(decrement, reduceCounter(countState => countState.count--)),
+  mutableOn(
+    increment,
+    reduceCounter(countState => countState.count++),
+  ),
+  mutableOn(
+    decrement,
+    reduceCounter(countState => countState.count--),
+  ),
 )
 ```
 
@@ -724,8 +733,14 @@ export const reducer = createReducer<CountersState>(
   mutableOn(closeClicked, (state, action) => {
     delete state.counters[action.counterId]
   }),
-  mutableOn(increment, reduceCounter(countState => countState.count++)),
-  mutableOn(decrement, reduceCounter(countState => countState.count--)),
+  mutableOn(
+    increment,
+    reduceCounter(countState => countState.count++),
+  ),
+  mutableOn(
+    decrement,
+    reduceCounter(countState => countState.count--),
+  ),
 )
 ```
 

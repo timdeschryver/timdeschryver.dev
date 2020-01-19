@@ -13,7 +13,7 @@
 
 body.sunrise pre[class*='language-'],
 body.sunset code[class*='language-'] {
-  --background-color-code: #fafafa;
+  --background-color-code: #fbfaf7;
 }
 
 body.sunset pre[class*='language-'],
