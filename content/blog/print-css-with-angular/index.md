@@ -48,7 +48,7 @@ Just like Angular's default styles, these styles are scoped to the current compo
 This also means that child-component styles will overrule parent styles.
 In the below example, `h1`s from the parent component will be red, while the `h1`s from the child component will have the color blue.
 
-```css:parent.component.CSS
+```css:parent.component.css
 @media print {
   h1 {
     color: red;
@@ -56,7 +56,7 @@ In the below example, `h1`s from the parent component will be red, while the `h1
 }
 ```
 
-```css:child.component.CSS
+```css:child.component.css
 @media print {
   h1 {
     color: blue;

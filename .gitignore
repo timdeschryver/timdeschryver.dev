@@ -34,9 +34,13 @@ yarn-error.log*
 .cache
 src/.temp
 
-## Sapper
+# Sapper
 
 /__sapper__/
 static/posts
 static/blog
 static/snippets
+
+# Secrets
+
+.env
