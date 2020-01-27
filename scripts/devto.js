@@ -43,8 +43,6 @@ require('dotenv-extended').load({
       cover_image: metadata.banner,
       published: true,
     }
-    console.log(devToContent)
-    console.log(devToMeta)
 
     const devToMarkdown = `---
 ${Object.entries(devToMeta)
@@ -53,6 +51,8 @@ ${Object.entries(devToMeta)
 ---
 
 Follow me on Twitter at [@tim_deschryver](https://twitter.com/tim_deschryver) | Originally published on [timdeschryver.dev](${url}).
+
+-------
 
 ${devToContent}
 
@@ -64,7 +64,7 @@ Follow me on Twitter at [@tim_deschryver](https://twitter.com/tim_deschryver) | 
     const article = {
       article: {
         title: devToMeta.title,
-        body_markdown: devToContent,
+        body_markdown: devToMarkdown,
         description: devToMeta.description,
         published: true,
         tags: devToMeta.tags,
