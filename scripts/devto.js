@@ -34,7 +34,12 @@ require('dotenv-extended').load({
       tags: metadata.tags
         .split(',')
         .filter((_, i) => i < 4)
-        .map(t => t.trim().replace(' ', '')),
+        .map(t =>
+          t
+            .trim()
+            .replace(' ', '')
+            .toLowerCase(),
+        ),
       cover_image: metadata.banner,
       published: true,
     }
