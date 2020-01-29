@@ -1,4 +1,5 @@
-<script context="module">  export async function preload() {
+<script context="module">
+  export async function preload() {
     const res = await this.fetch(`blog.json`)
     if (res.ok) {
       const { posts } = await res.json()
@@ -17,71 +18,6 @@
   a {
     border: none;
     color: var(--text-color);
-    background-image: linear-gradient(
-      to right,
-      var(--prime-color),
-      var(--prime-color) 50%,
-      transparent 50%,
-      transparent
-    );
-    background-position: 100% 0;
-    background-size: 201% 100%;
-    transition: all var(--transition-duration) ease-in-out;
-  }
-
-  a:hover {
-    color: var(--prime-color-text);
-    background-position: 0 0;
-  }
-
-  li {
-    transition: all 447ms ease-in;
-  }
-
-  li:nth-child(even):hover {
-    transform: scale(1.1) rotate(1deg);
-  }
-
-  li:nth-child(odd):hover {
-    transform: scale(1.1) rotate(-1deg);
-  }
-
-  [data-publisher='Angular In Depth'] {
-    background-image: linear-gradient(
-      to right,
-      var(--aid-color),
-      var(--aid-color) 50%,
-      transparent 50%,
-      transparent
-    );
-  }
-
-  [data-publisher='Angular In Depth']:hover {
-    color: var(--aid-color-text);
-  }
-
-  [data-publisher='ITNEXT'] {
-    background-image: linear-gradient(
-      to right,
-      var(--itnext-color),
-      var(--itnext-color) 50%,
-      transparent 50%,
-      transparent
-    );
-  }
-
-  [data-publisher='ITNEXT']:hover {
-    color: var(--itnext-color-text);
-  }
-
-  [data-publisher='Newline'] {
-    background-image: linear-gradient(
-      to right,
-      var(--newline-color),
-      var(--newline-color) 50%,
-      transparent 50%,
-      transparent
-    );
   }
 
   li:not(:first-child) {
@@ -97,6 +33,75 @@
   small {
     color: var(--text-color-70);
     transition: color var(--transition-duration) ease-in-out;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    a {
+      background-image: linear-gradient(
+        to right,
+        var(--prime-color),
+        var(--prime-color) 50%,
+        transparent 50%,
+        transparent
+      );
+      background-position: 100% 0;
+      background-size: 201% 100%;
+      transition: all var(--transition-duration) ease-in-out;
+    }
+
+    a:hover {
+      color: var(--prime-color-text);
+      background-position: 0 0;
+    }
+
+    li {
+      transition: all 447ms ease-in;
+    }
+
+    li:nth-child(even):hover {
+      transform: scale(1.1) rotate(1deg);
+    }
+
+    li:nth-child(odd):hover {
+      transform: scale(1.1) rotate(-1deg);
+    }
+
+    [data-publisher='Angular In Depth'] {
+      background-image: linear-gradient(
+        to right,
+        var(--aid-color),
+        var(--aid-color) 50%,
+        transparent 50%,
+        transparent
+      );
+    }
+
+    [data-publisher='Angular In Depth']:hover {
+      color: var(--aid-color-text);
+    }
+
+    [data-publisher='ITNEXT'] {
+      background-image: linear-gradient(
+        to right,
+        var(--itnext-color),
+        var(--itnext-color) 50%,
+        transparent 50%,
+        transparent
+      );
+    }
+
+    [data-publisher='ITNEXT']:hover {
+      color: var(--itnext-color-text);
+    }
+
+    [data-publisher='Newline'] {
+      background-image: linear-gradient(
+        to right,
+        var(--newline-color),
+        var(--newline-color) 50%,
+        transparent 50%,
+        transparent
+      );
+    }
   }
 </style>
 

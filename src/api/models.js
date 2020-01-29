@@ -8,6 +8,7 @@ import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-textile'
 import 'prismjs/components/prism-graphql'
 import 'prismjs/components/prism-yaml'
+import 'prismjs/components/prism-diff'
 
 const langs = {
   bash: 'bash',
@@ -20,6 +21,7 @@ const langs = {
   txt: 'textile',
   graphql: 'graphql',
   yml: 'yaml',
+  diff: 'diff',
 }
 
 export function posts() {
