@@ -39,24 +39,32 @@
   main,
   header,
   footer {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: var(--content-width);
-    padding: 0.75em 1.047em;
+    display: grid;
+    grid-template-columns:
+      minmax(1.2rem, 1fr)
+      minmax(auto, 80ch)
+      minmax(1.2rem, 1fr);
   }
 
-  header,
-  footer {
+  :global(main > *),
+  :global(header > *),
+  :global(footer > *) {
+    grid-column: 2;
+  }
+
+  header > div,
+  footer > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.75em 0;
   }
 
   header nav {
-    margin: 0;
+    margin-top: 0;
   }
 
-  header {
+  header > div {
     border-bottom: 2px var(--prime-color) solid;
   }
 
@@ -85,7 +93,7 @@
     box-shadow: 3px 3px var(--prime-color-shadow);
   }
 
-  footer {
+  footer > div {
     border-top: 2px var(--prime-color) solid;
     flex-direction: row-reverse;
     font-weight: 900;
@@ -105,7 +113,7 @@
   }
 
   aside {
-    max-width: calc(var(--content-width) + 11rem);
+    max-width: 63rem;
     margin: auto;
   }
 
@@ -138,13 +146,15 @@
 
 <div data-page={segment || 'home'}>
   <header>
-    <h1>
-      <a href="/">Tim Deschryver</a>
-    </h1>
+    <div>
+      <h1>
+        <a href="/">Tim Deschryver</a>
+      </h1>
 
-    <nav>
-      <a rel="prefetch" href="blog" class="nav-item">Blog</a>
-    </nav>
+      <nav>
+        <a rel="prefetch" href="blog" class="nav-item">Blog</a>
+      </nav>
+    </div>
   </header>
 
   {#if segment !== undefined && theme !== undefined}
@@ -221,11 +231,13 @@
 
   {#if segment !== undefined}
     <footer>
-      <a
-        href="https://twitter.com/intent/follow?screen_name=tim_deschryver"
-        class="social-link">
-        @tim_deschryver
-      </a>
+      <div>
+        <a
+          href="https://twitter.com/intent/follow?screen_name=tim_deschryver"
+          class="social-link">
+          @tim_deschryver
+        </a>
+      </div>
     </footer>
   {/if}
 </div>

@@ -2,7 +2,6 @@
 @import './fonts/Cascadia/font-face.css';
 
 :root {
-  --content-width: 52rem;
   --text-font: 'Inter', sans-serif;
   --head-font: 'Comfortaa', cursive;
   --prime-color: rgba(248, 196, 0, 1);
@@ -20,6 +19,26 @@
 
   --newline-color: rgba(0, 255, 225, 0.26);
   --newline-color-text: rgba(255, 255, 255, 0.5);
+
+  --font-size: 1.35rem;
+}
+
+@media (max-width: 1220px) {
+  :root {
+    --font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --font-size: 1rem;
+  }
 }
 
 * {
@@ -145,6 +164,7 @@ blockquote {
 
 p {
   cursor: default;
+  font-size: var(--font-size);
 }
 
 ::selection {

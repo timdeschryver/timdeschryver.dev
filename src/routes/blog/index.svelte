@@ -1,5 +1,4 @@
-<script context="module">
-  export async function preload() {
+<script context="module">  export async function preload() {
     const res = await this.fetch(`blog.json`)
     if (res.ok) {
       const { posts } = await res.json()

@@ -34,9 +34,8 @@ code[class*='language-'] {
   position: relative;
   direction: ltr;
   text-align: left;
-  white-space: pre;
+  white-space: pre-wrap;
   word-spacing: normal;
-  word-break: normal;
   line-height: 1.5;
   -moz-tab-size: 4;
   -o-tab-size: 4;
@@ -49,6 +48,7 @@ code[class*='language-'] {
 }
 pre[class*='language-'] {
   border-color: var(--prime-color);
+  word-break: break-all;
 }
 pre[class*='language-']::selection,
 code[class*='language-']::selection,
@@ -188,6 +188,7 @@ pre[class*='language-'] > code[class*='language-'] {
   padding: 0.2em 0.4em;
   background: var(--prime-color-bg);
   color: var(--prime-color);
+  font-family: var(--text-font);
 }
 
 .code-heading > * {
