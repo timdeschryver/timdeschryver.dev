@@ -3,6 +3,7 @@
   import { fly, fade } from 'svelte/transition'
   export let segment
   let theme
+  let reduceMotion = false
 
   afterUpdate(() => {
     if (typeof gtag === 'function') {
@@ -21,6 +22,12 @@
       try {
         localStorage && localStorage.setItem('__theme', evt.detail.theme)
       } catch (_) {}
+    })
+
+    reduceMotion = window.matchMedia('(prefers-reduced-motion)').matches
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    mediaQuery.addEventListener('change', evt => {
+      reduceMotion = evt.matches
     })
   })
 
@@ -166,8 +173,8 @@
               role="presentation"
               title="Change theme to dark theme"
               aria-label="sunrise"
-              out:fly={{ y: 147, duration: 347 }}
-              in:fade={{ delay: 348 }}
+              out:fly={{ y: 147, duration: reduceMotion ? 0 : 347 }}
+              in:fade={{ delay: reduceMotion ? 0 : 348 }}
               on:click={() => setTheme('sunset')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -195,8 +202,8 @@
               role="presentation"
               title="Change theme to light theme"
               aria-label="sunset"
-              out:fly={{ y: -147, duration: 347 }}
-              in:fade={{ delay: 348 }}
+              out:fly={{ y: -147, duration: reduceMotion ? 0 : 347 }}
+              in:fade={{ delay: reduceMotion ? 0 : 348 }}
               on:click={() => setTheme('sunrise')}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

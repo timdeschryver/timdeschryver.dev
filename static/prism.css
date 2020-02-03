@@ -44,11 +44,10 @@ code[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  border: 1px solid;
 }
 pre[class*='language-'] {
-  border-color: var(--prime-color);
   word-break: break-all;
+  border: 1px solid var(--prime-color);
 }
 pre[class*='language-']::selection,
 code[class*='language-']::selection,

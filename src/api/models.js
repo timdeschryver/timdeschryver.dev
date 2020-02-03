@@ -117,7 +117,13 @@ function parseFileToHtmlAndMeta(
   const renderer = new marked.Renderer()
 
   renderer.link = (href, title, text) => {
-    const href_attr = `href="${href}"`
+    const basePath = dirname(file)
+      .split(sep)
+      .splice(1, 2)
+      .join('/')
+    const href_attr = href.startsWith('#')
+      ? `href="${basePath}/${href}"`
+      : `href="${href}"`
     const title_attr = title ? `title="${title}"` : ''
     const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : ''
     const attributes = [href_attr, title_attr, prefetch_attr]

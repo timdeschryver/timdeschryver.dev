@@ -41,6 +41,15 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -164,6 +173,10 @@ blockquote {
 
 p {
   cursor: default;
+  font-size: var(--font-size);
+}
+
+ul {
   font-size: var(--font-size);
 }
 
