@@ -66,8 +66,8 @@
     "rxjs": "^7.0.0-alpha.1",
     "sapper": "^0.27.9",
     "svelte": "^3.6.9",
-    "svelte-rx": "0.0.5",
-    "svelte-xstate-stores": "0.0.5",
+    "svelte-rx": "0.0.7",
+    "svelte-xstate-stores": "0.0.6",
     "xstate": "^4.7.5"
   },
   "license": "MIT"
