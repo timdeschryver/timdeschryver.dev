@@ -27,6 +27,7 @@ require('dotenv-extended').load({
         return line
       })
       .join('\n')
+      .replace(/<!-- omit in toc -->/g, '')
 
     const devToMeta = {
       title: metadata.title,
