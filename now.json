@@ -4,7 +4,19 @@
   "alias": ["timdeschryver.dev", "www.timdeschryver.dev"],
   "redirects": [
     { "source": "/posts/(.*)", "destination": "/blog/$1" },
-    { "source": "/posts", "destination": "/blog" }
+    { "source": "/posts", "destination": "/blog" },
+    {
+      "source": "/newsletter",
+      "destination": "https://tinyletter.com/timdeschryver"
+    },
+    {
+      "source": "/twitter",
+      "destination": "https://twitter.com/tim_deschryver"
+    },
+    {
+      "source": "/github",
+      "destination": "http://github.com/timdeschryver"
+    }
   ],
   "functions": {
     "api/graphql.js": {

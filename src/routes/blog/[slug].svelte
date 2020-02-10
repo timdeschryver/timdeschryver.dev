@@ -12,7 +12,7 @@
 
 <script>
   import { fromEvent, merge, animationFrameScheduler } from 'rxjs'
-  import { concatMap, takeUntil, debounceTime } from 'rxjs/operators'
+  import { concatMap, takeUntil, auditTime } from 'rxjs/operators'
   import { machine } from 'svelte-xstate-stores'
   import { onMount$, onDestroy$ } from 'svelte-rx'
   import Banner from '../../components/Banner.svelte'
@@ -35,7 +35,7 @@
           fromEvent(document, 'keydown'),
         ),
       ),
-      debounceTime(0, animationFrameScheduler),
+      auditTime(0, animationFrameScheduler),
       takeUntil(onDestroy$),
     )
     .subscribe(state.send)
@@ -96,6 +96,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 1.1em;
   }
 
   .article-action {
@@ -146,6 +147,45 @@
     margin: 0px;
     padding: 80px;
     background: var(--backdrop-color);
+  }
+
+  .newsletter {
+    background: var(--prime-color-bg);
+    padding: 1em;
+    border-radius: 30px;
+    box-shadow: 0px 0px 15px var(--prime-color);
+  }
+
+  .newsletter form {
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr) minmax(min-content, 125px);
+    column-gap: 1rem;
+  }
+
+  .newsletter h3,
+  .newsletter label,
+  .newsletter a {
+    grid-column: 1 / 3;
+  }
+
+  .newsletter a {
+    border-bottom: none;
+    text-decoration: underline;
+    text-align: center;
+  }
+
+  .newsletter input[type='text'] {
+    grid-column: 1;
+    font-size: 1.5em;
+  }
+
+  .newsletter button[type='submit'] {
+    grid-column: 2;
+    background: var(--prime-color);
+    color: var(--background-color);
+    cursor: pointer;
+    font-size: 1.5em;
+    border: 1px solid var(--prime-color);
   }
 </style>
 
@@ -224,6 +264,22 @@
     </div>
     <div class="line" />
   </footer>
+
+  <section class="newsletter">
+    <form
+      action="https://tinyletter.com/timdeschryver"
+      method="post"
+      target="popupwindow"
+      onsubmit="window.open('https://tinyletter.com/timdeschryver',
+      'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+      <h3>Join the newsletter to receive new content by email</h3>
+      <label for="tlemail">Enter your email address</label>
+      <input type="text" name="email" id="tlemail" />
+      <button type="submit">Join</button>
+      <input type="hidden" value="1" name="embed" />
+      <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
+    </form>
+  </section>
 
   <div
     class="selection-actions"

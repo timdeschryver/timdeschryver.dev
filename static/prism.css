@@ -44,6 +44,7 @@ code[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  transition: all var(--transition-duration) ease-in-out;
 }
 pre[class*='language-'] {
   word-break: break-all;
