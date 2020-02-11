@@ -478,7 +478,7 @@ Every piece of logic that does not have to be run is a big win for the performan
 Make use of the `trackBy` directive to let Angular know if something needs to be re-rendered.
 
 Do not use methods in the HTML view, as these will be executed on every change detection cycle.
-To resolve this, precalculate state wherever possible. When this is impossible, go for a pure pipe because it will be run frwer times in comparison to methods. When you're using a pipe it's (again) important to use immutable data, as the pipe will only execute when the input is changed.
+To resolve this, precalculate state wherever possible. When this is impossible, go for a pure pipe because it will be run fewer times in comparison to methods. When you're using a pipe it's (again) important to use immutable data, as the pipe will only execute when the input is changed.
 
 Be aware of what triggers the change detection. If an input property of a component changes, or when it fires an event, it will trigger the Angular change detection.
 
