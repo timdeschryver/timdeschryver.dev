@@ -19,7 +19,7 @@ In order to update to the store state we have to send messages from the applicat
 
 ![](./images/action-flow.png)
 
-### Actions
+## Actions
 
 An action is a Plain Old JavaScript Object (POJO), it defines its intention with the `type` property and it has an optional payload. In fact you can define the shape of the action yourself, the only enforcement is that it must have a `type` property and its value must be a string. Other than that the structure of the action can be shaped to your needs, although, I would encourage you to use a `payload` property to add extra data to the action.
 
@@ -80,11 +80,11 @@ Dispatching an action like this may seem OK at first sight but has the downside 
 
 Here is where action creators come into play.
 
-### Action creators
+## Action creators
 
 Like the name already gives away, an action creator creates an action. This can be done in multiple ways, in this post we’ll cover the two most frequently used ones.
 
-#### Creating an action via a class
+### Creating an action via a class
 
 The class has a `readonly` type property and via its constructor it gets the payload of the action, which can (and must) be typed.
 
@@ -114,7 +114,7 @@ In order to dispatch the action we have to create a new instance of the class:
 
 this.store.dispatch(new OrderFood({ dish: 'spaghetti carbonara' }));
 
-#### Creating an action via a factory function
+### Creating an action via a factory function
 
 The function returns the action object based on the function’s input and sets the type.
 
@@ -135,7 +135,7 @@ Personally, while this may not be the de facto way, this is my preferred way. Be
 
 One of these mistakes is that the action must be serializable. While a factory function doesn’t fully prevent this, it’s preventing some constructs which can be created or are even encouraged with classes.
 
-### Benefits of using Action Creators
+## Benefits of using Action Creators
 
 If you think this is the only reason to use action creators, well… you’re wrong. An action creator also has some extra benefits.
 
@@ -229,7 +229,7 @@ it('should create an ORDER_FOOD action', () => {
 })
 ```
 
-### Conclusion
+## Conclusion
 
 By adding a small (but well known) abstraction layer into the NgRx flow, we end up with cleaner code suited for reusability. With the result of making it ourselves and our team easier to scale and maintain an application.
 

@@ -15,7 +15,7 @@ The [helium-barbell (v9.0.0-next.1)](https://github.com/angular/components/relea
 
 > The Component Dev Kit (CDK) is a set of tools that implement common interaction patterns whilst being unopinionated about their presentation. It represents an abstraction of the core functionalities found in the Angular Material library, without any styling specific to Material Design. Think of the CDK as a blank state of well-tested functionality upon which you can develop your own bespoke components.
 
-### Import the `ClipboardModule`
+## Import the `ClipboardModule`
 
 The first step to use the CDK is to import the `ClipboardModule` from `@angular/cdk/clipboard` and add it to the `imports` declaration.
 
@@ -34,7 +34,7 @@ import { AppComponent } from './app.component'
 export class AppModule {}
 ```
 
-### Using the `cdkCopyToClipboard` attribute
+## Using the `cdkCopyToClipboard` attribute
 
 After the `ClipboardModule` is imported, we're good to go.
 The only thing needed to copy content is the `cdkCopyToClipboard` attribute.
@@ -74,7 +74,7 @@ export class AppComponent {
 <button [cdkCopyToClipboard]="copy(value)">Copy content</button>
 ```
 
-### Using the `Clipboard` service
+## Using the `Clipboard` service
 
 Using the `cdkCopyToClipboard` attribute is great to give users the possibility to copy content from a page.
 But it doesn't allow us, as developers, to copy content programmatically. This is where the `Clipboard` service comes into play. By using the `copy(content)` method we can copy content to the clipboard.
@@ -101,11 +101,11 @@ export class AppComponent {
 }
 ```
 
-### Playground
+## Playground
 
 <iframe src="https://stackblitz.com/edit/angular-u8dyx6?ctl=1&embed=1&file=src/app/app.component.html&hideExplorer=1" title="clipboard-playground"></iframe>
 
-### Implementation details
+## Implementation details
 
 Internally, the [`PendingCopy`](https://github.com/angular/components/blob/master/src/cdk/clipboard/pending-copy.ts) is used to copy content to the clipboard. This class creates an invisible textarea in the DOM with the content as its value. When the `copy()` method is used, it will move the focus to the invisible textarea and use the native [`execCommand('copy')`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Interact_with_the_clipboard) to copy the content to the clipboard. As the last step, it will re-focus the previously selected element.
 

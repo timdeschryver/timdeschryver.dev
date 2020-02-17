@@ -24,9 +24,9 @@ We already saw a [`YouTube Player` component](https://github.com/angular/compone
 These new integrations with existing JavaScript APIs are making it easier for us to do our jobs,
 and I'm curious about the other new components that will be released in the upcoming versions!
 
-### Setup
+## Setup
 
-#### Angular
+### Angular
 
 The Google Maps module can be installed from `@angular/google-maps`.
 
@@ -58,7 +58,7 @@ The `GoogleMapsModule` exports three components that we can use:
 - [`MapMarker`](#mapmarker): used to add markers on the map, available via the `map-marker` selector
 - [`MapInfoWindow`](#mapinfowindow): the info window of a marker, available via the `map-info-window` selector
 
-#### Loading the Maps JavaScript API
+### Loading the Maps JavaScript API
 
 We also have to import the Maps API, this can be done by adding a script tag in the `index.html` file.
 
@@ -81,9 +81,9 @@ We also have to import the Maps API, this can be done by adding a script tag in 
 
 > To use the map in a production environment you will need to create a new API Key, follow the [documentation](https://developers.google.com/maps/documentation/javascript/get-api-key) to create a new key.
 
-### Usage
+## Usage
 
-#### GoogleMap
+### GoogleMap
 
 By adding the Google Maps component to a template we can already see and use the Google Map.
 The map will behave as a default map with the default functionality, for example, you can zoom in and out, and drag in the map.
@@ -94,7 +94,7 @@ The map will behave as a default map with the default functionality, for example
 
 ![Screenshot of Google Maps](./images/0.png)
 
-##### Input properties {#map-input-properties}
+#### Input properties {#map-input-properties}
 
 We can customize the styling of the default map by using the `@Input()` properties.
 The most commonly used properties are added as `@Input` properties, we can set the size of the map, set the center, and set the zoom level.
@@ -159,7 +159,7 @@ export class AppComponent implements OnInit {
 
 ![Screenshot of the customized Google Maps](./images/1.png)
 
-##### Output properties {#map-output-properties}
+#### Output properties {#map-output-properties}
 
 The `GoogleMap` component exposes all the Google Maps API events as `@Output()` properties:
 
@@ -199,7 +199,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-##### Methods and getters
+#### Methods and getters
 
 If we keep a reference to the map component, by using the [`@ViewChild`](https://angular.io/api/core/ViewChild) decorator, we can also use the following methods and getters.
 
@@ -235,9 +235,9 @@ export class AppComponent implements OnInit {
 }
 ```
 
-#### MapMarker
+### MapMarker
 
-##### Input properties {#marker-input-properties}
+#### Input properties {#marker-input-properties}
 
 With the map in place, we can start adding markers.
 This is done by using the `MapMarker` component.
@@ -289,7 +289,7 @@ The full specification of the marker:
 | `clickable` | If the marker should listen to mouse and touch events, default is `true`                                                                   |
 | `options`   | Sets the options, for more info see the [docs](https://developers.google.com/maps/documentation/javascript/reference/marker#MarkerOptions) |
 
-#### Output properties {#map-output-properties}
+### Output properties {#map-output-properties}
 
 The `MapMarker` component also exposes the Google Maps API events as `@Output()` properties:
 
@@ -319,7 +319,7 @@ The `MapMarker` component also exposes the Google Maps API events as `@Output()`
 
 > The full reference to the API can be found at the [Google Maps API Docs](https://developers.google.com/maps/documentation/javascript/reference/marker), and the Angular implementation in the [source code](https://github.com/angular/components/blob/master/src/google-maps/map-marker/map-marker.ts#L46).
 
-#### MapInfoWindow
+### MapInfoWindow
 
 The last component is `MapInfoWindow`, it can be used to open a pop-up window of a marker.
 To show the pop-up we have to add the component inside the `google-map` template.
@@ -358,13 +358,13 @@ export class AppComponent implements OnInit {
 }
 ```
 
-##### Input properties {#info-window-input-properties}
+#### Input properties {#info-window-input-properties}
 
 | Property  | Description                                                                                                                                         |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `options` | Sets the options, for more info see the [docs](https://developers.google.com/maps/documentation/javascript/reference/info-window#InfoWindowOptions) |
 
-##### Output properties {#info-window-output-properties}
+#### Output properties {#info-window-output-properties}
 
 | Property          | JavaScript API Method | Description                                                                                     |
 | ----------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
@@ -374,7 +374,7 @@ export class AppComponent implements OnInit {
 | `positionChanged` | `position_changed`    | This event is fired when the position property changes                                          |
 | `zindexChanged`   | `zindex_changed`      | This event is fired when the InfoWindow's zIndex changes                                        |
 
-#### Methods and getters {#info-window-mehods}
+### Methods and getters {#info-window-mehods}
 
 By using the `infoWindow` property, that has a reference to the `MapInfoWindow` component we can make use of its following methods and getters:
 
@@ -386,7 +386,7 @@ By using the `infoWindow` property, that has a reference to the `MapInfoWindow` 
 | `getZIndex`   | Returns the z-index of the InfoWindow                                                                                                                          |
 | `open`        | Opens the MapInfoWindow using the provided MapMarker as the anchor. If the anchor is not set, then the position property of the options input is used instead. |
 
-##### Dynamic content
+#### Dynamic content
 
 Having static content inside the info window is a bit dull.
 To provide dynamic content inside the info window, we can create a string property within the component, this looks as follows.
@@ -409,7 +409,7 @@ export class AppComponent implements OnInit {
 
 > The full reference to the API can be found at the [Google Maps API Docs](https://developers.google.com/maps/documentation/javascript/reference/info-window), and the Angular implementation in the [source code](https://github.com/angular/components/blob/master/src/google-maps/map-info-window/map-info-window.ts#L35).
 
-### Putting it all together
+## Putting it all together
 
 The upcoming version of Angular brings us a whole range of positive changes and new possibilities.
 We were already looking forward to the Ivy release in Angular v9, but now we'll also look forward to the new release of `@angular/components`.

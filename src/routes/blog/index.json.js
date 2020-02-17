@@ -7,7 +7,6 @@ export async function get(req, res) {
       query {
         posts(published: true) {
           metadata {
-            publisher
             publish_url
             slug
             title

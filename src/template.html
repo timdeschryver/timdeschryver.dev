@@ -47,11 +47,6 @@
     %sapper.styles% %sapper.head%
   </head>
   <body>
-    <noscript>
-      This site runs best with JavaScript enabled.
-    </noscript>
-    <div id="sapper" class="no-margin">%sapper.html%</div>
-
     <script>
       document.body.className =
         (localStorage && localStorage.getItem('__theme')) ||
@@ -60,6 +55,8 @@
           ? 'sunset'
           : 'sunrise')
     </script>
+    <div id="sapper">%sapper.html%</div>
+
     %sapper.scripts%
   </body>
 </html>

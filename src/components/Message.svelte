@@ -9,12 +9,35 @@
 </script>
 
 <style>
-  button {
-    margin-left: 5px;
-  }
-
   .form-actions {
     text-align: right;
+  }
+
+  form {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0px;
+    padding: 130px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+  }
+
+  button {
+    color: var(--prime-color);
+    margin: 0;
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    padding: 0.25rem 1rem;
+    font-size: 0.75rem;
+    line-height: 2.5;
+    font-weight: 900;
+    background: none;
   }
 </style>
 

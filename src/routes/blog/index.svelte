@@ -1,4 +1,5 @@
-<script context="module">  export async function preload() {
+<script context="module">
+  export async function preload() {
     const res = await this.fetch(`blog.json`)
     if (res.ok) {
       const { posts } = await res.json()
@@ -14,93 +15,43 @@
 </script>
 
 <style>
-  a {
-    border: none;
-    color: var(--text-color);
-  }
-
   li:not(:first-child) {
     margin-top: 3em;
   }
 
   p {
     margin-top: calc(var(--spacing) / 3);
-    color: var(--text-color-50);
-    transition: color var(--transition-duration) ease-in-out;
+    font-size: 1em;
   }
 
-  small {
-    color: var(--text-color-70);
-    transition: color var(--transition-duration) ease-in-out;
+  time {
+    font-size: 0.8em;
+    opacity: 0.8;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    a {
-      background-image: linear-gradient(
-        to right,
-        var(--prime-color),
-        var(--prime-color) 50%,
-        transparent 50%,
-        transparent
-      );
-      background-position: 100% 0;
-      background-size: 201% 100%;
-      transition: all var(--transition-duration) ease-in-out;
-    }
 
-    a:hover {
-      color: var(--prime-color-text);
-      background-position: 0 0;
-    }
+  ul {
+    list-style: none;
+  }
 
-    li {
-      transition: all 447ms ease-in;
-    }
+  li {
+    padding: 0.5em;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    border-right: 3px solid transparent;
+  }
 
-    li:nth-child(even):hover {
-      transform: scale(1.1) rotate(1deg);
-    }
+  li:hover {
+    box-shadow: var(--prime-color-shadow) 13px 13px 1px 0px;
+    border-bottom: 3px solid var(--prime-color);
+    border-right: 3px solid var(--prime-color);
+  }
 
-    li:nth-child(odd):hover {
-      transform: scale(1.1) rotate(-1deg);
-    }
+  li a {
+    font-size: initial;
+  }
 
-    [data-publisher='Angular In Depth'] {
-      background-image: linear-gradient(
-        to right,
-        var(--aid-color),
-        var(--aid-color) 50%,
-        transparent 50%,
-        transparent
-      );
-    }
-
-    [data-publisher='Angular In Depth']:hover {
-      color: var(--aid-color-text);
-    }
-
-    [data-publisher='ITNEXT'] {
-      background-image: linear-gradient(
-        to right,
-        var(--itnext-color),
-        var(--itnext-color) 50%,
-        transparent 50%,
-        transparent
-      );
-    }
-
-    [data-publisher='ITNEXT']:hover {
-      color: var(--itnext-color-text);
-    }
-
-    [data-publisher='Newline'] {
-      background-image: linear-gradient(
-        to right,
-        var(--newline-color),
-        var(--newline-color) 50%,
-        transparent 50%,
-        transparent
-      );
-    }
+  h2 {
+    line-height: 1.2;
   }
 </style>
 
@@ -109,16 +60,12 @@
 <ul>
   {#each posts as post}
     <li>
-      <h2>
-        <a
-          rel="prefetch"
-          href={post.metadata.publish_url || `/blog/${post.metadata.slug}`}
-          data-publisher={post.metadata.publisher}>
-          {post.metadata.title}{post.metadata.publisher ? ' -' + post.metadata.publisher : ''}
-        </a>
-      </h2>
-      <small>{post.metadata.date}</small>
-      <p>{post.metadata.description}</p>
+      <a rel="prefetch" href={`/blog/${post.metadata.slug}`}>
+        <h2>{post.metadata.title}</h2>
+        <time datetime={post.metadata.date}>{post.metadata.date}</time>
+
+        <p>{post.metadata.description}</p>
+      </a>
     </li>
   {/each}
 </ul>

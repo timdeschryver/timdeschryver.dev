@@ -14,7 +14,7 @@ The `createAction` creator function opened opportunities in the NgRx world. With
 
 > The creator functions were introduced in NgRx v8
 
-### Action
+## Action
 
 In previous versions of NgRx, defining a new action took 3 steps.
 The first step was to create the action type, usually as a string or as an enum value.
@@ -50,7 +50,7 @@ Via the action class, an action instance can be created. These instances are dis
 
 To provide type-safety, the union type (and classes) are used to type the incoming actions.
 
-#### `createAction`
+### `createAction`
 
 With the added [`createAction`](https://medium.com/angular-in-depth/ngrx-action-creators-redesigned-d396960e46da) method, we achieve the same result with a single step.
 
@@ -125,7 +125,7 @@ function defineType<T extends string>(
 }
 ```
 
-### Reducer
+## Reducer
 
 NgRx wouldn't be as powerful as it is, without having (the possibility to create) type-safe reducers.
 The `ActionTypes` enum and `ActionsUnion` union type are used to make a reducer typed.
@@ -212,7 +212,7 @@ export function reducer(
 }
 ```
 
-#### `createReducer`
+### `createReducer`
 
 To fully make use of the `ActionCreator`'s power, we can take it up another level. With the `createReducer` function, creating a type-safe reducer becomes easier.
 
@@ -310,7 +310,7 @@ export function createReducer<S, A extends Action = Action>(
 }
 ```
 
-### Effect
+## Effect
 
 To create a NgRx Effect in previous versions, the Effect is decorated with the `@Effect()` decorator.
 Here, again, we have to manually type the Effect, or the `Actions`, to have the type-safety in place.
@@ -404,7 +404,7 @@ export function ofType(
 }
 ```
 
-#### `createEffect`
+### `createEffect`
 
 At first sight, the `createEffect` function doesn't offer anything special, we already know that it's the combination of the `ActionCreator` and the `ofType` operator that does the trick. So what does `createEffect` give us?
 
@@ -436,9 +436,9 @@ export class ArticleEffect {
 The internal workings of an Effect are still the same, so I will not cover the code in this article.
 You can take a look at the [source code](https://github.com/ngrx/platform/blob/master/modules/effects/src/effects_runner.ts) if you're interested.
 
-### Tips
+## Tips
 
-#### A DRY reducer
+### A DRY reducer
 
 Inside a switch statement, you could group state clauses so it executed the same statement for different actions:
 
@@ -466,7 +466,7 @@ export const reducer = createReducer(
 )
 ```
 
-#### A composable reducer
+### A composable reducer
 
 The `createReducer` opens up the ability to compose a reducer because it can handle the same action multiple times. This isn't possible with a switch statement.
 
@@ -486,7 +486,7 @@ export const reducer = createReducer(
 
 For a use case see [the original issue](https://github.com/ngrx/platform/issues/1956#issuecomment-526720340) that led to this change, by Siyang Kern.
 
-#### Using an Action inside `createReducer`
+### Using an Action inside `createReducer`
 
 For `Action`s that are not converted to the new `ActionCreator`'s syntax, but need to be used inside a `createReducer` function, a wrapper has to be written.
 The wrapper will not be used in the code to dispatch the action, but will be used to comply with the `on` signature.
@@ -519,7 +519,7 @@ export const customAction = createAction(ACTION_TYPE, props<{ payload: { name: s
 Internally, NgRx used this approach for the router actions and effect actions.
 See the Pull Requests [ROOT_EFFECTS_INIT actions as ActionCreators - by Sam Lin](https://github.com/ngrx/platform/pull/2219) and [add action creator for root router actions - by Jeffrey Bosch](https://github.com/ngrx/platform/pull/2272).
 
-#### Migrating to `createEffect`
+### Migrating to `createEffect`
 
 There's a schematic to convert all the `@Effect` decorators to the `createEffect` function, run the following command to run the schematic:
 
@@ -533,11 +533,11 @@ The [NgRx Schematics](https://ngrx.io/guide/schematics/install) has to be instal
 npm install @ngrx/schematics --save-dev
 ```
 
-#### More info about the typings
+### More info about the typings
 
 [Alex Okrushko](https://twitter.com/alexokrushko) gave a talk [Magical TypeScript features](https://www.youtube.com/watch?v=T-vQoI_AM9E) at Angular Toronto, that covers a lot of the NgRx typings and how they work.
 
-### Conclusion
+## Conclusion
 
 Most of the developers are excited about the new creator functions, and so am I. From my experience, the majority is happy that they can save keystrokes while writing NgRx code but I believe the power lies in the type-safety it provides out of the box.
 

@@ -23,7 +23,6 @@ export const typeDefs = gql`
     banner: String
     bannerCredit: String
     published: Boolean
-    publisher: String
     publish_url: String
     canonical_url: String
   }

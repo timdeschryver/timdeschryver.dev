@@ -14,7 +14,7 @@ This week I got asked how to make a component’s input property required. Witho
 
 Before we start let’s imagine we’re creating a component `HelloComponent` to greet a person. In order to greet the person properly, the `person` property is required.
 
-### Adding a null check
+## Adding a null check
 
 The first thing that came to my mind was to throw an error when the `person` property would be `null` or `undefined`.
 
@@ -30,7 +30,7 @@ This doesn’t change much except that it would throw a useful error message.
 Before: `ERROR TypeError: Cannot read property ‘name’ of null`  
 After: `ERROR TypeError: The input ‘Person’ is required`
 
-### Using the selector
+## Using the selector
 
 To make the requirement explicit we can use the `selector` in the `@Component` decorator to require that the attribute on our component has to exist.
 
@@ -51,7 +51,7 @@ Evaluating src/main.ts
 Booting application
 ```
 
-### Outcome
+## Outcome
 
 By putting the two together, I can say that I’m happy with the result.  
 If you got a better way or see a problem with this approach please feel free to let me know, feedback is as always welcome.  

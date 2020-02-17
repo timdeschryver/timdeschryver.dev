@@ -2,12 +2,16 @@
   export let snippets
 </script>
 
-{#each snippets as snippet, index}
-  <article>
-    {@html snippet.html}
+<style>
+  :global(h3 > a) {
+    border-bottom: none;
+  }
+</style>
 
-    {#if index < snippets.length - 1}
-      <hr />
-    {/if}
-  </article>
+{#each snippets as snippet, index}
+  {@html snippet.html}
+
+  {#if index < snippets.length - 1}
+    <hr />
+  {/if}
 {/each}

@@ -9,7 +9,6 @@ export async function get(req, res) {
           html
           metadata {
             author
-            publisher
             canonical_url
             title
             description
@@ -32,9 +31,7 @@ export async function get(req, res) {
     res.end(JSON.stringify(response.data))
   } else {
     let str = `${req.params.slug} not found.
-      Go back to <a href="${
-        process.env.BASE_PATH
-      }">home</a> or browse <a href="${process.env.BASE_PATH}/blog">blog</a>.
+      Go back to <a href="${process.env.BASE_PATH}">home</a> or browse <a href="${process.env.BASE_PATH}/blog">blog</a>.
     `
     res.writeHead(404, {
       'Content-Type': 'text/html',

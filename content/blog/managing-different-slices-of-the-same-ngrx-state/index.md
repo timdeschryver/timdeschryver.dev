@@ -14,7 +14,7 @@ In this article, we'll iterate over an implementation to introduce multiple inde
 
 To come to a solution we'll use the [Angular Router](https://angular.io/guide/router), [NgRx Effects](https://ngrx.io/guide/effects), and [NgRx Router Store](https://ngrx.io/guide/router-store). We'll also see [meta-reducers](https://ngrx.io/guide/store/metareducers), helper reducer functions, and smart and dumb components.
 
-### The problem
+## The problem
 
 You need to create multiple of the same components and each component has its own state.
 If the component only consisted of local, or component, state, one might [tackle component state reactively](https://www.youtube.com/watch?v=I8uaHMs8rw0), another one could wait for [a new NgRx package](https://github.com/ngrx/platform/issues/2187) to emerge.
@@ -25,7 +25,7 @@ If we want our users to continue their work where they left off if they navigate
 
 To solve the "persisted local state in the global state" issue, the global state has to keep references to the local state.
 
-#### The problem explained with code
+### The problem explained with code
 
 Let's take the example of simple counter components. Each spawned counter component will have its own counter value and there are buttons to increment and decrement the counter value.
 
@@ -111,9 +111,9 @@ While this solution works, it has some drawbacks:
 
 With these approaches the first drawback is solvable but the rest of the drawbacks are not.
 
-### A solution with NgRx
+## A solution with NgRx
 
-#### Structuring the state
+### Structuring the state
 
 To not lose the counters state, we have to lift the state once more to a higher level, in the NgRx store.
 The state can be represented as separate slices, each slice holds the state of a counter component.
@@ -136,7 +136,7 @@ The state can be represented as separate slices, each slice holds the state of a
 
 To update the counter value we dispatch an increment action and a decrement action, but these actions must be aware of the counter reference.
 
-#### Router Outlet
+### Router Outlet
 
 The first and second drawbacks are both URL related. We want to be able to share a counter to another person by sending the URL that contains the counter id, e.g. `/counter/2e406d20-6d54-4a32-82ba-fbce7ecb0008`. Therefore, the active counter id must be added to the URL.
 
@@ -152,7 +152,7 @@ Once this is done, it becomes possible to render the active counter component vi
 
 The counters component doesn't have to keep track of the active counter id anymore.
 
-#### NgRx Router Serializer
+### NgRx Router Serializer
 
 An often forgotten, but oh so handy, state container is the URL. In the example, the URL contains the active counter
 id. This id is important because we need to somehow retrieve it from the URL to update the correct counter state when we dispatch the increment and decrement actions.
@@ -222,7 +222,7 @@ To see how the router state is stored, we can take a look at the [Redux DevTools
 }
 ```
 
-#### Router selectors
+### Router selectors
 
 Now that we have the router state synced with the NgRx Store, the next step is to be able to read this data.
 For this, we're going to use [selectors](https://ngrx.io/guide/store/selectors).
@@ -246,7 +246,7 @@ export const selectRouterParam = (paramName: string) =>
 
 > If you're using the default NgRx serializer, you can make use of the [built-in router selectors](https://ngrx.io/guide/router-store/selectors#router-selectors)
 
-#### Components
+### Components
 
 The counters component shows a list of all counter ids and also has a `router-outlet` to display the active counter.
 Because we can't use input and output properties anymore we have to make the counter component smarter again.
@@ -294,7 +294,7 @@ export const selectActiveCounterValue = createSelector(
 )
 ```
 
-#### Keeping the counters state in sync with the router state
+### Keeping the counters state in sync with the router state
 
 We now have a working counter, but the counter only works if the counter id is already added to the store state. If the counter id does not exist in the store state, we only see an empty counter page and the increment and decrement actions are not updating the counter value because the active counter does not exist in the global state.
 
@@ -357,13 +357,13 @@ export class CountersPageComponent {
 }
 ```
 
-#### Making the Action context-aware
+### Making the Action context-aware
 
 To be able to update the correct counter state, the action must contain the active counter id. We already acknowledged that injecting the router into the component is a bad idea, so what other options do we have?
 
 Besides storing the active counter id in the counters state, which is used often, let's explore the other options on how we can implement this. I still like that the counter component isn't aware that it is used in a tab-based interface and that it just dispatches increment and decrement actions, so let's try to keep it this way.
 
-##### Option One: Content Enricher Action Transformer Effect
+#### Option One: Content Enricher Action Transformer Effect
 
 The first option is to use the Content Enricher Action Transformer approach, as explained in [NgRx: Patterns and Techniques](https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5). This means that the Effect will enrich the increment and decrement actions by adding the active counter id to the payload, based on the output of the `selectActiveCounterId` selector.
 
@@ -445,7 +445,7 @@ export const decrementForCounter = createActions(
 
 Another way to solve this drawback is to use the action and to only handle the action in the reducer if it has a counter id, and to use the same action in the Effect but only if it doesn't have a counter id. By going for this approach, it is easier to make mistakes because you would always have to think if the action is used in a counter context or not. It will also be harder to maintain as the action will be dispatched two times.
 
-##### Option two: Meta-reducer
+#### Option two: Meta-reducer
 
 A [meta-reducer](https://ngrx.io/guide/store/metareducers) can be powerful if used correctly, we will use it to enrich the dispatched actions before the action is handled by the reducer. To add the active counter id to the action, the meta-reducer must store the active counter id. Therefore we listen to the [`ROUTER_NAVIGATION` action](https://ngrx.io/guide/router-store/actions#router-actions) and pluck the `counterId` parameter from the action. With this meta-reducer, we don't need to define the extra actions with the added `counterId` property.
 
@@ -489,7 +489,7 @@ export class CounterModule {}
 
 Now, when the action reaches the counter reducer, it will have the active counter id added to the payload.
 
-##### Option 3: Adding an extra layer
+#### Option 3: Adding an extra layer
 
 By going with the meta-reducer approach you lose some of the type safety that NgRx provides, and this might not be ideal.
 Perhaps the most simple approach to this problem, is to add an extra view layer.
@@ -514,7 +514,7 @@ The counter component still doesn't know about the tab interface because we add 
 
 The responsibility of the counter component is to only render the state of the component and to emit events. This is a powerful pattern as it allows the counter component to be used in any scenario. Because the component only knows about input and output properties, and doesn't contain services nor side effects, it can also be tested very easily.
 
-#### Updating state
+### Updating state
 
 To update the correct counter value, we can create a helper function, a mini-reducer `reduceCounter`.
 It will select the counter state bound to the action's counter id, and it ill update the state via the callback function.
@@ -554,7 +554,7 @@ export const reducer = createReducer<CountersState>(
 
 > To modify state in a more readable way, we're using `mutableOn` from the [ngrx-etc package](https://github.com/timdeschryver/ngrx-etc)
 
-### Restricting the number of counters
+## Restricting the number of counters
 
 A new feature, we want to restrict the number of counters being opened.
 For this, we can use a [`CanActivate` Route Guard](https://angular.io/api/router/CanActivate).
@@ -619,7 +619,7 @@ showMaximumTabsOpen$ = createEffect(
 )
 ```
 
-### Closing a tab
+## Closing a tab
 
 To close a tab we must create a new action and remove the tab from the state within the reducer.
 
@@ -668,7 +668,7 @@ syncState$ = createEffect(() => {
 })
 ```
 
-### Moving things around
+## Moving things around
 
 Reacting to state changes can be useful but is often harder to comprehend and maintain.
 Instead, we want to make our intentions clear.
@@ -817,7 +817,7 @@ close$ = createEffect(
 )
 ```
 
-### Conclusion
+## Conclusion
 
 This article shows examples of dealing with independent instances of a particular state. One of the approaches, a composed approach, or a different approach can be used to solve a use case, but I would keep the following concerns in mind.
 

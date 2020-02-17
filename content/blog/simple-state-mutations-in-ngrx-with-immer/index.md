@@ -13,7 +13,7 @@ publisher: Angular In Depth
 
 Recently I wrote [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!
 
-### NGXS
+## NGXS
 
 NGXS is a state management pattern + library for Angular. Just like Redux and NgRx it’s modeled after the CQRS pattern. NGXS uses TypeScript functionality to its fullest extent and because of this it may feel more Angular-y.
 
@@ -23,7 +23,7 @@ Unlike NgRx, NGXS isn’t using reducers, but it relies on decorators and depend
 
 Also, NGXS just hit 1000 starts on [GitHub](https://github.com/ngxs/store)!
 
-### Why Immer
+## Why Immer
 
 Immer can **simplify** the way we edit state.
 
@@ -31,7 +31,7 @@ Immer can **simplify** the way we edit state.
 
 The thing I like most is that it can just be **plugged in wherever needed**. Introducing Immer doesn’t mean you have to use it in everywhere in your code base.
 
-### About Immer
+## About Immer
 
 > Immer (German for: always) is a tiny package that allows you to work with immutable state in a more convenient way. It is based on the [_copy-on-write_](https://en.wikipedia.org/wiki/Copy-on-write) mechanism.
 
@@ -39,7 +39,7 @@ With Immer you’re treating your state with what they call a draft. This draft 
 
 It is created by [Michel Weststrate](https://twitter.com/mweststrate), the owner of MobX.
 
-### Side by side comparison
+## Side by side comparison
 
 It’s time for some code samples! Like my previous post, we’re going to use the classic shopping cart example where we can add and remove items from the cart.
 
@@ -186,7 +186,7 @@ loadCatalog(ctx: StateContext<CatalogStateModel>, action: LoadCatalog) {
 
 Pretty straight forward, right?
 
-### Transitioning to Immer
+## Transitioning to Immer
 
 You can safely start using Immer in some parts of your application. Using Immer doesn’t mean a big bang migration, but it can be implemented where needed and this can be done step by step.
 
@@ -197,11 +197,11 @@ Just like I said in my previous post, by using immer you won’t lose any benefi
 
 **BUT** be aware that Immer comes with object freezing out of the box in development. This means that it will throw an error if the state is mutated from outside the `produce` function. If you want to mutate your state (which I don’t recommend by the way), you can turn off this feature with `setAutoFreeze(false)`. If the application is built in production mode, this check will automatically be skipped for performance reasons.
 
-### Great, but how can I use it
+## Great, but how can I use it
 
 In order to use Immer you’ll have to install it first via `npm install immer`, and then import it with `import produce from 'immer’`.
 
-### Conclusion
+## Conclusion
 
 My conclusion is a bit different as in [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer).
 
@@ -222,7 +222,7 @@ This post is meant to be a short introduction to Immer and to spread the word to
 
 The code from the cart example can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer/tree/ngxs-immer) or directly on [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-immer/tree/ngxs-immer).
 
-### More resources
+## More resources
 
 [Introduction - NGXS](https://ngxs.gitbook.io/ngxs/ 'https://ngxs.gitbook.io/ngxs/')[](https://ngxs.gitbook.io/ngxs/)
 

@@ -16,7 +16,7 @@ If you want to automatically let the CLI update your own library when a user run
 
 Enough of the what, let’s take a look at the how!
 
-### Schematics
+## Schematics
 
 The first step is to setup the schematics by creating a [`migrations.json`](https://github.com/timdeschryver/frontal/blob/master/migrations/migration.json) file, the name isn’t set in stone so you can name it everything you want (RxJS named theirs [`collection.json`](https://github.com/ReactiveX/rxjs/blob/master/migrations/collection.json)).
 
@@ -34,7 +34,7 @@ The first step is to setup the schematics by creating a [`migrations.json`](http
 
 In the `schematics` value there is a property for each migration, the property name itself isn’t used (I think) but must be unique. The important part here are the `version` and the `factory` values. `version` is used to match the current installed version to run the update against, in the example the update is going to run when version 1.0.0 (or lower) is installed. `factory` is used to point to a factory function where all the magic happens, in the example it will call the default function inside `./2_0_0/index`. It’s also possible to specify a function, with the following syntax `"factory": "./update-6_0_0/index#rxjsV6MigrationSchematic"`.
 
-### Update function
+## Update function
 
 This is the function which is called during `ng update`. In the [implementation](https://github.com/timdeschryver/frontal/blob/master/migrations/2_0_0/index.ts) below, the dependency version will be updated in the `package.json`. Note that it’s also possible to do more than just upgrading the version number, for instance if we take a look at [angular/material2](https://github.com/angular/material2/blob/master/src/lib/schematics/update/update.ts#L36) it also runs some linter rules.
 
@@ -76,7 +76,7 @@ export default function(): Rule {
 
 > Wouldn’t it be 🍌 🍌 🍌 if all libraries would automatically fix (breaking) changes during this step, or at least let you know which steps you have to make in order to have a successful update?
 
-### Package.json
+## Package.json
 
 Last, an `ng-update` entry must be added to the [`package.json`](https://github.com/timdeschryver/frontal/blob/master/src/package.json). This is necessary to let the angular CLI know where to look for the migrations.
 
@@ -86,7 +86,7 @@ Last, an `ng-update` entry must be added to the [`package.json`](https://github.
 }
 ```
 
-### Testing
+## Testing
 
 It is possible to [test](https://github.com/timdeschryver/frontal/blob/master/__tests__/migrations/2_0_0.ts) the factory function by creating a `UnitTestTree`, having a dependency to the library with the old version number. Next the migration is is run with `runSchematic`, expecting that the version number has been changed to the correct version.
 
@@ -128,7 +128,7 @@ test(`installs version 2.0.0`, () => {
 
 To test the `ng update` command locally before publishing to `npm` you can use [`verdaccio`](https://github.com/verdaccio/verdaccio), _a lightweight private npm proxy registry._ There is a resource at the bottom, which addresses this point in detail*.*
 
-### Result
+## Result
 
 As result we can see that a new version is available after running `ng update`. I’m using the `next` flag to also include `next` tags because version 2 hasn’t been released yet.
 
@@ -142,7 +142,7 @@ After running the update command we can see the version number is changed in the
 
 the version number is updated to the new version after `ng update frontal — next` has ran
 
-### More resources
+## More resources
 
 [Version 6 of Angular Now Available](https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4)
 

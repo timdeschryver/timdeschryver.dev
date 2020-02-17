@@ -12,7 +12,7 @@ date: 2019-07-01T08:31:00.000Z
 
 At first when I heard of [css variables](https://www.w3.org/TR/css-variables/) when it was introduced, I was a bit skeptical. Why would anyone use it if there are extension languages as scss, sass, less and stylus. After several years, I started to notice more and more peoples using it, writing about it and talking about it. I was missing out on something... It took a while but after using it here and there, I was hooked. In this post I'll cover what convinced me to explore css variables further and to start using them in projects.
 
-### Usage
+## Usage
 
 To declare variables, define them in a selector and prefix the variable names with two dashes (`--`):
 
@@ -51,7 +51,7 @@ The snippets above results in:
 
 ![Image showing the results of the code snippets](./images/0.png)
 
-### Themes
+## Themes
 
 With css variables, creating a theme becomes simple.
 
@@ -84,7 +84,7 @@ In our case, we'll transition to a light or dark theme:
 
 ![GIF showing a dark and light theme](./images/1.gif)
 
-### JavaScript API
+## JavaScript API
 
 This is, in my opinion, the best part. CSS variables have a JavaScript API to get and set variables.
 
@@ -156,7 +156,7 @@ document.documentElement.style.setProperty(
 
 ![GIF showing a drag panel](./images/2.gif)
 
-### Ending word
+## Ending word
 
 If you are like me and didn't see the usefulness of css variables, or didn't know these existed.
 I hope this post opened the door to start exploring their use cases.

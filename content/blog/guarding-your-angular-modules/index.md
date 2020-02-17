@@ -28,7 +28,7 @@ Personally, I would waste a lot of time to be able to track and solve the proble
 
 > [Why is it bad if a shared module provides a service to a lazy-loaded module?](https://angular.io/guide/ngmodule-faq#q-why-bad)
 
-### An example
+## An example
 
 For instance, imagine we have a `ThemeModule` to set a theme of an application.
 The theme of the application can be set with `ThemeModule.forRoot(color)` and is configured at the start of the project.
@@ -37,7 +37,7 @@ Some time passes and our `ThemeModule` gets extracted to a library to make it re
 So, how can we avoid this?
 The answer to this question are root guards and in the next code snippets, we'll see how we can set them up.
 
-### Show me the code
+## Show me the code
 
 Let's implement the `ThemeModule` first, by adding a static `forRoot()` function to be able to set up the `ThemeModule`.
 
@@ -76,9 +76,9 @@ This has the outcome that when the feature module is loaded, the module will use
 
 <iframe src="https://stackblitz.com/edit/angular-theme-guard-start?embed=1&file=src/app/theme.module.ts" title="guard-start"></iframe>
 
-### This can be prevented with 3 easy steps
+## This can be prevented with 3 easy steps
 
-#### 1. Create an `InjectionToken`
+### 1. Create an `InjectionToken`
 
 ```ts
 export const THEME_ROOT_GUARD = new InjectionToken<void>(
@@ -88,7 +88,7 @@ export const THEME_ROOT_GUARD = new InjectionToken<void>(
 
 First of all, we need to create an [`InjectionToken`](https://angular.io/api/core/InjectionToken) for our guard.
 
-#### 2. Provide the `ROOT_MODULE_GUARD` in the providers of the module
+### 2. Provide the `ROOT_MODULE_GUARD` in the providers of the module
 
 ```ts
 @NgModule()
@@ -129,7 +129,7 @@ To not instantiate the `Theme` we can use `SkipSelf`. If we wouldn't do this, we
 
 More information on [`Optional`](https://angular.io/api/core/Optional) [`SkipSelf`](https://angular.io/api/core/SkipSelf) can be found on [angular.io](angular.io).
 
-#### 3. Inject the guard token in the module
+### 3. Inject the guard token in the module
 
 ```ts
 @NgModule()
@@ -150,7 +150,7 @@ Every time a new instance of the `ThemeModule` is created, the `createThemeRootG
 By doing this we can guard the developers using the `ThemeModule` by not accidentally importing our module more than once via the `forRoot()` function.
 We make it very clear we didn't expect this to happen, and we can save some time and frustrations for the developers using our module if our module is badly used.
 
-### A second solution but different
+## A second solution but different
 
 There's a second solution to treat your module as a singleton which requires less setup but behaves a bit differently.
 If we inject the `ThemeModule` in itself, we can simply check if the `ThemeModule` is already initialized.
@@ -170,7 +170,7 @@ export class ThemeModule {
 
 <iframe src="https://stackblitz.com/edit/angular-theme-guard-end-2?embed=1&file=src/app/theme.module.ts" title="guard-ctor"></iframe>
 
-### The difference
+## The difference
 
 A drawback to the second approach is that if we want to add the ability to load the `ThemeModule` for a second time with for example a `forChild` function this would throw the same error.
 

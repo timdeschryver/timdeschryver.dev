@@ -11,7 +11,7 @@ published: true
 publisher: Angular In Depth
 ---
 
-### Why Jest
+## Why Jest
 
 - Sensible faster; parallelized test runs
 - Snapshot testing; to make sure your UI does not change unexpectedly
@@ -21,7 +21,7 @@ publisher: Angular In Depth
 - Built in code coverage
 - Personally I also like that I don’t need a browser in order to run my tests
 
-### What is Jest
+## What is Jest
 
 > Zero configuration testing platform
 
@@ -29,7 +29,7 @@ publisher: Angular In Depth
 - The number one test framework in React applications
 - A testing framework for big and small teams
 
-### Creating an Angular application
+## Creating an Angular application
 
 The first thing to do is to create an application. Using the Angular CLI, we can use the following command to generate our project.
 
@@ -63,7 +63,7 @@ Before we’re going to use Jest as our test runner, let’s fix this failing te
 
 all 3 tests are succeeding
 
-### Adding Jest
+## Adding Jest
 
 To use Jest as our test runner we’re going to use [jest-preset-angular](https://github.com/thymikee/jest-preset-angular). To get it up and running we simply have to follow the instructions in the [README](https://github.com/thymikee/jest-preset-angular/blob/master/README.md), so let’s go over the steps.
 
@@ -132,7 +132,7 @@ all 3 tests are still succeeding
 
 > As of 2018–08–30, Nrwl Nx 6.3 provides the option to use Jest for unit testing. For more info see [Nrwl Nx 6.3: Faster Testing with Jest](https://blog.nrwl.io/nrwl-nx-6-3-faster-testing-with-jest-20a8ddb5064).
 
-### Creating the library
+## Creating the library
 
 With our application and Jest ready, let’s tackle the second part and create a library using the Angular CLI.
 
@@ -213,7 +213,7 @@ With this in place our tests will be green again, right? Well not exactly, when 
 
 the application tests are failing because there exists several different files, or packages with the name my-awesome-lib
 
-### Splitting up Jest
+## Splitting up Jest
 
 Let’s take a couple of steps back, and ask ourselves if we want to test our library and our application at the same time? I don’t think this is what we want, right? We rather want to:
 
@@ -290,7 +290,7 @@ with the command: npm run test:app, only the applications tests ran and are succ
 
 And voila, our tests finally show up green.
 
-### Wrapping up
+## Wrapping up
 
 To make it ourselves easy we can create a command that test both our library and application. This command can come in handy before you commit to make sure everything works as expected, or during your Continuous Integration (CI) build.
 
@@ -335,7 +335,7 @@ typescript                        2.7.2
 webpack                           4.8.3
 ```
 
-### Not to miss
+## Not to miss
 
 You can take a look the [angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter) to get your feet wet with [Angular](https://angular.io/), [NgRx](https://github.com/ngrx/platform/) and [Material](https://material.angular.io/). It’s created and maintained by [Tomas Trajan](https://twitter.com/tomastrajan) , who recently became a Google Developer Expert, and since short I’m helping him out with this project (there are a couple of [issues](https://github.com/tomastrajan/angular-ngrx-material-starter/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) that are up for grabs).
 

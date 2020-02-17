@@ -1,41 +1,21 @@
-/* Generated with http://k88hudson.github.io/syntax-highlighting-theme-generator/www */
-/* http://k88hudson.github.io/react-markdocs */
 /**
- * @author k88hudson
+ * Nord Theme Originally by Arctic Ice Studio
+ * https://nordtheme.com
  *
- * Based on prism.js default theme for JavaScript, CSS and HTML
- * Based on dabblet (http://dabblet.com)
- * @author Lea Verou
+ * Ported for PrismJS by Zane Hitchcoxc (@zwhitchcox) and Gabriel Ramos (@gabrieluizramos)
  */
-/*********************************************************
-* General
-*/
 
-body.sunrise pre[class*='language-'],
-body.sunrise code[class*='language-'] {
-  --background-color-code: var(--prime-color-bg);
-  --code-color: rgba(14, 77, 163, 1);
-  --code-color-2: #1c1c1c;
-}
-
-body.sunset pre[class*='language-'],
-body.sunset code[class*='language-'] {
-  --background-color-code: #333;
-  --code-color: rgba(143, 188, 187, 1);
-  --code-color-2: var(--prime-color);
-}
-
-pre[class*='language-'],
-code[class*='language-'] {
-  color: var(--code-color);
-  text-shadow: none;
+code[class*='language-'],
+pre[class*='language-'] {
+  color: #f8f8f2;
+  background: none;
   font-family: 'Cascadia', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
     monospace;
-  position: relative;
-  direction: ltr;
   text-align: left;
-  white-space: pre-wrap;
+  white-space: pre;
   word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
   line-height: 1.5;
   -moz-tab-size: 4;
   -o-tab-size: 4;
@@ -44,154 +24,124 @@ code[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  transition: all var(--transition-duration) ease-in-out;
-}
-pre[class*='language-'] {
-  word-break: break-all;
-  border: 1px solid var(--prime-color);
-}
-code[class*='language-'] {
-  word-break: break-word;
 }
 
-pre[class*='language-']::selection,
-code[class*='language-']::selection,
-pre[class*='language-']::mozselection,
-code[class*='language-']::mozselection {
-  text-shadow: none;
-  background: var(--background-color-code);
-}
-@media print {
-  pre[class*='language-'],
-  code[class*='language-'] {
-    text-shadow: none;
-  }
-}
+/* Code blocks */
+
+:not(pre) > code[class*='language-'],
 pre[class*='language-'] {
-  background: var(--background-color-code);
+  background: #2e3440;
 }
-pre > code {
-  width: 100%;
-  padding: 1em;
-  display: block;
-  margin-top: 0;
-  overflow: auto;
-}
+
+/* Inline code */
 :not(pre) > code[class*='language-'] {
-  padding: 0.1em 0.3em;
+  padding: 0.1em;
   border-radius: 0.3em;
-  color: var(--text-color);
-  background: var(--background-color-code);
+  white-space: normal;
 }
-/*********************************************************
-* Tokens
-*/
-.namespace {
-  opacity: 0.7;
-}
+
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  opacity: 0.6;
+  color: #636f88;
 }
+
 .token.punctuation {
-  color: var(--code-color-2);
+  color: #81a1c1;
 }
+
+.namespace {
+  opacity: 0.7;
+}
+
 .token.property,
 .token.tag,
-.token.boolean,
-.token.number,
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: var(--code-color-2);
+  color: #81a1c1;
 }
+
+.token.number {
+  color: #b48ead;
+}
+
+.token.boolean {
+  color: #81a1c1;
+}
+
 .token.selector,
 .token.attr-name,
 .token.string,
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: var(--code-color-2);
+  color: #a3be8c;
 }
+
 .token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
-.style .token.string {
-  color: var(--code-color-2);
+.style .token.string,
+.token.variable {
+  color: #81a1c1;
 }
+
 .token.atrule,
 .token.attr-value,
+.token.function,
+.token.class-name {
+  color: #88c0d0;
+}
+
 .token.keyword {
-  color: var(--code-color-2);
+  color: #81a1c1;
 }
-.token.function {
-  color: var(--code-color-2);
-}
+
 .token.regex,
-.token.important,
-.token.variable {
-  color: var(--code-color-2);
+.token.important {
+  color: #ebcb8b;
 }
+
 .token.important,
 .token.bold {
   font-weight: bold;
 }
+
 .token.italic {
   font-style: italic;
 }
+
 .token.entity {
   cursor: help;
 }
 
-pre.language-markup .token.tag {
-  color: var(--code-color-2);
-}
-pre.language-markup .token.attr-value {
-  color: var(--code-color);
-}
-pre.language-json .token.property,
-pre.language-json .token.operator,
-pre.language-json .token.token.punctuation {
-  color: var(--code-color);
+pre[class*='language-'] {
+  overflow: auto;
+  border-radius: 0.3em;
 }
 
-.token.deleted-sign.deleted {
-  background-color: rgba(255, 0, 0, 0.3);
+pre[class*='language-'] > code {
+  padding: 1em;
+  width: 100%;
+  display: block;
+  margin-top: 0;
 }
 
-.token.inserted-sign.inserted {
-  background-color: rgba(0, 255, 128, 0.3);
-}
-/*********************************************************
-* Line highlighting
-*/
-pre[data-line] {
-  position: relative;
-}
-pre[class*='language-'] > code[class*='language-'] {
-  position: relative;
-  z-index: 1;
-}
 .line-highlight {
-  background: var(--prime-color-bg);
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 0.5em solid rgba(0, 0, 0, 0.45);
   display: block;
   margin: 0px -1em;
   padding: 0px 0.5em;
-  border-left: 0.5em solid rgba(0, 0, 0, 0.2);
 }
-/*********************************************************
-* File positioning
-*/
+
 .code-heading {
   display: flex;
   justify-content: flex-end;
-  border-bottom: 2px solid;
   padding: 0.2em 0.4em;
-  background: var(--prime-color-bg);
-  color: var(--prime-color);
   font-family: var(--text-font);
 }
 
@@ -200,6 +150,7 @@ pre[class*='language-'] > code[class*='language-'] {
 }
 
 .code-heading > a {
-  border-bottom: none;
   font-weight: 900;
+  color: #fff !important;
+  font-size: initial;
 }

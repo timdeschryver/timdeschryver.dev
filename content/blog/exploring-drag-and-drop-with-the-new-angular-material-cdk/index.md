@@ -13,7 +13,7 @@ publisher: Angular In Depth
 
 I’ve heard that Angular Material had a new drag and drop CDK in their upcoming version. Now with the first Angular and Angular Material release candidate being released, I think it’s time to explore some of the new stuff. I’m really looking forward to this and I’m assuming you’re too, so let’s not waste any time and let’s get started. We’ll start of with a simple example and build our way up to a simple task board.
 
-### A simple example
+## A simple example
 
 Let’s start by exploring the API with the simplest example I can think of, a div that can be dragged and dropped.
 
@@ -52,7 +52,7 @@ If we run the code we can now already drag and drop the div. Pretty neat, right?
 
 ![](./images/0.gif)
 
-### Creating a drop zone
+## Creating a drop zone
 
 Now that we know how to drag an element, the next step is to create a drop zone. For this we’ll use a new directive `cdkDrop`, it will act as a container to drop the draggable items. If we try to drop an item outside the drop zone, it will go back to its original position inside the drop zone.
 
@@ -64,7 +64,7 @@ Now that we know how to drag an element, the next step is to create a drop zone.
 
 ![](./images/1.gif)
 
-### Re-ordering items inside a list
+## Re-ordering items inside a list
 
 Now that we know how to create a draggable item and a drop zone, the next step is to drag and re-order items inside a list. We’ll use the `*ngFor` directive to create the list elements inside a `cdkDrop` container.
 
@@ -141,7 +141,7 @@ Resulting in draggable and re-ordering items inside the `cdkDrop` container.
 
 ![](./images/3.gif)
 
-### Dragging from one list to another list
+## Dragging from one list to another list
 
 Let’s take it a step further and create the simple task board.
 
@@ -171,7 +171,7 @@ We need to display three separate lists and for each list we’ll create its own
 </div>
 ```
 
-#### Connecting the lists (drop zones)
+### Connecting the lists (drop zones)
 
 With the `[cdkDropConnectedTo]` input property we can connect a `cdkDrop` list instance to another instance of a `cdkDrop` list. If we don’t do this, we won’t be able to drag and drop the items to another list.
 
@@ -283,9 +283,9 @@ dropped(event: CdkDragDrop<string[]>) {
 
 ![](./images/6.gif)
 
-### Extra's
+## Extra's
 
-#### Extra 1: Output events, intercepting when an item is `Entered` and `Exited`
+### Extra 1: Output events, intercepting when an item is `Entered` and `Exited`
 
 Another part of the drag and drop API is knowing when an item is being added to the drop zone and when an item has been removed from the drop zone. This can be done with the `cdkDropEntered` and `cdkDropExited` functions, both are events on the `cdkDrop` element, just like `cdkDropDropped` as we’ve seen before.
 
@@ -316,7 +316,7 @@ exited(event: CdkDragExit<string[]>) {
 
 ![](./images/7.gif)
 
-#### Extra 2: Creating animations when an item is being dragged and dropped
+### Extra 2: Creating animations when an item is being dragged and dropped
 
 The CDK ships with a couple of [useful classes](https://github.com/angular/material2/blob/master/src/cdk/drag-drop/drag-drop.md#styling) for you to use in order to style your draggable items and to [animate](https://github.com/angular/material2/blob/master/src/cdk/drag-drop/drag-drop.md#animations) certain transitions, e.g. when you’re re-ordering the items inside a list.
 
@@ -336,7 +336,7 @@ The CDK ships with a couple of [useful classes](https://github.com/angular/mater
 
 ![](./images/8.gif)
 
-#### Extra 3: Creating a preview while dragging the item
+### Extra 3: Creating a preview while dragging the item
 
 In the examples above we simply have some text as our items, but imagine having cards as draggable items. It might not be that usable or pretty to drag those big cards across the columns. Luckily the drag and drop CDK also provides a way to create a preview of the card while dragging it. This is possible with the `*cdkDragPreview` directive.
 
@@ -353,7 +353,7 @@ In the examples above we simply have some text as our items, but imagine having 
 
 As you can see in the GIF, the new items have “New item: Item” as state. When we start dragging the item, it’s using the `*cdkDragPreview` template. In our case this is simply the name of the item, but this can be customized to your needs.
 
-### Extra 4: Allowing an item to be dropped in the drop zone
+## Extra 4: Allowing an item to be dropped in the drop zone
 
 With the `enterPredicate` property on the `cdkDrop` element, it is possible to specify a [boolean-valued function](https://en.wikipedia.org/wiki/Boolean-valued_function) which gets invoked when an item enters the drop zone. By using this functionality, an item can be allowed (or denied) in the drop zone. As example we have the use case below, which decides whether an item can be dropped in the `done` list.
 
@@ -395,7 +395,7 @@ And in the HTML template:
 
 The above GIF demonstrates that it’s only possible to drop `Item 2` inside the `done` list, and only when there are at least 2 other items inside the `active` list.
 
-### Time to wrap it up
+## Time to wrap it up
 
 I’m really looking forward to use this API in an upcoming project. Therefore I explored the API once the release candidate came out and I’m very pleased with the result. It’s very easy and intuitive to use, but at the same time it’s flexible by giving you the opportunity to be in control when you need to.
 

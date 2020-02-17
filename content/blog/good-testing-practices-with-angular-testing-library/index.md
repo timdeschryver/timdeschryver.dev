@@ -13,7 +13,7 @@ publisher: Newline
 
 [`Angular Testing Library`](https://testing-library.com/docs/angular-testing-library/intro) provides utility functions to interact with Angular components, in the same way as a user would. This brings more maintainability to our tests, gives us more confidence that our component does what it's supposed to do, and it improves the accessibility which is better for our users. All these benefits, plus you'll see that it's fun to write tests in this way.
 
-### The `Angular Testing Library`
+## The `Angular Testing Library`
 
 Angular Testing Library is a part of the [@testing-library](https://testing-library.com/) family with [🦑 DOM Testing Library](https://testing-library.com/docs/intro) in the center of the family.
 We're encouraging good testing practices across multiple frameworks and libraries by bringing a similar API to the table.
@@ -27,7 +27,7 @@ We encourage:
 
 > The more your tests resemble the way your software is used, the more confidence they can give you.
 
-### Getting Started
+## Getting Started
 
 To get started, the first step is to install `@testing-library/angular`, after that we're good to go.
 
@@ -115,7 +115,7 @@ export class FeedbackComponent {
 </form>
 ```
 
-### Our first test
+## Our first test
 
 To be able to test the feedback component we must be able to render the component, we can do this by using the `render` function.
 The `render` function takes the component under test as the first argument and has an optional second argument for more options see [`RenderOptions`](https://testing-library.com/docs/angular-testing-library/api#renderoptions), which we'll be covering soon.
@@ -143,7 +143,7 @@ it('should render the form', async () => {
 
 Now, this test works.
 
-### Queries
+## Queries
 
 The `render` function returns a [`RenderResult`](https://testing-library.com/docs/angular-testing-library/api#renderresult) object which contains utility functions to test the component.
 
@@ -170,7 +170,7 @@ In the above snippet, you don't see an assertion. This is because the `getBy` an
 
 > The error will print out the component's DOM elements with syntax highlighting
 
-### Setting `@Input()` and `@Output()` properties
+## Setting `@Input()` and `@Output()` properties
 
 With the component rendered, the next step is to provide the needed `@Input()` and `@Output()` properties.
 To assign these properties, we can use `componentProperties` from the `RenderOptions`.
@@ -195,7 +195,7 @@ it('form should display error messages and submit if valid', async () => {
 
 With this step, the component is ready to start writing tests.
 
-### Events
+## Events
 
 So far we've seen how we can assert our rendered components with query functions, but we also need a way to interact with our components.
 We can do this by [firing events](https://testing-library.com/docs/dom-testing-library/api-events).
@@ -207,7 +207,7 @@ The first argument of an event is always the targeted DOM node, the optional sec
 
 Good to know: an event will run a change detection cycle by calling `detectChanges()` after the event is fired.
 
-#### Clicking on elements
+### Clicking on elements
 
 To click on an element, we use the `component.click()` function.
 
@@ -242,7 +242,7 @@ We can use the second parameter to fire a right click:
 component.click(submit, { button: 2 })
 ```
 
-#### Filling in input fields
+### Filling in input fields
 
 To make the form valid, we must be able to fill in the fields.
 We we can use this by using various events.
@@ -324,7 +324,7 @@ The difference between the two, is that a JavaScript event will only fire the ev
 Whereas a user event will fire multiple events to replicate a real behavior while interacting with the component.
 For now, only `type` and `selectOptions` are implemented as user events.
 
-#### Invalid controls
+### Invalid controls
 
 So far we have a working feedback component, but how could we test the validation messages?
 We already have seen how we can verify our rendered component with `queries` and we've also seen how we interact with the component by firing events, this means we got all the tools in our toolbelt to test invalid controls in the feedback form.
@@ -351,7 +351,7 @@ expect(rating.getAttribute('aria-invalid')).toBe('false')
 
 Because a query returns the DOM node, we can use the DOM node to verify the control is valid or invalid.
 
-### Working with containers and components
+## Working with containers and components
 
 The current test covers our feedback component, which is just a component.
 For some scenarios this might be a good thing to do, but more often I'm of the opinion that these tests add no value.
@@ -428,23 +428,23 @@ it('form should display error messages and submit if valid (container)', async (
 })
 ```
 
-### A couple of tips for writing tests
+## A couple of tips for writing tests
 
-#### For End to End testing with Cypress use `🐅 Cypress Testing Library`
+### For End to End testing with Cypress use `🐅 Cypress Testing Library`
 
 Because it's part of `@testing-library`, you can use a similar API while using Cypress.
 This library exports the same utility functions from `DOM Testing Library` as Cypress commands.
 
 More info and examples can be found at [@testing-library/cypress](https://github.com/testing-library/cypress-testing-library).
 
-#### Use `@testing-library/jest-dom` to make assertions human readable
+### Use `@testing-library/jest-dom` to make assertions human readable
 
 This is only applicable if you're using Jest as your test runner.
 This library has useful utility Jest matchers, for example `toBeValid()`, `toBeVisible()`, `toHaveFormValues()`, and more.
 
 More info and examples can be found at [@testing-library/jest-dom](https://github.com/testing-library/jest-dom).
 
-#### Prefer one test over multiple tests
+### Prefer one test over multiple tests
 
 As you have noticed in the snippets used in this article, they are all part of one single test.
 This goes against a popular principle that you should only have one assert for a test.
@@ -454,7 +454,7 @@ I usually have one arrange and multiple acts and asserts in one test.
 
 Read more about this practice can be found at [Write fewer, longer tests](https://kentcdodds.com/blog/write-fewer-longer-tests) by [Kent C. Dodds](https://twitter.com/kentcdodds).
 
-#### Don't use `beforeEach`
+### Don't use `beforeEach`
 
 Using `beforeEach` might be useful for certain test cases, but in most cases, I prefer to use a simple `setup` function.
 I find it more readable, plus it's more flexible if you want to use a different setup in various tests, for example:
@@ -485,7 +485,7 @@ function setup(user, handleClick = jest.fn()) {
 }
 ```
 
-### Example code
+## Example code
 
 The code from this article is available on [GitHub](https://github.com/timdeschryver/atl-good-testing-practices).
 
