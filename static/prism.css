@@ -50,6 +50,10 @@ pre[class*='language-'] {
   word-break: break-all;
   border: 1px solid var(--prime-color);
 }
+code[class*='language-'] {
+  word-break: break-word;
+}
+
 pre[class*='language-']::selection,
 code[class*='language-']::selection,
 pre[class*='language-']::mozselection,
