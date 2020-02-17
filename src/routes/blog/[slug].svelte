@@ -162,6 +162,10 @@
     column-gap: 1rem;
   }
 
+  .newsletter h3 {
+    text-align: center;
+  }
+
   .newsletter h3,
   .newsletter label,
   .newsletter a {
