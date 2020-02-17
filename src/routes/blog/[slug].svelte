@@ -70,6 +70,7 @@
   }
 
   .article-action:hover {
+    transition: box-shadow 300ms;
     box-shadow: var(--prime-color-shadow) 7px 7px 1px 0px;
   }
 

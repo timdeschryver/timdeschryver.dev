@@ -41,10 +41,22 @@
   }
 </script>
 
+<style>
+  header > div {
+    margin-top: 0.7rem;
+  }
+</style>
+
 <header>
   <h1>
     <a href="/">Tim Deschryver</a>
   </h1>
+  <div>
+    <a href="/blog">Blog</a>
+    ·
+    <a href="/snippets">Snippets</a>
+  </div>
+
 </header>
 
 <main>

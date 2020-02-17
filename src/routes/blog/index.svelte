@@ -20,7 +20,7 @@
   }
 
   p {
-    margin-top: calc(var(--spacing) / 3);
+    margin-top: 0;
     font-size: 1em;
   }
 
@@ -41,6 +41,8 @@
   }
 
   li:hover {
+    transition: box-shadow 300ms;
+
     box-shadow: var(--prime-color-shadow) 13px 13px 1px 0px;
     border-bottom: 3px solid var(--prime-color);
     border-right: 3px solid var(--prime-color);
