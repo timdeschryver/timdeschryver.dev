@@ -21,12 +21,6 @@
 
   p {
     margin-top: 0;
-    font-size: 1em;
-  }
-
-  time {
-    font-size: 0.8em;
-    opacity: 0.8;
   }
 
   ul {
@@ -46,14 +40,6 @@
     box-shadow: var(--prime-color-shadow) 13px 13px 1px 0px;
     border-bottom: 3px solid var(--prime-color);
     border-right: 3px solid var(--prime-color);
-  }
-
-  li a {
-    font-size: initial;
-  }
-
-  h2 {
-    line-height: 1.2;
   }
 </style>
 

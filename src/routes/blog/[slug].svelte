@@ -49,12 +49,6 @@
 </script>
 
 <style>
-  .article-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-
   .article-action {
     background: var(--background-color);
     margin: 0;
@@ -62,18 +56,32 @@
     text-decoration: none;
     text-transform: uppercase;
     color: var(--prime-color);
-    border: 1px solid var(--prime-color);
+    /* border: 1px solid var(--prime-color);
     border-radius: 2px;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 1rem; */
     font-size: 0.75rem;
     line-height: 2.5;
+    border: none;
+
     font-weight: 900;
+    white-space: nowrap;
+    /* margin-bottom: 17px; */
   }
 
-  .article-action:hover {
+  /* @media (max-width: 1200px) {
+    .article-action {
+      font-size: 0.8rem;
+    }
+  } */
+
+  .article-action:not(:last-child) {
+    margin-right: 17px;
+  }
+
+  /* .article-action:hover {
     transition: background 300ms;
     background: var(--prime-color-shadow);
-  }
+  } */
 
   .selection-actions {
     margin-top: 0;
@@ -156,22 +164,6 @@
     Edit on GitHub
   </a>
 </div>
-
-<section class="newsletter">
-  <form
-    action="https://tinyletter.com/timdeschryver"
-    method="post"
-    target="popupwindow"
-    onsubmit="window.open('https://tinyletter.com/timdeschryver', 'popupwindow',
-    'scrollbars=yes,width=800,height=600');return true">
-    <h3>Join the newsletter to receive new content by email</h3>
-    <label for="tlemail">Enter your email address</label>
-    <input type="text" name="email" id="tlemail" />
-    <button type="submit">Join</button>
-    <input type="hidden" value="1" name="embed" />
-    <a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a>
-  </form>
-</section>
 
 <div
   class="selection-actions"

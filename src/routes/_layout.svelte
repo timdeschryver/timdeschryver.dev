@@ -55,6 +55,8 @@
     <a href="/blog">Blog</a>
     ·
     <a href="/snippets">Snippets</a>
+    ·
+    <a href="/newsletter">Newsletter</a>
   </div>
 
 </header>

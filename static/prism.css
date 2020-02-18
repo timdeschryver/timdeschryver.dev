@@ -5,104 +5,95 @@
  * Ported for PrismJS by Zane Hitchcoxc (@zwhitchcox) and Gabriel Ramos (@gabrieluizramos)
  */
 
+:root {
+  --background-color-code: #333;
+  --code-color: rgba(143, 188, 187, 1);
+  --code-color-2: var(--prime-color);
+}
+
 code[class*='language-'],
 pre[class*='language-'] {
-  color: #f8f8f2;
-  background: none;
-  font-family: 'Cascadia', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
-    monospace;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  word-wrap: normal;
-  line-height: 1.5;
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
+  background: var(--background-color-code);
+  color: var(--code-color);
 }
 
-/* Code blocks */
-
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
-  background: #2e3440;
-}
-
-/* Inline code */
-:not(pre) > code[class*='language-'] {
-  padding: 0.1em;
-  border-radius: 0.3em;
-  white-space: normal;
+code[class*='language-'] {
+  color: var(--prime-color);
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #636f88;
+  opacity: 0.6;
 }
 
 .token.punctuation {
-  color: #81a1c1;
+  opacity: 0.8;
 }
 
-.namespace {
+.token.namespace {
   opacity: 0.7;
 }
 
-.token.property,
 .token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: #81a1c1;
-}
-
-.token.number {
-  color: #b48ead;
-}
-
-.token.boolean {
-  color: #81a1c1;
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-  color: #a3be8c;
-}
-
 .token.operator,
+.token.number,
+.token.function {
+  color: var(--code-color-2);
+}
+
+.token.property,
+.token.attr-value {
+  color: var(--code-color);
+}
+
+.token.tag-id,
+.token.selector,
+.token.atrule-id {
+  color: #eeebff;
+}
+
+code.language-javascript,
+.token.attr-name {
+  color: var(--code-color-2);
+}
+
+code.language-css,
+code.language-scss,
+.token.boolean,
+.token.string,
 .token.entity,
 .token.url,
 .language-css .token.string,
+.language-scss .token.string,
 .style .token.string,
-.token.variable {
-  color: #81a1c1;
-}
-
-.token.atrule,
-.token.attr-value,
-.token.function,
-.token.class-name {
-  color: #88c0d0;
-}
-
-.token.keyword {
-  color: #81a1c1;
-}
-
+.token.keyword,
+.token.control,
+.token.directive,
+.token.unit,
+.token.statement,
 .token.regex,
-.token.important {
-  color: #ebcb8b;
+.token.atrule {
+  color: var(--code-color-2);
+}
+
+.token.placeholder,
+.token.variable {
+  color: var(--code-color-2);
+}
+
+.token.deleted {
+  text-decoration: line-through;
+}
+
+.token.inserted {
+  border-bottom: 1px dotted #eeebff;
+  text-decoration: none;
+}
+
+.token.italic {
+  font-style: italic;
 }
 
 .token.important,
@@ -110,47 +101,32 @@ pre[class*='language-'] {
   font-weight: bold;
 }
 
-.token.italic {
-  font-style: italic;
-}
-
 .token.entity {
   cursor: help;
 }
 
+/* overrides color-values for the Line Numbers plugin
+  * http://prismjs.com/plugins/line-numbers/
+  */
+/* .line-numbers .line-numbers-rows {
+  border-right-color: #2c2937;
+}
+
+.line-numbers-rows > span:before {
+  color: #3c3949;
+} */
+
+/* Customs  */
+
+/* Code blocks */
+
+/* Inline code */
 pre[class*='language-'] {
-  overflow: auto;
-  border-radius: 0.3em;
+  border: 1px solid var(--prime-color);
 }
 
-pre[class*='language-'] > code {
-  padding: 1em;
-  width: 100%;
-  display: block;
-  margin-top: 0;
-}
-
-.line-highlight {
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 0.5em solid rgba(0, 0, 0, 0.45);
-  display: block;
-  margin: 0px -1em;
-  padding: 0px 0.5em;
-}
-
-.code-heading {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.2em 0.4em;
-  font-family: var(--text-font);
-}
-
-.code-heading > * {
-  margin: 0 0.4em;
-}
-
-.code-heading > a {
-  font-weight: 900;
-  color: #fff !important;
-  font-size: initial;
+pre[class*='language-'] > .code-heading {
+  border-bottom: 2px solid;
+  background: rgba(248, 196, 0, 0.1);
+  color: var(--prime-color);
 }

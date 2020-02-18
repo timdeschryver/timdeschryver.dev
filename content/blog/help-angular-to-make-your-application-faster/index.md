@@ -250,12 +250,14 @@ This check is cheap and will execute fast. This is fine for most of the cases.
 In our case, we have a main `selectCurrentWeekView` selector that builds up the view. It uses different selectors, and each selector is responsible to read the data from the state and to filter the items for the current week. Because we use the [`Array.prototype.filter()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) for this, it will always create a new reference and thus the equality check will fail. Because the "child selectors" all create new references, the main selector will execute for each change.
 
 ```ts:selectors.ts
-export const selectCurrentWeekView = createSelector((selectCaregivers, selectItemsA, selectItemsB, selectItemsC), (caregivers, a, b, c) => ...)
+export const selectCurrentWeekView = createSelector(
+  (selectCaregivers, selectItemsA, selectItemsB, selectItemsC),
+  (caregivers, a, b, c) => ...)
 ```
 
 To get this resolved we can use the RxJS [`distinctUntilChanged` operator](https://rxjs-dev.firebaseapp.com/api/operators/distinctUntilChanged) and verify if the new output is different from the current output. A simple `JSON.stringify` check does the trick to check if the output is the same, but we first quickly check if the length is the same because it's faster in this case.
 
-> distinctUntilChanged: Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
+> `distinctUntilChanged`: Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
 
 The extra check is faster in comparison to running the Angular change detection for the whole component tree.
 
@@ -382,7 +384,7 @@ With the current solution, our selector will still fire every time when the data
 
 We can use the RxJS [`auditTime` operator](https://rxjs.dev/api/operators/auditTime) to reduce the number of selector executions, and thus also change detection cycles.
 
-> auditTime: Ignores source values for duration milliseconds, then emits the most recent value from the source Observable, then repeats this process.
+> `auditTime`: Ignores source values for duration milliseconds, then emits the most recent value from the source Observable, then repeats this process.
 
 ```ts:calendar-container.component.ts
 calendar = this.store.pipe(
@@ -404,7 +406,7 @@ This change ensures that the selector will only be called once for a given time,
 
 Don't forget to use the RxJS [`startWith` operator](https://rxjs.dev/api/operators/startWith) to set the initial state. Otherwise, the component will receive an `undefined` value because the selector has not been executed yet when the components are initialized.
 
-> startWith: Returns an Observable that emits the items you specify as arguments before it begins to emit items emitted by the source Observable.
+> `startWith`: Returns an Observable that emits the items you specify as arguments before it begins to emit items emitted by the source Observable.
 
 ### Detach components from the change detection
 

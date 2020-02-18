@@ -592,7 +592,7 @@ To illustrate this, the example below creates multiple Observable streams based 
 
 It's also possible to set a new value for the Subject programmatically, this will also update the input's value.
 
-```html{8-10, 19}:<a href="https://svelte.dev/repl/3ac7ff49159d4ba3a2a0aec6581c1fbf?version=3.18.2">REPL</a>
+```html{8-16, 20}:<a href="https://svelte.dev/repl/3ac7ff49159d4ba3a2a0aec6581c1fbf?version=3.18.2">REPL</a>
 <script>
   import { of, BehaviorSubject } from 'rxjs'
   import { map, delay } from 'rxjs/operators'

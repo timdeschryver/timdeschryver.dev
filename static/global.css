@@ -4,7 +4,6 @@
 :root {
   --text-font: 'Inter', sans-serif;
   --head-font: 'Comfortaa', cursive;
-  --font-size: 1.3rem;
 
   --background-color: #ffffff;
   --text-color: #252525;
@@ -12,23 +11,25 @@
 
   --prime-color: rgba(248, 196, 0, 1);
   --prime-color-shadow: rgba(248, 196, 0, 0.3);
+
+  font-size: 1rem;
 }
 
-@media (max-width: 1220px) {
+@media (min-width: 1200px) {
   :root {
-    --font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 }
 
-@media (max-width: 900px) {
+@media (min-width: 1500px) {
   :root {
-    --font-size: 1.1rem;
+    font-size: 1.25rem;
   }
 }
 
-@media (max-width: 700px) {
+@media (min-width: 1820px) {
   :root {
-    --font-size: 1rem;
+    font-size: 1.35rem;
   }
 }
 
@@ -59,12 +60,13 @@
 
 html,
 body {
-  margin-top: 0;
+  margin: 0;
 }
 
 html {
   height: 100%;
   box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -84,27 +86,40 @@ h4 {
 }
 
 h1 {
-  font-size: 2rem;
-  line-height: 1.15;
+  letter-spacing: 0.3rem;
 }
 
 h2 {
-  font-size: 1.6rem;
-  line-height: 1.35;
+  letter-spacing: 0.2rem;
 }
 
-h3 {
-  font-size: 1.3rem;
-  line-height: 1.25;
+h1 {
+  line-height: 1.4;
 }
 
+h2 {
+  line-height: 1.2;
+}
+
+h3,
 h4 {
-  font-size: 1.1rem;
-  line-height: 1.25;
+  line-height: 1.1;
 }
 
-p {
-  font-size: var(--font-size);
+p,
+ul,
+ol,
+code {
+  font-size: 0.94rem;
+}
+
+pre > code[class*='language-'] {
+  font-size: 1em;
+}
+
+time {
+  font-size: 0.7rem;
+  opacity: 0.8;
 }
 
 h2 + p,
@@ -146,15 +161,16 @@ p > a {
 .anchor:before {
   content: '#';
   position: absolute;
-  left: -2.2rem;
+  left: -3.2rem;
   color: var(--prime-color);
   font-size: 150%;
-  top: -30%;
+  top: -15%;
 }
 
-@media (max-width: 880px) {
-  .anchor {
-    left: 2.2rem;
+@media (max-width: 680px) {
+  .anchor:before {
+    content: none;
+    display: none;
   }
 }
 
@@ -170,7 +186,7 @@ img {
   display: grid;
   grid-template-columns:
     minmax(1.2rem, 1fr)
-    minmax(auto, 80ch)
+    minmax(auto, 58ch)
     minmax(1.2rem, 1fr);
 }
 
@@ -185,10 +201,11 @@ img {
 #sapper > main > pre,
 #sapper > main > iframe,
 #sapper > main > p.image,
-#sapper > main > table {
+#sapper > main > table,
+#sapper > main > blockquote #sapper > main > .wide {
   grid-column: 1 / 4;
   width: 100%;
-  max-width: 100ch;
+  max-width: 80ch;
   justify-self: center;
 }
 
@@ -199,6 +216,21 @@ iframe {
 #sapper > header {
   background: var(--prime-color);
   padding: 1.3rem 0;
+}
+
+blockquote {
+  border-left: 2px solid var(--prime-color);
+  padding-left: 2em;
+}
+
+input,
+textarea {
+  padding: 0.4em;
+  margin: 0 0 0.5em 0;
+  border: 1px solid #eef0f2;
+  border-radius: 2px;
+  display: block;
+  width: 100%;
 }
 
 ::selection {
@@ -231,12 +263,82 @@ pre ::selection {
   background-color: #eef0f2;
 }
 
-input,
-textarea {
-  padding: 0.4em;
-  margin: 0 0 0.5em 0;
-  border: 1px solid #eef0f2;
-  border-radius: 2px;
+/* CODE HIGHLIGHT DEFAULTS */
+
+code[class*='language-'],
+pre[class*='language-'] {
+  font-family: 'Cascadia', Consolas, Menlo, Monaco, 'Andale Mono WT',
+    'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter',
+    'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
+    'Nimbus Mono L', 'Courier New', Courier, monospace;
+  line-height: 1.375;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+pre[class*='language-'] {
+  overflow: auto;
+  position: relative;
+}
+
+:not(pre) > code[class*='language-'] {
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+}
+
+pre[class*='language-'] > code {
+  padding: 1em;
   display: block;
-  width: 100%;
+  margin-top: 0;
+}
+
+code[class*='language-'] {
+  word-break: break-all;
+}
+
+pre[class*='language-'] .line-highlight {
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 0.5em solid rgba(0, 0, 0, 0.45);
+  display: block;
+  margin: 0px -1em;
+  padding: 0px 0.5em;
+}
+
+pre[class*='language-'] > .code-heading {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.2em 0.4em;
+  font-family: var(--text-font);
+  font-size: 0.9rem;
+  position: absolute;
+  height: var(--font-size);
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #fff;
+}
+
+pre[class*='language-'] > .code-heading + code {
+  margin-top: var(--spacing);
+}
+
+pre[class*='language-'] > .code-heading > * {
+  margin: 0 0.4em;
+}
+
+pre[class*='language-'] > .code-heading > a {
+  font-weight: 900;
+  font-size: initial;
 }
