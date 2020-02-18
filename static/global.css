@@ -152,8 +152,18 @@ p > a {
   top: -30%;
 }
 
+@media (max-width: 880px) {
+  .anchor {
+    left: 2.2rem;
+  }
+}
+
 ul {
   list-style: inside;
+}
+
+img {
+  width: 100%;
 }
 
 #sapper > * {
@@ -174,7 +184,7 @@ ul {
 
 #sapper > main > pre,
 #sapper > main > iframe,
-#sapper > main > img,
+#sapper > main > p.image,
 #sapper > main > table {
   grid-column: 1 / 4;
   width: 100%;

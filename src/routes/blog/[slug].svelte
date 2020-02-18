@@ -56,11 +56,12 @@
   }
 
   .article-action {
-    background: var(--prime-color);
+    background: var(--background-color);
     margin: 0;
     cursor: pointer;
     text-decoration: none;
     text-transform: uppercase;
+    color: var(--prime-color);
     border: 1px solid var(--prime-color);
     border-radius: 2px;
     padding: 0.25rem 1rem;
@@ -70,8 +71,8 @@
   }
 
   .article-action:hover {
-    transition: box-shadow 300ms;
-    box-shadow: var(--prime-color-shadow) 7px 7px 1px 0px;
+    transition: background 300ms;
+    background: var(--prime-color-shadow);
   }
 
   .selection-actions {
