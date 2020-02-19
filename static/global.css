@@ -215,7 +215,9 @@ iframe {
 }
 
 #sapper > header {
-  background: var(--prime-color);
+  /* background: var(--prime-color); */
+  background-color: rgba(248, 196, 0, 1);
+  color: black;
   padding: 1.3rem 0;
 }
 
