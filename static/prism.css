@@ -11,14 +11,9 @@
   --code-color-2: var(--prime-color);
 }
 
-code[class*='language-'],
 pre[class*='language-'] {
   background: var(--background-color-code);
   color: var(--code-color);
-}
-
-code[class*='language-'] {
-  color: var(--prime-color);
 }
 
 .token.comment,
@@ -44,6 +39,7 @@ code[class*='language-'] {
 }
 
 .token.property,
+.token.parameter,
 .token.attr-value {
   color: var(--code-color);
 }

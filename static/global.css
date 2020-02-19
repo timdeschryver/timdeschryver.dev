@@ -306,6 +306,7 @@ pre[class*='language-'] > code {
 
 code[class*='language-'] {
   word-break: break-all;
+  background: rgba(248, 196, 0, 0.1);
 }
 
 pre[class*='language-'] .line-highlight {
