@@ -10,7 +10,8 @@
   --spacing: 1.5em;
 
   --prime-color: rgba(248, 196, 0, 1);
-  --prime-color-shadow: rgba(248, 196, 0, 0.3);
+  --prime-color-03: rgba(248, 196, 0, 0.3);
+  --prime-color-01: rgba(248, 196, 0, 0.1);
 
   font-size: 1rem;
 }
@@ -155,7 +156,7 @@ h4 > a {
 }
 
 p > a {
-  background-color: rgba(248, 196, 0, 0.1);
+  background-color: var(--prime-color-01);
 }
 
 .anchor:before {
@@ -223,7 +224,7 @@ blockquote {
   padding-left: 2em;
 }
 
-input,
+input:not([type='color']),
 textarea {
   padding: 0.4em;
   margin: 0 0 0.5em 0;
@@ -261,85 +262,4 @@ pre ::selection {
 ::-webkit-scrollbar-track {
   border-radius: 0px;
   background-color: #eef0f2;
-}
-
-/* CODE HIGHLIGHT DEFAULTS */
-
-code[class*='language-'],
-pre[class*='language-'] {
-  font-family: 'Cascadia', Consolas, Menlo, Monaco, 'Andale Mono WT',
-    'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter',
-    'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
-    'Nimbus Mono L', 'Courier New', Courier, monospace;
-  line-height: 1.375;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
-
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
-}
-
-pre[class*='language-'] {
-  overflow: auto;
-  position: relative;
-}
-
-:not(pre) > code[class*='language-'] {
-  padding: 0.1em 0.3em;
-  border-radius: 0.3em;
-}
-
-pre[class*='language-'] > code {
-  padding: 1em;
-  display: block;
-  margin-top: 0;
-}
-
-code[class*='language-'] {
-  word-break: break-all;
-  background: rgba(248, 196, 0, 0.1);
-}
-
-pre[class*='language-'] .line-highlight {
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 0.5em solid rgba(0, 0, 0, 0.45);
-  display: block;
-  margin: 0px -1em;
-  padding: 0px 0.5em;
-}
-
-pre[class*='language-'] > .code-heading {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.2em 0.4em;
-  font-family: var(--text-font);
-  font-size: 0.9rem;
-  position: absolute;
-  height: var(--font-size);
-  top: 0;
-  left: 0;
-  right: 0;
-  color: #fff;
-}
-
-pre[class*='language-'] > .code-heading + code {
-  margin-top: var(--spacing);
-}
-
-pre[class*='language-'] > .code-heading > * {
-  margin: 0 0.4em;
-}
-
-pre[class*='language-'] > .code-heading > a {
-  font-weight: 900;
-  font-size: initial;
 }

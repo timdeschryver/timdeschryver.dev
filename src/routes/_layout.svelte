@@ -1,5 +1,6 @@
 <script>
   import { afterUpdate, onMount } from 'svelte'
+  import Settings from '../components/Settings.svelte'
 
   let theme
   let reduceMotion = false
@@ -39,12 +40,24 @@
       }),
     )
   }
+
+  let name
 </script>
 
 <style>
-  header > div {
-    margin-top: 0.7rem;
+  header {
+    position: relative;
   }
+
+  header > div {
+    margin-top: 0.3rem;
+  }
+
+  /* .settings {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  } */
 </style>
 
 <header>
@@ -58,10 +71,11 @@
     ·
     <a href="/newsletter">Newsletter</a>
   </div>
-
+  <!-- <div class="settings">Settings</div> -->
 </header>
 
 <main>
+  <Settings />
   <slot />
 </main>
 

@@ -78,11 +78,6 @@
     margin-right: 17px;
   }
 
-  /* .article-action:hover {
-    transition: background 300ms;
-    background: var(--prime-color-shadow);
-  } */
-
   .selection-actions {
     margin-top: 0;
     position: absolute;
