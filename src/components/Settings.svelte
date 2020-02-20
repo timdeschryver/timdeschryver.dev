@@ -8,13 +8,11 @@
   let codeTheme
 
   $: dispatchColor('--prime-color', colorPrime)
-  $: dispatchColor('--text-color', colorText)
   $: dispatchColor('--background-color', colorBg)
   $: dispatchCodeTheme('code-theme', codeTheme)
 
   onMount(() => {
     colorPrime = localStorage.getItem('--prime-color')
-    colorText = localStorage.getItem('--text-color')
     colorBg = localStorage.getItem('--background-color')
     codeTheme = document.body.dataset.theme
   })

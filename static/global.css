@@ -6,7 +6,6 @@
   --head-font: 'Comfortaa', cursive;
 
   --background-color: #ffffff;
-  --text-color: #252525;
   --spacing: 1.5em;
 
   --prime-color: rgba(248, 196, 0, 1);
@@ -72,7 +71,6 @@ html {
 
 body {
   background: var(--background-color);
-  color: var(--text-color);
   font-family: var(--text-font);
   line-height: 1.8;
 }
@@ -197,6 +195,22 @@ img {
 
 #sapper > * > * {
   grid-column: 2;
+}
+
+main > *:not(pre) {
+  color: white;
+  mix-blend-mode: difference;
+}
+
+main > h1,
+main > h2,
+main > h3,
+main > h4 {
+  filter: drop-shadow(0.05em 0.05em var(--prime-color));
+}
+
+main > p > a {
+  filter: drop-shadow(0.05em 0.05em var(--prime-color-03));
 }
 
 #sapper > main > pre,
