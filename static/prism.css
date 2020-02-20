@@ -1,4 +1,6 @@
-/* DEFAULTS  */
+/* Credits to https://github.com/PrismJS/prism-themes */
+
+/* Defaults  */
 
 code[class*='language-'],
 pre[class*='language-'] {
@@ -186,27 +188,16 @@ pre[class*='language-'] > .code-heading > a {
 
 /* Nord  */
 
-/**
- * Nord Theme Originally by Arctic Ice Studio
- * https://nordtheme.com
- *
- * Ported for PrismJS by Zane Hitchcoxc (@zwhitchcox) and Gabriel Ramos (@gabrieluizramos)
- */
-
-code[class*='language-'],
-pre[class*='language-'] {
+[data-theme='nord'] code[class*='language-'],
+[data-theme='nord'] pre[class*='language-'] {
   color: #f8f8f2;
   background: none;
 }
 
-/* Code blocks */
-
-:not(pre) > code[class*='language-'],
-pre[class*='language-'] {
+[data-theme='nord'] :not(pre) > code[class*='language-'],
+[data-theme='nord'] pre[class*='language-'] {
   background: #2e3440;
 }
-
-/* Inline code */
 
 [data-theme='nord'] .token.comment,
 [data-theme='nord'] .token.prolog,
@@ -274,6 +265,12 @@ pre[class*='language-'] {
 }
 
 /* Dracula */
+
+[data-theme='dracula'] code[class*='language-'],
+[data-theme='dracula'] pre[class*='language-'] {
+  color: #f8f8f2;
+  background: none;
+}
 
 [data-theme='dracula'] :not(pre) > code[class*='language-'],
 [data-theme='dracula'] pre[class*='language-'] {
@@ -344,8 +341,14 @@ pre[class*='language-'] {
 
 /* Atom Dark */
 
+[data-theme='atom-dark'] code[class*='language-'],
+[data-theme='atom-dark'] pre[class*='language-'] {
+  color: #c5c8c6;
+  background: none;
+}
+
 [data-theme='atom-dark'] :not(pre) > code[class*='language-'],
-pre[class*='language-'] {
+[data-theme='atom-dark'] pre[class*='language-'] {
   background: #1d1f21;
 }
 

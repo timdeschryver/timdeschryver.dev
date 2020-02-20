@@ -48,36 +48,89 @@
   </head>
   <body data-theme="custom">
     <script>
-      document.body.className =
-        (localStorage && localStorage.getItem('__theme')) ||
-        (window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'sunset'
-          : 'sunrise')
-
-      window.addEventListener('change-color', evt => {
-        let key = evt.detail.key
-        let color = evt.detail.value
-        document.documentElement.style.setProperty(key, hexToRGB(color, 1))
-        localStorage.setItem(key, color)
+      window.addEventListener('set-css-variable', evt => {
+        let { key, value } = evt.detail
+        document.documentElement.style.setProperty(key, hexToRGB(value, 1))
+        localStorage.setItem(key, value)
 
         if (key === '--prime-color') {
           document.documentElement.style.setProperty(
             key + '-01',
-            hexToRGB(color, 0.1),
+            hexToRGB(value, 0.1),
           )
           document.documentElement.style.setProperty(
             key + '-03',
-            hexToRGB(color, 0.3),
+            hexToRGB(value, 0.3),
+          )
+        }
+
+        if (key === '--background-color') {
+          window.dispatchEvent(
+            new CustomEvent('set-data-attribute', {
+              detail: {
+                key: 'schema',
+                value: isLight(value) ? 'light' : 'dark',
+              },
+            }),
           )
         }
       })
 
-      window.addEventListener('change-code-theme', evt => {
-        let theme = evt.detail.value
-        document.body.dataset.theme = theme
-        localStorage.setItem('code-theme', theme)
+      window.addEventListener('set-data-attribute', evt => {
+        let { key, value } = evt.detail
+        document.body.dataset[key] = value
+        localStorage.setItem(key, value)
       })
+
+      let darkSchema =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      let cssVariables = {
+        '--background-color': darkSchema ? '#121212' : '#ffffff',
+        '--prime-color': '#f8c400',
+      }
+      let dataAttributes = {
+        schema: darkSchema ? 'dark' : 'light',
+        theme: 'custom',
+      }
+
+      for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i)
+        let value = localStorage.getItem(key)
+
+        if (cssVariables[key]) {
+          cssVariables[key] = value
+          continue
+        }
+        if (dataAttributes[key]) {
+          dataAttributes[key] = value
+          continue
+        }
+      }
+
+      Object.keys(cssVariables)
+        .map(
+          key =>
+            new CustomEvent('set-css-variable', {
+              detail: {
+                key,
+                value: cssVariables[key],
+              },
+            }),
+        )
+        .forEach(window.dispatchEvent)
+
+      Object.keys(dataAttributes)
+        .map(
+          key =>
+            new CustomEvent('set-data-attribute', {
+              detail: {
+                key,
+                value: dataAttributes[key],
+              },
+            }),
+        )
+        .forEach(window.dispatchEvent)
 
       function hexToRGB(color, alpha) {
         if (!color.startsWith('#')) {
@@ -95,37 +148,15 @@
         }
       }
 
-      for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i)
-        if (key === 'code-theme') {
-          let value = localStorage.getItem(key)
-          window.dispatchEvent(
-            new CustomEvent('change-code-theme', {
-              detail: {
-                value,
-              },
-            }),
-          )
-          continue
-        }
+      function isLight(color) {
+        var c = color.substring(1) // strip #
+        var rgb = parseInt(c, 16) // convert rrggbb to decimal
+        var r = (rgb >> 16) & 0xff // extract red
+        var g = (rgb >> 8) & 0xff // extract green
+        var b = (rgb >> 0) & 0xff // extract blue
 
-        if (!key.startsWith('--')) {
-          continue
-        }
-
-        let value = localStorage.getItem(key)
-        if (!value) {
-          continue
-        }
-
-        window.dispatchEvent(
-          new CustomEvent('change-color', {
-            detail: {
-              key,
-              value,
-            },
-          }),
-        )
+        var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b // per ITU-R BT.709
+        return luma > 128
       }
 
       function changeTheme(theme) {

@@ -1,9 +1,8 @@
 <script>
-  import { afterUpdate, onMount } from 'svelte'
+  import { afterUpdate } from 'svelte'
   import Settings from '../components/Settings.svelte'
 
-  let theme
-  let reduceMotion = false
+  export let segment
 
   afterUpdate(() => {
     if (typeof gtag === 'function') {
@@ -12,36 +11,6 @@
       })
     }
   })
-
-  onMount(() => {
-    theme = document.body.className
-
-    window.addEventListener('changeTheme', evt => {
-      theme = evt.detail.theme
-      document.body.className = evt.detail.theme
-      try {
-        localStorage && localStorage.setItem('__theme', evt.detail.theme)
-      } catch (_) {}
-    })
-
-    reduceMotion = window.matchMedia('(prefers-reduced-motion)').matches
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    mediaQuery.addEventListener('change', evt => {
-      reduceMotion = evt.matches
-    })
-  })
-
-  function setTheme(theme) {
-    window.dispatchEvent(
-      new CustomEvent('changeTheme', {
-        detail: {
-          theme,
-        },
-      }),
-    )
-  }
-
-  let name
 </script>
 
 <style>
@@ -50,7 +19,17 @@
   }
 
   header > div {
-    margin-top: 0.3rem;
+    margin-top: 0.3em;
+  }
+
+  a:not(:last-child) {
+    margin-right: 0.5em;
+  }
+
+  .active {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.3em;
+    padding: 0.3em 0.7em;
   }
 
   /* .settings {
@@ -65,15 +44,12 @@
     <a href="/">Tim Deschryver</a>
   </h1>
   <div>
-    <a href="/blog">Blog</a>
-    ·
-    <a href="/snippets">Snippets</a>
-    ·
-    <a href="/newsletter">Newsletter</a>
+    <a href="/blog" class:active={segment === 'blog'}>Blog</a>
+    <a href="/snippets" class:active={segment === 'snippets'}>Snippets</a>
+    <a href="/newsletter" class:active={segment === 'newsletter'}>Newsletter</a>
   </div>
   <!-- <div class="settings">Settings</div> -->
 </header>
-
 <main>
   <Settings />
   <slot />

@@ -38,41 +38,22 @@
       takeUntil(onDestroy$),
     )
     .subscribe(state.send)
-
-  function submitMessage(evt) {
-    state.send({
-      type: 'submit',
-      username: evt.target.elements['name'].value,
-      message: evt.target.elements['message'].value,
-    })
-  }
 </script>
 
 <style>
   .article-action {
-    background: var(--background-color);
+    background: none;
     margin: 0;
     cursor: pointer;
     text-decoration: none;
     text-transform: uppercase;
     color: var(--prime-color);
-    /* border: 1px solid var(--prime-color);
-    border-radius: 2px;
-    padding: 0.25rem 1rem; */
     font-size: 0.75rem;
     line-height: 2.5;
     border: none;
-
     font-weight: 900;
     white-space: nowrap;
-    /* margin-bottom: 17px; */
   }
-
-  /* @media (max-width: 1200px) {
-    .article-action {
-      font-size: 0.8rem;
-    }
-  } */
 
   .article-action:not(:last-child) {
     margin-right: 17px;
@@ -173,6 +154,10 @@
 
 {#if $state.matches('message')}
   <Message
-    on:submit={submitMessage}
+    on:submit={evt => state.send({
+        type: 'submit',
+        username: evt.target.elements['name'].value,
+        message: evt.target.elements['message'].value,
+      })}
     on:click={() => state.send({ type: 'cancel' })} />
 {/if}

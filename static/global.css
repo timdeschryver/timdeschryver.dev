@@ -146,14 +146,8 @@ a {
   color: inherit;
 }
 
-p > a,
-h2 > a,
-h3 > a,
-h4 > a {
-  border-bottom: 3px solid var(--prime-color);
-}
-
 p > a {
+  border-bottom: 3px solid var(--prime-color);
   background-color: var(--prime-color-01);
 }
 
@@ -197,7 +191,7 @@ img {
   grid-column: 2;
 }
 
-main > *:not(pre) {
+[data-schema='dark'] main > *:not(pre) {
   color: white;
   mix-blend-mode: difference;
 }
@@ -207,10 +201,6 @@ main > h2,
 main > h3,
 main > h4 {
   filter: drop-shadow(0.05em 0.05em var(--prime-color));
-}
-
-main > p > a {
-  filter: drop-shadow(0.05em 0.05em var(--prime-color-03));
 }
 
 #sapper > main > pre,

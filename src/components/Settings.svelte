@@ -20,7 +20,7 @@
   function dispatchColor(key, value) {
     if (!value) return
     window.dispatchEvent(
-      new CustomEvent('change-color', {
+      new CustomEvent('set-css-variable', {
         detail: {
           key,
           value,
@@ -32,8 +32,9 @@
   function dispatchCodeTheme(key, value) {
     if (!value) return
     window.dispatchEvent(
-      new CustomEvent('change-code-theme', {
+      new CustomEvent('set-data-attribute', {
         detail: {
+          key: 'theme',
           value,
         },
       }),
@@ -43,7 +44,6 @@
 
 <input type="color" bind:value={colorPrime} />
 <input type="color" bind:value={colorBg} />
-<input type="color" bind:value={colorText} />
 
 <select bind:value={codeTheme}>
   <option value="custom">Custom</option>
