@@ -71,7 +71,7 @@
     cursor: pointer;
     text-decoration: none;
     text-transform: uppercase;
-    border: none;
+    border: 1x solid;
     padding: 0.25rem 1rem;
     font-size: 0.75rem;
     line-height: 2.5;

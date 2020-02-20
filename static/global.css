@@ -148,7 +148,7 @@ a {
 
 p > a {
   border-bottom: 3px solid var(--prime-color);
-  background-color: var(--prime-color-01);
+  background-color: var(--prime-color-03);
 }
 
 .anchor:before {
@@ -157,7 +157,7 @@ p > a {
   left: -3.2rem;
   color: var(--prime-color);
   font-size: 150%;
-  top: -15%;
+  top: -10%;
 }
 
 @media (max-width: 680px) {
@@ -231,13 +231,23 @@ blockquote {
 }
 
 input:not([type='color']),
-textarea {
+textarea,
+select {
   padding: 0.4em;
   margin: 0 0 0.5em 0;
   border: 1px solid #eef0f2;
   border-radius: 2px;
   display: block;
   width: 100%;
+  font-size: inherit;
+}
+
+label {
+  font-size: inherit;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 ::selection {
