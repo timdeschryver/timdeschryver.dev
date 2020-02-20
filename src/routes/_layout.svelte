@@ -56,8 +56,8 @@
     <a href="/">Tim Deschryver</a>
   </h1>
   <nav>
-    <a href="/blog" ref="prefetch" class:active={segment === 'blog'}>Blog</a>
-    <a href="/snippets" ref="prefetch" class:active={segment === 'snippets'}>
+    <a href="/blog" rel="prefetch" class:active={segment === 'blog'}>Blog</a>
+    <a href="/snippets" rel="prefetch" class:active={segment === 'snippets'}>
       Snippets
     </a>
     <a href="/newsletter" class:active={segment === 'newsletter'}>Newsletter</a>
