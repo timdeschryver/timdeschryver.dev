@@ -28,9 +28,11 @@
     margin-right: 0.5em;
   }
 
+  /* https://neumorphism.io/#f8c400 */
   .active {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 0.3em;
+    border-radius: 10px;
+    background: #f8c400;
+    box-shadow: 6px 6px 11px #d3a700, -6px -6px 11px #ffe100;
   }
 
   .settings-button {
