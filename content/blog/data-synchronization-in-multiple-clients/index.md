@@ -15,7 +15,7 @@ Often when working with a CRUD heavy application you find yourself or someone el
 
 Let’s cut to the chase and explore the options we have.
 
-### Real-time messaging
+## Real-time messaging
 
 One approach would be use web sockets that allows to receive messages from the server. This would mean if user Bob would edit a record and once it’s processed on the server, every connected client (user) would receive the updated record. This way everyone has the latest version of the record.
 
@@ -69,13 +69,13 @@ Note that it’s also possible to upsert/update multiple records at once with `u
 
 > Remember to use a clear and helpful name for your actions - see Mike Ryan’s talk at ng-conf about [good action hygiene](https://www.youtube.com/watch?v=JmnsEvoy-gY)
 
-### Refresh client-side
+## Refresh client-side
 
 If you don’t have the infrastructure to set up real-time messaging another solution might be to let the client refresh every x seconds or on specific user actions.
 
 This has the downside that you might end up making unnecessary HTTP requests on every client that is running the application.
 
-### Locking
+## Locking
 
 An other option might be to lock the edit screen. This means that once a user opens a screen, this screen will be read-only for everyone else. Once the user is done editing, the screen will become free to use again.
 
@@ -87,7 +87,7 @@ This might be a simple solution, but this is also my least favorite one because 
 
 In short, the user experience is terrible.
 
-### Versioning
+## Versioning
 
 In this fourth solution we’re going to take a look at versioning. With versioning you’re extending the entity with a version number (think event sourcing). This version number will be send from the server to the client (read), and will also be send from the client to the server (save). Before processing the save action, the server checks if both the version numbers match. If the server receives an unexpected version number from the client, the server doesn’t process the requests and notifies the user.
 
@@ -95,6 +95,6 @@ I’m liking this approach more than the locking approach because the user can j
 
 This post is just to briefly explore the options one has to synchronize data between clients. I didn’t have the time to provide examples, but these could be added afterwards, when needed.
 
-### Not to miss
+## Not to miss
 
 [Announcing the Release of NgRx 6, New Projects, and Looking Ahead](https://medium.com/ngrx/announcing-the-release-of-ngrx-6-new-projects-and-looking-ahead-5fc30bed260b)

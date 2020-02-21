@@ -17,7 +17,7 @@ There are two ways of syncing state that I know of. One of them is to send the a
 
 As a starting point, we’re going to pick up where we left off in a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./blog/lets-have-a-chat-about-actions-and-action-creators-within-ngrx) where we created a simple grocery list.
 
-### Syncing state by sending actions from one tab to another tab
+## Syncing state by sending actions from one tab to another tab
 
 Knowing that our state is predictable because we’re using NgRx to manage the state of our application, we can leverage its power to rebuild the state. Thus if we store every dispatched action into the local storage and we dispatch them again in the same order, we know that we will have the same outcome, i.e. the same state. If you’re familiar with the [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension), you have probably already used or at least seen this concept by rewinding and replaying actions.
 
@@ -25,7 +25,7 @@ The first step to the solution is to store actions to the local storage.
 
 > We’re using local storage because this means that every tab with the same origin can access it; as opposed to session storage, which creates a new storage for every tab.
 
-#### Storing actions to local storage
+### Storing actions to local storage
 
 To store the actions we’ll be using an effect, listening to a certain set of actions because (in most of the cases) we only want to store actions not triggering a side effect. We can take a look at a simple example of fetching a list of items from a back-end. In this case, we don’t want to store the `LOAD_ITEMS` action because this would mean that we’ll also fetch the items again from a back-end. This action of fetching items isn’t pure, because in the worst case we could end up with a different set of items every time we make a new HTTP request. What we (usually) want is to store the `LOAD_ITEMS_SUCCESS` action, because this action contains meaningful data as its payload, to share across tabs and is pure.
 
@@ -61,7 +61,7 @@ If you’re not familiar with the storage API, you can compare it to a key (stri
 
 Note that we can’t just simply store and retrieve the actions from the local storage. We have to serialize each action with `JSON.stringify`, and then deserialize the value with `JSON.parse` to recreate the action. In an application using NgRx, we can assume that actions are serializable.
 
-#### Retrieving actions from local storage and dispatching them
+### Retrieving actions from local storage and dispatching them
 
 Now that we’ve stored the actions inside our local storage, the next step is to notify the other tabs and dispatch the same actions there. Here again, we’re also going to use an effect. We use the RxJS function [`fromEvent`](https://rxjs-dev.firebaseapp.com/api/index/function/fromEvent) to listen to the browser event [`window.storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Responding_to_storage_changes_with_the_StorageEvent) and get notified when the local storage changes in another tab.
 
@@ -128,11 +128,11 @@ onChange = fromEvent<StorageEvent>(window, 'storage').pipe(
 
 Et voila, we’ve got a working demo. As you can see in the GIF above the “Toggle checked off groceries” isn’t synced to the other tabs, this is because we don’t store this action in the local storage.
 
-### Syncing state by sending the state from one tab to another
+## Syncing state by sending the state from one tab to another
 
 This way of syncing state across tabs uses the same techniques as the first one. But the difference is that we store the whole state in the local storage.
 
-#### Storing state to local storage
+### Storing state to local storage
 
 In the grocery list application we already have a meta-reducer which does exactly this. The `persistStateReducer` reducer persists the state to the local storage in order to reload the state when we reopen the grocery list. Therefore, we don’t have to change anything for this step.
 
@@ -162,7 +162,7 @@ export function persistStateReducer(reducer: ActionReducer<State>) {
 
 > It’s also possible to persist state to local storage by using an effect, take a look at the [angular-ngrx-material-starter project](https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/src/app/examples/todos/todos.effects.ts#L23) by [Tomas Trajan](https://twitter.com/tomastrajan) for an example.
 
-#### Updating the state tree
+### Updating the state tree
 
 To read the state in another tab we’re going to use the same method as we did before. The big difference here is that we don’t dispatch actions to rebuild the state. We’re going to dispatch an action containing the whole state or a partial state as its payload.
 
@@ -201,7 +201,7 @@ This gives us the same result as before, but in a slightly different way:
 
 ![](./images/3.gif)
 
-### Conclusion
+## Conclusion
 
 In a redux based system, like NgRx, I find it simple and straightforward to handle different event sources, just to name a few: user interaction, browser events, communication with a web API, and so forth.
 

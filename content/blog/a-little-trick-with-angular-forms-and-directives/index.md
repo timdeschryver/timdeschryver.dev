@@ -15,7 +15,7 @@ Imagine having a form that you want to use at multiple places inside your applic
 
 In our case, this form is used in a multi-step procedure and in each step of the procedure the form gets more restrictive. Can you keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)? We had this problem and came up with the following solution.
 
-### The form
+## The form
 
 As an example let's take a simple form, we have a person with a name, contact info, and allergies.
 In the beginning, only the name is required. Later on, we're going to require the rest of the person's info.
@@ -57,7 +57,7 @@ export class PersonComponent {
 
 By default, we make the person's name a required field.
 
-### The directive
+## The directive
 
 By using an Angular directive we can inject the component's instance, which allows us to access the form. In our case to alter the form's validation and making more fields required.
 
@@ -89,7 +89,7 @@ export class StageTwoDirective {
 }
 ```
 
-### Usage
+## Usage
 
 To make this small example complete, this is how you would use the person component together with or without a directive in another component.
 

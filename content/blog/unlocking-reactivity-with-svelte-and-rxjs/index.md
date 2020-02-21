@@ -15,7 +15,7 @@ In this article, we'll take a quick glance at the Svelte internals to see how Sv
 
 This is important to know, because we can use this knowledge to unlock the potentials of Svelte in combination with RxJS, without all the overhead, to end up with a truly reactive architecture. When we have a better understanding of the internals, we'll go through some examples to take a look at the possibilities.
 
-### A Svelte component
+## A Svelte component
 
 To take a look at the internals we need a small demo application, and for this article, we have a simple counter that increments after each second.
 
@@ -128,7 +128,7 @@ function instance($$self, $$props, $$invalidate) {
 }
 ```
 
-### A svelte store
+## A svelte store
 
 Now that we know how a value gets updated, we can take it a step further by creating a [Svelte Store](https://svelte.dev/docs#svelte_store). A store holds state and is typically used to share data between multiple components.
 
@@ -359,7 +359,7 @@ By looking at the compiled code and after a quick look at the source code, we ca
 
 This code can be repetitive to write, and it can contain bugs when we forget to unsubscribe from the store. I'm happy that Svelte handles all of this for us, we only have to prefix the subscribable with the `$` sign, and Svelte will do all the rest.
 
-### Svelte with RxJS
+## Svelte with RxJS
 
 We've seen a bit on how Svelte accomplishes reactivity with a Svelte Store.
 But with what we've seen so far, we can see that it resembles the contract of an [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/observable).
@@ -443,9 +443,9 @@ With this example, we see that a Svelte Store can be substituted with an RxJS ob
 As someone who's using Angular with NgRx daily, this is something I can use to my advantage.
 Because once you get to know RxJS, it makes it easier to work with asynchronous code and it hides all the (complex) implementation details.
 
-### RxJS-based examples
+## RxJS-based examples
 
-#### Typehead
+### Typehead
 
 It's been a while since I had to write a typeahead without RxJS but this took some time and a lot of code. The implementation also contained fewer features, as the cancellability of previous requests. Sadly, most of the time, the implementation also introduced bugs.
 
@@ -507,7 +507,7 @@ The code above creates a reference to the input box by using Svelte's [`bind:thi
 When the component is mounted, we use RxJS to subscribe to the `input` event on the input box. The rest of the code fires an AJAX request to an API and binds the result to the `books` variable.
 In the HTML, we print out the output by subscribing to the `books` variable with the `$` sign.
 
-#### Refactored Typehead
+### Refactored Typehead
 
 The above code can be cleaned up. What I don't like about it, is the usage of the `inputElement` binding.
 Because, again, this adds extra code in our codebase that we have to maintain.
@@ -585,14 +585,14 @@ The implementation now looks as follows, notice that the [`bind:value` attribute
 <pre>{ JSON.stringify($books, ["tv_shows", "id", "name"], 2) }</pre>
 ```
 
-#### React to changes
+### React to changes
 
 The benefit of reactive programming is that we can react to changes.
 To illustrate this, the example below creates multiple Observable streams based on a Subject to transform the Subject's value.
 
 It's also possible to set a new value for the Subject programmatically, this will also update the input's value.
 
-```html{8-10, 13}:<a href="https://svelte.dev/repl/3ac7ff49159d4ba3a2a0aec6581c1fbf?version=3.18.2">REPL</a>
+```html{8-16, 20}:<a href="https://svelte.dev/repl/3ac7ff49159d4ba3a2a0aec6581c1fbf?version=3.18.2">REPL</a>
 <script>
   import { of, BehaviorSubject } from 'rxjs'
   import { map, delay } from 'rxjs/operators'
@@ -627,7 +627,7 @@ It's also possible to set a new value for the Subject programmatically, this wil
 <p>Scrambled: {$nameScrambled}</p>
 ```
 
-### Conclusion
+## Conclusion
 
 In this article, we saw that an RxJS Observable can act as a drop-in replacement to a Svelte store.
 This is probably a coincidence, but this makes it very pleasant to work with.

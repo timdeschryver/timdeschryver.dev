@@ -15,7 +15,7 @@ I want to delete a property from an object in a pure (immutable) way.
 ### Solution
 
 Use a destructuring assignment to assign the to be removed property to a variable, while cloning the "rest" properties to a new variable.
-The `_` is used to prevent a linter giving the `variable is declared but its value is never read` warning.
+The `_` is used to prevent a linter giving the warning "variable is declared but its value is never read".
 
 ```ts
 const { password: _, ...user } = {

@@ -16,7 +16,7 @@ The first place where I was looking, was the [Svelte repository](https://github.
 
 After taking a look at the Svelte repository, I quickly came across the [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/intro). I'm the creator of the [Angular Testing Library](https://testing-library.com/docs/angular-testing-library/intro), and because of the Testing Library has a similar API across all frameworks, I was quickly used to it.
 
-### Jest Setup
+## Jest Setup
 
 Writing tests with the Svelte Testing Library can be done with all test, in this article I'm using [Jest](https://jestjs.io/).
 
@@ -93,7 +93,7 @@ The last step of the setup is to add a script inside the `package.json` file:
 }
 ```
 
-### Svelte Testing Library Setup
+## Svelte Testing Library Setup
 
 To use the Svelte Testing Library, the `@testing-library/svelte` package has to be installed.
 
@@ -101,7 +101,7 @@ To use the Svelte Testing Library, the `@testing-library/svelte` package has to 
 npm install @testing-library/svelte --D
 ```
 
-### Writing a test
+## Writing a test
 
 After all the setup, we can start writing tests.
 
@@ -161,7 +161,7 @@ it('it works', async () => {
 })
 ```
 
-### Running tests
+## Running tests
 
 Everything is set, and now we can finally run the tests.
 Run the following command:

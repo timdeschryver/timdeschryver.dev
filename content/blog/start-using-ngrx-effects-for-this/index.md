@@ -13,7 +13,7 @@ publisher: Angular In Depth
 
 You’re probably only using ngrx/effects to handle the communication to an external source by triggering an effect with an NgRx action. But did you know ngrx/effects can be used for more than this?
 
-### Effects
+## Effects
 
 The [@ngrx/effects](https://github.com/ngrx/platform/tree/master/docs/effects) library provides a way to isolate side effects into its own model, outside the NgRx store and the Angular components. It provides us an Observable `actions` which is basically a stream of all the dispatched actions, for every dispatched action it emits a new value (after every reducer has been called). It also has a RxJS operator `ofType`, which is used to filter actions based on their action type.
 
@@ -37,18 +37,18 @@ getCustomers = this.actions.pipe(
 );
 ```
 
-### 1. External sources
+## 1. External sources
 
 While the `actions` Observable is the most known and the most used source for your effects, it is not the only one. In fact we can use every Observable as a source.
 
-#### Using RxJS Observables
+### Using RxJS Observables
 
 ```ts
 @Effect()
 ping = interval(1000)_._pipe(mapTo(new Ping()));
 ```
 
-#### Using the JavaScript API with RxJS
+### Using the JavaScript API with RxJS
 
 ```ts
 @Effect()
@@ -59,7 +59,7 @@ online = merge(
 ).pipe(map(online => online ? new IsOnline() : new IsOffline()));
 ```
 
-#### Using the Angular Material CDK
+### Using the Angular Material CDK
 
 ```ts
 @Effect()
@@ -72,7 +72,7 @@ breakpoint = this.breakpointObserver
   );
 ```
 
-### 2. Handling the flow of a ([Angular Material](https://material.angular.io/components/dialog/overview)) dialog
+## 2. Handling the flow of a ([Angular Material](https://material.angular.io/components/dialog/overview)) dialog
 
 Instead of handling a dialog inside a component, it is possible to use an effect. The effect handles when to open and close the dialog and it dispatches an action with the dialog result.
 
@@ -93,7 +93,7 @@ openDialog = this.actions.pipe(
 );
 ```
 
-### 3. Showing notifications
+## 3. Showing notifications
 
 Just like the dialog example, I like to handle my notifications within an effect. Doing this keeps the rest of your application pure and more understandable in my opinion. In the example below we’ll be using the [Angular Material Snackbar](https://material.angular.io/components/snack-bar/overview) but the same can be applied to any other notification system.
 
@@ -121,7 +121,7 @@ error = this.actions.pipe(
 )
 ```
 
-### 4. Using a selector inside your effects
+## 4. Using a selector inside your effects
 
 There are some times were you would need to access some store state inside your effect. For this, we can the use the RxJS `withLatestFrom` operator in combination with a selector to retrieve a slice of the store state.
 
@@ -159,7 +159,7 @@ getOrder = this.actions.pipe(
 )
 ```
 
-### 5. Navigate based on actions
+## 5. Navigate based on actions
 
 By injecting the Angular router into the effects it’s possible to redirect the user based on certain actions. In the example below we’re sending the user to the homepage when he or she logs out. Notice that we’re passing `dispatch: false` to the Effect decorator because we’re not dispatching any event. If we wouldn’t do this, we would be stuck in a infinite loop because the effect is dispatching the same action over and over again.
 
@@ -173,7 +173,7 @@ logOut = this.actions.pipe(
 )
 ```
 
-### 6. Analytics/monitoring
+## 6. Analytics/monitoring
 
 Because every dispatched action emits a new value to the `actions` source, we can use this source in order to gain statistics of the application. For instance, we could log every dispatched action or only log the actions important to you by filtering the non-important actions with the `ofType` operator. In the example below we’re logging every action to [Application Insights](https://azure.microsoft.com/en-us/services/application-insights/).
 
@@ -187,7 +187,7 @@ trackEvents = this.actions.pipe(
 )
 ```
 
-### Conclusion
+## Conclusion
 
 Knowing this, we can refactor some code that now lives inside our components or inside our NgRx store, into the ngrx/effects model. By doing this, it makes our components more pure and it keeps the side effects of our application separated. Resulting in code that is easier to reason about and also easier to test, in my opinion.
 

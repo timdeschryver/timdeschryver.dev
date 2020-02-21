@@ -27,14 +27,14 @@ It's here, that at a later phase during development when all different items wer
 
 In this article, we'll take a look at the changes we made to keep the view snappy.
 
-### Root cause <!-- omit in toc -->
+## Root cause <!-- omit in toc -->
 
 After a few `console.log` statements inside the [`OnChanges` lifecycle hook](https://angular.io/api/core/OnChanges) of the main components, we noticed that most of the components were rendering too many times. This had a ripple effect, and thus some of the heavier functions were executed too many times. Our main job was to lower the number of change detection cycles, by a lot.
 
 We already had the `ChangeDetectionStrategy` of all of our components to [`ChangeDetectionStrategy.OnPush`](https://angular.io/api/core/ChangeDetectionStrategy#OnPush), and we're already using pure pipes in multiple places of our application.
 These good practices took us far, but not far enough later on in the development phase.
 
-### Solutions <!-- omit in toc -->
+## Solutions <!-- omit in toc -->
 
 - [@HostListener runs the change detection cycle](#hostlistener-runs-the-change-detection-cycle)
 - [Do heavy lifting up front (and only once)](#do-heavy-lifting-up-front-and-only-once)
@@ -45,7 +45,7 @@ These good practices took us far, but not far enough later on in the development
 - [Preventing selector executions (NgRx)](#preventing-selector-executions-ngrx)
 - [Detach components from the change detection](#detach-components-from-the-change-detection)
 
-#### @HostListener runs a new change detection cycle
+### @HostListener runs a new change detection cycle
 
 This one, I did not know of.
 The calendar component works with different shortcuts, and we used the [`@HostListener` decorator](https://angular.io/api/core/HostListener) to react to `keydown` events.
@@ -90,7 +90,7 @@ ngAfterViewInit() {
 }
 ```
 
-#### Do heavy lifting upfront (and only once)
+### Do heavy lifting upfront (and only once)
 
 The initial NgRx selector returned a list of caregivers and a list of appointments.
 The calendar component has a loop over this list of caregivers. And inside the loop, we had a second loop over the days of the current week. To get the appointments of the caregiver for the given days, we used the `getCaregiverSchedule` method. The method filters out the appointments for the current employee, and the current day.
@@ -141,7 +141,7 @@ The HTML view now looks as follows.
 
 For me, this change also makes it more readable and easier to work it.
 
-#### Pure pipes to prevent method calls
+### Pure pipes to prevent method calls
 
 After the previous change, we made the same mistake again.
 We already grouped the appointments to the caregivers, but we still had to filter the appointments by day.
@@ -186,7 +186,7 @@ export class FilterAppointmentsByDatePipe implements PipeTransform {
 }
 ```
 
-#### trackBy to decrease the number of DOM mutations
+### trackBy to decrease the number of DOM mutations
 
 We knew that having method calls inside the HTML view were bad for performance.
 But what didn't work as expected, was the [`trackBy` method](https://angular.io/api/common/NgForOf#ngForTrackBy).
@@ -198,7 +198,7 @@ But this is not the case. The `trackBy` method only helps for the creation or th
 
 I'm not not saying that the `trackBy` method is not useful, because it is. It helps Angular to know when it must re-render DOM nodes, and when it should not. It ensures that only the affected nodes will be mutated. The less we have to do, the better.
 
-#### Virtual scrolling for large lists
+### Virtual scrolling for large lists
 
 Because the list of caregivers might be large, a lot of component instances are created, together with their DOM nodes.
 The logic inside these components will also be run, state is stored, subscriptions are established, and change detection cycles are run. This makes it unnecessarily harder for our devices. That's why we added virtual scrolling.
@@ -233,7 +233,7 @@ To implement it, simply wrap your component inside a `cdk-virtual-scroll-viewpor
 </cdk-virtual-scroll-viewport>
 ```
 
-#### Referential checks (NgRx)
+### Referential checks (NgRx)
 
 Another culprit was the main NgRx selector, that returned the list of caregivers with their schedules.
 The selector emitted too many times. After each change to the schedule, the selector is executed and returns a new result, with a new reference.
@@ -250,12 +250,14 @@ This check is cheap and will execute fast. This is fine for most of the cases.
 In our case, we have a main `selectCurrentWeekView` selector that builds up the view. It uses different selectors, and each selector is responsible to read the data from the state and to filter the items for the current week. Because we use the [`Array.prototype.filter()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) for this, it will always create a new reference and thus the equality check will fail. Because the "child selectors" all create new references, the main selector will execute for each change.
 
 ```ts:selectors.ts
-export const selectCurrentWeekView = createSelector((selectCaregivers, selectItemsA, selectItemsB, selectItemsC), (caregivers, a, b, c) => ...)
+export const selectCurrentWeekView = createSelector(
+  (selectCaregivers, selectItemsA, selectItemsB, selectItemsC),
+  (caregivers, a, b, c) => ...)
 ```
 
 To get this resolved we can use the RxJS [`distinctUntilChanged` operator](https://rxjs-dev.firebaseapp.com/api/operators/distinctUntilChanged) and verify if the new output is different from the current output. A simple `JSON.stringify` check does the trick to check if the output is the same, but we first quickly check if the length is the same because it's faster in this case.
 
-> distinctUntilChanged: Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
+> `distinctUntilChanged`: Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
 
 The extra check is faster in comparison to running the Angular change detection for the whole component tree.
 
@@ -376,13 +378,13 @@ When the data is loaded for the next week the state gets updated but the child s
 
 This ensures that the component only receives a new value when the content of data has been changed. Because we check the selector's arguments first, we also prevent that the projection function of the selector is executed. For the heavier selectors, this is also a performance booster.
 
-#### Preventing selector executions (NgRx)
+### Preventing selector executions (NgRx)
 
 With the current solution, our selector will still fire every time when the data has changed in the week view. The data of the view is partially loaded with multiple API calls. This means that the selector will be executed for each call. This is useless if all the calls follow-up fast after each other.
 
 We can use the RxJS [`auditTime` operator](https://rxjs.dev/api/operators/auditTime) to reduce the number of selector executions, and thus also change detection cycles.
 
-> auditTime: Ignores source values for duration milliseconds, then emits the most recent value from the source Observable, then repeats this process.
+> `auditTime`: Ignores source values for duration milliseconds, then emits the most recent value from the source Observable, then repeats this process.
 
 ```ts:calendar-container.component.ts
 calendar = this.store.pipe(
@@ -404,9 +406,9 @@ This change ensures that the selector will only be called once for a given time,
 
 Don't forget to use the RxJS [`startWith` operator](https://rxjs.dev/api/operators/startWith) to set the initial state. Otherwise, the component will receive an `undefined` value because the selector has not been executed yet when the components are initialized.
 
-> startWith: Returns an Observable that emits the items you specify as arguments before it begins to emit items emitted by the source Observable.
+> `startWith`: Returns an Observable that emits the items you specify as arguments before it begins to emit items emitted by the source Observable.
 
-#### Detach components from the change detection
+### Detach components from the change detection
 
 We went with this approach before applying some of the solutions already addressed.
 Afterwards, we reverted this change as it has some downsides.
@@ -466,7 +468,7 @@ This is just one example, but we had to do this at multiple places.
 This isn't straightforward.
 If you're not aware that a component detached itself, it leads to frustration and minutes of debugging.
 
-### Conclusion
+## Conclusion
 
 The biggest improvement we can make is to reduce the number of change detection cycles.
 This will lower the number of function calls, and the number of re-renders.
@@ -485,7 +487,7 @@ Be aware of what triggers the change detection. If an input property of a compon
 Remember the quote "premature optimization is the root of all evil".
 Most of these tips are only needed when the application doesn't feel snappy anymore.
 
-#### Useful resources
+### Useful resources
 
 - [Optimizing an Angular application - Minko Gechev](https://www.youtube.com/watch?v=ybNj-id0kjY&list=PLOETEcp3DkCrmGI9bHXMDsxl6_YdnZr7M&index=42&t=0s)
 - [Angular Performance Workshop - Manfred Steyer](https://www.youtube.com/watch?v=ZI_MC3YdSo4&list=PLOETEcp3DkCrmGI9bHXMDsxl6_YdnZr7M&index=27&t=0s)

@@ -11,7 +11,7 @@ published: true
 tweet_id: '1117777550992920577'
 ---
 
-### Social media cards
+## Social media cards
 
 With a social media card it is possible to transform a simple (and boring) link when you share it on different platforms, like Twitter or Slack, to an eye-catching message. The message contains a title, a description and an image if provided. To create social media cards for a website we have to add a couple of metadata tags inside the `header` tag of the page. When we're promoting our website, let's take a blog for example, we could provide the metadata tags. We could even take it a step further and create these metadata tags for specific pages. If we want to distinguish a post from our blog and from the other posts within it, we must have a custom card for the said post. Therefor we must override the global metadata tags with metadata tags for the specific post.
 
@@ -55,9 +55,9 @@ The snippet below shows an example on how this looks like, as you can see, there
 
 You can read more about the usage of the above tags on the [Open Graph protocol](http://ogp.me/) page and in the [Twitter docs](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html). It's also possible to validate the cards on [Facebook](https://developers.facebook.com/tools/debug/sharing/) and [Twitter](https://cards-dev.twitter.com/validator).
 
-### Metadata tags with Gridsome
+## Metadata tags with Gridsome
 
-#### Global tags
+### Global tags
 
 To define global metadata tags that are added on every page, use the default function inside `src/main`. To add a tag we must provide the tag's `name` and `content`, the `key` is optional but is needed if we want to have the option to override the tag later on on the other pages. If we don't add the `key` property and provide the same tag later, the tag will be added again for every time that the same tag is added. For keeping the next snippets small, I will only add one tag instead of all of them.
 
@@ -90,7 +90,7 @@ router.beforeEach((to, _from, next) => {
 })
 ```
 
-#### Page specific tags
+### Page specific tags
 
 Gridsome works with pages, the docs defines a page as a static page with a static URL. For example `/posts` qualifies as a page.
 
@@ -117,7 +117,7 @@ export default {
   }
 ```
 
-#### Dynamic tags in Templates
+### Dynamic tags in Templates
 
 A template in Gridsome is the same as a page but unlike a page it's dynamic. For example `/posts/slug` qualifies as a template.
 
@@ -162,7 +162,7 @@ query Post($path: String!) {
 
 > For more information see the [Gridsome blog](https://gridsome.org/docs/head)
 
-### The end result
+## The end result
 
 This is how it will look like if you tweet this post on Twitter ![Image of the tweet](./images/tweet.png)
 

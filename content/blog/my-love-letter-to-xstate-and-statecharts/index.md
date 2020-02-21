@@ -19,7 +19,7 @@ What appealed to me in XState is that it felt familiar and as a nice extra, the 
 At first, I saw it as a declarative redux store, a store with a guard at the door to keep malicious types out of the store, instead of a store where the door is always wide open.
 The only difference that was visible was that there were no reducers. With XState (or state machines in general), state is modified through transitions. The idea is slightly different, but the result remains the same, a new state. Now, after some proof of concepts I want to share what I like about XState.
 
-### Why I like XState
+## Why I like XState
 
 - Harder to introduce "invalid" state
 - Thinking about state and state transitions is the first step to build (part of) an application, it forces you think about the logic before writing code
@@ -30,7 +30,7 @@ The only difference that was visible was that there were no reducers. With XStat
 - The docs are well written and searchable so it's easy to find what you're looking for
 - The logic can be understood and discussed with non-developers
 
-### Reflection on initial thoughts
+## Reflection on initial thoughts
 
 While the examples were easy to understand, it was harder to write my first machines. Because it's easy to see what's going on in a machine, without much code, in a human-readable way, the complexity to create a machine is hidden. It was new to me to write code in such a declarative manner, and it took some time to get used to it. Once the syntax was familiar it became a whole lot easier to write a machine, what takes the most time now, is to draw the model of the state and the transitions.
 
@@ -41,7 +41,7 @@ I believe having used a redux architecture before, certainly helped me to get st
 
 A nice benefit is that a machine is UI framework/library agnostic, it's not bound to a specific UI framework. It's possible to reuse the same machine in multiple UI frameworks, the difference is the view layer and how a user interacts with the view. All of the (business) logic is written once, in the machine. It lets you treat [UI as an afterthought](https://michel.codes/blogs/ui-as-an-afterthought) and this is what I hadn't thought of. That's why I wanted to create an experiment to create a machine and use it with Angular, React, Svelte and Vue. The table machine contains the logic of a table component.
 
-### Demo project: [xstate-table](https://github.com/timdeschryver/xstate-table)
+## Demo project: [xstate-table](https://github.com/timdeschryver/xstate-table)
 
 The [state visualizer](https://statecharts.github.io/xstate-viz/) of the table machine looks as follows:
 
@@ -63,7 +63,7 @@ The code can be found on [GitHub](https://github.com/timdeschryver/xstate-table)
 - [Svelte](https://codesandbox.io/s/yb6lq)
 - [Vue](https://codesandbox.io/s/707t4)
 
-### Thoughts on the demo project
+## Thoughts on the demo project
 
 It was a simple experiment, but I'm happy with the results. Once the machine was written it was easy to implement the machine across the different frameworks, even when I'm not fluent in all of them. The documentation has a section on how to use a machine within a framework, these examples provided guidance to get started. For React, there is even a `@xstate/react` library that has a `useMachine` hook, which does all of the heavy lifting. Based on `useMachine`, I created a Svelte store. For Angular (RxJS) and Vue, the documentation provided an example.
 
@@ -71,7 +71,7 @@ For my experiment, the table machine was 100% reusable, so I'm calling this expe
 
 I'm happy with the code, if I would come back to it in a few months I'm sure that I would want to change it here and there but the important part is that it will be readably.
 
-### Ending word
+## Ending word
 
 XState is not a replacement to redux, I still like my redux. They both serve different needs. I see XState as a perfect place to put the logic of components. If I would have to create the same table component but without XState, I would've ended up with some messy code that would be hard to comprehend.
 
@@ -81,7 +81,7 @@ The initial cost to set up a state machine might take longer in comparison to im
 
 For me, the most important points to use XState or statecharts would be that it's declarative and explicit, it's hard to create invalid state. The nice extra's that you get with it, is the tooling around it and the portability across frameworks.
 
-### More resources
+## More resources
 
 - [XState docs](https://xstate.js.org/)
 - [Erik Mogensen - Welcome to the world of Statecharts](https://statecharts.github.io/)

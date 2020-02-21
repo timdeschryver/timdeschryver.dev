@@ -42,6 +42,7 @@ require('dotenv-extended').load({
             .toLowerCase(),
         ),
       cover_image: metadata.banner,
+      canonical_url: url,
       published: true,
     }
 

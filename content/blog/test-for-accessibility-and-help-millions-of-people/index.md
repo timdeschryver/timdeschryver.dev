@@ -13,17 +13,17 @@ publisher: Angular In Depth
 
 Nearly 1 in 7 people have a disability, therefore it is important to make sure your application or website is accessible for everyone. This probably also means that it will increase the user experience of the common user and (SEO) bots. Along the way you’ll notice that this will bring more satisfaction and enjoyment during development and again when you deliver the product: making everyone happier, from developer, to management, to user.
 
-### What this post is about
+## What this post is about
 
 This post is about using libraries to follow accessibility best practices and catching issues during development, making the pit of success wider for you and your team. I’m no accessibility expert but I believe that following these rules will have a high-impact, with almost zero effort.
 
 This is my small contribution to raise the awareness about accessibility and I hope to trigger you, just like [This.JavaScript: State of Accessibility](https://www.youtube.com/watch?v=aoyLG2gTFpI) did to me.
 
-### What this post is not about
+## What this post is not about
 
 This post does not contain tips and tricks nor a checklist to make your application accessible (e.g. use semantic HTML, don’t use divs for everything). We will not cover all cases, use this post as a starting point to make your applications (more) accessible.
 
-### What is accessible
+## What is accessible
 
 Before we start let’s first define the term accessible. If you search for accessible on google, these are some few points that you’ll encounter:
 
@@ -33,7 +33,7 @@ Before we start let’s first define the term accessible. If you search for acce
 
 > An estimated 1 billion people are disabled, about 15% of the world’s population — [World Health Organisation](http://www.who.int/disabilities/world_report/2011/report.pdf)
 
-### Pa11y
+## Pa11y
 
 The easiest “bang for the buck” tool is [pa11y](https://github.com/pa11y/pa11y), an open-source project to automate accessibility checks. It is very easy to use, gives a nice overview of the errors and can be used during a CI build. Using pa11y can be as simple as installing and running it against a website.
 
@@ -96,7 +96,7 @@ test-accessibility:
           command: npm run `accessibility`
 ```
 
-#### Pa11y tips
+### Pa11y tips
 
 - Run pa11y against local html files without launching a server: `pa11y-ci ./dist/index.html`
 - Instead of defining the URLs manually, refer to a sitemap — [docs](https://github.com/pa11y/pa11y-ci#sitemaps)
@@ -126,18 +126,18 @@ actions: [
 ]
 ```
 
-#### Alternatives to pa11y
+### Alternatives to pa11y
 
 - [a11y](https://a11yproject.com/)
 - [axe](https://www.deque.com/axe/) — which also has a browser extension
 
 ![axe browser extensions after analyzing a page](./images/2.png)
 
-### Dom-testing-library
+## Dom-testing-library
 
 Use a library based on [dom-testing-library](https://github.com/kentcdodds/dom-testing-library) for example [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) or [cypress-testing-library](https://github.com/kentcdodds/cypress-testing-library), to test your application in a way that your users are using the application, in contrast to using the component’s API.
 
-#### Making sure you have defined the proper HTML attributes
+### Making sure you have defined the proper HTML attributes
 
 Instead of setting the component’s values directly or using css selectors to populate the fields in a form, use a label with a `for` attribute or use the `aria-labelledby` attribute on the input field. This has more meaning to your end users. And, you’ll also get the benefit that your tests won’t break when the id or the class of an element has been changed. The code below shows you a comparison between these ways of testing, by testing a simple login Angular component.
 
@@ -183,7 +183,7 @@ test('a user can log in', () => {
 
 As you can see in the example above: the library encourages, or even enforces, you to think like a user, making the application more accessible.
 
-#### Keyboard events
+### Keyboard events
 
 Another way to make sure your components are accessible is to use keyboard events in your test cases, whether it is a unit, integration or end to end test. An example that illustrates this, is a user using a dropdown component:
 
@@ -199,13 +199,13 @@ test('a user can use keyboard arrows to select an item', () => {
 
 > _Notice that this becomes a breeze with_ [_ngx-testing-library_](https://github.com/timdeschryver/ngx-testing-library)_._
 
-### During development
+## During development
 
 When you create a new component make it a habit to read through the [W3C standards](https://www.w3.org/standards/webdesign/accessibility) about accessibility. I’m sure that this will make you look at your components through different eyes. More often than not, this will result in a cleaner and more reusable API. It will also bring more joy and satisfaction when you’re finished.
 
 If you need some inspiration, go take a look at the source code of libraries like [Angular Material](https://material.angular.io/), they even have an [a11y cdk package](https://material.angular.io/cdk/a11y/overview)! Their components are often designed with accessibility as a first class citizen.
 
-### Next steps
+## Next steps
 
 While these libraries might give you some ideas and will definitely make your applications more accessible, **it doesn’t stop here**. If you want to take it to the next level, use your own application with a screen reader (start by using the native screen reader of your OS) or drop your mouse while you browse through your application. By doing this you’ll quickly find some weird quirks;
 
@@ -219,7 +219,7 @@ If you don’t got the knowledge in house, ask for an external audit to get you 
 
 **You might already have noticed that making your application accessible isn’t a one-time thing, you’ll have to make room for it within your process to maintain it along the way. The sooner the better.**
 
-### Not to miss: Hacktoberfest
+## Not to miss: Hacktoberfest
 
 > [Hacktoberfest](https://hacktoberfest.digitalocean.com/) is a month-long celebration of open source software run by DigitalOcean in partnership with GitHub and Twilio.
 

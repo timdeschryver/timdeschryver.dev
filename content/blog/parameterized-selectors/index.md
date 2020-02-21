@@ -15,7 +15,7 @@ publisher: Angular In Depth
 
 This question popped up several times lately and in this post I’ll provide some suggestions to create a selector that works with parameters, so let’s not waste any time and let’s get started!
 
-### EDIT 2018–08–17: [NgRx 6.1](https://github.com/ngrx/platform/blob/master/CHANGELOG.md#610-2018-08-01)
+## EDIT 2018–08–17: [NgRx 6.1](https://github.com/ngrx/platform/blob/master/CHANGELOG.md#610-2018-08-01)
 
 > The following will be more or less a copy of the [NgRx docs](https://github.com/ngrx/platform/blob/master/docs/store/selectors.md#createselector-with-props).
 
@@ -66,16 +66,13 @@ this.counter4 = this.store.pipe(
 )
 ```
 
-### Static parameter
+## Static parameter
 
 If the parameter doesn’t change over time we can use a [factory function](https://medium.com/javascript-scene/javascript-factory-functions-with-es6-4d224591a8b1) `selectCustomer` which has a parameter `id` and returns a selector. Making it possible to use the `id` parameter in our selector to retrieve the customer, resulting in the following:
 
 ```ts
 export const selectCustomer = (id: string) =>
-  createSelector(
-    selectCustomers,
-    customers => customers[id],
-  )
+  createSelector(selectCustomers, customers => customers[id])
 ```
 
 We can then call `selectCustomer` in the component and pass it an `id`:
@@ -84,7 +81,7 @@ We can then call `selectCustomer` in the component and pass it an `id`:
 this.customer = store.pipe(select(customers.selectCustomer('47')))
 ```
 
-### Dynamic parameter
+## Dynamic parameter
 
 If the `id` parameter is dynamic we can create a selector that instead of returning customers, returns a function which expects a parameter `id`. The selector becomes:
 
@@ -95,9 +92,8 @@ export const selectCustomer = createSelector(
 )
 
 // tip: it’s also possible to memoize the function if needed
-export const selectCustomer = createSelector(
-  selectCustomers,
-  customers => memoize((id: string) => customers[id]),
+export const selectCustomer = createSelector(selectCustomers, customers =>
+  memoize((id: string) => customers[id]),
 )
 ```
 
@@ -124,7 +120,7 @@ this.customer = store.pipe(
 
 > Aaaand that’s it, ship it! Or maybe not that fast… While this example works, to me selecting a part from the store like this feels a bit dirty and I consider it a bad practice in most of the cases. In my opinion the `id` parameter should exist somewhere in the store.
 
-### Dispatching a select action
+## Dispatching a select action
 
 This way works with a property `selectedCustomerId` in the store. To select a customer we first have to fire an action `SelectCustomer` with the customer’s `id` as payload to set the `selectedCustomerId` in the store.
 
@@ -151,7 +147,7 @@ And in the component we can use the selector the ‘usual way’:
 this.customer = store.pipe(select(customers.getSelectedCustomer))
 ```
 
-### NgRx/Router-Store
+## NgRx/Router-Store
 
 Another possibility would be to use [@ngrx/router-store](https://github.com/ngrx/platform/blob/master/docs/router-store/README.md), this module connects the route with the store. In other words, all the route information will be available in the store thus also in the selectors. After installing the `ngrx/router-store` module and having it imported in our `AppModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters _(_`_customerId_` _in our case)._ Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, he or she would see the customer’s details of customer 47. The selector looks roughly the same:
 
@@ -178,11 +174,11 @@ And the component remains the same (except for the selector’s name):
 this.customer = store.pipe(select(customers.selectCurrentCustomer))
 ```
 
-### That’s a wrap
+## That’s a wrap
 
 In my opinion the code we ended up with looks cleaner than the code we started of with. I hope this was useful if you were looking for a way to parameterize your selector.
 
-### Some extra resources
+## Some extra resources
 
 - [NgRx Selectors How to stop worrying about your Store structure — David East & Todd Motto @ ng-conf 2018](https://www.youtube.com/watch?v=Y4McLi9scfc) - the last part will show you an example with `ngrx/router-store`, but the whole talk is 👍👍
 - [The](https://github.com/reduxjs/reselect/#q-how-do-i-create-a-selector-that-takes-an-argument) [reduxjs](https://github.com/reduxjs)/[reselect](https://github.com/reduxjs/reselect) [docs about parameterization with](https://github.com/reduxjs/reselect/#q-how-do-i-create-a-selector-that-takes-an-argument) [`createSelector`](https://github.com/reduxjs/reselect/#q-how-do-i-create-a-selector-that-takes-an-argument)

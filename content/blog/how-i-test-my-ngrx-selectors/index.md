@@ -42,7 +42,7 @@ In this post I’m going to show you how I test my selectors by putting the sele
 }
 ```
 
-### What exactly is a selector
+## What exactly is a selector
 
 A selector is a [pure function](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976) that takes the state as an argument and returns a slice of the store state. You can see the selectors in an application as queries to retrieve slices of store state. Besides using selectors inside your components it is also possible to re-use selector functions inside other selectors.
 
@@ -73,10 +73,7 @@ export const getCatalog = createSelector(
 )
 
 export const getCartState = createFeatureSelector<fromCart.State>('cart')
-export const getCartItems = createSelector(
-  getCartState,
-  cart => cart.cartItems,
-)
+export const getCartItems = createSelector(getCartState, cart => cart.cartItems)
 
 export const getAllCartSummary = createSelector(
   getProducts,
@@ -87,15 +84,14 @@ export const getAllCartSummary = createSelector(
       amount: cart[sku],
     })),
 )
-export const getCartSummary = createSelector(
-  getAllCartSummary,
-  cart => cart.filter(item => item.amount > 0),
+export const getCartSummary = createSelector(getAllCartSummary, cart =>
+  cart.filter(item => item.amount > 0),
 )
 ```
 
 If you’re interested in the whole application you can take a look at the [GitHub repository](https://github.com/timdeschryver/ngrx-immer/tree/ngrx).
 
-### Update
+## Update
 
 A couple of months after I’ve written this post, I had the pleasure to refactor some parts of the application I was working on. This application had a fairly amount of selector tests. During the refactor, a lot of the time was spent on keeping the selector tests green.
 
@@ -104,7 +100,7 @@ In these months I’ve learned some tips and tricks on how to write tests, but m
 Doing this has the benefit that you won’t have to maintain these selector tests over time, and you still have the confidence that the component’s do their job.  
 I do still test the more complicated selectors, e.g. selectors with calculations inside of them. To write these tests I still use the methods mentioned below.
 
-### Setting up test state with factory functions
+## Setting up test state with factory functions
 
 Before we’re going to create the tests, let’s create some factory functions to set up our state in each test.
 
@@ -160,7 +156,7 @@ I use (and like) this approach to prevent fragile tests, because of the followin
 - Every test creates its own isolated state, there is no global state
 - It’s possible to override specific properties if needed, but a default state is provided
 
-### Testing approach #1: “Default”
+## Testing approach #1: “Default”
 
 This is probably the most familiar way of testing selectors, it boils down to calling the selectors with the created state. The assertions are written based on the output of the selector to ensure it is returning the right data. There is actually nothing special to say here, so I’ll just show the test cases.
 
@@ -219,7 +215,7 @@ test('getCartSummary', () => {
 
 > We can make use of a reference equality -`toBe` - because the selector simply returns a slice of the store state. These selectors are called getter selectors.
 
-### Testing Approach #2: Snapshots
+## Testing Approach #2: Snapshots
 
 I tend to find the above way repeatable some times, especially for the simpler selectors which don’t contain any logic. Because there is no logic, we can assume that the selector always returns the same output for the same type of input.
 
@@ -285,7 +281,7 @@ Object {
 
 > TIP: It could be helpful to add the state in the test description by using `JSON.stringify`.
 
-### Testing Approach #3: Projector
+## Testing Approach #3: Projector
 
 ```ts
 test('getCartSummary only shows products with an amount', () => {
@@ -333,13 +329,13 @@ As shown in the example below, I’m setting up the output that otherwise would 
 
 This approach is also useful if you have some logic inside your selector. For example if you need to filter out specific items based on different properties, you can create a different state _(which is easy because you’re using factory functions now)_ for each scenario.
 
-### Conclusion
+## Conclusion
 
 - A selector can be **unit** tested, you don’t need a (mocked) store in order to test your selectors.
 - Use factory functions to setup state in order to prevent fragile tests.
 - Each one of these approaches has its use case to test your selectors in a NgRx application.
 
-### Not to miss
+## Not to miss
 
 Come check out [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library), an Angular testing library to test Angular components I wrote last week. The library is based on the [dom-testing-library](https://github.com/kentcdodds/dom-testing-library) from [Kent C. Dodds](https://twitter.com/kentcdodds).
 

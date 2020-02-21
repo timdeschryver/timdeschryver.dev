@@ -124,10 +124,8 @@ export const postMachine = Machine(
           .getSelection()
           .toString()
           .trim() !== '' &&
-        window
-          .getSelection()
-          .anchorNode.parentNode.closest('.article-content') &&
-        window.getSelection().focusNode.parentNode.closest('.article-content'),
+        window.getSelection().anchorNode.parentNode.closest('main') &&
+        window.getSelection().focusNode.parentNode.closest('main'),
       isEscape: (_, evt) => evt.key === 'Escape',
     },
     actions: {

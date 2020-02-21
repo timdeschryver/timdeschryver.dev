@@ -13,7 +13,7 @@ publisher: Angular In Depth
 
 This weeks post is inspired by another great [This Dot Media](https://www.thisdot.co/) event and the topic this time was state management. There was a small segment about Immer which I found interesting (video is linked at the bottom of this post), so I decided to give it a shot with NgRx.
 
-### Why Immer
+## Why Immer
 
 Like the title says, Immer can **reduce the complexity** of reducers.
 
@@ -21,7 +21,7 @@ Like the title says, Immer can **reduce the complexity** of reducers.
 
 The thing I like most is that it can just be **plugged in wherever needed**. Introducing Immer doesn’t mean you have to use it in every reducer in your code base.
 
-### About Immer
+## About Immer
 
 > Immer (German for: always) is a tiny package that allows you to work with immutable state in a more convenient way. It is based on the [_copy-on-write_](https://en.wikipedia.org/wiki/Copy-on-write) mechanism.
 
@@ -30,7 +30,7 @@ In this post we’re only using it with a reducer, but it also can be used outsi
 
 It is created by [Michel Weststrate](https://twitter.com/mweststrate), the owner of MobX.
 
-### Side by side comparison
+## Side by side comparison
 
 Let’s take a look at what a normal NgRx reducer might look like and compare it with the Immer implementation. As an example we’re going to use the classic shopping cart example where we can add and remove items from the cart.
 
@@ -139,21 +139,21 @@ export const reducer = produce<State, CatalogActions>((draft, action) => {
 
 Pretty straight forward, right?
 
-### Usage
+## Usage
 
 In order to use Immer you’ll have to install it first via `npm install immer`, and then import it with `import produce from 'immer’`.
 
-### Good to know: selectors
+## Good to know: selectors
 
 If you’re afraid that changing state like this means that every part of your application will be re-rendered, don’t be. Immer uses **structurally shared data structures** which basically means that only the modified parts of your state will trigger a new result from selectors based of the modified state. Thus, it only re-renders your application where needed.
 
-### Good to know: object freezing
+## Good to know: object freezing
 
 Immer comes with object freezing out of the box in development. This means that it will throw an error if the state is mutated from outside the `produce` function. So if you’re currently not using a library like [ngrx-store-freeze](https://github.com/brandonroberts/ngrx-store-freeze) **and** if you’re mutating state outside a reducer, you **will** get an error thrown at you.  
 If you still want to mutate your state (which I don’t recommend by the way), you can turn off this feature with `setAutoFreeze(false)`.  
 If you build your application in production mode, this check will automatically be skipped for performance reasons.
 
-### Good to know: redux devtools
+## Good to know: redux devtools
 
 Since we’re just using normal JavaScript objects the redux devtools just keep working.
 
@@ -161,7 +161,7 @@ Since we’re just using normal JavaScript objects the redux devtools just keep 
 
 we’re seeing the redux developer tool in action
 
-### Conclusion
+## Conclusion
 
 Simply put, I like it. But this doesn’t mean I’ll use it everywhere (hint, there is no such thing is a silver bullet), only in places where I see fit. Partly because I like (and I’m used to) writing my reducers in a functional way. But I’ll use it when a reducer becomes too bloated or too hard to reason about.
 
@@ -171,7 +171,7 @@ This post is meant to be a short introduction to Immer and to spread the word to
 
 The code can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer) or directly on [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-immer).
 
-### More resources
+## More resources
 
 [Introducing Immer: Immutability the easy way](https://hackernoon.com/introducing-immer-immutability-the-easy-way-9d73d8f71cb3)
 
@@ -179,7 +179,7 @@ The code can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer) o
 
 [mweststrate/immer](https://github.com/mweststrate/immer 'https://github.com/mweststrate/immer')[](https://github.com/mweststrate/immer)
 
-### Not to miss
+## Not to miss
 
 [Angular contributor day](https://www.youtube.com/watch?v=2u-dtwQhffk)
 

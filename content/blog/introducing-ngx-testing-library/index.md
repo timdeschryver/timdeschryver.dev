@@ -10,7 +10,7 @@ bannerCredit: Photo by [Gary Bendig](https://unsplash.com/@kris_ricepees) on [Un
 published: true
 ---
 
-### A bit of background
+## A bit of background
 
 A couple of months ago [Kent C. Dodds](https://twitter.com/kentcdodds) created a testing library for react called [react-testing-library](https://github.com/kentcdodds/react-testing-library), which includes simple and complete React DOM testing utilities.
 
@@ -18,7 +18,7 @@ He wanted to provide a solution to writing tests without testing implementation 
 
 The library is focused on writing your tests on actual DOM nodes, because of this it makes a real good base to use across different frameworks.
 
-### dom-testing-library
+## dom-testing-library
 
 As a nice man as he, [Kent C. Dodds](https://twitter.com/kentcdodds) is, he refactored out the generic, not react specific code, and created [dom-testing-library](https://github.com/kentcdodds/dom-testing-library). This library provides a couple of lightweight but very useful utility functions for testing DOM nodes.
 
@@ -38,7 +38,7 @@ Like I said earlier in this post, these lightweight functions provide a good bas
 
 As you may have noticed I’m a bit excited about this approach of testing your UI components, so I I created [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library), an Angular adapter around dom-testing-library.
 
-### ngx-testing-library
+## ngx-testing-library
 
 The ngx-testing-library provides one method `createComponent`, to create your component, setting up the Angular `TestBed`, and it applies the dom-testing-library query functions to your component container. It also exposes the `fireEvent` function directly.
 
@@ -132,6 +132,6 @@ test('login form submits', async () => {
 
 To get a bit more in depth, I’m referring you to the GitHub repository at [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library). While it is still a work in progress, I’m confident that it provides the basic utilities to make your tests resilient to change. I would say come take a look and as always, feedback is more than welcome!
 
-### Not to miss
+## Not to miss
 
 Watch and learn how [Dominic E.](https://twitter.com/elmd_) uses RxJS to cache HTTP requests in the latest Angular Air episode. This video is based from his blog post, [Advanced caching with RxJS](https://blog.thoughtram.io/angular/2018/03/05/advanced-caching-with-rxjs.html).

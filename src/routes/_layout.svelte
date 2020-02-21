@@ -1,9 +1,9 @@
 <script>
-  import { afterUpdate, onMount } from 'svelte'
-  import { fly, fade } from 'svelte/transition'
+  import { afterUpdate } from 'svelte'
+  import Settings from '../components/Settings.svelte'
+
   export let segment
-  let theme
-  let reduceMotion = false
+  let toggleSettings = false
 
   afterUpdate(() => {
     if (typeof gtag === 'function') {
@@ -12,239 +12,91 @@
       })
     }
   })
-
-  onMount(() => {
-    theme = document.body.className
-
-    window.addEventListener('changeTheme', evt => {
-      theme = evt.detail.theme
-      document.body.className = evt.detail.theme
-      try {
-        localStorage && localStorage.setItem('__theme', evt.detail.theme)
-      } catch (_) {}
-    })
-
-    reduceMotion = window.matchMedia('(prefers-reduced-motion)').matches
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    mediaQuery.addEventListener('change', evt => {
-      reduceMotion = evt.matches
-    })
-  })
-
-  function setTheme(theme) {
-    window.dispatchEvent(
-      new CustomEvent('changeTheme', {
-        detail: {
-          theme,
-        },
-      }),
-    )
-  }
 </script>
 
 <style>
-  main,
-  header,
-  footer {
-    display: grid;
-    grid-template-columns:
-      minmax(1.2rem, 1fr)
-      minmax(auto, 80ch)
-      minmax(1.2rem, 1fr);
+  nav {
+    margin-top: 0.3em;
+    position: relative;
   }
 
-  :global(main > *),
-  :global(header > *),
-  :global(footer > *) {
-    grid-column: 2;
+  nav > a {
+    padding: 0.3em 0.7em;
   }
 
-  header > div,
-  footer > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75em 0;
+  nav > a:not(:last-child) {
+    margin-right: 0.5em;
   }
 
-  header nav {
+  /* https://neumorphism.io/#f8c400 */
+  .active {
+    border-radius: 10px;
+    background: #f8c400;
+    box-shadow: 6px 6px 11px #d3a700, -6px -6px 11px #ffe100;
+  }
+
+  .settings-button {
+    position: absolute;
+    right: 0;
     margin-top: 0;
-  }
-
-  header > div {
-    border-bottom: 2px var(--prime-color) solid;
-  }
-
-  header h1 {
-    transition: all var(--transition-duration) ease-in-out;
-  }
-
-  header a {
-    transition: all var(--transition-duration) ease-in-out;
-    color: var(--text-color);
+    bottom: 0;
     border: none;
-  }
-
-  nav .nav-item {
-    background: var(--prime-color);
-    padding: 2px 4px;
-    color: var(--background-color);
-    border: 1px solid;
-    border-radius: 0.3rem;
-    box-shadow: 2px 2px var(--prime-color-shadow);
-    transition: all var(--transition-duration) ease-in-out;
-    font-size: 1.5em;
-  }
-
-  nav .nav-item:hover {
-    box-shadow: 3px 3px var(--prime-color-shadow);
-  }
-
-  footer > div {
-    border-top: 2px var(--prime-color) solid;
-    flex-direction: row-reverse;
-    font-weight: 900;
-  }
-
-  button[role='presentation'] {
     background: none;
-    border: none;
-    display: block;
-    outline: none;
+    color: unset;
     cursor: pointer;
-    margin: 0;
   }
 
-  a.social-link {
-    border: none;
-  }
-
-  aside {
-    max-width: 63rem;
-    margin: auto;
-  }
-
-  aside ul {
-    position: fixed;
-    transform: translateY(300px);
-    transition: all var(--transition-duration) ease-in-out;
-  }
-
-  @media (max-width: 1100px) {
-    aside ul {
-      margin-left: 10px;
-    }
-  }
-
-  @media (max-width: 995px) {
-    aside ul {
-      transform: translateY(-48px);
-      position: absolute;
-    }
-  }
-
-  @media (max-width: 890px) {
-    div:not([data-page='home']) h1 {
-      transform: translateX(24px);
-      transition-delay: 111ms;
-    }
+  .settings-container {
+    margin-top: 0;
+    grid-column: 1 / 4;
+    background: rgba(248, 196, 0, 0.5);
   }
 </style>
 
-<div data-page={segment || 'home'}>
-  <header>
-    <div>
-      <h1>
-        <a href="/">Tim Deschryver</a>
-      </h1>
+<header>
+  <h1>
+    <a href="/">Tim Deschryver</a>
+  </h1>
+  <nav>
+    <a href="/blog" rel="prefetch" class:active={segment === 'blog'}>Blog</a>
+    <a href="/snippets" rel="prefetch" class:active={segment === 'snippets'}>
+      Snippets
+    </a>
+    <a href="/newsletter" class:active={segment === 'newsletter'}>Newsletter</a>
 
-      <nav>
-        <a rel="prefetch" href="blog" class="nav-item">Blog</a>
-      </nav>
-    </div>
-  </header>
+    <button
+      class="settings-button"
+      on:click={() => (toggleSettings = !toggleSettings)}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="2em"
+        height="2em"
+        viewBox="0 0 464.736 464.736">
+        <path
+          d="M446.598 18.143c-24.183-24.184-63.393-24.191-87.592-.008l-16.717
+          16.717c-8.98-8.979-23.525-8.979-32.504 0-8.981 8.972-8.981 23.533 0
+          32.505l5.416 5.419-180.588 180.601h-.016l-62.685 62.691a28.21 28.21 0
+          00-8.235 18.684l-.15 3.344v.046l-2.529 56.704a9.445 9.445 0 002.739
+          7.048 9.356 9.356 0 006.63 2.738c.135 0 .269 0
+          .42-.008l30.064-1.331h.016l18.318-.815 8.318-.366a36.993 36.993 0
+          0024.469-10.776L392.87 150.445l4.506 4.505a22.92 22.92 0 0016.252
+          6.733 22.919 22.919 0 0016.253-6.733c8.98-8.973 8.98-23.534
+          0-32.505l16.716-16.718c24.185-24.183 24.185-63.393.001-87.584zM272.639
+          227.33l-84.6 15.96 137.998-138.004 34.332 34.316-87.73 87.728zM64.5
+          423.872c-35.617 0-64.5 9.145-64.5 20.435 0 11.284 28.883 20.428 64.5
+          20.428s64.486-9.143
+          64.486-20.428c0-11.291-28.869-20.435-64.486-20.435z" />
+      </svg>
+    </button>
+  </nav>
+</header>
 
-  {#if segment !== undefined && theme !== undefined}
-    <aside>
-      <ul>
-        <li>
-          {#if theme === 'sunrise'}
-            <button
-              role="presentation"
-              title="Change theme to dark theme"
-              aria-label="sunrise"
-              out:fly={{ y: 147, duration: reduceMotion ? 0 : 347 }}
-              in:fade={{ delay: reduceMotion ? 0 : 348 }}
-              on:click={() => setTheme('sunset')}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-sunset">
-                <path d="M17 18a5 5 0 0 0-10 0" />
-                <line x1="12" y1="9" x2="12" y2="2" />
-                <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
-                <line x1="1" y1="18" x2="3" y2="18" />
-                <line x1="21" y1="18" x2="23" y2="18" />
-                <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
-                <line x1="23" y1="22" x2="1" y2="22" />
-                <polyline points="16 5 12 9 8 5" />
-              </svg>
-            </button>
-          {:else}
-            <button
-              role="presentation"
-              title="Change theme to light theme"
-              aria-label="sunset"
-              out:fly={{ y: -147, duration: reduceMotion ? 0 : 347 }}
-              in:fade={{ delay: reduceMotion ? 0 : 348 }}
-              on:click={() => setTheme('sunrise')}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-sunrise">
-                <path d="M17 18a5 5 0 0 0-10 0" />
-                <line x1="12" y1="2" x2="12" y2="9" />
-                <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
-                <line x1="1" y1="18" x2="3" y2="18" />
-                <line x1="21" y1="18" x2="23" y2="18" />
-                <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
-                <line x1="23" y1="22" x2="1" y2="22" />
-                <polyline points="8 6 12 2 16 6" />
-              </svg>
-            </button>
-          {/if}
-        </li>
-      </ul>
-    </aside>
-  {/if}
-
-  <main>
-    <slot />
-  </main>
-
-  {#if segment !== undefined}
-    <footer>
-      <div>
-        <a
-          href="https://twitter.com/intent/follow?screen_name=tim_deschryver"
-          class="social-link">
-          @tim_deschryver
-        </a>
-      </div>
-    </footer>
-  {/if}
+<div hidden={!toggleSettings} class="settings-container">
+  <Settings />
 </div>
+
+<main>
+  <slot />
+</main>
+
+<footer />

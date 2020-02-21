@@ -17,7 +17,7 @@ In the first part of the post, we’ll be creating a new Angular project and we�
 
 The second part of the post will be used to refactor and reason about the implementation of the first part. The goal is to have a more maintainable code base.
 
-### What is FizzBuzz
+## What is FizzBuzz
 
 Before we start, let’s get everyone up to speed with FizzBuzz. FizzBuzz is a task that prints out numbers incrementally starting from 1, if the number is divisible by three the number get replaced by the word fizz and if the number is divisible by five it gets replaced by buzz. If the number is divisible by both three and five, the word fizz buzz will be printed out.
 
@@ -25,7 +25,7 @@ The output starts as follows:
 
 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz, 16, 17, Fizz, 19, Buzz, Fizz, 22, 23, Fizz, Buzz, …
 
-### Initial project setup
+## Initial project setup
 
 Let’s get started! We can create the project using the `ng new` command and we’ll install the NgRx packages using the NgRx schematics. These schematics will install the package and will also automate the needed configurations to wire up NgRx correctly.
 
@@ -37,7 +37,7 @@ ng add @ngrx/store-devtools
 yarn add @ngrx/schematics --dev
 ```
 
-### Creating the FizzBuzz reducer
+## Creating the FizzBuzz reducer
 
 With the project ready, we can start to implement FizzBuzz. We do this by creating the fizzbuzz reducer, using the [reducer schematic](https://ngrx.io/guide/schematics/reducer).
 
@@ -86,7 +86,7 @@ export function reducer(state = initialState, action: Action): State {
 }
 ```
 
-### Updating the component
+## Updating the component
 
 Now that we’ve defined the fizzbuzz state and the fizzbuzz reducer, it’s time to print out the fizzbuzz output. Inside the `AppComponent`, we inject the Store to get the fizzbuzz message and to dispatch the `NEXT` action to invoke the reducer.
 
@@ -116,11 +116,11 @@ export class AppComponent implements OnInit {
 
 If we now start the application, we’ll see the fizzbuzz messages! 🎉
 
-### Refactor to a maintainable application
+## Refactor to a maintainable application
 
 Before we walk through the refactoring, I would encourage you to roll up your sleeves first and refactor the current code yourself on [StackBlitz](https://stackblitz.com/edit/ngrx-fizzbuzz-part-one).
 
-### Using Actions and action creators
+## Using Actions and action creators
 
 The first step in the refactoring journey would be to create actions. We do this to remove magic strings, but maybe even more important, to allow action type checking. In this small example, the full power of this step won’t be visible. In larger applications, you’ll notice that TypeScript can infer the action’s properties inside the reducers.
 
@@ -153,7 +153,7 @@ Now, we can remove the magic string `NEXT` inside the fizzbuzz reducer and insid
 
 > For more information about actions see the [official docs](https://ngrx.io/guide/store/actions) and a previous post [Let’s have a chat about Actions and Action Creators within NgRx](./blog/lets-have-a-chat-about-actions-and-action-creators-within-ngrx).
 
-### Using selectors and derived state
+## Using selectors and derived state
 
 The problem with the working code is that we hold multiple versions of the same state inside the store state, this can make it hard to maintain over time when the application keeps on growing. That’s why we’re going to extract the fizzbuzz message inside a selector.
 
@@ -177,25 +177,22 @@ export const getCounter = createSelector(
 )
 
 // Third, create the message selector based on the counter state
-export const getMessage = createSelector(
-  getCounter,
-  counter => {
-    let message = ''
-    if (counter % 3 === 0) {
-      message += 'Fizz'
-    }
-    if (counter % 5 === 0) {
-      message += 'Buzz'
-    }
+export const getMessage = createSelector(getCounter, counter => {
+  let message = ''
+  if (counter % 3 === 0) {
+    message += 'Fizz'
+  }
+  if (counter % 5 === 0) {
+    message += 'Buzz'
+  }
 
-    return message || counter.toString()
-  },
-)
+  return message || counter.toString()
+})
 ```
 
 > For more info about selectors see the [official docs](https://ngrx.io/guide/store/selectors) and a previous post [Sharing data between modules is peanuts](./blog/sharing-data-between-modules-is-peanuts).
 
-### The reducer
+## The reducer
 
 With the action and the selector created, it’s time to clean up the reducer. This is done by:
 
@@ -227,7 +224,7 @@ export function reducer(state = initialState, action: FizzBuzzActions): State {
 
 > For more info about reducers see the [official docs](https://ngrx.io/guide/store/reducers) and for more info about state normalization see a previous post [Normalizing state](./blog/normalizing-state).
 
-### Using effects
+## Using effects
 
 I’m a big fan of effects and I’m using it to put every piece of logic that isn’t specific to the component’s logic. The most used and known example of this are AJAX requests, but the use cases of effects can be broadened out to everything that is causing your component to become impure.
 
@@ -243,7 +240,7 @@ export class AppEffects {
 
 > For more info about effects see the [official docs](https://ngrx.io/guide/effects) and for more effects usages see [Start using ngrx/effects for this](./blog/start-using-ngrx-effects-for-this).
 
-### The new component
+## The new component
 
 With these steps completed, we can now go back to the `AppComponent` and:
 
@@ -264,11 +261,11 @@ export class AppComponent {
 }
 ```
 
-### The outcome
+## The outcome
 
 If you keep these little tips in mind, each boundary inside the application has its own responsibility. This makes it easier to reason about and easier to maintain in the long run. If something goes wrong you can quickly scope it down to a specific boundary and you immediately know where to look.
 
-#### Introducing Actions and Action Creators: reducing boilerplate
+### Introducing Actions and Action Creators: reducing boilerplate
 
 - by using this convention, we **get rid of a magic string value**
 - we gain **type safety**
@@ -276,14 +273,14 @@ If you keep these little tips in mind, each boundary inside the application has 
 - it makes **testing actions easier**, we only have to write one test
 - maintainability bonus: follow the [**Good Action Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) practice introduced by [Mike Ryan](https://twitter.com/MikeRyanDev)
 
-#### Reducers: only store the data once
+### Reducers: only store the data once
 
 - this will lead to smaller and **cleaner reducers**
 - we have a **single point of truth**, we don’t have to remember every state property for this state
 - we only have to **test state mutators**
 - readability bonus: if the immutable way (using the spread operator) of writing reducers is new and a bit uncomfortable, use **Immer** to make the transition easier — [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer)
 
-#### Selectors: used to derive state based on the store state
+### Selectors: used to derive state based on the store state
 
 - **don’t pollute the store state**, use selectors as queries to create view models
 - **keep selectors small** so they can be used to compose bigger selectors
@@ -291,7 +288,7 @@ If you keep these little tips in mind, each boundary inside the application has 
 - selectors are **highly performant** because they memoize (cache) the latest execution so they don’t have to re-execute on every state change
 - in-depth bonus: to fully understand the benefits that selectors provide see [**Selectors are more powerful than you think**](https://www.youtube.com/watch?v=E7GKnjGCXzU) by [Alex Okrushko](https://twitter.com/AlexOkrushko)
 
-#### Effects: used for side effects
+### Effects: used for side effects
 
 - making your **components pure**, thus predictable, easier to reason about
 - fully **unleashes the power RxJS provides**, e.g. cancel pending requests when needed

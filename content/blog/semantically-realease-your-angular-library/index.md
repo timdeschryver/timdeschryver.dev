@@ -13,7 +13,7 @@ publisher: Angular In Depth
 
 Are you, like me, getting tired of releasing your Angular library manually? And how about keeping that CHANGELOG up to date? In this post I’m taking you along in my journey towards a fully automated process for my [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) library!
 
-### The Angular DevOps Series
+## The Angular DevOps Series
 
 This post is the first post of the **Angular DevOps Series**. The series also includes a post by fellow Angular in Depth writer, [Todd Palmer](https://medium.com/u/11477bb8a02e), who walks you through the details of deploying an Angular application with Travis CI to GitHub pages. And, [Andrew Evans](https://twitter.com/AndrewEvans0102) shows you how to deploy to Firebase with CircleCI.
 
@@ -22,7 +22,7 @@ This post is the first post of the **Angular DevOps Series**. The series also in
 - [Deploying to Firebase with CircleCI](https://blog.angularindepth.com/deploying-an-angular-site-to-firebase-with-circleci-ed881cb6a2fa)
 - [CT and Code Coverage with TeamCity](https://blog.angularindepth.com/the-angular-devops-series-ct-and-code-coverage-with-teamcity-21e3d0ed77eb)
 
-### Introduction
+## Introduction
 
 As a bit of background, [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) is created with the `ng generate library` command and has tests written in the library as well as tests in the example application using it. To build and test my changes, I’m already using [CircleCI](https://circleci.com/) as my **Continuous Integration (CI)** server.
 
@@ -38,11 +38,11 @@ Before we start let’s make a list of what we’re trying to accomplish after w
 
 🔲 Keep the **CHANGELOG** up to date️
 
-### CI/CD Server
+## CI/CD Server
 
 The first step towards automation is having a CI server. It will run the tests, create a build, and release the build. Because I’m already happily using [CircleCI](https://circleci.com/) for my CI, I decided to stick with it. There are some other possibilities, the most popular being [Travis CI](https://travis-ci.org/) or [Jenkins](https://jenkins.io/). Note that the CI snippets in this post are written for a CircleCI project, other CI servers are also supporting the same functionality but with a different syntax.
 
-### 📦🚀 semantic-release
+## 📦🚀 semantic-release
 
 > Fully automated version management and package publishing
 
@@ -66,7 +66,7 @@ Based on the **commit messages**, semantic-release increments one or none of the
 
 The following types can be used:
 
-### Some examples
+## Some examples
 
 ```bash
 # Resulting in a patch release
@@ -112,7 +112,7 @@ The `semantic-release init` command changes the following items in the `package.
 
 Because we’re releasing a library which is located in the `projects` folder, e.g. `./projects/ngx-testing-library`, we’ll also have to make these changes manually inside the project’s `package.json`, eg `./projects/ngx-testing-library/package.json`. This is because the project’s `package.json` will be used when we release a new version of the library.
 
-### Configuring the build steps
+## Configuring the build steps
 
 Note that I already had a **CircleCI config file**. Because of this the semantic-release init command didn’t create one. If you’re running the cli in a clean repository it will create the following `config.yml` for you.
 
@@ -135,7 +135,7 @@ If one of the steps fails, it aborts the following build steps.
 
 This will release our whole directory, but we **only want to release our library which is located in the** `**dist**` **folder**, more specifically `dist/ngx-testing-library`. Therefore we have to set the `pkgRoot` inside the semantic-release configuration, we can do this by adding a `release` entry inside the `package.json`.
 
-### Configuring CircleCI
+## Configuring CircleCI
 
 To enable **CircleCI** you can login using your GitHub account. Once you’re logged in you can enable CircleCI on a per-project basis. This can be done by going to the [Add project tab](https://circleci.com/add-projects/gh/username). Go to your project and click on **Set up project** and follow the instructions on the page.
 
@@ -173,7 +173,7 @@ Finally, we can start checking a couple of items off our list! So far we have:
 
 This means there would also be a new release if you push to another branch which is not the master branch. This is something we, and definitely our users, wouldn’t want.
 
-### Configuring the release step
+## Configuring the release step
 
 To only release a new version when the master branch receives a push we’ll have to add a filter on the release job.
 
@@ -191,7 +191,7 @@ This means we can check off another item from our list!
 
 The last item to tick off is updating the **CHANGELOG** automatically.
 
-### CHANGELOG
+## CHANGELOG
 
 When **semantic-release** releases a new version to GitHub, it also adds the commit message(s) related to the release in the **release notes**. Because of this I don’t see the need to maintain a **CHANGELOG** since it’s already documented with each release. For example, these are the release notes of the `ngx-testing-library`:
 
@@ -215,7 +215,7 @@ With this last step we can check off every item on the list!
 
 ✅ Keep the CHANGELOG up to date️
 
-### Result and conclusion
+## Result and conclusion
 
 By simply installing `semantic-release` and holding ourselves (and contributors/your team) to a commit message convention, which is not a bad thing, we can automate our whole release flow.
 
@@ -223,7 +223,7 @@ With each commit against the master branch we test and build our library, and ma
 
 As a last note I would say go check out [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) and while you’re there you might as well give it a ⭐️.
 
-#### TLDR
+### TLDR
 
 - use `semantic-release` and `semantic-release-cli`
 - configure the CI build steps inside `./.circleci/config.yml`
@@ -247,7 +247,7 @@ As a last note I would say go check out [ngx-testing-library](https://github.com
 
 ![GitHub release page](./images/11.png)
 
-### Not to miss: GitHub Actions
+## Not to miss: GitHub Actions
 
 With [GitHub Actions](https://github.com/features/actions) we can do the same directly via GitHub, which does the same job but without the need to glue different services together.
 

@@ -21,7 +21,7 @@ In this article, we'll take a look at the observations we made.
 > - [How To Set Up A Print Style Sheet](https://www.smashingmagazine.com/2011/11/how-to-set-up-a-print-style-sheet/)
 > - [A Guide To The State Of Print Stylesheets In 2018](https://www.smashingmagazine.com/2018/05/print-stylesheets-in-2018/)
 
-### How can Angular help
+## How can Angular help
 
 If you're using Angular, there's a good chance that you're using a component-based architecture.
 We can use this architecture to our advantage. Instead of creating one big print stylesheet with some selectors, which becomes unmanageable complex when you have to support multiple printable pages. We can move some of the layout back to the components.
@@ -32,7 +32,7 @@ Adding print CSS to components has the same benefits as the styles to the compon
 - we keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 - it's still possible to use globally-scoped styles
 
-### Adding a print CSS to a component
+## Adding a print CSS to a component
 
 To change a component's look when printing a page, wrap the styles inside the `@media print` selector.
 Just like Angular's default styles, these styles are scoped to the current component.
@@ -64,7 +64,7 @@ In the below example, `h1`s from the parent component will be red, while the `h1
 }
 ```
 
-### Hiding entire components
+## Hiding entire components
 
 Most of the specific print CSS we wrote was to hide components.
 To hide an entire Angular component, we can use the [`:host` selector](https://angular.io/guide/component-styles#host).
@@ -77,7 +77,7 @@ To hide an entire Angular component, we can use the [`:host` selector](https://a
 }
 ```
 
-### A separate print component
+## A separate print component
 
 When the print version has a different layout, an option is to create a second component.
 This is especially useful if the printable component needs different data.
@@ -105,7 +105,7 @@ app-results-print {
 }
 ```
 
-### A separate print stylesheet
+## A separate print stylesheet
 
 Create a separate stylesheet where the print styles live.
 This leads to a clear separation, to clearly distinguish the application's layout and the print layout,
@@ -119,7 +119,7 @@ This leads to a clear separation, to clearly distinguish the application's layou
 export class OverviewComponent {}
 ```
 
-### Adding a print button
+## Adding a print button
 
 It's possible to print a page with JavaScript, for users this is easier compared to printing out the page via the browser's interface or via a shortcut.
 
@@ -146,7 +146,7 @@ export class PrintButtonComponent {
 }
 ```
 
-### DevTools print media type
+## DevTools print media type
 
 The developer experience while testing out the prints, was not so enjoyable because we had to manually trigger a print to see the page.
 That was until we found out that browsers can emulate the print view. The feedback loop was shorter as the page would just refresh when we made a change, just like we're used to.

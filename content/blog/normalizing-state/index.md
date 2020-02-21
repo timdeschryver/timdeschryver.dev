@@ -12,23 +12,23 @@ published: true
 
 _A quick look at state normalization._
 
-### Why
+## Why
 
 - **No data duplication**, it will reduce the possibility of inconsistent data.
 - **Faster data access**, no more iterating over arrays or nested objects.
 - **Easier object-to-data mapping**, there is a loose coupling between entities.
 
-### What
+## What
 
 A normalized state is a way to store (organize) data. With this way each entity type will have its own place in the store, so that there is only a **single point of truth**. This practice is the recommended way to organize data in a Redux application as you can read in the [Redux recipes](https://redux.js.org/recipes/structuring-reducers/normalizing-state-shape).
 
-### How
+## How
 
 - Each entity type will be stored separately, no more nested objects.
 - Store an entity as an object, with the id as key.
 - Reference other entities by id, again no more nested objects.
 
-### Now let’s put this into practice
+## Now let’s put this into practice
 
 The snippet below is an example of a typical store, the state contains of a customers array and a selected customer. Notice when a customer has changed we have to iterate over every customer to update the _to be edited_ customer, plus we also have to update the selected customer if needed. Imagine having even more places to update the same customer, must be a pain right? Note that this is only a simple illustration, but this problem keeps ramping up whenever a reference to customers is added. And what if another person (read you) forgets to update the customer at one place… your application will have inconsistent data and you can already guess who has to solve this bug.
 
@@ -92,9 +92,8 @@ export function reducer(state, action) {
   }
 }
 
-export const selectedCustomers = createSelector(
-  selectCustomersState,
-  state => Object.values(state.customers),
+export const selectedCustomers = createSelector(selectCustomersState, state =>
+  Object.values(state.customers),
 )
 
 export const selectedSelectedCustomers = createSelector(
@@ -103,7 +102,7 @@ export const selectedSelectedCustomers = createSelector(
 )
 ```
 
-### Bonus: NgRx/entity
+## Bonus: NgRx/entity
 
 > An entity state adapter for managing record collections. It provides performant CRUD operations for managing entity collections.
 

@@ -25,7 +25,7 @@ Keeping these smaller tasks in mind I noticed TSLint could be used for the first
 
 This post recounts the process I went through to create this new utility that I call `rxjs-operator-counter`.
 
-### Iterating files inside a project
+## Iterating files inside a project
 
 Following the [Developing TSLint rules](https://palantir.github.io/tslint/develop/custom-rules/) guide from TSLint, this was a straightforward task. The first step was to create a new file `src/rules/operatorCounterRule.ts` and import both `typescript` and `tslint`. Before I could use these dependencies, they had to be installed from npm with `npm install typescript tslint`. In the created file it was now possible to create a custom TSLint rule, extending from the `AbstractRule` class provided by `tslint`.
 
@@ -42,7 +42,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 }
 ```
 
-### Searching for RxJS operators
+## Searching for RxJS operators
 
 If you’re familiar with RxJS you know that all of the operators are used within the `pipe` function, the question was how to find all of the pipe operators. Here again, another tool could luckily help me and it’s called [AST explorer](https://astexplorer.net/).
 
@@ -100,7 +100,7 @@ export class Rule extends Lint.Rules.AbstractRule {
 
 ✔️, the second step is completed.
 
-### Keeping count of the operators and logging the results
+## Keeping count of the operators and logging the results
 
 If you took a close look at the walker implementation above, you already noticed `this.addFailureAtNode`. With `this.addFailureAtNode` we let TSLint know that we’ve encountered an error, the second parameter is the failure description. But in rxjs-operator-counter there aren’t errors to log or fix. To keep track of the operators, I used this failure bucket and used the operator name as the failure description. After this, I could iterate over all of the failures and increment the counter when I found a failure with the same operator name (failure description). To get the failure description, in this case the operator name from the failure, the function `failure.getFailure` is used. I added this logic to the rule itself:
 
@@ -128,7 +128,7 @@ A good old fashioned `console.log` is sufficient at this point to print out the 
 
 The problem with the code above is that it will run for every file. In other words, the results would get logged for every file and you would have to accumulate the results yourself across the different files to obtain the total amount.
 
-### Linting the whole workspace
+## Linting the whole workspace
 
 To solve this problem, I had to create a [TSLint library](https://palantir.github.io/tslint/usage/library/). With a library it becomes possible to call the linter programmatically, allowing me to lint all the files and accumulate the results into a total result. Following the [TSLint guide](https://palantir.github.io/tslint/usage/library/), this wasn’t as big of a task as I had expected, again…
 
@@ -203,13 +203,13 @@ To make it a bit easier to read, I sorted the results and used the [kleur librar
 
 ✔️ ✔️, I could check off both of the last items on the list!
 
-### The result
+## The result
 
 This all resulted in the following command, `npx rxjs-operator-counter`. Which you can run in a typescript workspace and it will show you the total amount of operators used inside of it.
 
 ![Gif of rxjs-operator-counter](./images/rxjs-operator-counter.gif)
 
-### Testing
+## Testing
 
 Testing this command happened at two different stages. At first, I wasn’t really familiar and that’s why the tests were manual verifications. As I dug more and more into the TSLint resources and after creating the custom linter I had a eureka moment and from then on the tests could be run automatically.
 
@@ -246,7 +246,7 @@ test(`test run`, () => {
 })
 ```
 
-### Refactoring with TSQuery
+## Refactoring with TSQuery
 
 > TSQuery allows you to query a TypeScript AST for patterns of syntax using a CSS style selector system.
 
@@ -288,13 +288,13 @@ A tip to create your own TSQuery selectors is to take a look at [TSQuery Playgro
 
 ![Gif of the TSQuery Playground website](./images/tsquery-playground.png)
 
-### Conclusion
+## Conclusion
 
 This was a fun little project and it was also the ideal project to get my feet wet with TSLint and AST. Now that I have had some contact with it, I feel a lot more confident about being able to create my own TSLint rules and linters. The functionality provided by TSLint, TSQuery, and the tooling around them are spot on! It surely made it easier in my case to get started in this unknown terrain.
 
 If you want, feel free to use the command `npx rxjs-operator-counter` inside your own projects or take a look at the code on [GitHub](https://github.com/timdeschryver/rxjs-operator-counter).
 
-#### Resources were helpful
+### Resources that were helpful
 
 - The [TSLint docs](https://palantir.github.io/tslint/)
 - My first encounters with TSLint: [rxjs-tslint](https://github.com/ReactiveX/rxjs-tslint) by [Minko Gechev](https://twitter.com/mgechev) and [rxjs-tslint-rules](https://github.com/cartant/rxjs-tslint-rules) by [Nicholas Jamieson](https://twitter.com/ncjamieson)
@@ -302,7 +302,7 @@ If you want, feel free to use the command `npx rxjs-operator-counter` inside you
 - [YES! I Compiled 1,000,000 TypeScript files in Under 40 Seconds. This is How.](https://medium.com/@urish/yes-i-compiled-1-000-000-typescript-files-in-under-40-seconds-this-is-how-6429a665999c) by [Uri Shaked](https://twitter.com/UriShaked)
 - [AST for Beginners](https://www.youtube.com/watch?v=CFQBHy8RCpg) by [Kent C. Dodds](https://twitter.com/kentcdodds)
 
-#### Bonus
+### Bonus
 
 - Run `npx rxjs-operator-counter` on JavaScript files by adding the `allowJs` compiler option
 - Take a look at the [results](https://bigtsquery.firebaseapp.com/query?selector=CallExpression%5Bexpression.name.name%3D%22pipe%22%5D%20%3E%20CallExpression%20%3E%20Identifier) from the TSQuery selector in BigTSQuery, also made by [Uri Shaked](https://twitter.com/UriShaked), that allows you to run TypeScript AST Queries across all public TypeScript code on GitHub.

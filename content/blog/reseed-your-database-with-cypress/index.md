@@ -19,7 +19,7 @@ There are other possibilities to test a specific scenario, but they all come at 
 - Expose create, update, and delete functions to be able to set up a specific test, with the consequence you end up with **"backdoor" functions in an API**. To be able to run specific test cases you will write more code (and have more maintenance) to be able to test your code. By exposing these functions there's a possibility they make it to production where they can become harmful if someone finds these backdoor functions
 - Because it can be hard/time-consuming to test a specific scenario, **some tests will not be written**
 
-### Why
+## Why
 
 But what do we gain by reseeding the database?
 
@@ -30,9 +30,9 @@ Well, we can write **isolated test cases**, this has the benefit that each test 
 - is fast and easy to use
 - is reliable
 
-### How
+## How
 
-#### Creating the task
+### Creating the task
 
 A Cypress task can be registered, the same way as a plugin.
 We can listen to tasks when we bind the `task` event inside the `plugins/index.js` file.
@@ -56,7 +56,7 @@ module.exports = on => {
 
 We aren't covering the `teardown` and `seed` scripts because these will be different based on the chosen stack.
 
-#### Running the task
+### Running the task
 
 To run the task we can use the `cy.task(taskName)` method.
 In our case, we want to reseed the database before running each test.
@@ -69,7 +69,7 @@ beforeEach(() => {
 })
 ```
 
-#### Modifying the timeout time
+### Modifying the timeout time
 
 By default, a task will timeout after one minute.
 For most of the cases this will be enough, but for the cases that are taking longer it's possible to change the timeout.

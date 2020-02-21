@@ -11,13 +11,13 @@ published: true
 publisher: Angular In Depth
 ---
 
-### The problem
+## The problem
 
 As you’re building your application you’ll be creating different feature modules with maintainability and a small footprint in mind. This way your modules have a clear boundary and will only be loaded when they are needed.
 
 But there are times where you need some information (data) from another module to build your views (components). This is a question that I’m starting to see popping up a lot lately. In this post I will provide an answer to this question in particular.
 
-### NgRx Selectors: the basics
+## NgRx Selectors: the basics
 
 In an application that uses NgRx the whole application state is stored in the store as an (often deeply nested) object, also known as the state tree. As you bootstrap your application this state tree will start off small and it will grow in size as more and more modules are loaded into the application.
 
@@ -31,7 +31,7 @@ Because selectors are pure functions they can use an optimization technique call
 
 See [Alex Okrushko](https://twitter.com/AlexOkrushko)’s talk [NgRx: Selectors are more powerful than you think](https://www.youtube.com/watch?v=E7GKnjGCXzU) for more information and some more advanced concepts.
 
-### The solution
+## The solution
 
 To build up to the solution we’ll be creating a small application, where a whole family can fill in their groceries per family member.
 
@@ -75,7 +75,7 @@ Resulting in:
 }
 ```
 
-#### The root selectors
+### The root selectors
 
 To start off simple, the first step is to create the **selectors** to select the family members to create a landing page.
 
@@ -89,7 +89,7 @@ Resulting in the following home page:
 
 ![](./images/3.png)
 
-#### The feature state
+### The feature state
 
 Since this is a grocery application, the feature state will consist of the groceries and a visibility filter to show or hide checked off groceries. We’ll lazily load this module, meaning that the code won’t be loaded during the initial load but will be once the user navigates to the groceries page.
 
@@ -113,13 +113,13 @@ When the feature module is loaded, NgRx will append the feature’s reducers to 
 }
 ```
 
-#### The feature module
+### The feature module
 
 The groceries state is added to the state tree as `groceries` because this is how I defined it.
 
 ![](./images/4.png)
 
-#### The feature selectors
+### The feature selectors
 
 Now that we know how the feature state looks, we can write the selectors to select the data.
 
@@ -157,7 +157,7 @@ We don’t need anything more, so we can create our family view:
 
 ![](./images/10.png)
 
-### Recap
+## Recap
 
 As you can already see in the examples above sharing data between modules can be peanuts if selectors are used. This comes with the extra benefit that:
 
@@ -172,7 +172,7 @@ If you want to see the project, you can take a look at the [GitHub repo](https:/
 
 A big thank you to [Nate Lapinski](https://twitter.com/nate_lapinski), [Max Wizard K](https://twitter.com/maxkoretskyi), [Alex Okrushko](https://twitter.com/AlexOkrushko) and [Todd Palmer](https://medium.com/u/11477bb8a02e) for reviewing this post.
 
-### Here are some more resources if you want to know more
+## Here are some more resources if you want to know more
 
 [Parameterized selectors](./blog/parameterized-selectors)
 
@@ -180,6 +180,6 @@ A big thank you to [Nate Lapinski](https://twitter.com/nate_lapinski), [Max Wiza
 
 [Advanced NgRx](https://slides.com/gerardsans/angularsp-advanced-ngrx#/)
 
-### Did you know you can also create your custom selector factory
+## Did you know you can also create your custom selector factory
 
 https://twitter.com/gerardsans/status/1037359745466884096

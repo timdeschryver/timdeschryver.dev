@@ -51,7 +51,7 @@ function fizzBuzz(value) {
 }
 ```
 
-### Our first test
+## Our first test
 
 As our first test we're covering the easiest case, an input that is not divisible and simply returns the input value:
 
@@ -87,7 +87,7 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Code_coverage):
 - Function coverage – Has each function (or subroutine) in the program been called?
 - Line coverage has each executable line in the source file been executed?
 
-### Interpreting our code coverage
+## Interpreting our code coverage
 
 We can notice from the coverage that all of our lines are covered, but that not all of the statements have been covered. More specific, the lines where the input value is divisible by three and/or five.
 
