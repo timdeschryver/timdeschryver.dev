@@ -289,7 +289,7 @@ The full specification of the marker:
 | `clickable` | If the marker should listen to mouse and touch events, default is `true`                                                                   |
 | `options`   | Sets the options, for more info see the [docs](https://developers.google.com/maps/documentation/javascript/reference/marker#MarkerOptions) |
 
-### Output properties {#map-output-properties}
+### Output properties {#map-marker-output-properties}
 
 The `MapMarker` component also exposes the Google Maps API events as `@Output()` properties:
 

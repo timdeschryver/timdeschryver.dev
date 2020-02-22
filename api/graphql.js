@@ -314,7 +314,7 @@ function parseFileToHtmlAndMeta(
 
     return `
       <h${level} id="${fragment}">
-        <a href="${anchor}" class="anchor" aria-hidden="true">
+        <a href="${anchor}" class="anchor" aria-hidden="true" tabindex="-1">
           ${headingText}
         </a>
       </h${level}>`

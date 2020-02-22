@@ -97,10 +97,12 @@
   <meta name="twitter:description" content={post.metadata.description} />
   <meta name="twitter:label1" content="Written by" />
   <meta name="twitter:data1" content={post.metadata.author} />
+  <meta name="twitter:label2" content="Published on" />
+  <meta name="twitter:data2" content={post.metadata.date} />
 
   <meta
     name="og:url"
-    content={'https://timdeschryver.dev/blog/' + post.metadata.slug} />
+    content={`https://timdeschryver.dev/blog/${post.metadata.slug}`} />
   <meta name="og:title" content={post.metadata.title} />
   <meta name="og:description" content={post.metadata.description} />
   <meta name="og:type" content="article" />

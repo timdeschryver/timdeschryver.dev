@@ -104,7 +104,7 @@ pre[class*='language-'] > .code-heading > a {
 [data-theme='custom'] .token.prolog,
 [data-theme='custom'] .token.doctype,
 [data-theme='custom'] .token.cdata {
-  opacity: 0.6;
+  color: 0.7;
 }
 
 [data-theme='custom'] .token.punctuation {
@@ -112,7 +112,7 @@ pre[class*='language-'] > .code-heading > a {
 }
 
 [data-theme='custom'] .token.namespace {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 [data-theme='custom'] .token.tag,

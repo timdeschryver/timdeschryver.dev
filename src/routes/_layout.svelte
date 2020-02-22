@@ -65,6 +65,7 @@
     <a href="/newsletter" class:active={segment === 'newsletter'}>Newsletter</a>
 
     <button
+      aria-label="settings"
       class="settings-button"
       on:click={() => (toggleSettings = !toggleSettings)}>
       <svg
