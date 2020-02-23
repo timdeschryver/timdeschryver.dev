@@ -27,4 +27,8 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: npm test
+        uses: cypress-io/github-action@v1
+        with:
+          build: npm run build
+          start: npx serve __sapper__/export -l 3000
+          wait-on: http://localhost:3000
