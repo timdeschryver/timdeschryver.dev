@@ -15,19 +15,25 @@
   font-size: 1rem;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1366px) {
+  :root {
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-width: 1280px) {
   :root {
     font-size: 1.15rem;
   }
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1440px) {
   :root {
     font-size: 1.25rem;
   }
 }
 
-@media (min-width: 1820px) {
+@media (min-width: 1920px) {
   :root {
     font-size: 1.35rem;
   }

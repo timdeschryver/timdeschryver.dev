@@ -8,12 +8,14 @@
     "prebuild": "node --version && npm run copy:blog && npm run copy:snippets",
     "build": "sapper export --legacy --timeout=60000",
     "build:lambda": "rollup -c rollup.lambda.config.js",
-    "copy:blog": "rm -rf static/blog && copyfiles \"content/blog/**\" static -u 1",
-    "copy:snippets": "rm -rf static/snippets && copyfiles \"content/snippets/**\" static -u 1",
+    "copy:blog": "rimraf static/blog && copyfiles \"content/blog/**\" static -u 1",
+    "copy:snippets": "rimraf static/snippets && copyfiles \"content/snippets/**\" static -u 1",
     "start": "node __sapper__/build",
+    "start:serve": "serve __sapper__/export -l 3000",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run"
+    "test": "run-p --race dev cy:run",
+    "test-against-build": "run-p --race start:serve cy:run"
   },
   "husky": {
     "hooks": {
@@ -61,6 +63,7 @@
     "node-fetch": "^2.6.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.17.0",
+    "rimraf": "^3.0.2",
     "rollup": "^1.0.0",
     "rollup-plugin-babel": "^4.0.2",
     "rollup-plugin-commonjs": "^9.1.6",
@@ -71,6 +74,7 @@
     "rollup-plugin-terser": "^4.0.4",
     "rxjs": "^7.0.0-alpha.1",
     "sapper": "^0.27.9",
+    "serve": "^11.3.0",
     "svelte": "^3.6.9",
     "svelte-rx": "0.0.7",
     "svelte-xstate-stores": "0.0.6",

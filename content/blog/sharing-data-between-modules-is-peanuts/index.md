@@ -174,11 +174,9 @@ A big thank you to [Nate Lapinski](https://twitter.com/nate_lapinski), [Max Wiza
 
 ## Here are some more resources if you want to know more
 
-[Parameterized selectors](./blog/parameterized-selectors)
-
-[Normalizing state](./blog/normalizing-state)
-
-[Advanced NgRx](https://slides.com/gerardsans/angularsp-advanced-ngrx#/)
+- [Parameterized selectors](./blog/parameterized-selectors)
+- [Normalizing state](./blog/normalizing-state)
+- [Advanced NgRx](https://slides.com/gerardsans/angularsp-advanced-ngrx#/)
 
 ## Did you know you can also create your custom selector factory
 

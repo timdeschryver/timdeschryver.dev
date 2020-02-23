@@ -174,9 +174,7 @@ The code can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer) o
 ## More resources
 
 - [Introducing Immer: Immutability the easy way](https://hackernoon.com/introducing-immer-immutability-the-easy-way-9d73d8f71cb3)
-
 - [The NgRx repository on GitHub](https://github.com/ngrx/platform)
-
 - [The Immer repository on GitHub](https://github.com/mweststrate/immer)
 
 ## Not to miss

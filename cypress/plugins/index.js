@@ -2,8 +2,8 @@ const fetch = require('node-fetch')
 
 module.exports = (on, config) => {
   on('task', {
-    sitemapUrls() {
-      return fetch('http://localhost:3000/sitemap.xml', {
+    sitemapUrls(numberOfUrls = 4) {
+      return fetch(`${config.baseUrl}/sitemap.xml`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/xml',
@@ -12,12 +12,10 @@ module.exports = (on, config) => {
         .then(res => res.text())
         .then(xml => {
           const locs = [...xml.matchAll(`<loc>(.|\n)*?</loc>`)].map(([loc]) =>
-            loc
-              .replace('<loc>', '')
-              .replace('</loc>', '')
-              .replace('https://timdeschryver.dev', ''),
+            loc.replace('<loc>', '').replace('</loc>', ''),
           )
-          return locs
+          console.log(numberOfUrls)
+          return locs.slice(0, numberOfUrls || 4)
         })
     },
   })

@@ -224,10 +224,7 @@ The code from the cart example can be found on [GitHub](https://github.com/timde
 
 ## More resources
 
-- [Introduction - NGXS][https://ngxs.gitbook.io/ngxs]
-
+- [Introduction - NGXS](https://ngxs.gitbook.io/ngxs)
 - [Why another state management framework for Angular?](https://medium.com/@amcdnl/why-another-state-management-framework-for-angular-b4b4c19ef664)
-
 - [Introducing Immer: Immutability the easy way](https://hackernoon.com/introducing-immer-immutability-the-easy-way-9d73d8f71cb3)
-
 - [The Immer repository on GitHub](https://github.com/mweststrate/immer)

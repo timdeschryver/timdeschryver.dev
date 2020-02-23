@@ -33,12 +33,14 @@ async function generate(req) {
 <channel>
 <title><![CDATA[ Tim Deschryver ]]></title>
 <description><![CDATA[ Blog by Tim Deschryver ]]></description>
-<link>https://timdeschryver.dev/blog</link>
-<atom:link href="https://timdeschryver.dev/blog/rss.xml" rel="self" type="application/rss+xml"/>
+<link>${process.env.BASE_PATH}/blog</link>
+<atom:link href="${
+    process.env.BASE_PATH
+  }/blog/rss.xml" rel="self" type="application/rss+xml"/>
 <image>
-  <url>https://timdeschryver.dev/favicons/favicon-32x32.png</url>
+  <url>${process.env.BASE_PATH}/favicons/favicon-32x32.png</url>
   <title>Tim Deschryver</title>
-  <link>https://timdeschryver.dev/blog</link>
+  <link>${process.env.BASE_PATH}/blog</link>
 </image>
 <language>en-us</language>
 <lastBuildDate>${new Date()}</lastBuildDate>
@@ -48,10 +50,8 @@ ${response.data.posts
       <item>
         <title><![CDATA[ ${post.metadata.title} ]]></title>
         <description><![CDATA[ ${post.metadata.description} ]]></description>
-        <link>https://timdeschryver.dev/blog/${post.metadata.slug}</link>
-        <guid isPermaLink="false">https://timdeschryver.dev/blog/${
-          post.metadata.slug
-        }</guid>
+        <link>${process.env.BASE_PATH}/blog/${post.metadata.slug}</link>
+        <guid isPermaLink="false">${process.env.BASE_PATH}/blog/${post.metadata.slug}</guid>
         <pubDate>${post.metadata.date}</pubDate>
         <content:encoded>${post.html}></content:encoded>
       </item>
