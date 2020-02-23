@@ -28,7 +28,11 @@ jobs:
 
       - name: Test
         uses: cypress-io/github-action@v1
+        env:
+          BASE_PATH: http://localhost:3000
         with:
           build: npm run build
           start: npx serve __sapper__/export -l 3000
+          test: npm run cy:run
           wait-on: http://localhost:3000
+          config-file: ./cypress.json

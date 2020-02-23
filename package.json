@@ -13,8 +13,7 @@
     "start": "node __sapper__/build",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "npm run cy:run",
-    "run-and-test": "run-p --race dev cy:run"
+    "test": "run-p --race dev cy:run"
   },
   "husky": {
     "hooks": {
