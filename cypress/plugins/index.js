@@ -12,10 +12,7 @@ module.exports = (on, config) => {
         .then(res => res.text())
         .then(xml => {
           const locs = [...xml.matchAll(`<loc>(.|\n)*?</loc>`)].map(([loc]) =>
-            loc
-              .replace('<loc>', '')
-              .replace('</loc>', '')
-              .replace('https://timdeschryver.dev', ''),
+            loc.replace('<loc>', '').replace('</loc>', ''),
           )
           return locs
         })

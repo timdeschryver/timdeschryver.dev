@@ -33,19 +33,19 @@ async function generate(req) {
     xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" 
     xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     <url>
-      <loc>https://timdeschryver.dev</loc>
+      <loc>${process.env.BASE_PATH}</loc>
       <priority>1.0</priority>
       <changefreq>daily</changefreq>
       ${lastMod}
     </url>
     <url>
-      <loc>https://timdeschryver.dev/snippets</loc>
+      <loc>${process.env.BASE_PATH}/snippets</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
       ${lastMod}
     </url>
     <url>
-      <loc>https://timdeschryver.dev/blog</loc>
+      <loc>${process.env.BASE_PATH}/blog</loc>
       <changefreq>daily</changefreq>
       <priority>0.6</priority>
       ${lastMod}
@@ -53,7 +53,7 @@ async function generate(req) {
     ${response.data.posts
       .map(
         post => `<url>
-          <loc>https://timdeschryver.dev/blog/${post.metadata.slug}</loc>
+          <loc>${process.env.BASE_PATH}/blog/${post.metadata.slug}</loc>
           <changefreq>daily</changefreq>
           <priority>0.8</priority>
           ${lastMod}
