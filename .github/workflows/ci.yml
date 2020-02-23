@@ -26,13 +26,10 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Test
-        uses: cypress-io/github-action@v1
+      - name: Build
+        run: npm run build
         env:
           BASE_PATH: http://localhost:3000
-        with:
-          build: npm run build
-          start: npm run start:serve
-          test: npm run cy:run
-          wait-on: http://localhost:3000
-          config-file: ./cypress.json
+
+      - name: Test
+        run: npm run test-against-build

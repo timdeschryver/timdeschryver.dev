@@ -27,6 +27,7 @@ describe('a11y', () => {
             } else {
               cy.viewport(size)
             }
+            cy.findAllByText('Tim Deschryver')
             cy.checkA11y()
           })
         })

@@ -14,7 +14,8 @@
     "start:serve": "serve __sapper__/export -l 3000",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run"
+    "test": "run-p --race dev cy:run",
+    "test-against-build": "run-p --race start:serve cy:run"
   },
   "husky": {
     "hooks": {
