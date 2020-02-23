@@ -11,6 +11,7 @@
     "copy:blog": "rimraf static/blog && copyfiles \"content/blog/**\" static -u 1",
     "copy:snippets": "rimraf static/snippets && copyfiles \"content/snippets/**\" static -u 1",
     "start": "node __sapper__/build",
+    "start:serve": "serve __sapper__/export -l 3000",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run"
@@ -72,6 +73,7 @@
     "rollup-plugin-terser": "^4.0.4",
     "rxjs": "^7.0.0-alpha.1",
     "sapper": "^0.27.9",
+    "serve": "^11.3.0",
     "svelte": "^3.6.9",
     "svelte-rx": "0.0.7",
     "svelte-xstate-stores": "0.0.6",
