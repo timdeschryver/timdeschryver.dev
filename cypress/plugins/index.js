@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 module.exports = (on, config) => {
   on('task', {
     sitemapUrls() {
-      return fetch('http://localhost:3000/sitemap.xml', {
+      return fetch(`${config.baseUrl}/sitemap.xml`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/xml',

@@ -63,6 +63,7 @@
     margin-top: 0;
     position: absolute;
     transform: translate(-78px, 10px);
+    mix-blend-mode: normal !important;
   }
 
   .selection-actions button {
@@ -71,7 +72,7 @@
     cursor: pointer;
     text-decoration: none;
     text-transform: uppercase;
-    border: 1x solid;
+    border: none;
     padding: 0.25rem 1rem;
     font-size: 0.75rem;
     line-height: 2.5;

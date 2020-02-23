@@ -144,8 +144,6 @@ the version number is updated to the new version after `ng update frontal — ne
 
 ## More resources
 
-[Version 6 of Angular Now Available](https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4)
-
-[Seamlessly Updating your Angular Libraries with the CLI, Schematics and ng update](http://www.softwarearchitekt.at/post/2018/04/17/seamlessly-updating-your-angular-libraries-with-ng-update.aspx)
-
-[angular/devkit](https://github.com/angular/devkit/blob/master/docs/specifications/update.md)
+- [Version 6 of Angular Now Available](https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4)
+- [Seamlessly Updating your Angular Libraries with the CLI, Schematics and ng update](http://www.softwarearchitekt.at/post/2018/04/17/seamlessly-updating-your-angular-libraries-with-ng-update.aspx)
+- [angular/devkit](https://github.com/angular/devkit/blob/master/docs/specifications/update.md)
