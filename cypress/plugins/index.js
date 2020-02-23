@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 
 module.exports = (on, config) => {
   on('task', {
-    sitemapUrls() {
+    sitemapUrls(numberOfUrls = 4) {
       return fetch(`${config.baseUrl}/sitemap.xml`, {
         method: 'GET',
         headers: {
@@ -14,7 +14,8 @@ module.exports = (on, config) => {
           const locs = [...xml.matchAll(`<loc>(.|\n)*?</loc>`)].map(([loc]) =>
             loc.replace('<loc>', '').replace('</loc>', ''),
           )
-          return locs
+          console.log(numberOfUrls)
+          return locs.slice(0, numberOfUrls || 4)
         })
     },
   })
