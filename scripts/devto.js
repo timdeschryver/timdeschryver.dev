@@ -52,7 +52,7 @@ ${Object.entries(devToMeta)
   .join('\n')}
 ---
 
-Follow me on Twitter at [@tim_deschryver](https://twitter.com/tim_deschryver) | Originally published on [timdeschryver.dev](${url}).
+Follow me on Twitter at [@tim_deschryver](https://twitter.com/tim_deschryver) | Subscribe to the [Newsletter](https://timdeschryver.dev/newsletter) | Originally published on [timdeschryver.dev](${url}).
 
 -------
 
@@ -60,7 +60,7 @@ ${devToContent}
 
 -------
 
-Follow me on Twitter at [@tim_deschryver](https://twitter.com/tim_deschryver) | Originally published on [timdeschryver.dev](${url}).
+Follow me on Twitter at [@tim_deschryver](https://twitter.com/tim_deschryver) | Subscribe to the [Newsletter](https://timdeschryver.dev/newsletter) | Originally published on [timdeschryver.dev](${url}).
 `
 
     const article = {

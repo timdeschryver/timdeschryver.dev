@@ -22,6 +22,9 @@
   <li>
     <a href="/snippets">Snippets</a>
   </li>
+  <li>
+    <a href="/resources/ngrx">Resources - NgRx</a>
+  </li>
   {#each posts as post}
     <li>
       <a href="/blog/{post.metadata.slug}">{post.metadata.title}</a>

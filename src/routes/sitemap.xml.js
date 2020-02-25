@@ -60,5 +60,11 @@ async function generate(req) {
         </url>`,
       )
       .join('\n')}
+    <url>
+      <loc>${process.env.BASE_PATH}/resources/ngrx</loc>
+      <changefreq>monthly</changefreq>
+      <priority>0.1</priority>
+      ${lastMod}
+    </url>
   </urlset>`
 }
