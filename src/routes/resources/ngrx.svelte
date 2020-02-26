@@ -85,6 +85,12 @@
           category: '🎤',
         },
         {
+          link:
+            'https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5',
+          text: 'Patterns and Techniques - Victor Savkin',
+          category: '✍',
+        },
+        {
           link: 'https://gist.github.com/btroncone/a6e4347326749f938510',
           text: 'Comprehensive Introduction to @ngrx/store - Brian Troncone',
           category: '✍',
