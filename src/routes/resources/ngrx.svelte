@@ -134,11 +134,25 @@
 </style>
 
 <svelte:head>
-  <meta name="twitter:label1" content="Resources" />
-  <meta name="twitter:data1" content="NgRx" />
-</svelte:head>
+  <title>Resouces: NgRx - Tim Deschryver</title>
 
-<Head title="NgRx Resources - Tim Deschryver" />
+  <meta name="title" content="Resouces: NgRx" />
+  <meta name="description" content="NgRx Resources I share a lot" />
+  <meta name="keywords" content="NgRx, Resources" />
+  <meta name="image" content="https://timdeschryver.dev/images/ngrx.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:image"
+    content="https://timdeschryver.dev/images/ngrx.png" />
+  <meta name="twitter:title" content="NgRx Resources" />
+  <meta name="twitter:description" content="NgRx Resources I share a lot" />
+  <meta name="og:url" content="https://timdeschryver.dev/resources/ngrx" />
+  <meta name="og:title" content="Resouces: NgRx" />
+  <meta name="og:description" content="NgRx Resources I share a lot" />
+  <meta name="og:type" content="article" />
+  <meta name="og:image" content="https://timdeschryver.dev/images/ngrx.png" />
+</svelte:head>
 
 <h1>NgRx Resources</h1>
 
