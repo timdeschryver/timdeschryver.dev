@@ -100,6 +100,13 @@
           text: 'Articles tagged with NgRx from AngularInDepth',
           category: '✍',
         },
+        {
+          link:
+            'https://blog.oasisdigital.com/2020/ngrx-is-40x-faster-than-your-code-find-out-why/',
+          text:
+            'NgRx is 40x faster than your code, find out why - Lance Finney',
+          category: '✍',
+        },
       ],
     },
     {

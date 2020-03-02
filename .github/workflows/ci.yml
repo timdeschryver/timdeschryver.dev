@@ -4,6 +4,12 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.png'
+      - '**.gif'
+
   push:
     branches:
       - master
@@ -22,6 +28,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Compress Images
+        uses: calibreapp/image-actions@master
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install
         run: npm ci
