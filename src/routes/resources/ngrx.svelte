@@ -38,8 +38,7 @@
           category: '✍',
         },
         {
-          link:
-            'https://www.smashingmagazine.com/2018/07/redux-designers-guide/',
+          link: 'https://www.smashingmagazine.com/2018/07/redux-designers-guide/',
           text: 'What Is Redux: A Designer’s Guide',
           category: '✍',
         },
@@ -85,8 +84,7 @@
           category: '🎤',
         },
         {
-          link:
-            'https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5',
+          link: 'https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5',
           text: 'Patterns and Techniques - Victor Savkin',
           category: '✍',
         },
@@ -103,8 +101,7 @@
         {
           link:
             'https://blog.oasisdigital.com/2020/ngrx-is-40x-faster-than-your-code-find-out-why/',
-          text:
-            'NgRx is 40x faster than your code, find out why - Lance Finney',
+          text: 'NgRx is 40x faster than your code, find out why - Lance Finney',
           category: '✍',
         },
       ],

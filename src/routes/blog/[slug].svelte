@@ -79,6 +79,10 @@
     font-weight: 900;
     background: var(--prime-color);
   }
+
+  .article-actions + .article-actions {
+    margin-top: 0;
+  }
 </style>
 
 <svelte:head>
@@ -141,6 +145,16 @@
     rel="noopener noreferrer"
     href="https://github.com/timdeschryver/timdeschryver.dev/tree/master/content/blog/{post.metadata.folder}/index.md">
     Edit on GitHub
+  </a>
+</div>
+
+<div class="article-actions">
+  <a
+    class="article-action"
+    target="_blank"
+    rel="noopener noreferrer"
+    href="https://twitter.com/tim_deschryver">
+    @tim_deschryver
   </a>
 </div>
 
