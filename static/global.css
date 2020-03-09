@@ -163,7 +163,11 @@ p > a {
   left: -3.2rem;
   color: var(--prime-color);
   font-size: 150%;
-  top: -10%;
+  top: -12%;
+}
+
+h2.anchor:before {
+  top: -21%;
 }
 
 @media (max-width: 680px) {
@@ -181,7 +185,7 @@ img {
   width: 100%;
 }
 
-#sapper > * {
+#sapper > *:not(footer) {
   display: grid;
   grid-template-columns:
     minmax(1.2rem, 1fr)
@@ -232,7 +236,6 @@ iframe {
 }
 
 #sapper > header {
-  /* background: var(--prime-color); */
   background-color: rgba(248, 196, 0, 1);
   color: black;
   padding: 1.3rem 0;
@@ -257,6 +260,37 @@ select {
 
 label {
   font-size: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: right;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+table,
+td,
+th {
+  border: 1px solid;
+}
+
+td,
+th {
+  padding: 4px 7px;
+}
+
+thead {
+  background: var(--prime-color);
+  word-break: break-word;
+  font-weight: 900;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--prime-color-03);
 }
 
 [hidden] {

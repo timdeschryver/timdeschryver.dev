@@ -3,8 +3,8 @@
 </script>
 
 <style>
-  :global(h3 > a) {
-    border-bottom: none;
+  :global(.anchor:before) {
+    top: -10%;
   }
 </style>
 
