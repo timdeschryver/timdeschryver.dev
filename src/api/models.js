@@ -9,6 +9,7 @@ import 'prismjs/components/prism-textile'
 import 'prismjs/components/prism-graphql'
 import 'prismjs/components/prism-yaml'
 import 'prismjs/components/prism-diff'
+import 'prismjs/components/prism-csharp'
 
 const langs = {
   bash: 'bash',
@@ -22,6 +23,7 @@ const langs = {
   graphql: 'graphql',
   yml: 'yaml',
   diff: 'diff',
+  cs: 'csharp',
 }
 
 export function posts() {
@@ -122,7 +124,7 @@ function parseFileToHtmlAndMeta(
       .splice(1, 2)
       .join('/')
     const href_attr = href.startsWith('#')
-      ? `href="${basePath}/${href}"`
+      ? `href="${basePath}${href}"`
       : `href="${href}"`
     const title_attr = title ? `title="${title}"` : ''
     const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : ''

@@ -15,7 +15,8 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "test": "run-p --race dev cy:run",
-    "test-against-build": "run-p --race start:serve cy:run"
+    "test-against-build": "run-p --race start:serve cy:run",
+    "publish:devto": "node ./scripts/devto"
   },
   "husky": {
     "hooks": {
