@@ -10,19 +10,17 @@ bannerCredit: Photo by [Felix Rostig](https://unsplash.com/@felixrstg) on [Unspl
 published: true
 ---
 
-This article is inspired by the talk [Write Fewer Tests! From Automation to Autogeneration](https://www.youtube.com/watch?v=tpNmPKjPSFQ) given by [David Khourshid](https://twitter.com/DavidKPiano). The talk showcases XState's new library [@xstate/test](https://xstate.js.org/docs/packages/xstate-test/), which helps you to write, or better, don't write tests.
+This article is inspired by the talk ["Write Fewer Tests! From Automation to Autogeneration"](https://www.youtube.com/watch?v=tpNmPKjPSFQ) given by [David Khourshid](https://twitter.com/DavidKPiano). The talk showcases XState's new library [@xstate/test](https://xstate.js.org/docs/packages/xstate-test/), which helps you to write or, better yet, not write tests.
 
-During the talk, David writes tests for a React component, using Jest and Puppeteer. Because I'm a Cypress fan and also an XState fan I wanted to rewrite the same test, but this time using Cypress.
-Just for fun and as a practice. As a starting point, I'm re-using the [source code](https://github.com/davidkpiano/xstate-test-demo) of the demo. The demo application is a multi-step form.
+During the talk, David writes tests for a React component using Jest and Puppeteer. Because I'm a Cypress and XState fan, I wanted to rewrite the same test, but this time using Cypress for fun and practice. As a starting point, I'm re-using the [source code](https://github.com/davidkpiano/xstate-test-demo) of the demo. The demo application is a multi-step form.
 
 ## A reusable state machine across tests
 
-`@xstate/test` adds a `test` property to the `meta` property for each state. The `test` property accepts a callback, and in this callback, we can write an assertion against the current state of the application. When a test has run it will invoke the `test` callback to verify that the application is in the correct state.
+`@xstate/test` adds a `test` property to the `meta` property for each state. The `test` property accepts a callback and, in this callback, we can write an assertion against the current state of the application. When a test has run, it will invoke the `test` callback to verify that the application is in the correct state.
 
-The state machine in the demo application adds the test code directly within the state machine.
-This couples the state machine to a specific testing library.
+The state machine in the demo application adds the test code directly within the state machine. This couples the state machine to a specific testing library.
 
-One of the advantages of state machines is that these are library/framework agnostic, this is highlighted in a previous article [My love letter to XState and statecharts ♥](/my-love-letter-to-xstate-and-statecharts).
+One of the advantages of state machines is that these are library/framework agnostic, which I highlighted in a previous article ["My love letter to XState and statecharts ♥"](/my-love-letter-to-xstate-and-statecharts).
 To make the state machine reusable across different testing libraries, the first step I took was to extract the test code from the state machine. By doing this, we also exclude the test code from the production build.
 
 ```js{12-14, 28-30, 38-40, 46-48}:before
