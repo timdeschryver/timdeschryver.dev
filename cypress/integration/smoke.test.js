@@ -59,7 +59,7 @@ function testA11y() {
     cy.findAllByText('Tim Deschryver')
     cy.checkA11y(
       {
-        exclude: ['.article-action'],
+        exclude: [['.article-action'], ['th']],
       },
       {
         rules: {
