@@ -20,7 +20,7 @@ During the talk, David writes tests for a React component using Jest and Puppete
 
 The state machine in the demo application adds the test code directly within the state machine. This couples the state machine to a specific testing library.
 
-One of the advantages of state machines is that these are library/framework agnostic, which I highlighted in a previous article ["My love letter to XState and statecharts ♥"](/my-love-letter-to-xstate-and-statecharts).
+One of the advantages of state machines is that these are library/framework agnostic, which I highlighted in a previous article ["My love letter to XState and statecharts ♥"](/blog/my-love-letter-to-xstate-and-statecharts).
 To make the state machine reusable across different testing libraries, the first step I took was to extract the test code from the state machine. By doing this, we also exclude the test code from the production build.
 
 ```js{12-14, 28-30, 38-40, 46-48}:before
