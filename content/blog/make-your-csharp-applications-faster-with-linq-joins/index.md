@@ -1,5 +1,5 @@
 ---
-title: Make your csharp applications faster with LINQ joins
+title: Make your C# applications faster with LINQ joins
 slug: make-your-csharp-applications-faster-with-linq-joins
 description: If you don't watch out your C# application might suddenly perform badly. As a solution, we can limit the number of operations with a LINQ Join.
 author: Tim Deschryver
