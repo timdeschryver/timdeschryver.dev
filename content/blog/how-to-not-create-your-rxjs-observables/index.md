@@ -31,7 +31,7 @@ if (userCanEstablishConnection()) {
 }
 ```
 
-This doesn't work because the `steam$` is re-assignment to the "real" WebSocket stream after the Effect was initialized.
+This doesn't work because the `steam$` is reassignment to the "real" WebSocket stream after the Effect was initialized.
 When the WebSocket stream emits a new progress value, the Effect doesn't receive the update because it is listening to `of({ status: 'idle' })`
 
 So how do we solve this?
