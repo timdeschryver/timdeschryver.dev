@@ -36,8 +36,8 @@ These good practices took us far, but not far enough later on in the development
 
 ## Solutions <!-- omit in toc -->
 
-- [@HostListener runs the change detection cycle](#hostlistener-runs-the-change-detection-cycle)
-- [Do heavy lifting up front (and only once)](#do-heavy-lifting-up-front-and-only-once)
+- [@HostListener runs the change detection cycle](#hostlistener-runs-a-new-change-detection-cycle)
+- [Do heavy lifting up front (and only once)](#do-heavy-lifting-upfront-and-only-once)
 - [Pure pipes to prevent method calls](#pure-pipes-to-prevent-method-calls)
 - [trackBy to decrease the number of DOM mutations](#trackby-to-decrease-the-number-of-dom-mutations)
 - [Virtual scrolling for large lists](#virtual-scrolling-for-large-lists)
