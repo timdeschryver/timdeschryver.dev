@@ -119,7 +119,7 @@ let source3 = toggle$.pipe(switchMap(() => fromKeydown('b')))
 source3.subscribe(key => console.log('[reactive]', key))
 ```
 
-![We don't receive "a" events, when the toggle is clicked we do receive the "b" events](./images/imperative.gif)
+![We don't receive "a" events, when the toggle is clicked we do receive the "b" events](./images/reactive.gif)
 
 The above doesn't take the "a"-stream into account, it just creates the "b"-stream when the toggle emits a value.
 For our use-case this was perfect, but if needed we can provide an initial value.
