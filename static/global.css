@@ -46,6 +46,10 @@
     transition-duration: 0ms !important;
     transition-delay: 0ms !important;
   }
+
+  html {
+    scroll-behavior: initial;
+  }
 }
 
 * {
@@ -72,6 +76,7 @@ body {
 html {
   height: 100%;
   box-sizing: border-box;
+  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -222,6 +227,10 @@ main > h4 {
   width: 100%;
   max-width: 80ch;
   justify-self: center;
+}
+
+#sapper > main > iframe {
+  max-width: 100%;
 }
 
 figure > figcaption {
