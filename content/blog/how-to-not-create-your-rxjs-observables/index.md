@@ -1,5 +1,5 @@
 ---
-title: How to not create your RxJS observables
+title: How to not create your RxJS Observables
 slug: how-to-not-create-your-rxjs-observables
 description: Do not reassign an Observable, instead wrap it in another Observable.
 author: Tim Deschryver

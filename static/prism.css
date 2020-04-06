@@ -164,12 +164,13 @@ pre[class*='language-'] > .code-heading > a {
 }
 
 [data-theme='custom'] .token.deleted {
-  text-decoration: line-through;
+  color: rgba(255, 121, 198, 1);
+  background: rgba(255, 121, 198, 0.1);
 }
 
 [data-theme='custom'] .token.inserted {
-  border-bottom: 1px dotted #eeebff;
-  text-decoration: none;
+  color: rgba(80, 250, 123, 1);
+  background: rgba(80, 250, 123, 0.1);
 }
 
 [data-theme='custom'] pre[class*='language-'] {
