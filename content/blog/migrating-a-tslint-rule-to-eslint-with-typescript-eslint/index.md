@@ -1,5 +1,5 @@
 ---
-title: migrating a TSLint Rule to ESLint with @typescript-eslint
+title: Migrating a TSLint Rule to ESLint with @typescript-eslint
 slug: migrating-a-tslint-rule-to-eslint-with-typescript-eslint
 description: The most important pointers you need to know before migrating your TSLint rules to ESLint rules.
 author: Tim Deschryver

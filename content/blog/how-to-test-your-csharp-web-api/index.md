@@ -161,7 +161,7 @@ To keep things DRY and to hide some of this logic, one of the possibilities is t
 With an abstract class, `IntegrationTest`, it's possible to expose commonly used variables, the most important one being the `HttpClient` because we need it to create the HTTP requests.
 
 ```cs
-public class abstract IntegrationTest : IClassFixture<ApiWebApplicationFactory>
+public abstract class IntegrationTest : IClassFixture<ApiWebApplicationFactory>
 {
     private readonly Checkpoint _checkpoint = new Checkpoint
     {
