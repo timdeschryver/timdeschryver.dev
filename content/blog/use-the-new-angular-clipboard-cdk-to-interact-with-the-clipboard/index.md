@@ -103,7 +103,7 @@ export class AppComponent {
 
 ## Playground
 
-<iframe src="https://stackblitz.com/edit/angular-u8dyx6?ctl=1&embed=1&file=src/app/app.component.html&hideExplorer=1&hideExplorer=1" title="clipboard-playground"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-u8dyx6?ctl=1&embed=1&file=src/app/app.component.html" title="clipboard-playground"></iframe>
 
 ## Implementation details
 

@@ -193,4 +193,4 @@ output: [
 
 You can play around with an Angular reactive forms implementation:
 
-<iframe src="https://stackblitz.com/edit/angular-enum-bits?ctl=1&embed=1&file=src/app/app.component.ts&hideExplorer=1" title="enum-bits"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-enum-bits?ctl=1&embed=1&file=src/app/app.component.ts" title="enum-bits"></iframe>

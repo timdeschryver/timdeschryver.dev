@@ -296,3 +296,5 @@ If you keep these little tips in mind, each boundary inside the application has 
 - architectural bonus: different ways to process actions, [**Patterns and Techniques**](https://blog.nrwl.io/ngrx-patterns-and-techniques-f46126e2b1e5) by [Victor Savkin](https://twitter.com/victorsavkin)
 
 To end this post, see the [this Blitz](https://stackblitz.com/edit/ngrx-fizzbuzz-refactored) for the refactored version.
+
+<iframe src="https://stackblitz.com/edit/ngrx-fizzbuzz-refactored?ctl=1&embed=1" title="common-and-easy-mistakes-when-youre-new-to-ngrx"></iframe>

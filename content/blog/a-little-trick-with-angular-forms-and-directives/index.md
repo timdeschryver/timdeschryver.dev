@@ -107,3 +107,5 @@ To make this small example complete, this is how you would use the person compon
 > I find this a clean solution in combination with Control Value Accessors, as discussed in [Working with Angular forms in an enterprise environment](./blog/working-with-angular-forms-in-an-enterprise-environment).
 
 Play around with this example in the following [blitz](https://stackblitz.com/edit/angular-forms-directive-trick).
+
+<iframe src="https://stackblitz.com/edit/angular-forms-directive-trick?ctl=1&embed=1" title="angular-forms-directive-trick"></iframe>
