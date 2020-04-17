@@ -46,7 +46,14 @@ export function posts() {
       })
 
       const published = metadata.published === 'true'
-      const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))
+      const tags = metadata.tags.split(',').map(p =>
+        p
+          ? p
+              .trim()
+              .charAt(0)
+              .toUpperCase() + p.trim().slice(1)
+          : p,
+      )
 
       const banner = join(process.env.BASE_PATH, assetsSrc, metadata.banner)
         .replace(/\\/g, '/')

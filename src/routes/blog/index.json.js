@@ -12,6 +12,7 @@ export async function get(req, res) {
             title
             description
             date(displayAs: "human")
+            tags
           }
         }
       }

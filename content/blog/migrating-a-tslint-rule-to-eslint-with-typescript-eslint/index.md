@@ -243,7 +243,7 @@ ruleTester.run(ruleName, rule, {
 })
 ```
 
-> You can also create your own test runner, like angular-eslint did [here](https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/tests/test-helper.ts) to be able to use squigglies in [test cases](https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/tests/rules/no-input-rename.test.ts)
+> You can also create your own test runner, like angular-eslint did in [test-helper.ts](https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/tests/test-helper.ts) to be able to use squigglies in [test cases](https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/tests/rules/no-input-rename.test.ts)
 
 ## Utility methods
 

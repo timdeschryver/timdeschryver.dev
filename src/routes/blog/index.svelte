@@ -11,7 +11,75 @@
 
 <script>
   import Head from '../../components/Head.svelte'
+  import { stores } from '@sapper/app'
+  const { page } = stores()
+
   export let posts
+
+  let tags = Object.entries(
+    posts
+      .map(p => p.metadata.tags)
+      .flat()
+      .reduce((acc, tag) => {
+        acc[tag] = (acc[tag] || 0) + 1
+        return acc
+      }, {}),
+  )
+    .sort(([v1, c1], [v2, c2]) => c2 - c1 || v2 - v1)
+    .slice(0, 15)
+    .map(([v]) => v)
+
+  let filteredPosts = posts
+  let query = $page.query['q'] || ''
+  $: queryParts = query.split(' ')
+
+  $: if (typeof window !== 'undefined') {
+    let params = new URLSearchParams(window.location.search)
+    let q = params.get('q')
+
+    if (query) {
+      params.set('q', query)
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${location.pathname}?${params}`,
+      )
+    } else {
+      params.delete('q')
+      window.history.replaceState(window.history.state, '', location.pathname)
+    }
+  }
+
+  $: {
+    if (query) {
+      filteredPosts = posts.filter(p => {
+        return queryParts.every(
+          q =>
+            like(p.metadata.title, q) ||
+            like(p.metadata.description, q) ||
+            p.metadata.tags.some(t => match(t, q)),
+        )
+      })
+    } else {
+      filteredPosts = posts
+    }
+  }
+
+  function tagClicked(tag) {
+    if (queryParts.includes(tag)) {
+      query = queryParts.filter(q => q !== tag).join(' ')
+    } else {
+      query = query ? `${query.trim()} ${tag}` : tag
+    }
+  }
+
+  function like(text, value) {
+    return text.match(new RegExp(value, 'i'))
+  }
+
+  function match(text, value) {
+    return text.match(new RegExp(`^${value}$`, 'i'))
+  }
 </script>
 
 <style>
@@ -41,12 +109,52 @@
     border-bottom: 3px solid var(--prime-color);
     border-right: 3px solid var(--prime-color);
   }
+
+  input {
+    border: 1px solid;
+  }
+
+  button {
+    background: var(--prime-color);
+    border: none;
+    padding: 0.2em 0.5em;
+    margin: 0.3em;
+    opacity: 0.5;
+    border-radius: 2px;
+    transition: opacity 300ms;
+    cursor: pointer;
+    mix-blend-mode: difference;
+  }
+
+  button:hover {
+    opacity: 0.7;
+  }
+
+  button.active {
+    opacity: 1;
+  }
 </style>
 
 <Head title="Blog - Tim Deschryver" />
 
+<div>
+  <input
+    type="search"
+    bind:value={query}
+    placeholder="Search"
+    autocomplete="off"
+    aria-label="Search" />
+  {#each tags as tag}
+    <button
+      class:active={queryParts.some(q => match(q, tag))}
+      on:click={() => tagClicked(tag)}>
+      {tag}
+    </button>
+  {/each}
+</div>
+
 <ul>
-  {#each posts as post}
+  {#each filteredPosts as post}
     <li>
       <a rel="prefetch" href={`/blog/${post.metadata.slug}`}>
         <h2>{post.metadata.title}</h2>
@@ -55,5 +163,5 @@
         <p>{post.metadata.description}</p>
       </a>
     </li>
-  {/each}
+  {:else}Sorry, no posts matched your criteria...{/each}
 </ul>
