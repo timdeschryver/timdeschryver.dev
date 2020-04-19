@@ -27,4 +27,4 @@
   <a href="https://github.com/timdeschryver" class="social-link">GitHub</a>
 </section>
 
-<a href="links" style="display:none; visibility:hidden">hidden links</a>
+<a href="sitemap.xml" style="display:none; visibility:hidden">sitemap.xml</a>
