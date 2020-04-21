@@ -119,7 +119,7 @@
     border: none;
     padding: 0.2em 0.5em;
     margin: 0.3em;
-    opacity: 0.5;
+    opacity: 0.7;
     border-radius: 2px;
     transition: opacity 300ms;
     cursor: pointer;
@@ -127,7 +127,7 @@
   }
 
   button:hover {
-    opacity: 0.7;
+    opacity: 0.85;
   }
 
   button.active {

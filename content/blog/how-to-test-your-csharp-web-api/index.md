@@ -144,7 +144,7 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Api.Startup>
 ```json:integrationsettings.json
 {
   "ConnectionStrings": {
-    "SQL": "Data Source=tcp:localhost,1533;Initial Catalog=Local_zebra_e2e;User Id=sa;Password=tk837HL_Zebra;MultipleActiveResultSets=True"
+    "SQL": "Data Source=tcp:localhost,1533;Initial Catalog=IntegrationDB;User Id=sa;Password=password;MultipleActiveResultSets=True"
   }
 }
 ```
