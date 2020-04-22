@@ -236,11 +236,6 @@ public async Task Get_Should_ResultInABadRequest_When_ConfigIsInvalid()
 
     var response = await client.GetAsync("/weatherforecast");
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-    var forecast = JsonConvert.DeserializeObject<WeatherForecast[]>(
-      await response.Content.ReadAsStringAsync()
-    );
-    forecast.Should().HaveCount(1);
 }
 ```
 

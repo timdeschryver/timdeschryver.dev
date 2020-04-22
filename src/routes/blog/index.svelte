@@ -83,23 +83,31 @@
 </script>
 
 <style>
-  li:not(:first-child) {
-    margin-top: 3em;
+  time {
+    position: absolute;
+    left: -15em;
   }
 
-  p {
+  @media (max-width: 1150px) {
+    time {
+      display: none;
+    }
+  }
+
+  h2 {
     margin-top: 0;
   }
 
-  ul {
-    list-style: none;
+  p {
+    line-height: 1.5rem;
+    font-weight: 200;
+    margin-bottom: 1em;
   }
 
   li {
-    padding: 0.5em;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    border-right: 3px solid transparent;
+    padding: 0.5em 0;
+    border-bottom: 3px solid var(--prime-color);
+    border-right: 2px solid transparent;
   }
 
   li:hover {
@@ -110,6 +118,9 @@
     border-right: 3px solid var(--prime-color);
   }
 
+  li::before {
+    background: none;
+  }
   input {
     border: 1px solid;
   }
@@ -123,7 +134,7 @@
     border-radius: 2px;
     transition: opacity 300ms;
     cursor: pointer;
-    mix-blend-mode: difference;
+    font-size: 0.65rem;
   }
 
   button:hover {
@@ -157,9 +168,8 @@
   {#each filteredPosts as post}
     <li>
       <a rel="prefetch" href={`/blog/${post.metadata.slug}`}>
-        <h2>{post.metadata.title}</h2>
         <time datetime={post.metadata.date}>{post.metadata.date}</time>
-
+        <h2>{post.metadata.title}</h2>
         <p>{post.metadata.description}</p>
       </a>
     </li>

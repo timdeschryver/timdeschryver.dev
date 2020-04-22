@@ -12,12 +12,23 @@
       })
     }
   })
+
+  function settingsClicked() {
+    toggleSettings = !toggleSettings
+  }
 </script>
 
 <style>
   nav {
+    font-size: 0.8rem;
     margin-top: 0.3em;
     position: relative;
+  }
+
+  @media (max-width: 1220px) {
+    nav {
+      font-size: 1rem;
+    }
   }
 
   nav > a {
@@ -26,6 +37,12 @@
 
   nav > a:not(:last-child) {
     margin-right: 0.5em;
+  }
+
+  header {
+    background-color: rgba(248, 196, 0, 1);
+    color: black;
+    padding: 1.1em 0;
   }
 
   footer {
@@ -66,8 +83,7 @@
 
   .settings-container {
     margin-top: 0;
-    grid-column: 1 / 4;
-    background: rgba(248, 196, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.3);
   }
 
   .bg-color-fill {
@@ -89,7 +105,7 @@
     <button
       aria-label="settings"
       class="settings-button"
-      on:click={() => (toggleSettings = !toggleSettings)}>
+      on:click={settingsClicked}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="2em"

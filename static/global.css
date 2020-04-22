@@ -5,37 +5,30 @@
   --text-font: 'Inter', sans-serif;
   --head-font: 'Comfortaa', cursive;
 
-  --background-color: #ffffff;
+  --background-color: #fbfbfb;
   --spacing: 1.5em;
 
   --prime-color: rgba(248, 196, 0, 1);
   --prime-color-03: rgba(248, 196, 0, 0.3);
   --prime-color-01: rgba(248, 196, 0, 0.1);
 
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
-@media (min-width: 1366px) {
-  :root {
-    font-size: 1.05rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  :root {
-    font-size: 1.15rem;
-  }
-}
-
-@media (min-width: 1440px) {
-  :root {
-    font-size: 1.25rem;
-  }
-}
-
-@media (min-width: 1920px) {
+@media (min-width: 1220px) {
   :root {
     font-size: 1.35rem;
+  }
+}
+
+@media (min-width: 1500px) {
+  :root {
+    font-size: 1.45rem;
+  }
+}
+@media (min-width: 1820px) {
+  :root {
+    font-size: 1.65rem;
   }
 }
 
@@ -120,7 +113,13 @@ p,
 ul,
 ol,
 code {
-  font-size: 0.94rem;
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 2.3rem;
+}
+
+code {
+  line-height: 1;
 }
 
 pre > code[class*='language-'] {
@@ -128,8 +127,10 @@ pre > code[class*='language-'] {
 }
 
 time {
-  font-size: 0.7rem;
-  opacity: 0.8;
+  font-size: 0.5rem;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+  line-height: 2.2;
 }
 
 h2 + p,
@@ -168,10 +169,6 @@ p > a {
   left: -3.2rem;
   color: var(--prime-color);
   font-size: 150%;
-  top: -12%;
-}
-
-h2.anchor:before {
   top: -21%;
 }
 
@@ -183,7 +180,23 @@ h2.anchor:before {
 }
 
 ul {
-  list-style: inside;
+  list-style-type: none;
+}
+
+li {
+  position: relative;
+  padding-left: 20px;
+}
+
+li:before {
+  content: '';
+  border-radius: 100px;
+  position: absolute;
+  top: 0.9rem;
+  left: 0;
+  height: 8px;
+  width: 8px;
+  background: var(--prime-color);
 }
 
 img {
@@ -244,15 +257,13 @@ iframe {
   height: 800px;
 }
 
-#sapper > header {
-  background-color: rgba(248, 196, 0, 1);
-  color: black;
-  padding: 1.3rem 0;
-}
-
 blockquote {
   border-left: 2px solid var(--prime-color);
   padding-left: 2em;
+}
+
+small {
+  font-size: 80%;
 }
 
 input:not([type='color']),
