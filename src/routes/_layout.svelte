@@ -25,18 +25,26 @@
     position: relative;
   }
 
-  @media (max-width: 1220px) {
-    nav {
-      font-size: 1rem;
-    }
-  }
-
   nav > a {
     padding: 0.3em 0.7em;
   }
 
   nav > a:not(:last-child) {
     margin-right: 0.5em;
+  }
+
+  @media (max-width: 520px) {
+    h1 {
+      font-size: 1.4rem;
+    }
+
+    nav {
+      font-size: 0.7rem;
+    }
+
+    nav > a:not(:last-child) {
+      margin-right: 0.1em;
+    }
   }
 
   header {
@@ -108,8 +116,8 @@
       on:click={settingsClicked}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="2em"
-        height="2em"
+        width="1.7em"
+        height="1.7em"
         viewBox="0 0 464.736 464.736">
         <path
           d="M446.598 18.143c-24.183-24.184-63.393-24.191-87.592-.008l-16.717

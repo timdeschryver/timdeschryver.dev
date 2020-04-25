@@ -106,8 +106,8 @@
 
   li {
     padding: 0.5em 0;
-    border-bottom: 3px solid var(--prime-color);
-    border-right: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    border-right: 3px solid transparent;
   }
 
   li:hover {
