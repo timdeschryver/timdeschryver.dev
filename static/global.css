@@ -61,6 +61,10 @@
   box-sizing: inherit;
 }
 
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 html,
 body {
   margin: 0;
@@ -69,7 +73,6 @@ body {
 html {
   height: 100%;
   box-sizing: border-box;
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
