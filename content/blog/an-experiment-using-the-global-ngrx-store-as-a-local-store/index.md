@@ -234,7 +234,7 @@ Because the current component instance is passed (via `this`) to the `addEffects
 
 By default, only one instance of the same Effect class will be subscribed to. This is done to prevent the same API calls when the same Effect is registered in multiple modules. This default behavior means that only the Effects of the first component will be subscribed to. This again, is not what we want for our local component state.
 
-In order to distinguish the Effects when multiple of the same components are created, the `[OnIdentifyEffects]`(https://ngrx.io/api/effects/OnIdentifyEffects) lifecycle hook is used. The component already has a unique name, so it can be re-used to create a unique Effect. Because all Effects have a unique name, they will be all subscribed to.
+In order to distinguish the Effects when multiple of the same components are created, the [`OnIdentifyEffects`](https://ngrx.io/api/effects/OnIdentifyEffects) lifecycle hook is used. The component already has a unique name, so it can be re-used to create a unique Effect. Because all Effects have a unique name, they will be all subscribed to.
 
 ```ts
 ngrxOnIdentifyEffects() {
@@ -242,7 +242,7 @@ ngrxOnIdentifyEffects() {
 }
 ```
 
-To bind the lifetime of an Effect to the component's lifetime, a second Effect lifecycle hook, `[OnRunEffects]`(https://ngrx.io/api/effects/OnRunEffects) is used.
+To bind the lifetime of an Effect to the component's lifetime, a second Effect lifecycle hook, [`OnRunEffects`](https://ngrx.io/api/effects/OnRunEffects) is used.
 Inside the hook, the Effect subscriptions will be destroyed when the component is destroyed.
 
 ```ts
