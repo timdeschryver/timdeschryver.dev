@@ -160,7 +160,7 @@ export function persistStateReducer(reducer: ActionReducer<State>) {
 }
 ```
 
-> It’s also possible to persist state to local storage by using an effect, take a look at the [angular-ngrx-material-starter project](https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/src/app/examples/todos/todos.effects.ts#L23) by [Tomas Trajan](https://twitter.com/tomastrajan) for an example.
+> It’s also possible to persist state to local storage by using an effect, take a look at the [angular-ngrx-material-starter project](https://github.com/tomastrajan/angular-ngrx-material-starter/) by [Tomas Trajan](https://twitter.com/tomastrajan) for an example.
 
 ### Updating the state tree
 

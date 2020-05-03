@@ -35,7 +35,6 @@
 
   $: if (typeof window !== 'undefined') {
     let params = new URLSearchParams(window.location.search)
-    let q = params.get('q')
 
     if (query) {
       params.set('q', query)
@@ -50,19 +49,17 @@
     }
   }
 
-  $: {
-    if (query) {
-      filteredPosts = posts.filter(p => {
-        return queryParts.every(
-          q =>
-            like(p.metadata.title, q) ||
-            like(p.metadata.description, q) ||
-            p.metadata.tags.some(t => match(t, q)),
-        )
-      })
-    } else {
-      filteredPosts = posts
-    }
+  $: if (query) {
+    filteredPosts = posts.filter(p => {
+      return queryParts.every(
+        q =>
+          p.metadata.tags.some(t => match(t, q)) ||
+          like(p.metadata.title, q) ||
+          like(p.metadata.description, q),
+      )
+    })
+  } else {
+    filteredPosts = posts
   }
 
   function tagClicked(tag) {

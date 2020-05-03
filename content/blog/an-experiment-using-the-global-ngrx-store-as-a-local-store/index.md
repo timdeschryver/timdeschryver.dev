@@ -1,5 +1,5 @@
 ---
-title: An experiment: Using the global NgRx Store as a local store
+title: An experiment, using the global NgRx Store as a local store
 slug: an-experiment-using-the-global-ngrx-store-as-a-local-store
 description: Getting to know the internals of NgRx to make a local component store happen.
 author: Tim Deschryver

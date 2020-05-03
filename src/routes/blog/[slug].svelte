@@ -159,7 +159,7 @@
   </button>
 </div>
 
-{#if $state.matches('message')}
+<dialog open={$state.matches('message')}>
   <Message
     on:submit={evt => state.send({
         type: 'submit',
@@ -167,4 +167,4 @@
         message: evt.target.elements['message'].value,
       })}
     on:click={() => state.send({ type: 'cancel' })} />
-{/if}
+</dialog>
