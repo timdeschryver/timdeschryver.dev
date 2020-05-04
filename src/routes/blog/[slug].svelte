@@ -41,6 +41,10 @@
 </script>
 
 <style>
+  h1 {
+    word-break: break-word;
+  }
+
   .article-action {
     background: none;
     margin: 0;
@@ -82,6 +86,14 @@
 
   .article-actions {
     text-align: center;
+  }
+  
+  dialog {
+    display: none;
+  }
+
+  dialog[open] {
+    display: block;
   }
 </style>
 
