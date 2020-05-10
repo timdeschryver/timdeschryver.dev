@@ -4,7 +4,7 @@ slug: migrating-a-tslint-rule-to-eslint-with-typescript-eslint
 description: The most important pointers you need to know before migrating your TSLint rules to ESLint rules.
 author: Tim Deschryver
 date: 2020-04-06
-tags: linters, developer experience, tooling
+tags: Linters, Developer Experience, Tooling
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Daniela Cuevas](https://unsplash.com/@danielacuevas) on [Unsplash](https://unsplash.com)
 published: true

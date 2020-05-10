@@ -58,13 +58,14 @@ pre[class*='language-'] > .code-heading {
   justify-content: flex-end;
   padding: 0.2em 0.4em;
   font-family: var(--text-font);
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   position: absolute;
   height: var(--font-size);
   top: 0;
   left: 0;
   right: 0;
   color: #fff;
+  opacity: 0.8;
 }
 
 pre[class*='language-'] > .code-heading + code {
