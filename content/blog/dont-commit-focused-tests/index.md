@@ -34,7 +34,9 @@ This ban rule can be configured in the `tslint.json` file.
       { "name": ["describe", "only"], "message": "don't focus tests" },
       { "name": "fdescribe", "message": "don't focus tests" },
       { "name": ["it", "only"], "message": "don't focus tests" },
-      { "name": "fit", "message": "don't focus tests" }
+      { "name": "fit", "message": "don't focus tests" },
+      { "name": ["test", "only"], "message": "don't focus tests" },
+      { "name": "ftest", "message": "don't focus tests" }
     ]
   }
 }
@@ -56,7 +58,9 @@ This ban rule can be configured in the `.eslintrc.json` file.
       { "name": ["describe", "only"], "message": "don't focus tests" },
       { "name": "fdescribe", "message": "don't focus tests" },
       { "name": ["it", "only"], "message": "don't focus tests" },
-      { "name": "fit", "message": "don't focus tests" }
+      { "name": "fit", "message": "don't focus tests" },
+      { "name": ["test", "only"], "message": "don't focus tests" },
+      { "name": "ftest", "message": "don't focus tests" }
     ]
   }
 }
@@ -71,6 +75,53 @@ The second option, if you're using Jest, is to use the [eslint-plugin-jest](http
   "extends": ["plugin:jest/recommended"]
 }
 ```
+
+## Pre-commit hook
+
+After this post was released, [Netanel Basal](https://twitter.com/NetanelBasal) shared a third option by using a pre-commit hook.
+This will prevent a user from committing a focused test.
+
+For this method, you have to (1) create the hook, and (2) enable the hook with for example husky.
+
+```js
+const { execSync } = require('child_process')
+const chalk = require('chalk')
+
+/** Map of forbidden words and their match regex */
+const words = {
+  fit: '\\s*fit\\(',
+  fdescribe: '\\s*fdescribe\\(',
+  debugger: '(debugger);?',
+}
+let status = 0
+for (let word of Object.keys(words)) {
+  const matchRegex = words[word]
+  const gitCommand = `git diff --staged -G"${matchRegex}" --name-only`
+  const badFiles = execSync(gitCommand).toString()
+  const filesAsArray = badFiles.split('\n')
+  const tsFileRegex = /\.ts$/
+  const onlyTsFiles = filesAsArray.filter(file => tsFileRegex.test(file.trim()))
+  if (onlyTsFiles.length) {
+    status = 1
+    console.log(
+      chalk.bgRed.black.bold(`The following files contains '${word}' in them:`),
+    )
+    console.log(chalk.bgRed.black(onlyTsFiles.join('\n')))
+  }
+}
+process.exit(status)
+```
+
+```json
+"husky": {
+  "hooks": {
+    "pre-commit": "node hooks/pre-commit.js",
+  }
+}
+```
+
+For an example, you can take a look at the [Transloco](https://github.com/ngneat/transloco) library.
+Thanks Netanel!
 
 ## Conclusion
 
