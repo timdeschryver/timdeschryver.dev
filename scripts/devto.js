@@ -10,10 +10,9 @@ require('dotenv-extended').load({
 ;(async () => {
   try {
     const url = `https://timdeschryver.dev/blog/${slug}`
-    const file = readFileSync(
-      join('./content/blog', slug, 'index.md'),
-      'utf-8',
-    ).replace(/\.\/images\//g, `${url}/images/`)
+    const file = readFileSync(join('./content/blog', slug, 'index.md'), 'utf-8')
+      .replace(/\.\/images\//g, `${url}/images/`)
+      .replace(/\(\/blog\//g, `(https://timdeschryver.dev/blog/`)
     const { metadata, content } = extractFrontmatter(file)
 
     const devToContent = content
