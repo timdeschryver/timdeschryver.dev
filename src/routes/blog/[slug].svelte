@@ -100,13 +100,14 @@
 <svelte:head>
   <title>{post.metadata.title} - Tim Deschryver</title>
 
+  <link rel="canonical" href={post.metadata.canonical_url} />
+
   <meta name="author" content={post.metadata.author} />
   <meta name="copyright" content={post.metadata.author} />
   <meta name="title" content={post.metadata.title} />
   <meta name="description" content={post.metadata.description} />
   <meta name="keywords" content={post.metadata.tags.join(',')} />
   <meta name="image" content={post.metadata.banner} />
-  <meta name="canonical" content={post.metadata.canonical_url} />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content={post.metadata.banner} />
