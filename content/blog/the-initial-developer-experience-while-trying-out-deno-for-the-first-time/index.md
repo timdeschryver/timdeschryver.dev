@@ -75,7 +75,7 @@ To see the code that threw the error, the line number has to be removed manually
 ## Debugging
 
 Although I don't like to debug my code using a debugger, debugging an incoming request was easy to set up with Visual Studio Code.
-I followed the [debugger secion](https://deno.land/manual/tools/debugger) in the docs and it was quick and simple to get it working.
+I followed the [debugger section](https://deno.land/manual/tools/debugger) in the docs and it was quick and simple to get it working.
 Previously, I had some problems with it, but this time it just worked.
 
 ## Visual Studio Code plugin
@@ -109,3 +109,7 @@ I think good things will come out of it, for both Node.js and Deno, and I'm look
 - [10 Things I Regret About Node.js - Ryan Dahl - JSConf EU](https://www.youtube.com/watch?v=M3BM9TB-8yA)
 - [Deno, a new way to JavaScript - Ryan Dahl - HolyJS](https://www.youtube.com/watch?v=HjdJzNoT_qg)
 - [Deno is a New Way to JavaScript - Ryan Dahl & Kitson Kelly - TSConf EU](https://www.youtube.com/watch?v=HjdJzNoT_qg)
+
+## Special thanks
+
+Thanks [Lars Gyrup Brink Nielsen](https://twitter.com/LayZeeDK) to review this post.
