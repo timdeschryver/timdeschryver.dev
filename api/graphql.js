@@ -280,11 +280,9 @@ function parseFileToHtmlAndMeta(
       return `<pre class='language-text'><code>${source}</code></pre>`
     }
 
-    const highlighted = highlightCode(
-      prismLanguage,
-      source,
-      linesHighlight,
-    ).replace(/gatsby-highlight-code-line/g, 'line-highlight')
+    const highlighted = highlightCode(prismLanguage, source, linesHighlight)
+      .replace(/gatsby-highlight-code-line/g, 'line-highlight')
+      .replace(/<span class="line-highlight"><\/span>/g, '')
 
     const codeBlock = `<code>${highlighted}</code>`
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean)

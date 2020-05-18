@@ -195,10 +195,13 @@ function parseFileToHtmlAndMeta(
       linesHighlight,
     )
 
-    const highlighted = highlightedLines.replace(
-      /gatsby-highlight-code-line/g,
-      'line-highlight',
-    )
+    const highlighted = highlightedLines
+      .replace(/gatsby-highlight-code-line/g, 'line-highlight')
+      // add space to render the line
+      .replace(
+        /<span class="line-highlight"><\/span>/g,
+        '<span class="line-highlight"> </span>',
+      )
 
     const codeBlock = `<code>${highlighted}</code>`
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean)
