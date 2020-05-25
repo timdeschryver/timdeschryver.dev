@@ -127,7 +127,7 @@ This factory function expects a `theme` argument to check if the theme is alread
 With `deps` we can provide the `Theme`, the first time the function is called the `Theme` isn't initialized yet so we use `Optional` to mark the parameter as optional otherwise the Dependency Injection container would throw an error because it isn't able to find a value for `Theme`.
 To not instantiate the `Theme` we can use `SkipSelf`. If we wouldn't do this, we would directly end up with 2 instances of `Theme`.
 
-More information on [`Optional`](https://angular.io/api/core/Optional) [`SkipSelf`](https://angular.io/api/core/SkipSelf) can be found on [angular.io](angular.io).
+More information on [`Optional`](https://angular.io/api/core/Optional) [`SkipSelf`](https://angular.io/api/core/SkipSelf) can be found on [angular.io](https://angular.io).
 
 ### 3. Inject the guard token in the module
 

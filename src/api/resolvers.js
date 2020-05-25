@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-
 export const resolvers = {
   Query: {
     posts: (_parent, { published }, { posts }) => {
@@ -51,6 +49,10 @@ function html(content, { htmlEntities }) {
 
 function date(metadata, { displayAs }) {
   return displayAs === 'human'
-    ? format(metadata.date, 'MMMM Do, YYYY')
+    ? new Date(metadata.date).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      })
     : metadata.date.toString()
 }

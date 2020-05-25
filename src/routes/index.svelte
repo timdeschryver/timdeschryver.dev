@@ -22,9 +22,9 @@
 <Head title="Tim Deschryver" />
 
 <section class="intro">
-  <a href="https://twitter.com/tim_deschryver" class="social-link">Twitter</a>
+  <a href="https://timdeschryver.dev/twitter" class="social-link">Twitter</a>
   |
-  <a href="https://github.com/timdeschryver" class="social-link">GitHub</a>
+  <a href="https://timdeschryver.dev/github" class="social-link">GitHub</a>
 </section>
 
 <a href="sitemap.xml" style="display:none; visibility:hidden">sitemap.xml</a>

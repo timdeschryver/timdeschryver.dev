@@ -66,7 +66,7 @@ This made it harder to finish the code that I started working on, as I had to go
 ![Page that shows that the hourly limit is reached, making the code unbrowsable](./images/image01.jpg)
 
 Another point of critique is that the code isn't browsable when a module throws an error.
-For example, in the CLI the stack trace will print out that the error occurred at [https://deno.land/std/http/server.ts:195:5](https://deno.land/std/http/server.ts:195:5).
+For example, in the CLI the stack trace will print out that the error occurred at [deno.land/std/http/server.ts:195:5](https://deno.land/std/http/server.ts:195:5).
 When we click on the link, it results in a page mentioning that the file cannot be found.
 To see the code that threw the error, the line number has to be removed manually.
 
