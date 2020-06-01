@@ -166,6 +166,11 @@ p > a {
   background-color: var(--prime-color-03);
 }
 
+button:focus,
+a:focus {
+  outline: 2px solid var(--prime-color);
+}
+
 .anchor:before {
   content: '#';
   position: absolute;

@@ -4,7 +4,7 @@ slug: generated-tests-with-xstate-and-cypress
 description: Let's explore how we can stop writing tests and at the same time be more confident in the code we write. We do this by using the new XState test package, in combination with Cypress and Testing Library.
 author: Tim Deschryver
 date: 2020-03-16T16:46:03.366Z
-tags: Cypress, Testing, XState
+tags: Cypress, Testing, XState, testing-library, cypress-testing-library
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Felix Rostig](https://unsplash.com/@felixrstg) on [Unsplash](https://unsplash.com)
 published: true

@@ -4,7 +4,7 @@ slug: how-to-test-svelte-components
 description: Writing Svelte component tests with the Svelte Testing Library is simple. Let's take a look at the setup to get you started!
 author: Tim Deschryver
 date: 2020-01-26T08:01:47.322Z
-tags: Svelte, Testing, Jest, Tutorial
+tags: Svelte, Testing, Tutorial, testing-library, svelte-testing-library
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Toimetaja tõlkebüroo](https://unsplash.com/@toimetaja) on [Unsplash](https://unsplash.com)
 published: true

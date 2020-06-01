@@ -4,7 +4,7 @@ slug: good-testing-practices-with-angular-testing-library
 description: The Angular Testing Library provides utility functions to interact with Angular components, in the same way as a user would. This brings more maintainability to our tests, gives us more confidence that our component does what it's supposed to do, and it improves the accessibility which is better for our users. All these benefits, plus you'll see that it's fun to write tests in this way.
 author: Tim Deschryver
 date: 2019-10-03T13:00:00.000Z
-tags: Angular, Testing, Library
+tags: Angular, Testing, testing-library, angular-testing-library
 banner: ./images/banner.jpeg
 bannerCredit: Photo by [Liudmyla Denysiuk](https://unsplash.com/@hedgehog90) on [Unsplash](https://unsplash.com)
 published: true
