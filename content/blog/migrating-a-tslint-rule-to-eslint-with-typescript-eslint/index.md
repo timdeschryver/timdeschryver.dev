@@ -179,16 +179,7 @@ context.report({
 })
 ```
 
-The options to modify the node are:
-
-- `insertTextAfter(nodeOrToken: TSESTree.Node | TSESTree.Token, text: string): RuleFix;`
-- `insertTextAfterRange(range: AST.Range, text: string): RuleFix;`
-- `insertTextBefore(nodeOrToken: TSESTree.Node | TSESTree.Token, text: string): RuleFix;`
-- `insertTextBeforeRange(range: AST.Range, text: string): RuleFix;`
-- `remove(nodeOrToken: TSESTree.Node | TSESTree.Token): RuleFix;`
-- `removeRange(range: AST.Range): RuleFix;`
-- `replaceText(nodeOrToken: TSESTree.Node | TSESTree.Token, text: string): RuleFix;`
-- `replaceTextRange(range: AST.Range, text: string): RuleFix;`
+All of the fixer methods are documented, see the [docs](https://eslint.org/docs/developer-guide/working-with-rules#applying-fixes) for more info.
 
 ## Writing Tests
 

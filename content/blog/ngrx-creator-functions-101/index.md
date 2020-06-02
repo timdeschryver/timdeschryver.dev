@@ -77,9 +77,26 @@ export const removeFromCart = createAction(
 
 `createAction` has three different styles:
 
-- without a payload, `createAction('[Articles Page] Page loaded')`
-- with a `props` payload, `createAction('[Articles Page] Search', props<{ query: string }>())`
-- with a function, `createAction('[Articles Page] Search', (query: string) => ({ query, timestamp: Date.now() }))`
+- without a payload
+
+```ts
+createAction('[Articles Page] Page loaded')
+```
+
+- with a `props` payload
+
+```ts
+createAction('[Articles Page] Search', props<{ query: string }>())
+```
+
+- with a function
+
+```ts
+createAction('[Articles Page] Search', (query: string) => ({
+  query,
+  timestamp: Date.now(),
+}))
+```
 
 Internally, the [`Object.defineProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) method is used to create the `type` property on the action creator.
 
