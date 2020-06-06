@@ -31,7 +31,7 @@
     "apollo-boost": "0.4.2",
     "apollo-server": "^2.6.3",
     "apollo-server-express": "^2.6.3",
-    "apollo-server-micro": "^2.6.3",
+    "apollo-server-micro": "^2.14.2",
     "compression": "^1.7.1",
     "cypress": "^4.0.2",
     "gatsby-remark-prismjs": "^3.3.20",
