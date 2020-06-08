@@ -14,7 +14,7 @@ One of the main focus points of Testing Library is accessibility.
 We want to make sure tests are easy to write while keeping the user's experience in the first place.
 Instead of selecting DOM elements via their id attributes or classes, Testing Library is using user-friendly queries.
 
-In the latest versions of the Dom Testing Library, and thus also the Angular Testing Library (version 9), there have been improvements to these queries. One query in particular pops out, the `(get|find|query)ByRole` query.
+In the latest versions of the Dom Testing Library, and thus also the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) (version 9), there have been improvements to these queries. One query in particular pops out, the `(get|find|query)ByRole` query.
 
 From the docs:
 

@@ -93,31 +93,21 @@
 
   h2 {
     margin-top: 0;
+    font-size: .9em;
   }
 
-  p {
-    line-height: 1.5rem;
-    font-weight: 200;
-    margin-bottom: 1em;
-  }
 
   li {
     padding: 0.5em 0;
     border-bottom: 2px solid transparent;
     border-right: 3px solid transparent;
-  }
-
-  li:hover {
-    transition: box-shadow 300ms;
-
-    box-shadow: var(--prime-color-03) 13px 13px 1px 0px;
-    border-bottom: 3px solid var(--prime-color);
-    border-right: 3px solid var(--prime-color);
+    margin-top: calc(var(--spacing) / 2);
   }
 
   li::before {
     background: none;
   }
+
   input {
     border: 1px solid;
   }
@@ -167,7 +157,6 @@
       <a rel="prefetch" href={`/blog/${post.metadata.slug}`}>
         <time datetime={post.metadata.date}>{post.metadata.date}</time>
         <h2>{post.metadata.title}</h2>
-        <p>{post.metadata.description}</p>
       </a>
     </li>
   {:else}Sorry, no posts matched your criteria...{/each}

@@ -4,7 +4,7 @@ slug: how-to-test-your-csharp-web-api
 description: ... or how to use functional testing to have confidence in the code you ship.
 author: Tim Deschryver
 date: 2020-03-23
-tags: csharp, dotnet, test, xunit
+tags: csharp, dotnet, testing, xunit
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Kinga Cichewicz](https://unsplash.com/@all_who_wander) on [Unsplash](https://unsplash.com)
 published: true

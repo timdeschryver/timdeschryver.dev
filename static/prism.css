@@ -83,7 +83,7 @@ pre[class*='language-'] > .code-heading > a {
 
 .token.important,
 .token.bold {
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .token.italic {
