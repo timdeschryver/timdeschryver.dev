@@ -10,7 +10,7 @@ bannerCredit: Photo by [Aron Visuals](https://unsplash.com/@aronvisuals) on [Uns
 published: true
 ---
 
-Writing integration (or functional) tests on a C# API [gives more confidence in the code that is written](/blog/how-to-test-your-csharp-web-api), in addition, it increases the productivity during all stages of development.
+Writing integration (or functional) tests on a C# API gives more confidence in the code that is written, in addition, it increases the productivity during all stages of development. See [How to test your C# Web API](/blog/how-to-test-your-csharp-web-api) on how I write my integration tests.
 
 ### Manual tests
 

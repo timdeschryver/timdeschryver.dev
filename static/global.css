@@ -26,9 +26,10 @@
     font-size: 1.45rem;
   }
 }
+
 @media (min-width: 1820px) {
   :root {
-    font-size: 1.65rem;
+    font-size: 1.55rem;
   }
 }
 
