@@ -96,12 +96,15 @@
     font-size: .9em;
   }
 
-
   li {
     padding: 0.5em 0;
     border-bottom: 2px solid transparent;
     border-right: 3px solid transparent;
     margin-top: calc(var(--spacing) / 2);
+  }
+
+  li:first-child {
+    margin-top: 0;
   }
 
   li::before {

@@ -174,10 +174,9 @@ a:focus {
 .anchor:before {
   content: '#';
   position: absolute;
-  left: -3.2rem;
   color: var(--prime-color);
   font-size: 150%;
-  top: -21%;
+  transform: translate(-3.2rem, -15%);
 }
 
 @media (max-width: 680px) {
@@ -194,6 +193,10 @@ ul {
 li {
   position: relative;
   padding-left: 20px;
+}
+
+li:first-child {
+  margin-top: 0;
 }
 
 li:before {

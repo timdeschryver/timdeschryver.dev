@@ -20,8 +20,7 @@
 
 <style>
   nav {
-    font-size: 0.8rem;
-    margin-top: 0.3em;
+    margin-top: 0.2em;
     position: relative;
   }
 
@@ -50,7 +49,7 @@
   header {
     background-color: rgba(248, 196, 0, 1);
     color: black;
-    padding: 1.1em 0;
+    padding: .77em 0;
   }
 
   footer {
