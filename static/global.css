@@ -1,9 +1,8 @@
-@import './fonts/Inter/font-face.css';
-@import './fonts/Cascadia/font-face.css';
+@import './fonts/system/font-face.css';
 
 :root {
-  --text-font: 'Inter', sans-serif;
-  --head-font: 'Comfortaa', cursive;
+  --text-font: 'system';
+  --head-font: 'system';
 
   --background-color: #fbfbfb;
   --spacing: 1.5em;
