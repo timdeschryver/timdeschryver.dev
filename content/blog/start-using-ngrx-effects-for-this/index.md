@@ -132,7 +132,7 @@ shipOrder = this.actions.pipe(
   map(action => action.payload),
   concatMap(action =>
     of(action).pipe(
-      withLatestFrom(store.pipe(select(getUserName)))
+      withLatestFrom(this.store.pipe(select(getUserName)))
     )
   ),
   map([payload, username] => {
@@ -147,9 +147,9 @@ To take it a step further, we can use the data retrieved by the selector in orde
 @Effect()
 getOrder = this.actions.pipe(
   ofType<GetOrder>(ActionTypes.GetOrder),
-  withLatestFrom(action =>
+  concatMap(action =>
     of(action).pipe(
-      this.store.pipe(select(getOrders))
+      withLatestFrom(this.store.pipe(select(getOrders)))
     )
   ),
   filter(([{payload}, orders]) => !!orders[payload.orderId])
