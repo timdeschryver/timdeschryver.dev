@@ -490,17 +490,17 @@ function setup(user, handleClick = jest.fn()) {
 The code from this article is available on [GitHub](https://github.com/timdeschryver/atl-good-testing-practices).
 
 Once you know `queries` and how to fire events, you're all set to test your components.
-The only difference between the test case in this post and other test cases lies on how to set up the component with the `render` function, you can find [more examples in the `Angular Testing Library` repository](https://github.com/testing-library/angular-testing-library/tree/master/src/app/examples).
+The only difference between the test case in this post and other test cases lies on how to set up the component with the `render` function, you can find [more examples in the `Angular Testing Library` repository](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples).
 
-- [Single component](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/00-single-component.spec.ts)
-- [Nested component](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/01-nested-component.spec.ts)
-- [`@Input()` and `@Output()`](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/02-input-output.spec.ts)
-- [Form](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/03-forms.spec.ts)
-- [Form with Angular Material](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/04-forms-with-material.spec.ts)
-- [Component with a provider](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/05-component-provider.spec.ts)
-- [With NgRx](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/06-with-ngrx-store.spec.ts)
-- [With NgRx `MockStore`](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/07-with-ngrx-mock-store.spec.ts)
-- [Testing a directive](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/08-directive.spec.ts)
-- [Router navigation](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/09-router.spec.ts)
-- [Injection Token as a dependency](https://github.com/testing-library/angular-testing-library/blob/master/src/app/examples/10-inject-token-dependency.spec.ts)
+- [Single component](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/00-single-component.spec.ts)
+- [Nested component](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/01-nested-component.spec.ts)
+- [`@Input()` and `@Output()`](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/02-input-output.spec.ts)
+- [Form](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/03-forms.spec.ts)
+- [Form with Angular Material](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/04-forms-with-material.spec.ts)
+- [Component with a provider](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/05-component-provider.spec.ts)
+- [With NgRx](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/06-with-ngrx-store.spec.ts)
+- [With NgRx `MockStore`](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/07-with-ngrx-mock-store.spec.ts)
+- [Testing a directive](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/08-directive.spec.ts)
+- [Router navigation](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/09-router.spec.ts)
+- [Injection Token as a dependency](https://github.com/testing-library/angular-testing-library/tree/master/apps/example-app/app/examples/10-inject-token-dependency.spec.ts)
 - [Create an issue if what you're looking for is not in this list](https://github.com/testing-library/angular-testing-library/issues/new)
