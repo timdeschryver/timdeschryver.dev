@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "sapper dev",
     "prebuild": "node --version && npm run copy:blog && npm run copy:snippets",
-    "build": "sapper export --legacy --entry \"/ /resources/ngrx /blog/latest.json\"",
+    "build": "sapper export --legacy --entry \"/ /resources/ngrx\"",
     "build:lambda": "rollup -c rollup.lambda.config.js",
     "copy:blog": "rimraf static/blog && copyfiles \"content/blog/**\" static -u 1",
     "copy:snippets": "rimraf static/snippets && copyfiles \"content/snippets/**\" static -u 1",

@@ -4,18 +4,22 @@ import { client } from '../../apollo-client'
 export async function get(req, res) {
   const response = await client(req).query({
     query: gql`
-      query {
-        posts(published: true) {
+      query($first: Int) {
+        posts(published: true, first: $first) {
           metadata {
             slug
             title
             description
             date(displayAs: "human")
             tags
+            canonical_url
           }
         }
       }
     `,
+    variables: {
+      first: +req.query.first,
+    },
   })
 
   res.setHeader('Content-Type', 'application/json')
