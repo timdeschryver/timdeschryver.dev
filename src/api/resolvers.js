@@ -1,11 +1,14 @@
 export const resolvers = {
   Query: {
-    posts: (_parent, { published }, { posts }) => {
-      if (published === null) {
-        return posts
-      }
+    posts: (_parent, { published, first }, { posts }) => {
+      const filteredPosts =
+        published === null || published === undefined
+          ? posts
+          : posts.filter(post => post.metadata.published === published)
 
-      return posts.filter(post => post.metadata.published === published)
+      return filteredPosts.filter(
+        (_, i) => i < (first || Number.MAX_SAFE_INTEGER),
+      )
     },
     post: (_parent, { slug }, { posts }) =>
       posts.find(post => post.metadata.slug === slug),

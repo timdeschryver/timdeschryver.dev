@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const typeDefs = gql`
   type Query {
-    posts(published: Boolean): [Post]
+    posts(published: Boolean, first: Int): [Post]
     post(slug: String): Post
     snippets: [Snippet]
   }
@@ -23,7 +23,6 @@ export const typeDefs = gql`
     banner: String
     bannerCredit: String
     published: Boolean
-    publish_url: String
     canonical_url: String
   }
 

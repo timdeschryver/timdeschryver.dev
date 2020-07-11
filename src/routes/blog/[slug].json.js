@@ -28,7 +28,7 @@ export async function get(req, res) {
   if (response.data && response.data.post) {
     res.setHeader('Cache-Control', `max-age=${5 * 60 * 1e3}`) // 5 minutes
     res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify(response.data))
+    res.end(JSON.stringify(response.data, null, 2))
   } else {
     let str = `${req.params.slug} not found.
       Go back to <a href="${process.env.BASE_PATH}">home</a> or browse <a href="${process.env.BASE_PATH}/blog">blog</a>.

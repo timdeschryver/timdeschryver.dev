@@ -43,7 +43,6 @@ const typeDefs = gql`
     banner: String
     bannerCredit: String
     published: Boolean
-    publish_url: String
     canonical_url: String
   }
 

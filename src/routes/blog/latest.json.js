@@ -5,13 +5,12 @@ export async function get(req, res) {
   const response = await client(req).query({
     query: gql`
       query {
-        posts(published: true) {
+        posts(first: 1) {
           metadata {
-            slug
+            canonical_url
             title
             description
-            date(displayAs: "human")
-            tags
+            banner
           }
         }
       }
@@ -19,5 +18,5 @@ export async function get(req, res) {
   })
 
   res.setHeader('Content-Type', 'application/json')
-  res.end(JSON.stringify(response.data, null, 2))
+  res.end(JSON.stringify(response.data.posts[0].metadata, null, 2))
 }
