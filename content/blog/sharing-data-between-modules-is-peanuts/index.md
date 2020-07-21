@@ -1,5 +1,5 @@
 ---
-title: Sharing data between modules is peanuts
+title: Sharing NgRx state between Angular modules is peanuts
 slug: sharing-data-between-modules-is-peanuts
 description: A dive into NgRx selectors
 author: Tim Deschryver

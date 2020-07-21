@@ -39,6 +39,7 @@ pre[class*='language-'] > code {
   padding: 1em;
   display: block;
   margin-top: 0;
+  line-height: 2;
 }
 
 code[class*='language-'] {
