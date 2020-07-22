@@ -139,6 +139,9 @@ I think that marble tests are great for testing implementation details, every fr
 But the advantages don't outweigh the disadvantages when it comes to testing most of the code that lives inside an application. Here, we should be interested in the output of a stream. Marble diagrams are also not helping to enlarge the pit of success, I haven't encountered a developer yet that immediately gets marble diagrams and feel comfortable to write their first test cases with it.
 Most of the tests I've seen in application code are also brittle to change, e.g. they fail when a detail, for example a timer duration, is modified.
 
+[Alex Okrushko](https://twitter.com/AlexOkrushko) did point out a drawback to this approach. Some tests will take longer to run because you can't mock times. This is crucial when you have timers that wait multiple seconds. Mocking times is possible with marble tests, and with [`ObserverSpy`](#observerspy).
+For more info about fake times, see [https://ncjamieson.com/testing-with-fake-time/](https://ncjamieson.com/testing-with-fake-time/) by [Nicholas Jamieson](https://twitter.com/ncjamieson), and see the [`ObserverSpy docs`](https://github.com/hirezio/observer-spy#-for-time-based-rxjs-code-timeouts--intervals--animations---use-faketime).
+
 That's why I like `rxjs-for-await`. It helps to reduce the complexity of writing and reading these tests. Simply put, it's simply input in, and output out.
 That's why I wrote all the tests for `rx-query` using the `rxjs-for-await` package. For more use-cases, check out [the test cases](https://github.com/timdeschryver/rx-query/blob/master/rx-query/query.spec.ts) inside the repository.
 
