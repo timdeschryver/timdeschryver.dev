@@ -23,7 +23,6 @@
     padding: 130px;
     background: rgba(0, 0, 0, 0.7);
     color: white;
-    mix-blend-mode: normal !important;
   }
 
   button {

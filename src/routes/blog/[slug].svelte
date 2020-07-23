@@ -94,6 +94,7 @@
 
   dialog[open] {
     display: block;
+    mix-blend-mode: unset;
   }
 </style>
 
