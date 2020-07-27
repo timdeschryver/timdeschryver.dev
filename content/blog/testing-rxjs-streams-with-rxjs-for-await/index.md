@@ -4,7 +4,7 @@ slug: testing-rxjs-streams-with-rxjs-for-await
 description: How does rxjs-for-await compare to other approaches when it comes to testing RxJS streams, and what I like about these tests.
 author: Tim Deschryver
 date: 2020-07-21
-tags: testing, rxjs
+tags: testing, rxjs, rx-query
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Richard Bagan](https://unsplash.com/@richard_bagan) on [Unsplash](https://unsplash.com)
 published: true
