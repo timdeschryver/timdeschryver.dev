@@ -60,7 +60,7 @@ When we compare this test to other RxJS testing strategies using marble tests we
 
 ## RxJS Testing
 
-The `TestScheduler` is provided by RxJS to write tests using the [marble diagram syntax](https://rxjs-dev.firebaseapp.com/guide/testing/marble-testing).
+The `TestScheduler` is provided by RxJS to write tests using the [marble diagram syntax](https://rxjs.dev/guide/testing/marble-testing).
 In the test case below, you can see that every frame of the stream is asserted, each frame that is just waiting, and each frame that emits a value.
 This is important when you're writing operators, and that's probably why this approach is used in the RxJS codebase to test the RxJS operators.
 But it also makes things more complex, especially if you're not used to reading or writing marble diagrams.

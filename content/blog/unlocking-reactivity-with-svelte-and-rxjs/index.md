@@ -145,7 +145,7 @@ Inside this callback method, we can put teardown logic. In our example, we use t
 
   let tick = writable(0, () => {
     let interval = setInterval(() => {
-      tick.update(value => value + 1)
+      tick.update((value) => value + 1)
     }, 1000)
 
     return () => {
@@ -154,7 +154,7 @@ Inside this callback method, we can put teardown logic. In our example, we use t
   })
 
   let tickValue = 0
-  tick.subscribe(v => {
+  tick.subscribe((v) => {
     tickValue = v
   })
 </script>
@@ -171,7 +171,7 @@ Just like the first example, Svelte will just wrap the assignment of `tickValue`
 function instance($$self, $$props, $$invalidate) {
   let tick = writable(0, () => {
     let interval = setInterval(() => {
-      tick.update(value => value + 1)
+      tick.update((value) => value + 1)
     }, 1000)
 
     return () => {
@@ -181,7 +181,7 @@ function instance($$self, $$props, $$invalidate) {
 
   let tickValue = 0
 
-  tick.subscribe(v => {
+  tick.subscribe((v) => {
     $$invalidate(0, (tickValue = v))
   })
 
@@ -198,7 +198,7 @@ By using the `$` again, and by prefixing the store variable in the HTML, we see 
 
   let tick = writable(0, () => {
     let interval = setInterval(() => {
-      tick.update(value => value + 1)
+      tick.update((value) => value + 1)
     }, 1000)
 
     return () => {
@@ -255,7 +255,7 @@ function instance($$self, $$props, $$invalidate) {
 
   let tick = writable(0, () => {
     let interval = setInterval(() => {
-      tick.update(value => value + 1)
+      tick.update((value) => value + 1)
     }, 1000)
 
     return () => {
@@ -263,7 +263,7 @@ function instance($$self, $$props, $$invalidate) {
     }
   })
 
-  component_subscribe($$self, tick, value => $$invalidate(0, ($tick = value)))
+  component_subscribe($$self, tick, (value) => $$invalidate(0, ($tick = value)))
   return [$tick, tick]
 }
 
@@ -339,7 +339,7 @@ function instance($$self) {
   let createTick = () => {
     let tickStore = writable(0, () => {
       let interval = setInterval(() => {
-        tickStore.update(value => value + 1)
+        tickStore.update((value) => value + 1)
       }, 1000)
 
       return () => {
@@ -362,14 +362,14 @@ This code can be repetitive to write, and it can contain bugs when we forget to 
 ## Svelte with RxJS
 
 We've seen a bit on how Svelte accomplishes reactivity with a Svelte Store.
-But with what we've seen so far, we can see that it resembles the contract of an [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/observable).
+But with what we've seen so far, we can see that it resembles the contract of an [RxJS Observable](https://rxjs.dev/guide/observable).
 
 > Take a look at the [TC39 proposal](https://github.com/tc39/proposal-observable) to introduce Observables to ECMAScript.
 > This proposal, offers a similar contract to the implementation of both RxJS and Svelte.
 
 Because an Observable also has a `subscribe` method, which also returns a callback method to unsubscribe, we can replace the store implementation with any RxJS Observable.
 
-For the tick example, we can use a [RxJS timer](https://rxjs-dev.firebaseapp.com/api/index/function/timer).
+For the tick example, we can use a [RxJS timer](https://rxjs.dev/api/index/function/timer).
 The timer is similar to the `setInterval` method, as it will emit an incremented number after each second.
 This just magically works, and we've written a whole less code!
 
@@ -425,7 +425,7 @@ function create_fragment(ctx) {
 function instance($$self, $$props, $$invalidate) {
   let $tick
   let tick = timer(0, 1000)
-  component_subscribe($$self, tick, value => $$invalidate(0, ($tick = value)))
+  component_subscribe($$self, tick, (value) => $$invalidate(0, ($tick = value)))
   return [$tick, tick]
 }
 
@@ -450,7 +450,7 @@ Because once you get to know RxJS, it makes it easier to work with asynchronous 
 It's been a while since I had to write a typeahead without RxJS but this took some time and a lot of code. The implementation also contained fewer features, as the cancellability of previous requests. Sadly, most of the time, the implementation also introduced bugs.
 
 But with RxJS, this becomes trivial.
-By using some [RxJS operators](https://rxjs-dev.firebaseapp.com/guide/operators) we end up with a working typeahead, without the bugs, which is thoroughly tested, and has more features. All of this, with less code.
+By using some [RxJS operators](https://rxjs.dev/guide/operators) we end up with a working typeahead, without the bugs, which is thoroughly tested, and has more features. All of this, with less code.
 
 The implementation with RxJS looks as follows:
 
@@ -474,22 +474,22 @@ The implementation with RxJS looks as follows:
     concatMap(() =>
       fromEvent(inputElement, 'input').pipe(
         debounceTime(350),
-        map(e => e.target.value),
-        switchMap(query => {
+        map((e) => e.target.value),
+        switchMap((query) => {
           if (!query) {
             return of([])
           }
           return fromFetch(
             `https://www.episodate.com/api/search?q=${query}`,
           ).pipe(
-            switchMap(response => {
+            switchMap((response) => {
               if (response.ok) {
                 return response.json()
               } else {
                 return of({ error: true, message: `Error ${response.status}` })
               }
             }),
-            catchError(err => of({ error: true, message: err.message })),
+            catchError((err) => of({ error: true, message: err.message })),
           )
         }),
         startWith([]),
@@ -512,7 +512,7 @@ In the HTML, we print out the output by subscribing to the `books` variable with
 The above code can be cleaned up. What I don't like about it, is the usage of the `inputElement` binding.
 Because, again, this adds extra code in our codebase that we have to maintain.
 
-Instead, we can use an [RxJS Subject](https://rxjs-dev.firebaseapp.com/guide/subject).
+Instead, we can use an [RxJS Subject](https://rxjs.dev/guide/subject).
 The only problem is that the contract is a little bit different.
 Svelte uses the `set` method to set a new value, while RxJS uses the `next` method.
 The rest of the contract is complementary.
@@ -561,19 +561,19 @@ The implementation now looks as follows, notice that the [`bind:value` attribute
 
   const books = typeAhead.pipe(
     debounceTime(350),
-    switchMap(query => {
+    switchMap((query) => {
       if (!query) {
         return of([])
       }
       return fromFetch(`https://www.episodate.com/api/search?q=${query}`).pipe(
-        switchMap(response => {
+        switchMap((response) => {
           if (response.ok) {
             return response.json()
           } else {
             return of({ error: true, message: `Error ${response.status}` })
           }
         }),
-        catchError(err => of({ error: true, message: err.message })),
+        catchError((err) => of({ error: true, message: err.message })),
       )
     }),
     startWith([]),
@@ -600,10 +600,10 @@ It's also possible to set a new value for the Subject programmatically, this wil
   export const name = new BehaviorSubject('')
   name.set = name.next
 
-  const nameUpperCase = name.pipe(map(n => n.toUpperCase()))
+  const nameUpperCase = name.pipe(map((n) => n.toUpperCase()))
   const nameDelayed = name.pipe(delay(1000))
   const nameScrambled = name.pipe(
-    map(n =>
+    map((n) =>
       n
         .split('')
         .sort(() => 0.5 - Math.random())

@@ -10,7 +10,7 @@ bannerCredit: Photo by [Wolfgang Hasselmann](https://unsplash.com/@wolfgang_hass
 published: true
 ---
 
-[RxJS](https://rxjs-dev.firebaseapp.com/) has a lot of operators, and most of the time we grab for the same operators.
+[RxJS](https://rxjs.dev/) has a lot of operators, and most of the time we grab for the same operators.
 On rare occasions, these frequently used operators aren't enough, for me that was the case while I was writing [rx-query](https://github.com/timdeschryver/rx-query).
 
 You can think of rx-query as a wrapper around HTTP requests, it automatically retries and caches queries, and it keeps track of the request state (`loading`, `refreshing`, `success`, and `error`). When a query fails, rx-query has a retry built-in and it emits the retry count to the consumer.
@@ -55,10 +55,10 @@ export class AppComponent {
 }
 ```
 
-To implement the retry feature, I intended to use [Alex Okrushko](https://twitter.com/AlexOkrushko)'s library, [backoff-rxjs](https://github.com/alex-okrushko/backoff-rxjs). But because this library uses the [`retryWhen` operator](https://rxjs-dev.firebaseapp.com/api/operators/retryWhen, it doesn't emit a value on a retry. The `retryWhen` operator only emits a value when it succeeds or when the implementation rethrows the error.
+To implement the retry feature, I intended to use [Alex Okrushko](https://twitter.com/AlexOkrushko)'s library, [backoff-rxjs](https://github.com/alex-okrushko/backoff-rxjs). But because this library uses the [`retryWhen` operator](https://rxjs.dev/api/operators/retryWhen), it doesn't emit a value on a retry. The `retryWhen` operator only emits a value when it succeeds or when the implementation rethrows the error.
 
 This isn't what I had in mind for rx-query because the retry count might be important.
-I started to look at the RxJS operators that I'm unfamiliar with, and the [`expand` operator](https://rxjs-dev.firebaseapp.com/api/operators/expand) looked suitable. After reading [Nicholas Jamieson](https://twitter.com/ncjamieson)'s post "[RxJS: Understanding Expand](https://ncjamieson.com/understanding-expand/)", in which he compares the operator to a [delay pedal](<https://en.wikipedia.org/wiki/Delay_(audio_effect)>), I was confident that this was the operator I was looking for.
+I started to look at the RxJS operators that I'm unfamiliar with, and the [`expand` operator](https://rxjs.dev/api/operators/expand) looked suitable. After reading [Nicholas Jamieson](https://twitter.com/ncjamieson)'s post "[RxJS: Understanding Expand](https://ncjamieson.com/understanding-expand/)", in which he compares the operator to a [delay pedal](<https://en.wikipedia.org/wiki/Delay_(audio_effect)>), I was confident that this was the operator I was looking for.
 
 > It's similar to `mergeMap`, but applies the projection function to every source value as well as every output value. It's recursive.
 
@@ -82,7 +82,7 @@ export class AppComponent {
 But what happens if the service throws an error? In most of the application code, only the happy path is implemented and the unhappy paths are often forgotten (or poorly implemented).
 In this case, when the service fails, we end up the value `null`.
 
-To handle errors, we use the [`catchError` operator](https://rxjs-dev.firebaseapp.com/api/operators/catchError).
+To handle errors, we use the [`catchError` operator](https://rxjs.dev/api/operators/catchError).
 To keep things simple, we simply return the error in this example.
 
 While it's important to correctly handle errors for our users, catching this error is also important for the next step.
@@ -182,7 +182,7 @@ export class AppComponent {
 
 While this solution works, it fires the requests quickly after each other when there's a failure.
 Probably resulting that all of the retried requests will also have failed.
-To give the backend more time to recover, we add a delay between the requests by using the [`timer` function](https://rxjs-dev.firebaseapp.com/api/index/function/timer).
+To give the backend more time to recover, we add a delay between the requests by using the [`timer` function](https://rxjs.dev/api/index/function/timer).
 
 Because `expand` emits every value, we end up with the desired result of having an incremented retry count for the consumers.
 

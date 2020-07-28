@@ -48,8 +48,8 @@ At first we're interested in the "a" events, and when the button (toggle) is cli
 // will be used in all of the examples
 const fromKeydown = (filterKey: string) =>
   fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-    map(e => e.key),
-    filter(key => key === filterKey),
+    map((e) => e.key),
+    filter((key) => key === filterKey),
     scan((acc, key) => acc + ' ' + key, ''),
   )
 
@@ -61,7 +61,7 @@ let toggle$ = fromEvent(document.querySelector('button'), 'click')
 let source = fromKeydown('a')
 
 // log keydown strokes
-source.subscribe(key => console.log('[wrong]', key))
+source.subscribe((key) => console.log('[wrong]', key))
 
 // switch the stream on click
 toggle$.subscribe(() => {
@@ -76,7 +76,7 @@ toggle$.subscribe(() => {
 
 To stay in the imperative world we can re-create this `if` statement inside an outer Observable.
 So, we start off by using the "a"-events and when the button is clicked, we switch the inner Observable to return the "b"-event stream.
-In the code below we use a [RxJS `Subject`](https://rxjs-dev.firebaseapp.com/guide/subject) to recreate the toggle.
+In the code below we use a [RxJS `Subject`](https://rxjs.dev/guide/subject) to recreate the toggle.
 
 ```ts
 // create the toggle
@@ -85,7 +85,7 @@ const toggleSubject = new Subject<boolean>()
 // create an outer Observable based on toggleSubject
 let source2 = toggleSubject.pipe(
   // switch the inner stream based on the toggle
-  switchMap(toggle => (toggle ? fromKeydown('b') : fromKeydown('a'))),
+  switchMap((toggle) => (toggle ? fromKeydown('b') : fromKeydown('a'))),
 )
 
 // flip the toggle on button click
@@ -95,7 +95,7 @@ toggle$.subscribe(() => {
 })
 
 // log keydown strokes
-source2.subscribe(key => console.log('[imperative]', key))
+source2.subscribe((key) => console.log('[imperative]', key))
 
 // start the strean
 toggleSubject.next(false)
@@ -116,7 +116,7 @@ The `toggle$` stream is exactly what we need to switch between the two streams, 
 let source3 = toggle$.pipe(switchMap(() => fromKeydown('b')))
 
 // log keydown strokes
-source3.subscribe(key => console.log('[reactive]', key))
+source3.subscribe((key) => console.log('[reactive]', key))
 ```
 
 ![We don't receive "a" events, when the toggle is clicked we do receive the "b" events](./images/reactive.gif)
@@ -126,7 +126,7 @@ For our use-case this was perfect, but if needed we can provide an initial value
 
 ### With an initial value
 
-By using the [`startWith` operator](https://rxjs-dev.firebaseapp.com/api/operators/startWith), we can start-off the stream with a single "a" value.
+By using the [`startWith` operator](https://rxjs.dev/api/operators/startWith), we can start-off the stream with a single "a" value.
 
 ```ts
 let source4 = toggle$.pipe(
@@ -134,15 +134,15 @@ let source4 = toggle$.pipe(
   startWith('a'),
 )
 
-source4.subscribe(key => console.log('[reactive with initial value]', key))
+source4.subscribe((key) => console.log('[reactive with initial value]', key))
 ```
 
 ![Before we do anything, we already receive an "a". We only receive "b" events after the toggle is clicked](./images/reactive-initial-value.gif)
 
 ### With an initial stream
 
-Or, if you're interested in the "a"-stream you can use the [`concat` method](https://rxjs-dev.firebaseapp.com/api/index/function/concat)
-in combination with the [`takeUntil` operator](https://rxjs-dev.firebaseapp.com/api/operators/takeUntil).
+Or, if you're interested in the "a"-stream you can use the [`concat` method](https://rxjs.dev/api/index/function/concat)
+in combination with the [`takeUntil` operator](https://rxjs.dev/api/operators/takeUntil).
 This will handle all streams sequentially.
 
 For our code this means that it will first emit all the "a" events, and when the toggle is clicked it switches to the "b" events.
@@ -153,7 +153,7 @@ let source5 = concat(
   fromKeydown('b'),
 )
 
-source5.subscribe(key => console.log('[reactive with initial steam]', key))
+source5.subscribe((key) => console.log('[reactive with initial steam]', key))
 ```
 
 ![First, we receive "a" events. After the button is clicked, we receive "b" events](./images/reactive-initial-stream.gif)

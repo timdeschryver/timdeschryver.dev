@@ -52,7 +52,7 @@ The calendar component works with different shortcuts, and we used the [`@HostLi
 When the decorator emits a new event it will run the change detection cycle of the component.
 Even if the pressed key isn't handled, nor isn't modifying the component's state.
 
-To fix this, we switched to using the RxJS [`fromEvent` method](https://rxjs-dev.firebaseapp.com/api/index/function/fromEvent) to detect when a key was pressed.
+To fix this, we switched to using the RxJS [`fromEvent` method](https://rxjs.dev/api/index/function/fromEvent) to detect when a key was pressed.
 
 The handled events are dispatched to the NgRx store, to modify the state.
 With this change, the view only updates when the state inside the NgRx Store changes, in comparison to every `keydown` event.
@@ -179,7 +179,7 @@ This has as result that the pipe will only execute once and the `caregiver-day` 
 @Pipe({ name: 'filterAppointmentsByDate' })
 export class FilterAppointmentsByDatePipe implements PipeTransform {
   transform(appointments: Appointment[], date: Date) {
-    return appointments.filter(appointment =>
+    return appointments.filter((appointment) =>
       dateEquals(appointment.date, date),
     )
   }
@@ -255,7 +255,7 @@ export const selectCurrentWeekView = createSelector(
   (caregivers, a, b, c) => ...)
 ```
 
-To get this resolved we can use the RxJS [`distinctUntilChanged` operator](https://rxjs-dev.firebaseapp.com/api/operators/distinctUntilChanged) and verify if the new output is different from the current output. A simple `JSON.stringify` check does the trick to check if the output is the same, but we first quickly check if the length is the same because it's faster in this case.
+To get this resolved we can use the RxJS [`distinctUntilChanged` operator](https://rxjs.dev/api/operators/distinctUntilChanged) and verify if the new output is different from the current output. A simple `JSON.stringify` check does the trick to check if the output is the same, but we first quickly check if the length is the same because it's faster in this case.
 
 > `distinctUntilChanged`: Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
 

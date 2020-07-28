@@ -15,7 +15,7 @@ An action to fetch multiple entities at once, but the service has only an endpoi
 
 ### Solution
 
-Use the RxJS [merge](https://rxjs-dev.firebaseapp.com/api/index/function/merge) operator to flatten all request streams and concurrently emit all values to a single output stream.
+Use the RxJS [merge](https://rxjs.dev/api/index/function/merge) operator to flatten all request streams and concurrently emit all values to a single output stream.
 
 ```ts
 refresh$ = createEffect(() =>
@@ -23,10 +23,10 @@ refresh$ = createEffect(() =>
     ofType(CustomerActions.refresh),
     exhaustMap(({ customerIds }) =>
       merge(
-        ...ids.map(id =>
+        ...ids.map((id) =>
           this.customersService.getCustomer(id).pipe(
             map(CustomerActions.getCustomerSuccess),
-            catchError(err =>
+            catchError((err) =>
               of(CustomerActions.getCustomerFailed(id, err.message)),
             ),
           ),

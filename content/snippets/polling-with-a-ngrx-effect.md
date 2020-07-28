@@ -15,7 +15,7 @@ You want to periodically the refresh data in the NgRx Store.
 
 ### Solution
 
-Create a NgRx Effect that retrieves the data via a service every x minutes, this can be done with the RxJS [timer](https://rxjs-dev.firebaseapp.com/api/index/function/timer) operator.
+Create a NgRx Effect that retrieves the data via a service every x minutes, this can be done with the RxJS [timer](https://rxjs.dev/api/index/function/timer) operator.
 
 ```ts
 refresh$ = createEffect(() => {
@@ -23,8 +23,8 @@ refresh$ = createEffect(() => {
   return timer(0, 600000).pipe(
     switchMap(() =>
       this.customersService.get().pipe(
-        map(data => refreshSuccess(data)),
-        catchError(response => refreshFailed(response)),
+        map((data) => refreshSuccess(data)),
+        catchError((response) => refreshFailed(response)),
       ),
     ),
   )

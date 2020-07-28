@@ -237,11 +237,11 @@ const selectRouterSlice = createFeatureSelector<
 
 export const selectRouteParams = createSelector(
   selectRouterSlice,
-  state => (state && state.state && state.state.params) || {},
+  (state) => (state && state.state && state.state.params) || {},
 )
 
 export const selectRouterParam = (paramName: string) =>
-  createSelector(selectRouteParams, params => params[paramName])
+  createSelector(selectRouteParams, (params) => params[paramName])
 ```
 
 > If you're using the default NgRx serializer, you can make use of the [built-in router selectors](https://ngrx.io/guide/router-store/selectors#router-selectors)
@@ -290,7 +290,7 @@ export const selectActiveCounter = createSelector(
 
 export const selectActiveCounterValue = createSelector(
   selectActiveCounter,
-  counter => counter && counter.count,
+  (counter) => counter && counter.count,
 )
 ```
 
@@ -305,10 +305,10 @@ syncState$ = createEffect(() => {
   return this.store.pipe(
     select(selectActiveIdAndCounter),
     filter(
-      counter =>
+      (counter) =>
         counter.counterId !== undefined && counter.counter === undefined,
     ),
-    map(counter => initializeCounter({ counterId: counter.counterId })),
+    map((counter) => initializeCounter({ counterId: counter.counterId })),
   )
 })
 ```
@@ -371,7 +371,7 @@ The first option is to use the Content Enricher Action Transformer approach, as 
 increment$ = createEffect(() => {
   return this.actions$.pipe(
     ofType(increment),
-    concatMap(action =>
+    concatMap((action) =>
       of(action).pipe(withLatestFrom(this.store.select(selectActiveCounterId))),
     ),
     map(([_action, counterId]) => incrementWithCounterId(counterId)),
@@ -381,7 +381,7 @@ increment$ = createEffect(() => {
 decrement$ = createEffect(() => {
   return this.actions$.pipe(
     ofType(decrement),
-    concatMap(action =>
+    concatMap((action) =>
       of(action).pipe(withLatestFrom(this.store.select(selectActiveCounterId))),
     ),
     map(([_action, counterId]) => decrementWithCounterId(counterId)),
@@ -399,7 +399,7 @@ It's also important to change the action's type, otherwise, we'll end up in an e
 counterEnricher$ = createEffect(() => {
   return this.actions$.pipe(
     ofType(increment, decrement),
-    concatMap(action =>
+    concatMap((action) =>
       of(action).pipe(withLatestFrom(this.store.select(selectActiveCounterId))),
     ),
     map(([action, counterId]) => ({
@@ -543,11 +543,11 @@ export const reducer = createReducer<CountersState>(
   }),
   mutableOn(
     increment,
-    reduceCounter(countState => countState.count++),
+    reduceCounter((countState) => countState.count++),
   ),
   mutableOn(
     decrement,
-    reduceCounter(countState => countState.count--),
+    reduceCounter((countState) => countState.count--),
   ),
 )
 ```
@@ -572,10 +572,10 @@ export class MaximumCounters implements CanActivate {
     return this.store.pipe(
       select(selectCounterIds),
       map(
-        counters =>
+        (counters) =>
           counters.includes(route.params.counterId) || counters.length <= 5,
       ),
-      tap(canOpenNewTab => {
+      tap((canOpenNewTab) => {
         if (!canOpenNewTab) {
           this.store.dispatch(maximumNumberOfTabsOpened())
         }
@@ -632,7 +632,7 @@ mutableOn(closeClicked, (state, action) => {
 By removing the slice from the state the `selectActiveIdAndCounter` selector will be triggered and this will the `syncState$` Effect also be fired. Because the counter is already deleted, the effect will re-initialize the counter slice.
 
 To prevent this we can make the Effect smarter, knowing when it should create a new counter and when it should not.
-To know when a counter should be created, we can make use of the RxJS [pairwise](https://rxjs-dev.firebaseapp.com/api/operators/pairwise) operator to select the previous state and the current state. If the active counter id isn't in the previous state, we know that we have to initialize the counter. To check if the counter id is in the counter ids array we use the [Array.prototype.includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) function.
+To know when a counter should be created, we can make use of the RxJS [pairwise](https://rxjs.dev/api/operators/pairwise) operator to select the previous state and the current state. If the active counter id isn't in the previous state, we know that we have to initialize the counter. To check if the counter id is in the counter ids array we use the [Array.prototype.includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) function.
 
 We can even navigate away from the active counter if it's the counter that's closed. To do this, we verify that the active counter id isn't in the current counter ids state.
 
@@ -646,7 +646,7 @@ syncState$ = createEffect(() => {
       return this.store.pipe(
         select(selectActiveCounterId),
         filter(Boolean),
-        map(counterId => {
+        map((counterId) => {
           if (!previousState.includes(counterId)) {
             return initializeCounter({ counterId })
           } else if (!currentState.includes(counterId)) {
@@ -656,7 +656,7 @@ syncState$ = createEffect(() => {
           return { type: 'NOOP' }
         }),
         tap(
-          action =>
+          (action) =>
             action.type === closedCounter.type &&
             (currentState[0]
               ? this.router.navigate(['counter', currentState[0]])
@@ -692,11 +692,11 @@ export const reducer = createReducer<CountersState>(
   }),
   mutableOn(
     increment,
-    reduceCounter(countState => countState.count++),
+    reduceCounter((countState) => countState.count++),
   ),
   mutableOn(
     decrement,
-    reduceCounter(countState => countState.count--),
+    reduceCounter((countState) => countState.count--),
   ),
 )
 ```
@@ -735,11 +735,11 @@ export const reducer = createReducer<CountersState>(
   }),
   mutableOn(
     increment,
-    reduceCounter(countState => countState.count++),
+    reduceCounter((countState) => countState.count++),
   ),
   mutableOn(
     decrement,
-    reduceCounter(countState => countState.count--),
+    reduceCounter((countState) => countState.count--),
   ),
 )
 ```
@@ -751,7 +751,7 @@ navigateToNewCounter$ = createEffect(
   () => {
     return this.actions$.pipe(
       ofType(newCounter),
-      concatMap(action =>
+      concatMap((action) =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(selectCounterIds))),
         ),
@@ -767,15 +767,15 @@ navigateToNewCounter$ = createEffect(
 The changes to the `syncState$` Effect can now be undone, back its original implementation with one small change.
 We only want the state to be synced if the first navigation contains a counter id. Otherwise, it isn't possible to close a counter while it's active, the reducer will delete the store slice but the Effect will re-initialize it.
 
-The Effect should only work while the initial counter is `undefined`, for this we can use the [`takeWhile` RxJS operator](https://rxjs-dev.firebaseapp.com/api/operators/takeWhile).
+The Effect should only work while the initial counter is `undefined`, for this we can use the [`takeWhile` RxJS operator](https://rxjs.dev/api/operators/takeWhile).
 
 ```ts{4-5}:counters.effects.ts
 syncState$ = createEffect(() => {
   return this.store.pipe(
     select(selectActiveIdAndCounter),
-    filter(counter => counter.counterId !== undefined),
-    takeWhile(counter => counter.counter === undefined),
-    map(counter => initializeCounter({ counterId: counter.counterId })),
+    filter((counter) => counter.counterId !== undefined),
+    takeWhile((counter) => counter.counter === undefined),
+    map((counter) => initializeCounter({ counterId: counter.counterId })),
   )
 })
 ```
@@ -792,13 +792,13 @@ close$ = createEffect(
   () => {
     return this.actions$.pipe(
       ofType(closeClicked),
-      concatMap(action =>
+      concatMap((action) =>
         of(action).pipe(
           withLatestFrom(this.store.pipe(select(selectActiveCounterId))),
         ),
       ),
       filter(([action, counterId]) => action.counterId === counterId),
-      concatMap(action =>
+      concatMap((action) =>
         of(action).pipe(
           withLatestFrom(
             this.store.pipe(select(selectCounterIds)),
