@@ -74,7 +74,7 @@ export class AppModule {}
 Our `ThemeModule` is now ready to use but if it's imported for a second time, it's also creating a second instance of the theme.
 This has the outcome that when the feature module is loaded, the module will use this theme instead of the root theme.
 
-<iframe src="https://stackblitz.com/edit/angular-theme-guard-start?ctl=1&embed=1&file=src/app/theme.module.ts" title="guard-start"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-theme-guard-start?ctl=1&embed=1&file=src/app/theme.module.ts" title="guard-start" loading="lazy"></iframe>
 
 ## This can be prevented with 3 easy steps
 
@@ -145,7 +145,7 @@ export class ThemeModule {
 We inject the `InjectionToken` in `ThemeModule` to create the `THEME_ROOT_GUARD` when the module is imported.
 Every time a new instance of the `ThemeModule` is created, the `createThemeRootGuard` factory function will be called to create the `THEME_ROOT_GUARD`. The second time this occurs, the parameter `theme` will have a value and will thus result in an exception.
 
-<iframe src="https://stackblitz.com/edit/angular-theme-guard?ctl=1&embed=1&file=src/app/theme.module.ts" title="guard-end"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-theme-guard?ctl=1&embed=1&file=src/app/theme.module.ts" title="guard-end" loading="lazy"></iframe>
 
 By doing this we can guard the developers using the `ThemeModule` by not accidentally importing our module more than once via the `forRoot()` function.
 We make it very clear we didn't expect this to happen, and we can save some time and frustrations for the developers using our module if our module is badly used.
@@ -168,7 +168,7 @@ export class ThemeModule {
 
 > More information on this solution can be found in the [Angular docs](https://angular.io/guide/singleton-services#the-forroot-pattern)
 
-<iframe src="https://stackblitz.com/edit/angular-theme-guard-end-2?ctl=1&embed=1&file=src/app/theme.module.ts" title="guard-ctor"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-theme-guard-end-2?ctl=1&embed=1&file=src/app/theme.module.ts" title="guard-ctor" loading="lazy"></iframe>
 
 ## The difference
 

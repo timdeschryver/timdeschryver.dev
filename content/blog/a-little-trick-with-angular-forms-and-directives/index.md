@@ -108,4 +108,4 @@ To make this small example complete, this is how you would use the person compon
 
 Play around with this example in the following [blitz](https://stackblitz.com/edit/angular-forms-directive-trick).
 
-<iframe src="https://stackblitz.com/edit/angular-forms-directive-trick?ctl=1&embed=1" title="angular-forms-directive-trick"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-forms-directive-trick?ctl=1&embed=1" title="angular-forms-directive-trick" loading="lazy"></iframe>

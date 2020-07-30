@@ -88,7 +88,7 @@ export class AppComponent {
   constructor(private clipboard: Clipboard) {}
 
   generateId() {
-    const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
       const r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
@@ -103,7 +103,7 @@ export class AppComponent {
 
 ## Playground
 
-<iframe src="https://stackblitz.com/edit/angular-u8dyx6?ctl=1&embed=1&file=src/app/app.component.html" title="clipboard-playground"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-u8dyx6?ctl=1&embed=1&file=src/app/app.component.html" title="clipboard-playground" loading="lazy"></iframe>
 
 ## Implementation details
 

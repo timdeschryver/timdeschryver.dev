@@ -192,13 +192,13 @@ To create selectors, the `componentStateSelector` is being passed as an argument
 Because it's using the same API as the global selectors, a selector can be composed with other selectors.
 
 ```ts
-getAuthors = createSelector(this.componentStateSelector, state => {
+getAuthors = createSelector(this.componentStateSelector, (state) => {
   return state && Object.values(state.authors)
 })
 
 getAuthorsCount = createSelector(
   this.getAuthors,
-  authors => authors && authors.length,
+  (authors) => authors && authors.length,
 )
 ```
 
@@ -314,4 +314,4 @@ To make things complete, init and destroyed actions could also be dispatched to 
 For a working example see the cleaned up StackBlitz below, it's a reworked example based on the demo that Alex has made.
 In the example, also make sure to take a look at the redux DevTools to have an overview of what is happening.
 
-<iframe src="https://stackblitz.com/edit/ngrx-component-global-store?ctl=1&embed=1&file=src/component_store.ts" title="ngrx-component-global-store"></iframe>
+<iframe src="https://stackblitz.com/edit/ngrx-component-global-store?ctl=1&embed=1&file=src/component_store.ts" title="ngrx-component-global-store" loading="lazy"></iframe>

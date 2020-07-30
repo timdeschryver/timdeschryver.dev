@@ -94,4 +94,4 @@ const routes: Routes = [
 
 ## Example application
 
-<iframe src="https://stackblitz.com/github/timdeschryver/router-guards?ctl=1&embed=1" title="router-guards"></iframe>
+<iframe src="https://stackblitz.com/github/timdeschryver/router-guards?ctl=1&embed=1" title="router-guards" loading="lazy"></iframe>

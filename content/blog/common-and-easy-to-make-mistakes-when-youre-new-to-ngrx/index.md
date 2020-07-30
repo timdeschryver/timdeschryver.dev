@@ -97,13 +97,11 @@ To trigger a state change, we have to invoke the fizzbuzz reducer. Because we ca
 ```ts
 @Component({
   selector: 'app-root',
-  template: `
-    {{ fizzbuzzMessage | async }}
-  `,
+  template: ` {{ fizzbuzzMessage | async }} `,
 })
 export class AppComponent implements OnInit {
   fizzbuzzMessage: Observable<string> = this.store.pipe(
-    select(state => state.fizzbuzz.message),
+    select((state) => state.fizzbuzz.message),
   )
 
   constructor(private store: Store<State>) {}
@@ -177,7 +175,7 @@ export const getCounter = createSelector(
 )
 
 // Third, create the message selector based on the counter state
-export const getMessage = createSelector(getCounter, counter => {
+export const getMessage = createSelector(getCounter, (counter) => {
   let message = ''
   if (counter % 3 === 0) {
     message += 'Fizz'
@@ -250,9 +248,7 @@ With these steps completed, we can now go back to the `AppComponent` and:
 ```ts
 @Component({
   selector: 'app-root',
-  template: `
-    {{ fizzbuzzes | async }}
-  `,
+  template: ` {{ fizzbuzzes | async }} `,
 })
 export class AppComponent {
   fizzbuzzes = this.store.pipe(select(getMessage))
@@ -297,4 +293,4 @@ If you keep these little tips in mind, each boundary inside the application has 
 
 To end this post, see the [this Blitz](https://stackblitz.com/edit/ngrx-fizzbuzz-refactored) for the refactored version.
 
-<iframe src="https://stackblitz.com/edit/ngrx-fizzbuzz-refactored?ctl=1&embed=1" title="common-and-easy-mistakes-when-youre-new-to-ngrx"></iframe>
+<iframe src="https://stackblitz.com/edit/ngrx-fizzbuzz-refactored?ctl=1&embed=1" title="common-and-easy-mistakes-when-youre-new-to-ngrx" loading="lazy"></iframe>

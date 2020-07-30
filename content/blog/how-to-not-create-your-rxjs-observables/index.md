@@ -167,4 +167,4 @@ This way, in our case, the NgRx Effect works as intended.
 
 You can play around with the code in this Blitz.
 
-<iframe src="https://stackblitz.com/edit/how-to-not-create-your-rxjs-observables?ctl=1&embed=1&file=index.ts" title="How to not create your RxJS observables demo"></iframe>
+<iframe src="https://stackblitz.com/edit/how-to-not-create-your-rxjs-observables?ctl=1&embed=1&file=index.ts" title="How to not create your RxJS observables demo" loading="lazy"></iframe>

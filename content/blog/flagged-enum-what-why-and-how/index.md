@@ -97,9 +97,7 @@ The first step is to convert the `Days` enum to an array of bit numbers.
 
 ```ts
 function enumToBitValues(enumValue: object) {
-  return Object.keys(enumValue)
-    .map(Number)
-    .filter(Boolean)
+  return Object.keys(enumValue).map(Number).filter(Boolean)
 }
 ```
 
@@ -167,7 +165,7 @@ To do the inverse and map the value back to an array of booleans, to determine i
 ```ts
 function bitToFormValue(enumeration: object, bit: number) {
   const bits = enumToBitValues(enumeration)
-  return bits.map(b => (bit & b) === b)
+  return bits.map((b) => (bit & b) === b)
 }
 ```
 
@@ -193,4 +191,4 @@ output: [
 
 You can play around with an Angular reactive forms implementation:
 
-<iframe src="https://stackblitz.com/edit/angular-enum-bits?ctl=1&embed=1&file=src/app/app.component.ts" title="enum-bits"></iframe>
+<iframe src="https://stackblitz.com/edit/angular-enum-bits?ctl=1&embed=1&file=src/app/app.component.ts" title="enum-bits" loading="lazy"></iframe>
