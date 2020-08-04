@@ -134,7 +134,7 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .catch(err => console.error(err))
+  .catch((err) => console.error(err))
 ```
 
 This gives us the following result.
@@ -227,12 +227,10 @@ it('should search on username', async () => {
 For Jest, we can't use the current setup.
 Don't worry, the mocks are reused but because Jest runs in a Node environment, the worker can't be.
 
-> ⚠ While I think the following should work, it seems like the request doesn't resolve correctly and Angular doesn't receive the response.
-
 To reuse the mocks, move it to another file so it's possible to share the setup between a browser environment and a Node environment.
 
 ```ts:/src/mocks/mock-handlers.ts
-export const createMockHandlers = rest => [
+export const createMockHandlers = (rest) => [
   rest.get('https://api.github.com/users/:user', (req, res, ctx) => {
     const { user } = req.params
 
@@ -260,7 +258,7 @@ export { server, rest }
 ```
 
 Lastly, start the server before each test.
-Because we don't want to start the server in every test, add it to the test setup.
+For this, we can use the `before` hooks.
 
 ```ts{4-9}:/src/setupJest.ts
 import 'jest-preset-angular'
@@ -319,8 +317,5 @@ While Angular already provides a way to mock our services via its dependency inj
 It doesn't just help to mock services during tests, but as the example setup shows, it can also be used during the development cycle. Especially, when multiple teams (frontend and backend) are working on the same application or when the backend isn't ready yet.
 
 MSW also provides a way to share a server across multiple layers of the testing pyramid. The server can be used during unit tests, integration tests, and end-to-end tests. This can help with the maintenance of your tests.
-
-It's a real bummer that the Jest tests are failing currently, and that's a big showstopper for me.
-I will definitely take a look at it later and I hope I can update this post with a working solution.
 
 The code from this post can be found on [GitHub](https://github.com/timdeschryver/ng-msw).
