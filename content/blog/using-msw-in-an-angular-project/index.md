@@ -10,7 +10,7 @@ bannerCredit: Photo by [Gary Bendig](https://unsplash.com/@kris_ricepees) on [Un
 published: true
 ---
 
-During the past weeks, I've seen posts around the library [MSW (MockServiceWorker)](https://redd.gitbook.io/msw/).
+During the past weeks, I've seen posts around the library [MSW (MockServiceWorker)](https://mswjs.io/).
 
 > Seamless REST/GraphQL API mocking library for browser and Node.
 
@@ -319,3 +319,5 @@ It doesn't just help to mock services during tests, but as the example setup sho
 MSW also provides a way to share a server across multiple layers of the testing pyramid. The server can be used during unit tests, integration tests, and end-to-end tests. This can help with the maintenance of your tests.
 
 The code from this post can be found on [GitHub](https://github.com/timdeschryver/ng-msw).
+
+> Edit 2020-08-11: there's now an official [MSW Angular REST example](https://github.com/mswjs/examples/tree/master/examples/rest-angular)
