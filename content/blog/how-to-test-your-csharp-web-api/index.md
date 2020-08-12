@@ -347,6 +347,20 @@ public static string GetToken()
 }
 ```
 
+#### Parallel tests
+
+If multiple tests try to read and write to the same database, this may lead to deadlocks.
+That's why we had to turn of the parallelization of our tests.
+For XUnit, this be done by setting the `parallelizeTestCollections` property to `false` inside the `xunit.runner.json` config file.
+Read more about this in the [XUnit docs](https://xunit.net/docs/configuration-files#parallelizeTestCollections).
+
+```json
+{
+  "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
+  "parallelizeTestCollections": false
+}
+```
+
 ## Conclusion
 
 Previously I didn't like to write tests for a C# API.
@@ -373,6 +387,8 @@ We're not mocking or stubbing parts of the application, we're testing the whole 
 With machines being faster, there won't be much difference anyway between the other tests and the integration tests.
 A couple of years ago, this time difference was higher, and this usually meant that fewer (or no) integration tests were written.
 Time to change that, if you ask me!
+
+The full example can be found on [GitHub](https://github.com/timdeschryver/HowToTestYourCsharpWebApi).
 
 ## More resources
 
