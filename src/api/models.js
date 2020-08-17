@@ -10,6 +10,7 @@ import 'prismjs/components/prism-graphql'
 import 'prismjs/components/prism-yaml'
 import 'prismjs/components/prism-diff'
 import 'prismjs/components/prism-csharp'
+import 'prismjs/components/prism-sql'
 
 const langs = {
   bash: 'bash',
@@ -24,15 +25,14 @@ const langs = {
   yml: 'yaml',
   diff: 'diff',
   cs: 'csharp',
+  sql: 'sql',
 }
 
 export function posts() {
   const files = getFiles(process.env.BLOG_PATH, '.md')
   return files
-    .map(file => {
-      const folder = dirname(file)
-        .split(sep)
-        .pop()
+    .map((file) => {
+      const folder = dirname(file).split(sep).pop()
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
         createAnchorAndFragment: (_level, metadata, text) => {
           const anchorRegExp = /{([^}]+)}/g
@@ -46,14 +46,11 @@ export function posts() {
       })
 
       const published = metadata.published === 'true'
-      const tags = metadata.tags.split(',').map(p =>
-        p
-          ? p
-              .trim()
-              .charAt(0)
-              .toUpperCase() + p.trim().slice(1)
-          : p,
-      )
+      const tags = metadata.tags
+        .split(',')
+        .map((p) =>
+          p ? p.trim().charAt(0).toUpperCase() + p.trim().slice(1) : p,
+        )
 
       const banner = join(process.env.BASE_PATH, assetsSrc, metadata.banner)
         .replace(/\\/g, '/')
@@ -77,7 +74,7 @@ export function posts() {
 export function snippets() {
   const files = getFiles(process.env.SNIPPETS_PATH, '.md')
   return files
-    .map(file => {
+    .map((file) => {
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
         createAnchorAndFragment: (level, metadata) =>
           level == 2
@@ -86,7 +83,7 @@ export function snippets() {
                 fragment: metadata.slug,
               }
             : {},
-        createHeadingParts: metadata => {
+        createHeadingParts: (metadata) => {
           return [
             metadata.image
               ? `<a href="${metadata.image}" download>Download</a>`
@@ -100,7 +97,7 @@ export function snippets() {
           ]
         },
       })
-      const tags = metadata.tags.split(',').map(p => (p ? p.trim() : p))
+      const tags = metadata.tags.split(',').map((p) => (p ? p.trim() : p))
       const image = `${process.env.BASE_PATH}/${metadata.image}`
 
       return {
@@ -126,10 +123,7 @@ function parseFileToHtmlAndMeta(
   const renderer = new marked.Renderer()
 
   renderer.link = (href, title, text) => {
-    const basePath = dirname(file)
-      .split(sep)
-      .splice(1, 2)
-      .join('/')
+    const basePath = dirname(file).split(sep).splice(1, 2).join('/')
     const href_attr = href.startsWith('#')
       ? `href="${basePath}${href}"`
       : `href="${href}"`
@@ -142,7 +136,7 @@ function parseFileToHtmlAndMeta(
     return `<a ${attributes}>${text}</a>`
   }
 
-  renderer.image = function(href, _title, text) {
+  renderer.image = function (href, _title, text) {
     const src = href.startsWith('http') ? href : join(assetsSrc, href)
     return `<figure>
       <img src="${src}" alt="${text}" loading="lazy"/>
@@ -161,7 +155,7 @@ function parseFileToHtmlAndMeta(
         ? lang
             .substring(
               0,
-              Math.min(...[lineIndex, fileIndex].filter(i => i !== -1)),
+              Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1)),
             )
             .trim()
         : lang
@@ -174,7 +168,7 @@ function parseFileToHtmlAndMeta(
     let curMatch
     while ((curMatch = lineNumberRegExp.exec(lang))) {
       let parts = curMatch[1].split(',')
-      parts.forEach(p => {
+      parts.forEach((p) => {
         let [min, max] = p.split('-').map(Number)
         max = max || min
         while (min <= max) {
@@ -211,7 +205,7 @@ function parseFileToHtmlAndMeta(
     return `<pre class='language-${prismLanguage}'>${heading}${codeBlock}</pre>`
   }
 
-  renderer.codespan = source => {
+  renderer.codespan = (source) => {
     return `<code class="language-text">${source}</code>`
   }
 
@@ -238,7 +232,7 @@ function parseFileToHtmlAndMeta(
   }
 
   const html = marked(
-    content.replace(/^\t+/gm, match => match.split('\t').join('  ')),
+    content.replace(/^\t+/gm, (match) => match.split('\t').join('  ')),
     { renderer },
   )
 
@@ -248,7 +242,7 @@ function parseFileToHtmlAndMeta(
 function getFiles(dir, extension, files = []) {
   const dirFiles = readdirSync(dir)
 
-  dirFiles.forEach(path => {
+  dirFiles.forEach((path) => {
     const file = join(dir, path)
     const isDirectory = lstatSync(file).isDirectory()
 
@@ -287,7 +281,7 @@ function slugify(string) {
     .toString()
     .toLowerCase()
     .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
     .replace(/&/g, '-and-') // Replace & with 'and'
     .replace(/[^\w\-]+/g, '') // Remove all non-word characters
     .replace(/\-\-+/g, '-') // Replace multiple - with single -

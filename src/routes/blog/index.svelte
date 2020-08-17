@@ -18,7 +18,7 @@
 
   let tags = Object.entries(
     posts
-      .map(p => p.metadata.tags)
+      .map((p) => p.metadata.tags)
       .flat()
       .reduce((acc, tag) => {
         acc[tag] = (acc[tag] || 0) + 1
@@ -50,10 +50,10 @@
   }
 
   $: if (query) {
-    filteredPosts = posts.filter(p => {
+    filteredPosts = posts.filter((p) => {
       return queryParts.every(
-        q =>
-          p.metadata.tags.some(t => match(t, q)) ||
+        (q) =>
+          p.metadata.tags.some((t) => match(t, q)) ||
           like(p.metadata.title, q) ||
           like(p.metadata.description, q),
       )
@@ -64,7 +64,7 @@
 
   function tagClicked(tag) {
     if (queryParts.includes(tag)) {
-      query = queryParts.filter(q => q !== tag).join(' ')
+      query = queryParts.filter((q) => q !== tag).join(' ')
     } else {
       query = query ? `${query.trim()} ${tag}` : tag
     }
@@ -100,7 +100,6 @@
     padding: 0.5em 0;
     border-bottom: 2px solid transparent;
     border-right: 3px solid transparent;
-    margin-top: calc(var(--spacing) / 2);
   }
 
   li:first-child {
