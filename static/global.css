@@ -193,6 +193,7 @@ ul {
 li {
   position: relative;
   padding-left: 20px;
+  margin-top: calc(var(--spacing) / 2);
 }
 
 li:first-child {
