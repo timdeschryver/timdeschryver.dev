@@ -25,7 +25,7 @@ In this post, we'll create a proof of concept to search a GitHub user for a user
 
 The implementation of the Angular service, looks as this:
 
-```ts:/src/app/github.service.ts
+```ts:./src/app/github.service.ts
 @Injectable({
   providedIn: 'root',
 })
@@ -40,7 +40,7 @@ export class GitHubService {
 
 If you want to test a component using the `GitHubService`, typically a mocked service instance is provided.
 
-```ts:/src/app/app.component.spec.ts
+```ts:./src/app/app.component.spec.ts
 it('should search on username', async () => {
   await render(AppComponent, {
     imports: [HttpClientModule, ReactiveFormsModule],
@@ -93,7 +93,7 @@ With this step, the `mockServiceWorker.js` file will be copied over to the build
 
 That's all for the configuration, now it's time to create the mocked server.
 
-```ts:/src/mocks/browser.ts
+```ts:./src/mocks/browser.ts
 import { setupWorker, rest } from 'msw'
 
 export const mocks = [
@@ -117,24 +117,14 @@ export { worker, rest }
 ```
 
 The last part is to import the mock.
-Here, we use a dynamic import so it's only included in a non-production build.
+We're adding the mock to the environment file so it won't be included in a production build.
 
-```ts{10}:/src/app/main.ts
-import { enableProdMode } from '@angular/core'
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+```ts{1}:./src/environments/environment.ts
+import '../mocks/browser'
 
-import { AppModule } from './app/app.module'
-import { environment } from './environments/environment'
-
-if (environment.production) {
-  enableProdMode()
-} else {
-  import('./mocks/browser')
+export const environment = {
+  production: false,
 }
-
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch((err) => console.error(err))
 ```
 
 This gives us the following result.
@@ -165,7 +155,7 @@ Because Angular uses a different builder during tests, we also need to add the `
 Just like when the application is served, the mock server needs to be imported to register the service worker.
 We import the mocks in the `./src/test.ts` file where the test environment is created, so it's available for all tests.
 
-```ts{10}:/src/test.ts
+```ts{10}:./src/test.ts
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
 import 'zone.js/dist/zone-testing'
@@ -201,7 +191,7 @@ context.keys().map(context)
 
 Now, we can simply write the test without having to provide a mocked instance of the service.
 
-```ts:/src/app/app.component.spec.ts
+```ts:./src/app/app.component.spec.ts
 import { HttpClientModule } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms'
 import { render, screen } from '@testing-library/angular'
@@ -229,7 +219,7 @@ Don't worry, the mocks are reused but because Jest runs in a Node environment, t
 
 To reuse the mocks, move it to another file so it's possible to share the setup between a browser environment and a Node environment.
 
-```ts:/src/mocks/mock-handlers.ts
+```ts:./src/mocks/mock-handlers.ts
 export const createMockHandlers = (rest) => [
   rest.get('https://api.github.com/users/:user', (req, res, ctx) => {
     const { user } = req.params
