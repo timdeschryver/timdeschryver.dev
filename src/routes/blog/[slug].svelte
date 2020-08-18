@@ -137,7 +137,7 @@
   <a
     class="article-action"
     target="_blank"
-    rel="nofollow nofollow"
+    rel="nofollow noreferrer"
     href="https://twitter.com/intent/tweet?text={post.metadata.title}&via=tim_deschryver&url={post.metadata.canonical_url}">
     Share on Twitter
   </a>
@@ -145,7 +145,7 @@
     class="article-action"
     href="https://twitter.com/search?q={post.metadata.canonical_url}"
     target="_blank"
-    rel="nofollow nofollow">
+    rel="nofollow noreferrer">
     Discuss on Twitter
   </a>
   <button
@@ -156,7 +156,7 @@
   <a
     class="article-action"
     target="_blank"
-    rel="nofollow nofollow"
+    rel="nofollow noreferrer"
     href="https://github.com/timdeschryver/timdeschryver.dev/tree/master/content/blog/{post.metadata.folder}/index.md">
     Edit on GitHub
   </a>

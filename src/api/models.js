@@ -129,7 +129,7 @@ function parseFileToHtmlAndMeta(
       : `href="${href}"`
     const title_attr = title ? `title="${title}"` : ''
     const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : ''
-    const rel_attr = href.startsWith('/') ? `` : 'rel="nofollow nofollow"'
+    const rel_attr = href.startsWith('/') ? `` : 'rel="nofollow noreferrer"'
     const attributes = [href_attr, title_attr, prefetch_attr, rel_attr]
       .filter(Boolean)
       .join(' ')
