@@ -11,7 +11,7 @@ published: true
 publisher: Angular In Depth
 ---
 
-In this post I’m going to show you how I test my selectors by putting the selectors from a previous post [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer), where we created a small shopping cart application, under test. In the application there is a collection of products (the catalog) and the cart items, together they form the state of the application.
+In this post I’m going to show you how I test my selectors by putting the selectors from a previous post [Clean NgRx reducers using Immer](/blog/clean-ngrx-reducers-using-immer), where we created a small shopping cart application, under test. In the application there is a collection of products (the catalog) and the cart items, together they form the state of the application.
 
 ```json
 {
@@ -60,32 +60,35 @@ export const getCatalogState = createFeatureSelector<fromCatalog.State>(
 )
 export const getProducts = createSelector(
   getCatalogState,
-  catalog => catalog.products,
+  (catalog) => catalog.products,
 )
 export const getProductSkus = createSelector(
   getCatalogState,
-  catalog => catalog.productSkus,
+  (catalog) => catalog.productSkus,
 )
 export const getCatalog = createSelector(
   getProductSkus,
   getProducts,
-  (skus, products) => skus.map(sku => products[sku]),
+  (skus, products) => skus.map((sku) => products[sku]),
 )
 
 export const getCartState = createFeatureSelector<fromCart.State>('cart')
-export const getCartItems = createSelector(getCartState, cart => cart.cartItems)
+export const getCartItems = createSelector(
+  getCartState,
+  (cart) => cart.cartItems,
+)
 
 export const getAllCartSummary = createSelector(
   getProducts,
   getCartItems,
   (products, cart): CartItem[] =>
-    Object.keys(cart).map(sku => ({
+    Object.keys(cart).map((sku) => ({
       product: products[sku],
       amount: cart[sku],
     })),
 )
-export const getCartSummary = createSelector(getAllCartSummary, cart =>
-  cart.filter(item => item.amount > 0),
+export const getCartSummary = createSelector(getAllCartSummary, (cart) =>
+  cart.filter((item) => item.amount > 0),
 )
 ```
 
@@ -339,4 +342,4 @@ This approach is also useful if you have some logic inside your selector. For ex
 
 Come check out [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library), an Angular testing library to test Angular components I wrote last week. The library is based on the [dom-testing-library](https://github.com/kentcdodds/dom-testing-library) from [Kent C. Dodds](https://twitter.com/kentcdodds).
 
-[🚨 Introducing ngx-testing-library 🚨](./blog/introducing-ngx-testing-library)
+[🚨 Introducing ngx-testing-library 🚨](/blog/introducing-ngx-testing-library)

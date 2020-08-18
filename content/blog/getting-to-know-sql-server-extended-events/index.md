@@ -10,7 +10,7 @@ bannerCredit: Photo by [Shane Hauser](https://unsplash.com/@shanehauser) on [Uns
 published: true
 ---
 
-Last week I blogged about the SQL Server Profiler, which I think is [underused and undervalued](./blog/sql-server-profiler-underused-and-undervalued). While I was writing that post I discovered that the SQL Profiler was deprecated in favor of the Extended Events (XEvents). In this post, we'll take a look at how we can convert the SQL Profiler template I'm using to an XEvent template (session).
+Last week I blogged about the SQL Server Profiler, which I think is [underused and undervalued](/blog/sql-server-profiler-underused-and-undervalued). While I was writing that post I discovered that the SQL Profiler was deprecated in favor of the Extended Events (XEvents). In this post, we'll take a look at how we can convert the SQL Profiler template I'm using to an XEvent template (session).
 
 ## Creating an XEvent session
 

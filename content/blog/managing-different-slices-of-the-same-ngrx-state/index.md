@@ -298,7 +298,7 @@ export const selectActiveCounterValue = createSelector(
 
 We now have a working counter, but the counter only works if the counter id is already added to the store state. If the counter id does not exist in the store state, we only see an empty counter page and the increment and decrement actions are not updating the counter value because the active counter does not exist in the global state.
 
-To solve this, we are [going to use an Effect](./blog/start-using-ngrx-effects-for-this).
+To solve this, we are [going to use an Effect](/blog/start-using-ngrx-effects-for-this).
 
 ```ts:counters.effects.ts
 syncState$ = createEffect(() => {

@@ -11,7 +11,7 @@ published: true
 publisher: Angular In Depth
 ---
 
-Recently I wrote [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!
+Recently I wrote [Clean NgRx reducers using Immer](/blog/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!
 
 ## NGXS
 
@@ -127,7 +127,7 @@ export class CartState {
   @Action(AddToCart)
   addProduct(ctx: StateContext<CartStateModel>, action: AddToCart) {
     ctx.setState(
-      produce(ctx.getState(), draft => {
+      produce(ctx.getState(), (draft) => {
         draft.cartItems[action.payload.sku] =
           (draft.cartItems[action.payload.sku] || 0) + 1
       }),
@@ -137,7 +137,7 @@ export class CartState {
   @Action(RemoveFromCart)
   removeProduct(ctx: StateContext<CartStateModel>, action: RemoveFromCart) {
     ctx.setState(
-      produce(ctx.getState(), draft => {
+      produce(ctx.getState(), (draft) => {
         const newAmount = draft.cartItems[action.payload.sku] - 1
         if (newAmount > 0) {
           draft.cartItems[action.payload.sku] = newAmount
@@ -150,7 +150,7 @@ export class CartState {
 
   @Action(EmptyCart)
   emptyCart(ctx: StateContext<CartStateModel>, action: EmptyCart) {
-    ctx.setState(produce(ctx.getState(), draft => ({ cartItems: {} })))
+    ctx.setState(produce(ctx.getState(), (draft) => ({ cartItems: {} })))
   }
 }
 ```
@@ -203,7 +203,7 @@ In order to use Immer you’ll have to install it first via `npm install immer`,
 
 ## Conclusion
 
-My conclusion is a bit different as in [Clean NgRx reducers using Immer](./blog/clean-ngrx-reducers-using-immer).
+My conclusion is a bit different as in [Clean NgRx reducers using Immer](/blog/clean-ngrx-reducers-using-immer).
 
 I still find Immer a great library, but in contrast to NgRx I think I would quicker use Immer with NGXS. Because to me it goes hand in hand with the NGXS mindset.
 
@@ -211,7 +211,7 @@ I also think it would be even more handy if we could do the following
 
 ```ts
 ctx.setState(
-  produce(draft => {
+  produce((draft) => {
     draft.cartItems[action.payload.sku] =
       (draft.cartItems[action.payload.sku] || 0) + 1
   }),

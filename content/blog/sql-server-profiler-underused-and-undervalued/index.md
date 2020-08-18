@@ -29,6 +29,8 @@ Even for third party software, the profiler can be used to troubleshoot a behavi
 While I was writing this article I noticed that the profiler has become deprecated in favor of the [SSMS XEvent Profiler](https://docs.microsoft.com/en-us/sql/relational-databases/extended-events/use-the-ssms-xe-profiler?view=sql-server-ver15).
 Luckily, there seems to be an alternative that I will explore soon.
 
+> I explored the Exenteded Events, and the profiler in [Getting to know SQL Server Extended Events](/blog/getting-to-know-sql-server-extended-events)
+
 ## My setup
 
 You can choose between several default profiles when you start the SQL Profiler.
