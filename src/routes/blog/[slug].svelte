@@ -17,7 +17,6 @@
   import { onMount$, onDestroy$ } from 'svelte-rx'
   import Message from '../../components/Message.svelte'
   import { postMachine } from './post.machine'
-  import BMC from '../../components/BMC.svelte'
 
   export let post
   let state = machine(postMachine, {
@@ -183,5 +182,3 @@
       })}
     on:click={() => state.send({ type: 'cancel' })} />
 </dialog>
-
-<BMC></BMC>

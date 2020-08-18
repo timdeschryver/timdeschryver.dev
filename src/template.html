@@ -41,11 +41,11 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
 
     <title>Tim Deschryver</title>
-    %sapper.styles% %sapper.head%
+    %sapper.scripts% %sapper.styles% %sapper.head%
   </head>
   <body data-theme="custom">
     <script>
-      window.addEventListener('set-css-variable', evt => {
+      window.addEventListener('set-css-variable', (evt) => {
         let { key, value } = evt.detail
         document.documentElement.style.setProperty(key, hexToRGB(value, 1))
         localStorage.setItem(key, value)
@@ -73,7 +73,7 @@
         }
       })
 
-      window.addEventListener('set-data-attribute', evt => {
+      window.addEventListener('set-data-attribute', (evt) => {
         let { key, value } = evt.detail
         document.body.dataset[key] = value
         localStorage.setItem(key, value)
@@ -107,7 +107,7 @@
 
       Object.keys(cssVariables)
         .map(
-          key =>
+          (key) =>
             new CustomEvent('set-css-variable', {
               detail: {
                 key,
@@ -119,7 +119,7 @@
 
       Object.keys(dataAttributes)
         .map(
-          key =>
+          (key) =>
             new CustomEvent('set-data-attribute', {
               detail: {
                 key,
@@ -167,7 +167,5 @@
       }
     </script>
     <div id="sapper">%sapper.html%</div>
-
-    %sapper.scripts%
   </body>
 </html>

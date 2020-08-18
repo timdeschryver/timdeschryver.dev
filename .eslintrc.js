@@ -8,7 +8,12 @@ module.exports = {
     browser: true,
   },
   plugins: ['svelte3'],
-  extends: ['plugin:prettier/recommended'],
+  overrides: [
+    {
+      files: ['*.svelte'],
+      processor: 'svelte3/svelte3',
+    },
+  ],
   rules: {},
   settings: {},
 }
