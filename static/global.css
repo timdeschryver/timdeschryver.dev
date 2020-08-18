@@ -161,7 +161,8 @@ a {
   color: inherit;
 }
 
-p > a {
+p > a,
+li > a {
   border-bottom: 3px solid var(--prime-color);
   background-color: var(--prime-color-03);
 }

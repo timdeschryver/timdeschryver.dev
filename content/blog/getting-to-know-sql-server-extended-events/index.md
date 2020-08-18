@@ -130,3 +130,12 @@ I'm also happy with the improvements they made to the data view, where we can do
 - using XEvents doesn't impact the performance of the SQL Server as much as it used to be. Personally, I never experienced hiccups when I turned on the SQL Profiler, but according to the docs, the XEvents aren't as heavy on the server.
 
 - selecting events and fields now have a search box, making it easier to create a session
+
+- it's easy to track events with the saved (aggregated) data from a session and gain insights of the system, for example if you want to [track deadlocks](https://www.sqlskills.com/blogs/paul/getting-historical-deadlock-info-using-extended-events/)
+
+## More resources
+
+- [Brent Ozar](https://www.brentozar.com/extended-events/)
+- [SentryOne](https://www.sentryone.com/blog/tag/extended-events)
+- For some practical use cases see the SQL Skills blog posts by [Jonathan Kehayias](https://www.sqlskills.com/blogs/jonathan/category/extended-events/) and [Paul S. Randal](https://www.sqlskills.com/blogs/paul/category/extended-events/), and [Performance Tuning Using Extended Events: Part 1
+  ](https://www.sqlservercentral.com/articles/performance-tuning-using-extended-events-part-1) on SQL Server Central
