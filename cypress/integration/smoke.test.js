@@ -59,17 +59,12 @@ function testA11y() {
     cy.findAllByText('Tim Deschryver')
     cy.checkA11y(
       {
-        exclude: [
-          ['.article-action'],
-          ['th'],
-          ['iframe'],
-          ['div:nth-child(3)'],
-        ],
+        exclude: [['.article-action'], ['th'], ['iframe']],
       },
       {
         rules: {
           'empty-heading': { enabled: false },
-          'scrollable-region-focusable': { enabled: false },
+          region: { enabled: false },
         },
       },
     )

@@ -44,6 +44,7 @@
     %sapper.scripts% %sapper.styles% %sapper.head%
   </head>
   <body data-theme="custom">
+    <div id="sapper">%sapper.html%</div>
     <script>
       window.addEventListener('set-css-variable', (evt) => {
         let { key, value } = evt.detail
@@ -166,6 +167,5 @@
         document.querySelector('[prism]').replaceWith(newlink)
       }
     </script>
-    <div id="sapper">%sapper.html%</div>
   </body>
 </html>

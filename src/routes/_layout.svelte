@@ -143,13 +143,13 @@
 </div>
 
 <main>
-	<slot></slot>
+  <slot></slot>
 </main>
 
 {#if segment !== undefined}
   <footer>
     <a
-      rel="noopener noreferrer"
+      rel="nofollow noreferrer"
       href="https://twitter.com/intent/user?screen_name=tim_deschryver">
       <svg
         xmlns="http://www.w3.org/2000/svg"

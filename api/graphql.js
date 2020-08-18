@@ -1,17 +1,11 @@
 'use strict'
 
-function _interopDefault(ex) {
-  return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex
-}
-
 var apolloServerMicro = require('apollo-server-micro')
-var gql = _interopDefault(require('graphql-tag'))
+var gql = require('graphql-tag')
 var fs = require('fs')
 var path = require('path')
-var marked = _interopDefault(require('marked'))
-var highlightCode = _interopDefault(
-  require('gatsby-remark-prismjs/highlight-code'),
-)
+var marked = require('marked')
+var highlightCode = require('gatsby-remark-prismjs/highlight-code')
 require('prismjs/components/prism-bash')
 require('prismjs/components/prism-typescript')
 require('prismjs/components/prism-json')
@@ -22,7 +16,15 @@ require('prismjs/components/prism-diff')
 require('prismjs/components/prism-csharp')
 require('prismjs/components/prism-sql')
 
-const typeDefs = gql`
+function _interopDefaultLegacy(e) {
+  return e && typeof e === 'object' && 'default' in e ? e : { default: e }
+}
+
+var gql__default = /*#__PURE__*/ _interopDefaultLegacy(gql)
+var marked__default = /*#__PURE__*/ _interopDefaultLegacy(marked)
+var highlightCode__default = /*#__PURE__*/ _interopDefaultLegacy(highlightCode)
+
+const typeDefs = gql__default['default']`
   type Query {
     posts(published: Boolean, first: Int): [Post]
     post(slug: String): Post
@@ -138,6 +140,7 @@ const langs = {
   yml: 'yaml',
   diff: 'diff',
   cs: 'csharp',
+  sql: 'sql',
 }
 
 function posts() {
@@ -237,7 +240,7 @@ function parseFileToHtmlAndMeta(
   const markdown = fs.readFileSync(file, 'utf-8')
   const { content, metadata } = extractFrontmatter(markdown)
   const assetsSrc = path.dirname(file.replace('content', ''))
-  const renderer = new marked.Renderer()
+  const renderer = new marked__default['default'].Renderer()
 
   renderer.link = (href, title, text) => {
     const basePath = path.dirname(file).split(path.sep).splice(1, 2).join('/')
@@ -246,7 +249,8 @@ function parseFileToHtmlAndMeta(
       : `href="${href}"`
     const title_attr = title ? `title="${title}"` : ''
     const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : ''
-    const attributes = [href_attr, title_attr, prefetch_attr]
+    const rel_attr = href.startsWith('/') ? `` : 'rel="nofollow noreferrer"'
+    const attributes = [href_attr, title_attr, prefetch_attr, rel_attr]
       .filter(Boolean)
       .join(' ')
 
@@ -299,7 +303,7 @@ function parseFileToHtmlAndMeta(
       return `<pre class='language-text'><code>${source}</code></pre>`
     }
 
-    const highlightedLines = highlightCode(
+    const highlightedLines = highlightCode__default['default'](
       prismLanguage,
       source,
       {},
@@ -314,7 +318,7 @@ function parseFileToHtmlAndMeta(
         '<span class="line-highlight"> </span>',
       )
 
-    const codeBlock = `<code>${highlighted}</code>`
+    const codeBlock = `<code tabindex="0">${highlighted}</code>`
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean)
     const heading = headingParts.length
       ? `<div class="code-heading">${headingParts.join('•')}</div>`
@@ -342,13 +346,11 @@ function parseFileToHtmlAndMeta(
 
     return `
       <h${level} id="${fragment}">
-        <a href="${anchor}" class="anchor" aria-hidden="true" tabindex="-1">
-          ${headingText}
-        </a>
+        <a href="${anchor}" class="anchor" aria-hidden="true" tabindex="-1">${headingText}</a>
       </h${level}>`
   }
 
-  const html = marked(
+  const html = marked__default['default'](
     content.replace(/^\t+/gm, (match) => match.split('\t').join('  ')),
     { renderer },
   )
