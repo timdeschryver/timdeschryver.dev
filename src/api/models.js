@@ -197,7 +197,7 @@ function parseFileToHtmlAndMeta(
         '<span class="line-highlight"> </span>',
       )
 
-    const codeBlock = `<code>${highlighted}</code>`
+    const codeBlock = `<code tabindex="0">${highlighted}</code>`
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean)
     const heading = headingParts.length
       ? `<div class="code-heading">${headingParts.join('•')}</div>`
@@ -225,9 +225,7 @@ function parseFileToHtmlAndMeta(
 
     return `
       <h${level} id="${fragment}">
-        <a href="${anchor}" class="anchor" aria-hidden="true" tabindex="-1">
-          ${headingText}
-        </a>
+        <a href="${anchor}" class="anchor" aria-hidden="true" tabindex="-1">${headingText}</a>
       </h${level}>`
   }
 

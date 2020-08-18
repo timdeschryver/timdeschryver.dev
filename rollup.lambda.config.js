@@ -1,5 +1,5 @@
-import replace from 'rollup-plugin-replace'
-import commonjs from 'rollup-plugin-commonjs'
+import replace from '@rollup/plugin-replace'
+import commonjs from '@rollup/plugin-commonjs'
 import json from 'rollup-plugin-json'
 
 const mode = process.env.NODE_ENV || 'production'
@@ -39,6 +39,8 @@ export default {
     'prismjs/components/prism-json',
     'prismjs/components/prism-textile',
     'prismjs/components/prism-graphql',
-    'prismjs/components/prism-yaml',
+    'prismjs/components/prism-diff',
+    'prismjs/components/prism-csharp',
+    'prismjs/components/prism-sql',
   ],
 }

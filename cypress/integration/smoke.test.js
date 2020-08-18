@@ -3,8 +3,8 @@
 describe('a11y', () => {
   describe('dark theme', () => {
     it('should be accessible', () => {
-      cy.task('sitemapLocations').then(pages => {
-        pages.forEach(page => {
+      cy.task('sitemapLocations').then((pages) => {
+        pages.forEach((page) => {
           cy.visit(page, {
             onBeforeLoad(win) {
               cy.stub(win, 'matchMedia')
@@ -22,8 +22,8 @@ describe('a11y', () => {
 
   describe('light theme', () => {
     it('should be accessible', () => {
-      cy.task('sitemapLocations').then(pages => {
-        pages.forEach(page => {
+      cy.task('sitemapLocations').then((pages) => {
+        pages.forEach((page) => {
           cy.visit(page, {
             onBeforeLoad(win) {
               cy.stub(win, 'matchMedia')
@@ -50,7 +50,7 @@ function testA11y() {
     'iphone-6',
     'iphone-6+',
     'ipad-mini',
-  ].forEach(size => {
+  ].forEach((size) => {
     if (Cypress._.isArray(size)) {
       cy.viewport(size[0], size[1])
     } else {
@@ -59,7 +59,12 @@ function testA11y() {
     cy.findAllByText('Tim Deschryver')
     cy.checkA11y(
       {
-        exclude: [['.article-action'], ['th']],
+        exclude: [
+          ['.article-action'],
+          ['th'],
+          ['iframe'],
+          ['div:nth-child(3)'],
+        ],
       },
       {
         rules: {

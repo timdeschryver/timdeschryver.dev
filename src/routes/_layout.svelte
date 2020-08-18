@@ -1,6 +1,7 @@
 <script>
   import { afterUpdate } from 'svelte'
   import Settings from '../components/Settings.svelte'
+  import BMC from '../components/BMC.svelte'
 
   export let segment
   let toggleSettings = false
@@ -142,7 +143,7 @@
 </div>
 
 <main>
-  <slot />
+	<slot></slot>
 </main>
 
 {#if segment !== undefined}
@@ -233,3 +234,5 @@
     </a>
   </footer>
 {/if}
+
+<BMC></BMC>
