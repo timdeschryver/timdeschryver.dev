@@ -6,11 +6,19 @@
   let bmc
 
   onMount(() => {
+    console.log(
+      'BMC mounted',
+      'MutationObserver' in window,
+      document.querySelector('#bmc-wbtn'),
+    )
     if (!'MutationObserver' in window) return
+    bmc = document.querySelector('#bmc-wbtn')
+    if (bmc) return
     let observer = new MutationObserver((entries, observer) => {
       entries.forEach((entry) => {
         const [added] = entry.addedNodes
         if (added && added.id === 'bmc-wbtn') {
+          console.log('found bmc')
           observer.disconnect()
           bmc = added
         }
@@ -23,6 +31,7 @@
   })
   $: if (bmc) {
     const isPageForBMC = $page.path.startsWith('/blog') && $page.params.slug
+    console.log(isPageForBMC, $page.path.startsWith('/blog'), $page.params.slug)
     if (isPageForBMC) {
       bmc.style.display = 'flex'
     } else {
