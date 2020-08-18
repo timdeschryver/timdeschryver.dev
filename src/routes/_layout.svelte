@@ -149,7 +149,7 @@
 {#if segment !== undefined}
   <footer>
     <a
-      rel="noopener noreferrer"
+      rel="nofollow nofollow"
       href="https://twitter.com/intent/user?screen_name=tim_deschryver">
       <svg
         xmlns="http://www.w3.org/2000/svg"
