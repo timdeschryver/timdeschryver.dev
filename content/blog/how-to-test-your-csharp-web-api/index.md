@@ -25,12 +25,13 @@ Show me some code!
 
 ## A simple test
 
-The only requirement is that the `Microsoft.AspNetCore.Mvc.Testing` package is installed you can do this with the following command.
-I also use `FluentAssertions` to write my assertions because the package contains some useful utility methods, and it's easy to read.
+The only requirement is that the `Microsoft.AspNetCore.Mvc.Testing` package is installed, you can do this with the following command.
 
 ```bash
 dotnet add package Microsoft.AspNetCore.Mvc.Testing
 ```
+
+> TIP: I also use `FluentAssertions` to write my assertions because the package contains some useful utility methods, and it's easy to read.
 
 The packages includes a `WebApplicationFactory<TEntryPoint>` class which is used to bootstrap the API in memory.
 This is convenient, as we don't need to have the API running before we run these tests.
