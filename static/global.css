@@ -297,7 +297,7 @@ label {
 
 table {
   border-collapse: collapse;
-  text-align: right;
+  text-align: left;
   table-layout: fixed;
   font-variant-numeric: tabular-nums;
   display: block;
@@ -314,6 +314,7 @@ th {
 td,
 th {
   padding: 4px 7px;
+  width: 100%;
 }
 
 thead {
