@@ -59,31 +59,31 @@ To cover both of the cases, the directive emits a signal when:
 })
 export class PrefetchDirective implements OnInit {
   @Input()
-  prefetchMode: ('load' | 'hover')[] = ['hover']
+  prefetchMode: ('load' | 'hover')[] = ['hover'];
   @Output()
-  prefetch = new EventEmitter<void>()
+  prefetch = new EventEmitter<void>();
 
-  loaded = false
+  loaded = false;
 
   ngOnInit() {
     if (this.prefetchMode.includes('load')) {
-      this.prefetchData()
+      this.prefetchData();
     }
   }
 
   @HostListener('mouseenter')
   onMouseEnter() {
     if (!this.loaded && this.prefetchMode.includes('hover')) {
-      this.loaded = true
-      this.prefetchData()
+      this.loaded = true;
+      this.prefetchData();
     }
   }
 
   prefetchData() {
     if (navigator.connection.saveData) {
-      return
+      return undefined;
     }
-    this.prefetch.next()
+    this.prefetch.next();
   }
 }
 ```
@@ -113,11 +113,11 @@ Because the number of items is limited and because we have a certainty that the 
   `,
 })
 export class DashboardComponent {
-  heroes$ = this.store.pipe(select(selectHeroesDashboard))
+  heroes$ = this.store.select(selectHeroesDashboard);
   constructor(private store: Store) {}
 
   prefetch(id) {
-    this.store.dispatch(heroDetailLoaded({ id }))
+    this.store.dispatch(heroDetailLoaded({ id }));
   }
 }
 ```
@@ -151,7 +151,7 @@ export class HeroesComponent {
   constructor(private store: Store) {}
 
   prefetch(id: number) {
-    this.store.dispatch(heroDetaiHovered({ id }))
+    this.store.dispatch(heroDetailHovered({ id }));
   }
 }
 ```
@@ -160,7 +160,7 @@ If you pay attention to the network tab in the GIF below, you can see that the h
 
 ![The hero details are requested on hover, with as result that the details are shown directly.](./images/ngrx-hover.gif)
 
-The Effect to fetch the details listens to the `heroDetailLoaded` action and the `heroDetaiHovered` action, this looks as follows:
+The Effect to fetch the details listens to the `heroDetailLoaded` action and the `heroDetailHovered` action, this looks as follows:
 
 ```ts{3-14}:heroes.effects.ts
 @Injectable()
@@ -168,16 +168,16 @@ export class HeroesEffects {
   detail$ = createEffect(() => {
     return this.actions$.pipe(
       // 👂 listen to both actions
-      ofType(heroDetailLoaded, heroDetaiHovered),
+      ofType(heroDetailLoaded, heroDetailHovered),
       // ⚙ fetch all in parallel
-      // @link https://rxjs-dev.firebaseapp.com/api/operators/mergeMap
+      // @link https://rxjs.dev/api/operators/mergeMap
       mergeMap(({ id: heroId }) =>
         this.heroesService
           .getHero(heroId)
           .pipe(map((hero) => heroDetailFetchSuccess({ hero }))),
       ),
     )
-  })
+  });
 
   constructor(private actions$: Actions, private heroesService: HeroService) {}
 }
@@ -192,10 +192,10 @@ We can tweak the Effect so that we only fetch the hero details that aren't store
 export class HeroesEffects {
   detail$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(heroDetailLoaded, heroDetaiHover),
+      ofType(heroDetailLoaded, heroDetailHovered),
       concatMap((action) =>
         of(action).pipe(
-          withLatestFrom(this.store.pipe(select(selectHeroDetail(action.id)))),
+          withLatestFrom(this.store.select(selectHeroDetail(action.id))),
         ),
       ),
       filter(([_action, detail]) => Boolean(detail) === false),
@@ -205,7 +205,7 @@ export class HeroesEffects {
           .pipe(map((hero) => heroDetailFetchSuccess({ hero }))),
       ),
     )
-  })
+  });
 
   constructor(
     private actions$: Actions,
