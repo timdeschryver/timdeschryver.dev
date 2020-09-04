@@ -227,7 +227,7 @@ As an example, we can log the current center of the map.
 
 ```ts{2, 5}
 export class AppComponent implements OnInit {
-  @ViewChild(MapInfoWindow, { static: false }) info: MapInfoWindow
+  @ViewChild(GoogleMap, { static: false }) map: GoogleMap
 
   logCenter() {
     console.log(JSON.stringify(this.map.getCenter()))
