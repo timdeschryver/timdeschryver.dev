@@ -4,7 +4,7 @@ slug: making-your-application-feel-faster-by-prefetching-data-with-ngrx
 description: Utilize the NgRx Global Store cache to persist data before it's shown
 author: Tim Deschryver
 date: 2020-08-31
-tags: NgRx, performance
+tags: NgRx, performance, Angular
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Mia Anderson](https://unsplash.com/@miaanderson on [Unsplash](https://unsplash.com)
 published: true
@@ -50,40 +50,61 @@ I've abstracted this logic away into a directive, it emits a signal to the consu
 
 To cover both of the cases, the directive emits a signal when:
 
-- it's loaded
+- it's loaded / it's visible
 - the user hovers over it
 
 ```ts:prefetch.directive.ts
 @Directive({
   selector: '[prefetch]',
 })
-export class PrefetchDirective implements OnInit {
+export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
   @Input()
-  prefetchMode: ('load' | 'hover')[] = ['hover'];
+  prefetchMode: ('load' | 'hover' | 'visible')[] = ['visible']
   @Output()
-  prefetch = new EventEmitter<void>();
+  prefetch = new EventEmitter<void>()
 
-  loaded = false;
+  observer: IntersectionObserver
+  loaded = false
+
+  constructor(private elemRef: ElementRef) {}
 
   ngOnInit() {
     if (this.prefetchMode.includes('load')) {
-      this.prefetchData();
+      this.prefetchData()
+    }
+  }
+
+  ngAfterViewInit() {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.prefetchData()
+          this.observer.disconnect()
+        }
+      })
+    })
+    this.observer.observe(this.elemRef.nativeElement)
+  }
+
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect()
     }
   }
 
   @HostListener('mouseenter')
   onMouseEnter() {
     if (!this.loaded && this.prefetchMode.includes('hover')) {
-      this.loaded = true;
-      this.prefetchData();
+      this.loaded = true
+      this.prefetchData()
     }
   }
 
   prefetchData() {
     if (navigator.connection.saveData) {
-      return undefined;
+      return undefined
     }
-    this.prefetch.next();
+    this.prefetch.next()
   }
 }
 ```
@@ -103,7 +124,7 @@ Because the number of items is limited and because we have a certainty that the 
         class="col-1-4"
         routerLink="/detail/{{ hero.id }}"
         (prefetch)="prefetch(hero.id)"
-        [prefetchMode]="['load']"
+        [prefetchMode]="['visible']"
       >
         <div class="module hero">
           <h4>{{ hero.name }}</h4>
@@ -113,11 +134,11 @@ Because the number of items is limited and because we have a certainty that the 
   `,
 })
 export class DashboardComponent {
-  heroes$ = this.store.select(selectHeroesDashboard);
+  heroes$ = this.store.select(selectHeroesDashboard)
   constructor(private store: Store) {}
 
   prefetch(id) {
-    this.store.dispatch(heroDetailLoaded({ id }));
+    this.store.dispatch(heroDetailLoaded({ id }))
   }
 }
 ```
@@ -151,7 +172,7 @@ export class HeroesComponent {
   constructor(private store: Store) {}
 
   prefetch(id: number) {
-    this.store.dispatch(heroDetailHovered({ id }));
+    this.store.dispatch(heroDetailHovered({ id }))
   }
 }
 ```
@@ -177,7 +198,7 @@ export class HeroesEffects {
           .pipe(map((hero) => heroDetailFetchSuccess({ hero }))),
       ),
     )
-  });
+  })
 
   constructor(private actions$: Actions, private heroesService: HeroService) {}
 }
@@ -205,7 +226,7 @@ export class HeroesEffects {
           .pipe(map((hero) => heroDetailFetchSuccess({ hero }))),
       ),
     )
-  });
+  })
 
   constructor(
     private actions$: Actions,

@@ -192,8 +192,6 @@ ul {
 }
 
 li {
-  position: relative;
-  padding-left: 20px;
   margin-top: calc(var(--spacing) / 2);
 }
 
@@ -201,7 +199,16 @@ li:first-child {
   margin-top: 0;
 }
 
-li:before {
+ol > li {
+  margin-left: 20px;
+}
+
+ul > li {
+  padding-left: 20px;
+  position: relative;
+}
+
+ul > li:before {
   content: '';
   border-radius: 100px;
   position: absolute;

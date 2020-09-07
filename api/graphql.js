@@ -260,7 +260,7 @@ function parseFileToHtmlAndMeta(
   renderer.image = function (href, _title, text) {
     const src = href.startsWith('http') ? href : path.join(assetsSrc, href)
     return `<figure>
-      <img src="${src}" alt="${text}" loading="lazy"/>
+      <img src="${src}" alt="" loading="lazy"/>
       <figcaption>${text}</figcaption>
     </figure>`
   }

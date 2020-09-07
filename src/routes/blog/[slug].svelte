@@ -119,9 +119,7 @@
   <meta name="twitter:label2" content="Published on" />
   <meta name="twitter:data2" content={post.metadata.date} />
 
-  <meta
-    name="og:url"
-    content={`https://timdeschryver.dev/blog/${post.metadata.slug}`} />
+  <meta name="og:url" content={post.metadata.canonical_url} />
   <meta name="og:title" content={post.metadata.title} />
   <meta name="og:description" content={post.metadata.description} />
   <meta name="og:type" content="article" />
