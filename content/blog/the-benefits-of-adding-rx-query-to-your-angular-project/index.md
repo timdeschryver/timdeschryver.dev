@@ -20,7 +20,7 @@ Because adding `rx-query` is no extra work, and you get some useful features for
 
 Making an HTTP request with `rx-query` is almost as simple as a normal request, just wrap the request with the `query` method and give it the query a key. The key is to distinguish multiple queries, it will become clear why this is important in the next sections.
 
-```ts:heroes.components.ts{4}
+```ts{4}:heroes.components.ts
 import { query } from 'rx-query'
 
 export class HeroesComponent {
@@ -173,7 +173,7 @@ export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
 
 Then we can prefetch the hero details as follow.
 
-```ts:heroes.component.ts{7}{25-27}
+```ts{7}{25-27}:heroes.component.ts
 @Component({
   selector: 'app-heroes',
   template: `
@@ -225,7 +225,7 @@ State that is stored client site becomes stale. That's why `rx-query` offers mul
 Besides having a refetch after x milliseconds, it's also configurable to refetch the request when the window receives the focus.
 This makes sure that the user will always **work with a fresh state**.
 
-```ts:dashboard.component.ts{5-7}
+```ts{5-7}:dashboard.component.ts
 export class DashboardComponent {
   heroes$ = query(
     'heroes-dashboard',
@@ -248,7 +248,7 @@ If the request should fail, the cache automatically performs a rollback to its p
 
 To mutate the state, the `mutator` must be configured:
 
-```ts:hero-detail.component.ts{6-10}
+```ts{6-10}:hero-detail.component.ts
 export class HeroDetailComponent {
   hero$ = query(
     'hero',
@@ -275,7 +275,7 @@ export class HeroDetailComponent {
 
 To invoke the mutation, use the `mutate` method on the `QueryOutput` with the updated entity as the argument.
 
-```html:hero-detail.component.html{13-15}
+```html{13-15}:hero-detail.component.html
 <ng-container *ngIf="hero$ | async as hero">
   <ng-container [ngSwitch]="hero.status">
     <div class="heroes" *ngSwitchDefault>
@@ -308,7 +308,7 @@ It's only after the refresh of heroes list query, that the update is visible on 
 
 Therefore, `rx-query` exposes helper methods to update the state manually.
 
-```ts:hero-detail.component.ts{11,14,17}
+```ts{11,14,17}:hero-detail.component.ts
 export class HeroDetailComponent {
   hero$ = query(
     'hero',
