@@ -17,7 +17,7 @@ This question popped up several times lately and in this post I’ll provide som
 
 ## EDIT 2018–08–17: [NgRx 6.1](https://github.com/ngrx/platform/blob/master/CHANGELOG.md#610-2018-08-01)
 
-> The following will be more or less a copy of the [NgRx docs](https://github.com/ngrx/platform/blob/master/docs/store/selectors.md#createselector-with-props).
+> The following will be more or less a copy of the [NgRx docs](https://ngrx.io/guide/store/selectors#using-selectors-with-props).
 
 As of [NgRx 6.1](https://github.com/ngrx/platform/blob/master/CHANGELOG.md#610-2018-08-01) selectors also accepts an extra `props` argument. Which means you can now define a selector as the following:
 
@@ -72,7 +72,7 @@ If the parameter doesn’t change over time we can use a [factory function](http
 
 ```ts
 export const selectCustomer = (id: string) =>
-  createSelector(selectCustomers, customers => customers[id])
+  createSelector(selectCustomers, (customers) => customers[id])
 ```
 
 We can then call `selectCustomer` in the component and pass it an `id`:
@@ -88,11 +88,11 @@ If the `id` parameter is dynamic we can create a selector that instead of return
 ```ts
 export const selectCustomer = createSelector(
   selectCustomers,
-  customers => (id: string) => customers[id],
+  (customers) => (id: string) => customers[id],
 )
 
 // tip: it’s also possible to memoize the function if needed
-export const selectCustomer = createSelector(selectCustomers, customers =>
+export const selectCustomer = createSelector(selectCustomers, (customers) =>
   memoize((id: string) => customers[id]),
 )
 ```
@@ -114,7 +114,7 @@ To overcome this syntax inside the HTML we can also solve this with the RxJS `ma
 ```ts
 this.customer = store.pipe(
   select(customers.selectCurrentCustomer),
-  map(fun => fun(this.customerId)),
+  map((fun) => fun(this.customerId)),
 )
 ```
 
@@ -149,7 +149,7 @@ this.customer = store.pipe(select(customers.getSelectedCustomer))
 
 ## NgRx/Router-Store
 
-Another possibility would be to use [@ngrx/router-store](https://github.com/ngrx/platform/blob/master/docs/router-store/README.md), this module connects the route with the store. In other words, all the route information will be available in the store thus also in the selectors. After installing the `ngrx/router-store` module and having it imported in our `AppModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters _(_`_customerId_` _in our case)._ Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, he or she would see the customer’s details of customer 47. The selector looks roughly the same:
+Another possibility would be to use [@ngrx/router-store](https://ngrx.io/guide/router-store), this module connects the route with the store. In other words, all the route information will be available in the store thus also in the selectors. After installing the `ngrx/router-store` module and having it imported in our `AppModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters _(_`_customerId_` _in our case)._ Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, he or she would see the customer’s details of customer 47. The selector looks roughly the same:
 
 ```ts
 export const selectRouterState = createFeatureSelector<RouterReducerState>(
@@ -158,7 +158,7 @@ export const selectRouterState = createFeatureSelector<RouterReducerState>(
 
 export const selectRouteParameters = createSelector(
   selectRouterState,
-  router => router.state.root.firstChild.params,
+  (router) => router.state.root.firstChild.params,
 )
 
 export const selectCurrentCustomer = createSelector(

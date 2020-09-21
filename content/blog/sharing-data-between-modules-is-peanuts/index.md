@@ -36,7 +36,7 @@ See [Alex Okrushko](https://twitter.com/AlexOkrushko)’s talk [NgRx: Selectors 
 To build up to the solution we’ll be creating a small application, where a whole family can fill in their groceries per family member.
 
 **The root state  
-**In the root module we have our family members and we’ll also use [@ngrx/router-store](https://github.com/ngrx/platform/blob/master/docs/router-store/README.md) to keep track of the router’s state. The entire root state looks as follows:
+**In the root module we have our family members and we’ll also use [@ngrx/router-store](https://ngrx.io/guide/router-store) to keep track of the router’s state. The entire root state looks as follows:
 
 ```ts
 export interface State {
