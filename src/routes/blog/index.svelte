@@ -126,13 +126,6 @@
     font-size: 0.65rem;
   }
 
-  button:hover {
-    opacity: 0.85;
-  }
-
-  button.active {
-    opacity: 1;
-  }
 </style>
 
 <Head title="Blog - Tim Deschryver" />

@@ -172,6 +172,17 @@ a:focus {
   outline: 2px solid var(--prime-color);
 }
 
+:focus {
+  filter: brightness(120%) saturate(120%) !important;
+}
+
+a:hover,
+button:hover,
+pre:hover,
+h2:hover {
+  filter: brightness(120%) saturate(120%);
+}
+
 .anchor:before {
   content: '#';
   position: absolute;

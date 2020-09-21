@@ -33,6 +33,10 @@
     margin-right: 0.5em;
   }
 
+  nav a:hover, nav a:focus {
+      filter: none;
+  }
+
   @media (max-width: 520px) {
     h1 {
       font-size: 1.4rem;
@@ -61,14 +65,6 @@
     margin-top: 0;
     color: var(--prime-color);
     margin: 0.7em 0.4em;
-  }
-
-  footer svg {
-    transition: transform 300ms;
-  }
-
-  footer svg:hover {
-    transform: scale(1.3);
   }
 
   /* https://neumorphism.io/#f8c400 */

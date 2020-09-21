@@ -9,14 +9,6 @@
     margin-top: 25%;
   }
 
-  a.social-link {
-    transition: all var(--transition-duration) ease-in;
-    border-color: transparent;
-  }
-
-  a.social-link:hover {
-    border-color: currentColor;
-  }
 </style>
 
 <Head title="Tim Deschryver" />

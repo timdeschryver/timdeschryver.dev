@@ -39,15 +39,13 @@ I believe this file is miss-used in most of the cases, maybe even the most miss-
 
 As the start of our quest we extracted all of the environment specific variables into a config file, which is just a simple JSON file. This left us with 2 `environment` files to define if it's a production build or not. These will be familiar as these are also the default files provided by Angular.
 
-```ts
-// environment.ts
+```ts:environment.ts
 export const environment = {
   production: false,
 }
 ```
 
-```ts
-// environment.prod.ts
+```ts:environment.prod.ts
 export const environment = {
   production: true,
 }
@@ -65,9 +63,10 @@ We now have one build and multiple deploys, but we still have to load in the con
 
 We thought we weren't the first ones on this quest so we went online in order to solve our problem. All of the solutions we encountered were using the `APP_INITIALIZER` provider to postpone the bootstrap process of the Angular components until the config file was loaded.
 
-```ts
+```ts:app.module.ts
 export function initConfig(configService: AppConfigService) {
-  return () => configService.init() // in this function the config file is being loaded
+  // load the config file in this function
+  return () => configService.init()
 }
 
 @NgModule({
@@ -97,17 +96,17 @@ We needed to have the config variables loaded in before the application booted u
 
 The code below loads the config file via the [`fetch API`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This is a Promise, so we can know for sure that the config file will be loaded before we bootstrap the application module. The self-declared `APP_CONFIG` token is used here to store the configuration variables.
 
-```ts
+```ts:main.ts
 fetch('/assets/config.json')
-  .then(response => response.json())
-  .then(config => {
+  .then((response) => response.json())
+  .then((config) => {
     if (environment.production) {
       enableProdMode()
     }
 
     platformBrowserDynamic([{ provide: APP_CONFIG, useValue: config }])
       .bootstrapModule(AppModule)
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err))
   })
 ```
 
@@ -115,7 +114,7 @@ fetch('/assets/config.json')
 
 Now we're a step further, we have loaded the config before we bootstrapped the application but we still have to make use of it. As the last hurdle in our quest, we had to create the `ApplicationInsightsModule`'s config. Because we know the config file is loaded when the `AppModule` gets loaded, we can now access the config file and provide the Application Insights config. It's also fine to re-use the `APP_CONFIG` config, but to make the config more scoped and maintainable for the modules, we're chopping up the large config into smaller chunks.
 
-```ts
+```ts:app.module.ts
 @NgModule({
   providers: [
     {
