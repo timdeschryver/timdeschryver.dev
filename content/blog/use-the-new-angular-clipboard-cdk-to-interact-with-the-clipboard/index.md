@@ -8,7 +8,6 @@ tags: Angular, Material, CDK, clipboard
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Steve Halama](https://unsplash.com/@steve3p_0) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 The [helium-barbell (v9.0.0-next.1)](https://github.com/angular/components/releases/tag/9.0.0-next.1) release brings us a new CDK clipboard module to interact with the clipboard. In this post, we'll explore how to use the new CDK with some examples.

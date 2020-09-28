@@ -8,7 +8,6 @@ tags: Library, Continuous Integration, Continuous Deployment
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Saffu](https://unsplash.com/@saffu) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 Are you, like me, getting tired of releasing your Angular library manually? And how about keeping that CHANGELOG up to date? In this post I’m taking you along in my journey towards a fully automated process for my [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) library!

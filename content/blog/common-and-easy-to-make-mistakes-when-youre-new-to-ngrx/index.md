@@ -8,7 +8,6 @@ tags: NgRx,Redux, Angular
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Sarah Dorweiler](https://unsplash.com/@sarahdorweiler) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 This post is aimed at newcomers to NgRx.

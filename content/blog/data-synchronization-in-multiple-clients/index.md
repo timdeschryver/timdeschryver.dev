@@ -8,7 +8,6 @@ tags: Angular, Data
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Scott Webb](https://unsplash.com/@scottwebb) on [Unsplash](https://unsplash.com)
 published: true
-publisher: ITNEXT
 ---
 
 Often when working with a CRUD heavy application you find yourself or someone else asking the question, what should be done when multiple users (admins) are modifying the same data.
@@ -19,7 +18,7 @@ Let’s cut to the chase and explore the options we have.
 
 One approach would be use web sockets that allows to receive messages from the server. This would mean if user Bob would edit a record and once it’s processed on the server, every connected client (user) would receive the updated record. This way everyone has the latest version of the record.
 
-Once the client receives the message from the server it should be dispatched in order to update the application state. The update part could be done manually but this is where [@ngrx/entity](https://github.com/ngrx/platform/tree/master/docs/entity) shines in my opinion, and here is why.  
+Once the client receives the message from the server it should be dispatched in order to update the application state. The update part could be done manually but this is where [@ngrx/entity](https://ngrx.io/guide/entity) shines in my opinion, and here is why.  
 I would recommend to use the following data structure for the message, where the payload is an entity.
 
 ```ts

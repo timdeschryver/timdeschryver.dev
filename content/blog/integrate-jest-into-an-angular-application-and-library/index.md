@@ -8,7 +8,6 @@ tags: Angular, Testing, Jest, Library
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Andras Vas](https://unsplash.com/@wasdrew) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 ## Why Jest

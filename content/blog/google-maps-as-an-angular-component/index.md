@@ -8,7 +8,6 @@ tags: Angular, Material, Component, Google Maps
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Capturing the human heart.](https://unsplash.com/@dead____artist) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 The new Angular Component [pearl-lullaby (v9.0.0-rc.0)](https://github.com/angular/components/releases/tag/9.0.0-rc.0) introduces the second official `@angular/component` component, a Google Maps component.

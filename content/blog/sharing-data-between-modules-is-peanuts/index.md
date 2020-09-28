@@ -8,7 +8,6 @@ tags: Angular, NgRx, Redux
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 ## The problem
@@ -125,7 +124,7 @@ Now that we know how the feature state looks, we can write the selectors to sele
 
 ![](./images/5.png)
 
-Notice that we’re using `createFeatureSelector` to select the state of `groceries`. Here again we have to pass `groceries` as a parameter to select the groceries slice from the state tree. Also notice the `fromGroceries.selectAll` method to select all the groceries, this is a baked in selector that comes with [@ngrx/entity](https://github.com/ngrx/platform/tree/master/docs/entity).
+Notice that we’re using `createFeatureSelector` to select the state of `groceries`. Here again we have to pass `groceries` as a parameter to select the groceries slice from the state tree. Also notice the `fromGroceries.selectAll` method to select all the groceries, this is a baked in selector that comes with [@ngrx/entity](https://ngrx.io/guide/entity).
 
 With this done we can create our first selector that returns derived data. We’ll use the `getGroceries` selector and return the groceries grouped by family member which makes it easier to lookup the groceries for a specific family member later.
 

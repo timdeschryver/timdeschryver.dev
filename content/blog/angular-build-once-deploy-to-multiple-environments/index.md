@@ -8,7 +8,6 @@ tags: Angular, DevOps, CI/CD, Build
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Chau Cédric](https://unsplash.com/@an_ku_sh) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 ## [The twelve-factor app](https://12factor.net/)

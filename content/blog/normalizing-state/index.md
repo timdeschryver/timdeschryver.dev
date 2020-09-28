@@ -42,7 +42,7 @@ export function reducer(state, action) {
   switch (action.typed) {
     case '[CUSTOMER DETAIL PAGE] Edit Customer':
       return {
-        customers: state.customers.map(c =>
+        customers: state.customers.map((c) =>
           c.id === action.payload.id ? action.payload : c,
         ),
         selectedCustomer:
@@ -59,12 +59,12 @@ export function reducer(state, action) {
 
 export const selectedCustomers = createSelector(
   selectCustomersState,
-  state => state.customers,
+  (state) => state.customers,
 )
 
 export const selectedSelectedCustomers = createSelector(
   selectCustomersState,
-  state => state.selectedCustomer,
+  (state) => state.selectedCustomer,
 )
 ```
 
@@ -92,13 +92,13 @@ export function reducer(state, action) {
   }
 }
 
-export const selectedCustomers = createSelector(selectCustomersState, state =>
+export const selectedCustomers = createSelector(selectCustomersState, (state) =>
   Object.values(state.customers),
 )
 
 export const selectedSelectedCustomers = createSelector(
   selectCustomersState,
-  state => state.customers[state.selectedCustomerId],
+  (state) => state.customers[state.selectedCustomerId],
 )
 ```
 
@@ -106,4 +106,4 @@ export const selectedSelectedCustomers = createSelector(
 
 > An entity state adapter for managing record collections. It provides performant CRUD operations for managing entity collections.
 
-NgRx/entity is a part of NgRx and is created by the NgRx team. Under the hood it will store your data in a normalized way. To have a closer look you can checkout the [docs](https://github.com/ngrx/platform/tree/master/docs/entity) and if you want an example you can checkout the [books reducer](https://github.com/ngrx/platform/blob/master/example-app/app/books/reducers/books.reducer.ts) in the NgRx [example app](https://github.com/ngrx/platform/tree/master/example-app).
+NgRx/entity is a part of NgRx and is created by the NgRx team. Under the hood it will store your data in a normalized way. To have a closer look you can checkout the [docs](https://ngrx.io/guide/entity) and if you want an example you can checkout the [books reducer](https://github.com/ngrx/platform/blob/master/example-app/app/books/reducers/books.reducer.ts) in the NgRx [example app](https://github.com/ngrx/platform/tree/master/example-app).

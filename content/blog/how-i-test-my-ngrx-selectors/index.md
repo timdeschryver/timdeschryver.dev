@@ -8,7 +8,6 @@ tags: NgRx, Redux, Angular
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Geran de Klerk](https://unsplash.com/@geran) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 In this post I’m going to show you how I test my selectors by putting the selectors from a previous post [Clean NgRx reducers using Immer](/blog/clean-ngrx-reducers-using-immer), where we created a small shopping cart application, under test. In the application there is a collection of products (the catalog) and the cart items, together they form the state of the application.

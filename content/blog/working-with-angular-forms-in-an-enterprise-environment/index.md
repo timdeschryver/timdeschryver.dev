@@ -8,7 +8,6 @@ tags: Angular, Forms, Enterprise, Angular Forms, Reactive Forms
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Will O](https://unsplash.com/@blnk_kanvas) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 At our company we struggled with Angular Forms at the start. This is because we dived in head first, without talking about how we would want to use it throughout out projects. This post shows how we're currently using Angular Forms to be more productive.

@@ -8,7 +8,6 @@ tags: NgRx, Redux, Angular
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Noah Grezlak](https://unsplash.com/@svbtext) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 This weeks post is inspired by another great [This Dot Media](https://www.thisdot.co/) event and the topic this time was state management. There was a small segment about Immer which I found interesting (video is linked at the bottom of this post), so I decided to give it a shot with NgRx.
@@ -129,7 +128,7 @@ To give another example, let’s take a look at how we load the catalog:
 export const reducer = produce<State, CatalogActions>((draft, action) => {
   switch (action.type) {
     case CatalogActionTypes.Load:
-      action.payload.products.forEach(product => {
+      action.payload.products.forEach((product) => {
         draft.products[product.sku] = product
         draft.productSkus.push(product.sku)
       })
@@ -165,7 +164,7 @@ we’re seeing the redux developer tool in action
 
 Simply put, I like it. But this doesn’t mean I’ll use it everywhere (hint, there is no such thing is a silver bullet), only in places where I see fit. Partly because I like (and I’m used to) writing my reducers in a functional way. But I’ll use it when a reducer becomes too bloated or too hard to reason about.
 
-> NOTE: When dealing with collections and CRUD actions you probably (still) want to use [@ngrx/entity](https://github.com/ngrx/platform/tree/master/docs/entity).
+> NOTE: When dealing with collections and CRUD actions you probably (still) want to use [@ngrx/entity](https://ngrx.io/guide/entity).
 
 This post is meant to be a short introduction to Immer and to spread the word to the NgRx community. If you like what you’re seeing and want some more details or if you’re interested on how it’s working there are some useful resources below.
 

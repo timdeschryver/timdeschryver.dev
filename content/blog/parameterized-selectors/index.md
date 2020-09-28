@@ -8,7 +8,6 @@ tags: NgRx, Redux, Angular
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Ryan Grewell](https://unsplash.com/@ryangrewell) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 > How can I select an entity from the store by its id?

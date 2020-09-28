@@ -8,7 +8,6 @@ tags: Angular, NgRx, NGXS, Redux
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Avel Chuklanov](https://unsplash.com/@chuklanov) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 Recently I wrote [Clean NgRx reducers using Immer](/blog/clean-ngrx-reducers-using-immer) and [Austin](https://twitter.com/amcdnl) hinted that I also should write one for NGXS. Of course I couldn’t let him down, so here we are!

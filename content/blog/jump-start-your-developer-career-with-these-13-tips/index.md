@@ -7,7 +7,6 @@ date: 2019-05-14T20:30:00.000Z
 tags: career, level-up, development, productivity
 banner: ./images/banner.jpg
 published: true
-publisher: Angular In Depth
 ---
 
 I believe that to become a better engineer it all comes down to practice, practice and more practice. Especially when you just started your career. The problem is that when you're just getting started, there is much more to it than just writing lines of code.

@@ -8,7 +8,6 @@ tags: Angular, NgRx, RxJS, Redux
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 In this post, we’re going to take a look at how we can keep our application state in sync when a user has multiple tabs open. We’re going to make this happen by using the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [NgRx](https://ngrx.io/) (Store and Effects), and [RxJS](http://rxjsdocs.com/). A basic knowledge of NgRx is needed to follow the examples.

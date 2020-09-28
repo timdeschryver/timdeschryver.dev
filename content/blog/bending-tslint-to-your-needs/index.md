@@ -7,7 +7,6 @@ date: 2019-01-10T09:40:10.057Z
 banner: ./images/banner.jpg
 tags: TypeScript, TSLint, RxJS
 published: true
-publisher: Angular In Depth
 ---
 
 After reading yet another twitter thread asking about the number of RxJS operators used in a project, I thought to myself that creating a small tool that does exactly this could be a fun little project.
@@ -79,9 +78,11 @@ class OperatorCounterWalker extends Lint.RuleWalker {
 
     call.arguments
       .filter(ts.isCallExpression)
-      .map(argument => argument.expression as ts.Identifier)
+      .map((argument) => argument.expression as ts.Identifier)
       .filter(Boolean)
-      .forEach(identifier => this.addFailureAtNode(identifier, identifier.text))
+      .forEach((identifier) =>
+        this.addFailureAtNode(identifier, identifier.text),
+      )
   }
 }
 ```
@@ -112,7 +113,7 @@ export class Rule extends Lint.Rules.AbstractRule {
     )
 
     const hits = failures
-      .map(failure => failure.getFailure())
+      .map((failure) => failure.getFailure())
       .reduce<{ [operator: string]: number }>((counter, operator) => {
         counter[operator] = (counter[operator] || 0) + 1
         return counter
@@ -165,7 +166,7 @@ const lintConfiguration = {
 
 // iterate files in the workspace
 const files = Lint.Linter.getFileNames(program)
-files.forEach(file => {
+files.forEach((file) => {
   // get the source code
   const fileContents = program.getSourceFile(file).getFullText()
 
@@ -182,7 +183,7 @@ const results = linter.getResult()
 
 // copy pasted code
 const hits = results.failures
-  .map(x => x.getFailure())
+  .map((x) => x.getFailure())
   .reduce<{ [operator: string]: number }>((counter, operator) => {
     counter[operator] = (counter[operator] || 0) + 1
     return counter
@@ -237,7 +238,7 @@ import { crawl } from '../src/crawler'
 
 test(`test run`, () => {
   let log = ''
-  console.log = jest.fn(message => (log += message))
+  console.log = jest.fn((message) => (log += message))
   crawl({
     tsConfigPath: './tests/fixtures/tsconfig.json',
   })

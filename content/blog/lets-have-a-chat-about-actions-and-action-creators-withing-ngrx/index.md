@@ -8,7 +8,6 @@ tags: NgRx, Redux, Angular
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Jakob Owens](https://unsplash.com/@jakobowens1) on [Unsplash](https://unsplash.com)
 published: true
-publisher: Angular In Depth
 ---
 
 I think it’s time you and I talk a bit about action creators. But before we get into action creators let’s first start with actions, define what they are and why they are needed.

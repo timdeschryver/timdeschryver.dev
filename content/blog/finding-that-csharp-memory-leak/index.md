@@ -55,6 +55,9 @@ A file logger was using 90% of the memory, equivalent to 3.5GB.
 
 ![A pie chart with a more in-depth look into the dump](./images/graph.png)
 
+While this leak was obvious, I still felt a little bit overwhelmed with all the data.
+To get a better understanding at how I should intepret the data I read through [.NET Memory Performance Analysis](https://github.com/Maoni0/mem-doc/blob/master/doc/.NETMemoryPerformanceAnalysis.md). I found it beginner friendly, while still going in-depth. It's focused on PerfView, but the gained knowledge can also be used while reading the data in other tools.
+
 ### Key takeaways
 
 - Don't wait and guess whether there's a memory leak. The data is right in front of you, you just have to go get it. When you got a hunch about having a leak, immediately create a dump file and analyze it. While I thought this was hard and time-consuming, creating a dump file just takes a few seconds. And when you have a real problem, the analyzing part will also be quick. Better safe than sorry, right?
