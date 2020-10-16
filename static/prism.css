@@ -30,6 +30,13 @@ pre[class*='language-'] {
   position: relative;
 }
 
+@media print {
+  code[class*='language-'],
+  pre[class*='language-'] {
+    text-shadow: none;
+  }
+}
+
 :not(pre) > code[class*='language-'] {
   padding: 0.1em 0.3em;
   border-radius: 0.3em;
@@ -441,4 +448,116 @@ pre[class*='language-'] > .code-heading > a {
 
 [data-theme='atom-dark'] .token.important {
   color: #fd971f;
+}
+
+/* Night Owl */
+/* Sara Vieira https://github.com/SaraVieira/prism-theme-night-owl/blob/master/style.css */
+
+[data-theme='night-owl'] pre[class*='language-']::-moz-selection,
+[data-theme='night-owl'] pre[class*='language-'] ::-moz-selection,
+[data-theme='night-owl'] code[class*='language-']::-moz-selection,
+[data-theme='night-owl'] code[class*='language-'] ::-moz-selection {
+  text-shadow: none;
+  background: rgba(29, 59, 83, 0.99);
+}
+
+[data-theme='night-owl'] pre[class*='language-']::selection,
+[data-theme='night-owl'] pre[class*='language-'] ::selection,
+[data-theme='night-owl'] code[class*='language-']::selection,
+[data-theme='night-owl'] code[class*='language-'] ::selection {
+  text-shadow: none;
+  background: rgba(29, 59, 83, 0.99);
+}
+
+[data-theme='night-owl'] :not(pre) > code[class*='language-'],
+[data-theme='night-owl'] pre[class*='language-'] {
+  color: white;
+  background: #011627;
+}
+
+[data-theme='night-owl'] .token.comment,
+[data-theme='night-owl'] .token.prolog,
+[data-theme='night-owl'] .token.cdata {
+  color: rgb(99, 119, 119);
+  font-style: italic;
+}
+
+[data-theme='night-owl'] .token.punctuation {
+  color: rgb(199, 146, 234);
+}
+
+[data-theme='night-owl'] .namespace {
+  color: rgb(178, 204, 214);
+}
+
+[data-theme='night-owl'] .token.deleted {
+  color: rgba(239, 83, 80, 0.56);
+  font-style: italic;
+}
+
+[data-theme='night-owl'] .token.symbol,
+[data-theme='night-owl'] .token.property {
+  color: rgb(128, 203, 196);
+}
+
+[data-theme='night-owl'] .token.tag,
+[data-theme='night-owl'] .token.operator,
+[data-theme='night-owl'] .token.keyword {
+  color: rgb(127, 219, 202);
+}
+
+[data-theme='night-owl'] .token.boolean {
+  color: rgb(255, 88, 116);
+}
+
+[data-theme='night-owl'] .token.number {
+  color: rgb(247, 140, 108);
+}
+
+[data-theme='night-owl'] .token.constant,
+[data-theme='night-owl'] .token.function,
+[data-theme='night-owl'] .token.builtin,
+[data-theme='night-owl'] .token.char {
+  color: rgb(130, 170, 255);
+}
+
+[data-theme='night-owl'] .token.selector,
+[data-theme='night-owl'] .token.doctype {
+  color: rgb(199, 146, 234);
+  font-style: italic;
+}
+
+[data-theme='night-owl'] .token.attr-name,
+[data-theme='night-owl'] .token.inserted {
+  color: rgb(173, 219, 103);
+  font-style: italic;
+}
+
+[data-theme='night-owl'] .token.string,
+[data-theme='night-owl'] .token.url,
+[data-theme='night-owl'] .token.entity,
+[data-theme='night-owl'] .language-css .token.string,
+[data-theme='night-owl'] .style .token.string {
+  color: rgb(173, 219, 103);
+}
+
+[data-theme='night-owl'] .token.class-name,
+[data-theme='night-owl'] .token.atrule,
+[data-theme='night-owl'] .token.attr-value {
+  color: rgb(255, 203, 139);
+}
+
+[data-theme='night-owl'] .token.regex,
+[data-theme='night-owl'] .token.important,
+[data-theme='night-owl'] .token.variable {
+  color: rgb(214, 222, 235);
+}
+
+[data-theme='night-owl'] .token.important,
+[data-theme='night-owl'] .token.bold {
+  font-weight: bold;
+}
+
+[data-theme='night-owl'] .token.italic {
+  font-style: italic;
 }
