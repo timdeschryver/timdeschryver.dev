@@ -42,5 +42,6 @@ export default {
     'prismjs/components/prism-diff',
     'prismjs/components/prism-csharp',
     'prismjs/components/prism-sql',
+    'sync-fetch',
   ],
 }

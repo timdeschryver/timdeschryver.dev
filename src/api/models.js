@@ -121,8 +121,16 @@ function parseFileToHtmlAndMeta(
   const { content, metadata } = extractFrontmatter(markdown)
   const assetsSrc = dirname(file.replace('content', ''))
   const renderer = new marked.Renderer()
+  const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i
 
   renderer.link = (href, title, text) => {
+    if (tweetRegexp.test(href)) {
+      const fetchResult = require('sync-fetch')(
+        `https://publish.twitter.com/oembed?url=${href}&align=center`,
+      ).json()
+      return `<div>${fetchResult.html}</div>`
+    }
+
     const basePath = dirname(file).split(sep).splice(1, 2).join('/')
     const href_attr = href.startsWith('#')
       ? `href="${basePath}${href}"`

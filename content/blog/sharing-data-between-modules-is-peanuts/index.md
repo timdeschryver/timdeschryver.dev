@@ -34,8 +34,9 @@ See [Alex Okrushko](https://twitter.com/AlexOkrushko)’s talk [NgRx: Selectors 
 
 To build up to the solution we’ll be creating a small application, where a whole family can fill in their groceries per family member.
 
-**The root state  
-**In the root module we have our family members and we’ll also use [@ngrx/router-store](https://ngrx.io/guide/router-store) to keep track of the router’s state. The entire root state looks as follows:
+### The root state
+
+In the root module we have our family members and we’ll also use [@ngrx/router-store](https://ngrx.io/guide/router-store) to keep track of the router’s state. The entire root state looks as follows:
 
 ```ts
 export interface State {
@@ -51,7 +52,7 @@ export interface State {
 }
 ```
 
-Resulting in:
+Resulting in the following state:
 
 ```json
 {
@@ -74,7 +75,7 @@ Resulting in:
 }
 ```
 
-### The root selectors
+### Root selectors
 
 To start off simple, the first step is to create the **selectors** to select the family members to create a landing page.
 
@@ -88,13 +89,13 @@ Resulting in the following home page:
 
 ![](./images/3.png)
 
-### The feature state
+### Feature state
 
 Since this is a grocery application, the feature state will consist of the groceries and a visibility filter to show or hide checked off groceries. We’ll lazily load this module, meaning that the code won’t be loaded during the initial load but will be once the user navigates to the groceries page.
 
 > This also means the NgRx code won’t be loaded initially. In other words, you can’t select data from the lazy loaded module at this point. Also, the reducers and the effects won’t get invoked when an action is dispatched.
 
-When the feature module is loaded, NgRx will append the feature’s reducers to the current reducers. This results in the following state tree:
+When the feature module is loaded, NgRx will append the feature’s reducers to the current reducers. The state tree now looks like this:
 
 ```json
 {
@@ -112,13 +113,13 @@ When the feature module is loaded, NgRx will append the feature’s reducers to 
 }
 ```
 
-### The feature module
+### Feature modules
 
-The groceries state is added to the state tree as `groceries` because this is how I defined it.
+The groceries state is added to the state tree as `groceries` because this is how it's defined.
 
 ![](./images/4.png)
 
-### The feature selectors
+### Feature selectors
 
 Now that we know how the feature state looks, we can write the selectors to select the data.
 
@@ -130,10 +131,9 @@ With this done we can create our first selector that returns derived data. We’
 
 ![](./images/6.png)
 
-**Creating selectors for a grocery page specific to a family member  
-**With our state and groceries selectors in place we can create the grocery page for a family member. This page will be accessible via `/groceries/:id`, e.g. `/groceries/mom`. To show the groceries of the mom in this case we’ll have to pluck the family member id from the URL, select the family member from the store, and finally select the groceries of the family member from the store.
+### Router selectors
 
-Time for a little recap before we continue: we defined the family members state and router state in the root module and the groceries state in the groceries feature module. But because all our application state is defined in a single state tree we can simply import the selectors from our root and use them as is, together with the selectors we created in the groceries module. The latter I like to call the base selectors.
+With our state and groceries selectors in place we can create the grocery page for a family member. This page is accessible via `/groceries/:id`, e.g. `/groceries/mom`. To show the groceries of the mom in this case we’ll have to pluck the family member id from the URL, select the family member from the store, and finally select the groceries of the family member from the store.
 
 Time to write the selectors needed to create the grocery page.
 
@@ -145,8 +145,7 @@ With these selectors in place we can use `getActiveFamilyMember` and `getVisible
 
 ![](./images/8.png)
 
-**Creating selectors for a grocery page for the whole family  
-**To give one more example, I’m also going to show you the selectors needed to create a page to show all the groceries of the whole family.
+To give one more example, I’m also going to show you the selectors needed to create a page to show all the groceries of the whole family.
 
 Just like before, the `getFamilyMembers` selector from the root module is being used and also the base selector `getGroceriesByFamilyMember`.
 
