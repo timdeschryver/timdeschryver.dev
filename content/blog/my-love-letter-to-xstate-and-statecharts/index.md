@@ -69,7 +69,7 @@ It was a simple experiment, but I'm happy with the results. Once the machine was
 
 For my experiment, the table machine was 100% reusable, so I'm calling this experiment a success. The one thing I changed with each framework is how the table rows were getting selected (used to determine if the row was within the select box). The default implementation with `document.querySelectorAll` did its job but each framework has its own way to `ref` an HTML element. I don't know why I wanted to use the implementation of the framework, I just wanted to know if I could.
 
-I'm happy with the code, if I would come back to it in a few months I'm sure that I would want to change it here and there but the important part is that it will be readably.
+I'm happy with the code, if I would come back to it in a few months I'm sure that I would want to change it here and there but the important part is that it will be readable.
 
 ## Ending word
 
