@@ -4,7 +4,7 @@ slug: why-writing-integration-tests-on-a-csharp-api-is-a-productivity-booster
 description: Time-consuming tasks that can be prevented with integration tests.
 author: Tim Deschryver
 date: 2020-06-08
-tags: dotnet, csharp, testing
+tags: .NET, C#, testing
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Aron Visuals](https://unsplash.com/@aronvisuals) on [Unsplash](https://unsplash.com)
 published: true

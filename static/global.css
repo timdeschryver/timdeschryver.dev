@@ -266,7 +266,7 @@ main > h4 {
 #sapper > main > iframe,
 #sapper > main > figure,
 #sapper > main > table,
-#sapper > main > blockquote #sapper > main > .wide {
+#sapper > main > blockquote {
   grid-column: 1 / 4;
   width: 100%;
   max-width: 80ch;
