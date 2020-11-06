@@ -159,12 +159,11 @@ It solves the same problem that I had with marble tests, and I couldn't have sai
 The only, small, downside compared to `rxjs-for-await` is that you have to learn a new API, whereas `rxjs-for-await` is just using the JavaScript `async/await` feature. The plus side of using`ObserverSpy` is that it has useful helper methods to read the output values of the stream.
 
 ```ts
-import { ObserverSpy } from '@hirez_io/observer-spy'
+import { subscribeSpyTo } from '@hirez_io/observer-spy'
 
 test('ObserverSpy', async () => {
   const source = timer(100, 10).pipe(toAlphabet(), takeWhile(Boolean))
-  const observerSpy = new ObserverSpy()
-  const _subscription = source.subscribe(observerSpy)
+  const observerSpy = subscribeSpyTo(source)
 
   await observerSpy.onComplete()
 
