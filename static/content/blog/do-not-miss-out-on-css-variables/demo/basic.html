@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+      :root {
+        --bgColor: teal;
+      }
+
+      html,
+      body {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 13px 47px;
+        box-sizing: border-box;
+        font-size: 2em;
+      }
+
+      div {
+        --bgColor: deeppink;
+        background: var(--bgColor);
+        padding: 25px;
+      }
+
+      header {
+        background: var(--bgColor);
+        color: var(--color, beige);
+        padding: 25px;
+      }
+
+      div {
+        margin-top: 5px;
+      }
+
+      code {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p>I'm the header</p>
+
+      My styles are:
+      <ul>
+        <li>the <code>bgColor</code> defined in <code>:root</code></li>
+        <li>
+          and I'm using the fallback <code>color</code> defined in
+          <code>header</code>
+        </li>
+      </ul>
+    </header>
+
+    <div>
+      <p>I'm a div</p>
+
+      My styles are:
+      <ul>
+        <li>
+          the <code>bgColor</code> defined in <code>div</code>, overriding
+          <code>:root</code>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

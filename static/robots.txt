@@ -1,0 +1,4 @@
+User-agent: *
+disallow:
+Host: https://timdeschryver.dev
+Sitemap: https://timdeschryver.dev/sitemap.xml
