@@ -1,47 +1,47 @@
-<script context="module">
-  export async function preload({ params }) {
-    const result = await this.fetch(`/blog.json`)
+<script context="module" lang="ts">
+  export async function preload() {
+    const result = await this.fetch(`/blog.json`);
     const posts = await result.json();
     return { posts };
   }
 </script>
 
-<script>
+<script lang="ts">
   // TODO: https://github.com/sveltejs/hn.svelte.dev/blob/secret-project/snowpack.config.js#L13 ?
   // import { stores } from '/_app/main/client';
-  import Head from '../../components/Head.svelte'
+  import Head from "../../components/Head.svelte";
   // import { stores } from '@sapper/app'
   // const { page } = stores()
 
-  export let posts
-  
+  export let posts;
+
   let tags = Object.entries(
     posts
       .map((p) => p.metadata.tags)
       .flat()
       .reduce((acc, tag) => {
-        acc[tag] = (acc[tag] || 0) + 1
-        return acc
-      }, {}),
+        acc[tag] = (acc[tag] || 0) + 1;
+        return acc;
+      }, {})
   )
     .sort(([v1, c1], [v2, c2]) => c2 - c1 || v2 - v1)
     .slice(0, 15)
-    .map(([v]) => v)
-  let filteredPosts = posts
-  let query =  '' //TODO:  $page.query['q'] || ''
-  $: queryParts = []
-  $: if (typeof window !== 'undefined') {
-    let params = new URLSearchParams(window.location.search)
+    .map(([v]) => v);
+  let filteredPosts = posts;
+  let query = ""; //TODO:  $page.query['q'] || ''
+  $: queryParts = [];
+  $: if (typeof window !== "undefined") {
+    let params = new URLSearchParams(window.location.search);
     if (query) {
-      params.set('q', query)
+      params.set("q", query);
       window.history.replaceState(
         window.history.state,
-        '',
-        `${location.pathname}?${params}`,
-      )
+        "",
+        `${location.pathname}?${params}`
+      );
     } else {
-      params.delete('q')
-      window.history.replaceState(window.history.state, '', location.pathname)
+      params.delete("q");
+      window.history.replaceState(window.history.state, "", location.pathname);
     }
   }
   $: if (query) {
@@ -50,24 +50,24 @@
         (q) =>
           p.metadata.tags.some((t) => match(t, q)) ||
           like(p.metadata.title, q) ||
-          like(p.metadata.description, q),
-      )
-    })
+          like(p.metadata.description, q)
+      );
+    });
   } else {
-    filteredPosts = posts
+    filteredPosts = posts;
   }
   function tagClicked(tag) {
     if (queryParts.includes(tag)) {
-      query = queryParts.filter((q) => q !== tag).join(' ')
+      query = queryParts.filter((q) => q !== tag).join(" ");
     } else {
-      query = query ? `${query.trim()} ${tag}` : tag
+      query = query ? `${query.trim()} ${tag}` : tag;
     }
   }
   function like(text, value) {
-    return text.match(new RegExp(value, 'i'))
+    return text.match(new RegExp(value, "i"));
   }
   function match(text, value) {
-    return text.match(new RegExp(`^${value}$`, 'i'))
+    return text.match(new RegExp(`^${value}$`, "i"));
   }
 </script>
 
@@ -84,12 +84,20 @@
   }
   h2 {
     margin-top: 0;
-    font-size: .9em;
+    font-size: 0.9em;
   }
   li {
     padding: 0.5em 0;
     border-bottom: 2px solid transparent;
     border-right: 3px solid transparent;
+    animation: slide-top 0.3s both;
+    animation-delay: calc(var(--i) * 0.05s);
+  }
+  @keyframes slide-top {
+    from {
+      transform: translateY(-50%);
+      opacity: 0;
+    }
   }
   li:first-child {
     margin-top: 0;
@@ -124,7 +132,7 @@
     aria-label="Search" />
   {#each tags as tag}
     <button
-      class:active={queryParts.some(q => match(q, tag))}
+      class:active={queryParts.some((q) => match(q, tag))}
       on:click={() => tagClicked(tag)}>
       {tag}
     </button>
@@ -132,11 +140,12 @@
 </div>
 
 <ul>
-  {#each filteredPosts as post}
-    <li>
+  {#each filteredPosts as post, i}
+    <li style="--i: {i}">
       <a rel="prefetch" href={`/blog/${post.metadata.slug}`}>
         <h2>{post.metadata.title}</h2>
-        <time datetime={post.metadata.humanDate}>{post.metadata.humanDate}</time>
+        <time
+          datetime={post.metadata.humanDate}>{post.metadata.humanDate}</time>
       </a>
     </li>
   {:else}Sorry, no posts matched your criteria...{/each}

@@ -10,7 +10,7 @@ bannerCredit: Photo by [Julius Drost](https://unsplash.com/@juliusdrost) on [Uns
 published: true
 ---
 
-Imagine having a form that you want to use at multiple places inside your application. The form will have the same layout but the validation will be different.
+Imaginaae having a form that you want to use at multiple places inside your application. The form will have the same layout but the validation will be different.
 
 In our case, this form is used in a multi-step procedure and in each step of the procedure the form gets more restrictive. Can you keep it [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)? We had this problem and came up with the following solution.
 
@@ -21,7 +21,7 @@ In the beginning, only the name is required. Later on, we're going to require th
 
 ```ts
 @Component({
-  selector: 'person',
+  selector: "person",
   template: `
     <div [formGroup]="form">
       <div>
@@ -39,16 +39,16 @@ In the beginning, only the name is required. Later on, we're going to require th
         <input type="text" formControlName="allergies" />
       </div>
 
-      <strong>{{ form.valid ? 'valid' : 'invalid' }}</strong>
+      <strong>{{ form.valid ? "valid" : "invalid" }}</strong>
     </div>
   `,
 })
 export class PersonComponent {
   form = this.formBuilder.group({
-    name: ['', Validators.required],
-    contactInfo: [''],
-    allergies: [''],
-  })
+    name: ["", Validators.required],
+    contactInfo: [""],
+    allergies: [""],
+  });
 
   constructor(private formBuilder: FormBuilder) {}
 }
@@ -62,11 +62,11 @@ By using an Angular directive we can inject the component's instance, which allo
 
 ```ts
 @Directive({
-  selector: 'person[stage-one]',
+  selector: "person[stage-one]",
 })
 export class StageOneDirective {
   constructor(host: PersonComponent) {
-    host.form.get('contactInfo').setValidators([Validators.required])
+    host.form.get("contactInfo").setValidators([Validators.required]);
   }
 }
 ```
@@ -78,12 +78,12 @@ We can use the same approach to create a stricter validation.
 
 ```ts
 @Directive({
-  selector: 'person[stage-two]',
+  selector: "person[stage-two]",
 })
 export class StageTwoDirective {
   constructor(host: PersonComponent) {
-    host.form.get('contactInfo').setValidators([Validators.required])
-    host.form.get('allergies').setValidators([Validators.required])
+    host.form.get("contactInfo").setValidators([Validators.required]);
+    host.form.get("allergies").setValidators([Validators.required]);
   }
 }
 ```

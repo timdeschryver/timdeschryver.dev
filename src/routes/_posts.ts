@@ -14,6 +14,8 @@ import Prism from "prismjs";
 // import "prismjs/components/prism-csharp";
 // import "prismjs/components/prism-sql";
 
+const ORIGIN = import.meta.env.SNOWPACK_PUBLIC_BASE_PATH;
+
 const langs = {
   bash: "bash",
   html: "markup",
@@ -29,10 +31,6 @@ const langs = {
   cs: "csharp",
   sql: "sql",
 };
-
-process.env.BLOG_PATH = "static/content/blog";
-process.env.SNIPPETS_PATH = "static/content/snippets";
-process.env.BASE_PATH = "http://localhost:3000";
 
 function highlightCode(lang, source, _options, _highlights) {
   try {
@@ -51,7 +49,7 @@ function highlightCode(lang, source, _options, _highlights) {
 }
 
 export function posts() {
-  const files = getFiles(process.env.BLOG_PATH, ".md");
+  const files = getFiles(import.meta.env.SNOWPACK_PUBLIC_BLOG_PATH, ".md");
   return files
     .map((file) => {
       const folder = dirname(file).split(sep).pop();
@@ -74,7 +72,7 @@ export function posts() {
           p ? p.trim().charAt(0).toUpperCase() + p.trim().slice(1) : p
         );
 
-      const banner = join(process.env.BASE_PATH, assetsSrc, metadata.banner)
+      const banner = join(ORIGIN, assetsSrc, metadata.banner)
         .replace(/\\/g, "/")
         .replace("/", "//");
 
@@ -106,7 +104,7 @@ export function posts() {
 }
 
 export function snippets() {
-  const files = getFiles(process.env.SNIPPETS_PATH, ".md");
+  const files = getFiles(import.meta.env.SNOWPACK_PUBLIC_SNIPPETS_PATH, ".md");
   return files
     .map((file) => {
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
@@ -126,19 +124,18 @@ export function snippets() {
               ? `<a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${process.env.BASE_PATH}/snippets/${metadata.slug}">Share</a>`
+                href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${ORIGIN}/snippets/${metadata.slug}">Share</a>`
               : "",
           ];
         },
       });
       const tags = metadata.tags.split(",").map((p) => (p ? p.trim() : p));
-      const image = `${process.env.BASE_PATH}/${metadata.image}`;
+      const image = `${ORIGIN}/${metadata.image}`;
 
       return {
         html,
         metadata: {
           ...metadata,
-          date: new Date(metadata.date),
           tags,
           image,
         },

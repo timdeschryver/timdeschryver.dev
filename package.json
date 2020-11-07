@@ -6,6 +6,7 @@
     "build": "svelte build"
   },
   "devDependencies": {
+    "@snowpack/plugin-dotenv": "^2.0.4",
     "@snowpack/plugin-typescript": "^1.1.0",
     "@sveltejs/adapter-node": "0.0.14",
     "@sveltejs/kit": "0.0.25",

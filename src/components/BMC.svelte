@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   // import { stores } from "@sapper/app";
   // const { page } = stores();
@@ -31,6 +31,7 @@
   //   }
   // }
 </script>
+
 <svelte:head>
   <script
     data-name="BMC-Widget"
@@ -42,6 +43,6 @@
     data-color="#FF813F"
     data-position="left"
     data-x_margin="18"
-    data-y_margin="18"
-  ></script>
+    data-y_margin="18">
+  </script>
 </svelte:head>

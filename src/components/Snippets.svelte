@@ -1,8 +1,10 @@
-<script>
+<script lang="ts">
   export let snippets;
 </script>
 
-{#each snippets as snippet, index} {@html snippet.html} {#if index <
-snippets.length - 1}
-<hr />
-{/if} {/each}
+{#each snippets as snippet, index}
+  {@html snippet.html}
+  {#if index < snippets.length - 1}
+    <hr />
+  {/if}
+{/each}

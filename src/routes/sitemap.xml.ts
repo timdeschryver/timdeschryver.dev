@@ -1,0 +1,68 @@
+import { posts } from "./_posts";
+
+export function get() {
+  return {
+    body: generate(posts()),
+    headers: {
+      "Content-Type": "application/xml",
+    },
+  };
+}
+
+function generate(allPosts: ReturnType<typeof posts>) {
+  const publishedPosts = allPosts.filter((post) => post.metadata.published);
+  const date = new Date().toISOString();
+  const nodes = [
+    {
+      loc: `${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}`,
+      priority: "1.0",
+      changefreq: "daily",
+    },
+    ...publishedPosts.map((post) => ({
+      loc: `${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/blog/${
+        post.metadata.slug
+      }`,
+      priority: "1.0",
+      changefreq: "daily",
+    })),
+    {
+      loc: `${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/blog`,
+      priority: "0.6",
+      changefreq: "daily",
+    },
+    {
+      loc: `${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/snippets`,
+      priority: "0.4",
+      changefreq: "weekly",
+    },
+    {
+      loc: `${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/resources/ngrx`,
+      priority: "0.2",
+      changefreq: "monthly",
+    },
+  ];
+
+  const urlNodes = nodes
+    .map((node) => {
+      return `
+       <url>
+         <loc>${node.loc}</loc>
+         <priority>${node.priority}</priority>
+         <changefreq>${node.changefreq}</changefreq>
+         <lastmod>${date}</lastmod>
+       </url>
+    `;
+    })
+    .join("\n");
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+      xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
+      xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+      xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    ${urlNodes}
+    </urlset>`;
+  return xml;
+}

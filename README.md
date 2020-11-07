@@ -1,41 +1,45 @@
-# create-svelte
+# timdeschryver.dev
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+## Included
 
-## Creating a project
+- dynamic css variables (and theme)
+- syntax highlighting
+- env variables
+- rss feed
+- sitemap
+- google analytics
 
-If you're seeing this, you've probably already done this step. Congrats!
+## TODO
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+- create proper TS types
+- release
+- prettier
+- linting ?
 
-# create a new project in my-app
-npm init svelte@next my-app
-```
+## Broken
 
-> Note: the `@next` is temporary
+- search (needs `@sapper/app` to access param via `stores`)
+- BMC (needs `@sapper/app` to access param via `stores`)
+- line highlighting (prism throws errors)
+- build `npm run build` (this seems to also be broken for new inits with `@sveltejs/adapter-node`)
 
+## Differences
 
-## Developing
+- layout file renamed from `_layout.svelte` to `$layout.svelte`
+- renamed sapper tags to svelte tags e.g. `%sapper.body%` to `%svelte.body%`
+- moved `#sapper` container from `app.html` to `$layout.svelte` because it was getting removed and only the `%svelte.body%` tag was rendered
+- moved `content` to `static/content` to access the images without having to copy the content on build
+- moved to TypeScript, added `lang="ts"` to each script
+- fetch needs need a prefixing slash, otherwise it just appends to the current URL, before `blog/${params.slug}.json` now `/blog/${params.slug}.json`
+- replaced `process.env` with `import.meta.env.`. All variables need to be prefixed with `SNOWPACK_PUBLIC_` and the package `@snowpack/plugin-dotenv` needs to be installed. https://github.com/snowpackjs/snowpack/tree/master/plugins/plugin-dotenv#readme
+- rewrote sitemap to not have the same property in different nodes within the template string (throws "date_importmeta is not defined")
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Questions
 
-```bash
-npm run dev
+- how to run changes to "API" without having to restart
+- how to reload when md is changed
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Removed
 
-
-## Building
-
-Svelte apps are built with *adapters*, which optimise your project for deployment to different environments, like [Begin](https://begin.com), [Netlify](https://www.netlify.com), [Vercel](https://vercel.com) and so on. (You can also create your own adapter — instructions TODO.)
-
-By default, `npm run build` will generate a Node app that you can run with `node build`. To use a different adapter, install it and update your `svelte.config.js` accordingly. The following official adapters are available:
-
-* [@sveltejs/adapter-node](https://github.com/sveltejs/kit/tree/master/packages/adapter-node)
-* [@sveltejs/adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static)
-* [@sveltejs/adapter-netlify](https://github.com/sveltejs/kit/tree/master/packages/adapter-netlify)
-* ...more soon
+- send me a message
+- graphql

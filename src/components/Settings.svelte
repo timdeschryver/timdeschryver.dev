@@ -1,7 +1,6 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   let colorPrime;
-  let colorText;
   let colorBg;
   let codeTheme;
   $: dispatchColor("--prime-color", colorPrime);
@@ -67,13 +66,13 @@
 
 <div class="settings">
   <label for="accent">Accent color</label>
-  <input id="accent" type="color" bind:value="{colorPrime}" />
+  <input id="accent" type="color" bind:value={colorPrime} />
 
   <label for="bg">Background color</label>
-  <input id="bg" type="color" bind:value="{colorBg}" />
+  <input id="bg" type="color" bind:value={colorBg} />
 
   <label for="theme">Theme</label>
-  <select id="theme" bind:value="{codeTheme}">
+  <select id="theme" bind:value={codeTheme}>
     <option value="custom">Custom</option>
     <option value="night-owl">Night Owl</option>
     <option value="atom-dark">Atom Dark</option>
