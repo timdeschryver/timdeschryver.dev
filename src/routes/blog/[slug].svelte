@@ -7,6 +7,7 @@
 </script>
 
 <script lang="ts">
+  import Support from "../../components/Support.svelte";
   export let post;
 </script>
 
@@ -68,7 +69,16 @@
 
 {@html post.html}
 
+<Support />
+
 <div class="article-actions">
+  <a
+    class="article-action"
+    target="_blank"
+    rel="nofollow noreferrer"
+    href="https://www.paypal.com/donate?hosted_button_id=59M5TFPQJS8SQ">
+    Support the blog
+  </a>
   <a
     class="article-action"
     target="_blank"

@@ -20,8 +20,8 @@
     "gatsby-remark-prismjs": "^3.5.10",
     "gatsby-transformer-remark": "^2.8.28",
     "marked": "^1.1.1",
+    "node-fetch": "^2.6.1",
     "prismjs": "^1.21.0",
-    "remark": "^12.0.1",
-    "sync-fetch": "^0.3.0"
+    "remark": "^12.0.1"
   }
 }

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { afterUpdate } from "svelte";
   import Settings from "../components/Settings.svelte";
-  // import BMC from '../components/BMC.svelte'
   export let segment;
   let toggleSettings = false;
   afterUpdate(() => {
@@ -151,7 +150,7 @@
           0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
         </svg>
       </a>
-      <a href="newsletter">
+      <a href="/newsletter">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="48"
@@ -196,7 +195,7 @@
           </g>
         </svg>
       </a>
-      <a href="blog/rss.xml">
+      <a href="/blog/rss.xml">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -217,5 +216,3 @@
     </footer>
   {/if}
 </div>
-
-<!-- <BMC></BMC> -->

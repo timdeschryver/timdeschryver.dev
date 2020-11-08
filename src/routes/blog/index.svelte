@@ -7,11 +7,8 @@
 </script>
 
 <script lang="ts">
-  // TODO: https://github.com/sveltejs/hn.svelte.dev/blob/secret-project/snowpack.config.js#L13 ?
-  // import { stores } from '/_app/main/client';
   import Head from "../../components/Head.svelte";
-  // import { stores } from '@sapper/app'
-  // const { page } = stores()
+  import { page } from "@sveltejs/kit/assets/runtime/stores";
 
   export let posts;
 
@@ -28,8 +25,8 @@
     .slice(0, 15)
     .map(([v]) => v);
   let filteredPosts = posts;
-  let query = ""; //TODO:  $page.query['q'] || ''
-  $: queryParts = [];
+  let query = $page.query["q"] || "";
+  $: queryParts = query.split(" ");
   $: if (typeof window !== "undefined") {
     let params = new URLSearchParams(window.location.search);
     if (query) {
@@ -118,6 +115,10 @@
     transition: opacity 300ms;
     cursor: pointer;
     font-size: 0.65rem;
+  }
+
+  button.active {
+    filter: brightness(120%) saturate(120%) !important;
   }
 </style>
 

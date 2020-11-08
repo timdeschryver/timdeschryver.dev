@@ -13,9 +13,13 @@
 <Head title="Tim Deschryver" />
 
 <section class="intro">
-  <a href="https://timdeschryver.dev/twitter" class="social-link">Twitter</a>
+  <a
+    href={`${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/twitter`}
+    class="social-link">Twitter</a>
   |
-  <a href="https://timdeschryver.dev/github" class="social-link">GitHub</a>
+  <a
+    href={`${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/github`}
+    class="social-link">GitHub</a>
 </section>
 
 <a href="sitemap.xml" style="display:none; visibility:hidden">sitemap.xml</a>

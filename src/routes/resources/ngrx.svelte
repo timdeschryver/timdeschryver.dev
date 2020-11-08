@@ -144,19 +144,25 @@
   <meta name="title" content="Resouces: NgRx" />
   <meta name="description" content="NgRx Resources I share a lot" />
   <meta name="keywords" content="NgRx, Resources" />
-  <meta name="image" content="https://timdeschryver.dev/images/ngrx.png" />
+  <meta
+    name="image"
+    content={`${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/images/ngrx.png`} />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="https://timdeschryver.dev/images/ngrx.png" />
+    content={`${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/images/ngrx.png`} />
   <meta name="twitter:title" content="NgRx Resources" />
   <meta name="twitter:description" content="NgRx Resources I share a lot" />
-  <meta name="og:url" content="https://timdeschryver.dev/resources/ngrx" />
+  <meta
+    name="og:url"
+    content={`${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/resources/ngrx`} />
   <meta name="og:title" content="Resouces: NgRx" />
   <meta name="og:description" content="NgRx Resources I share a lot" />
   <meta name="og:type" content="article" />
-  <meta name="og:image" content="https://timdeschryver.dev/images/ngrx.png" />
+  <meta
+    name="og:image"
+    content={`${import.meta.env.SNOWPACK_PUBLIC_BASE_PATH}/images/ngrx.png`} />
 </svelte:head>
 
 <h1>NgRx Resources</h1>

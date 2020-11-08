@@ -2,6 +2,7 @@ import { readdirSync, lstatSync, readFileSync } from "fs";
 import { join, extname, dirname, sep } from "path";
 import marked from "marked";
 import Prism from "prismjs";
+// import fetch from "node-fetch";
 
 // import highlightCode from "gatsby-remark-prismjs/highlight-code";
 // import "prismjs/components/prism-bash";
@@ -52,7 +53,6 @@ export function posts() {
   const files = getFiles(import.meta.env.SNOWPACK_PUBLIC_BLOG_PATH, ".md");
   return files
     .map((file) => {
-      const folder = dirname(file).split(sep).pop();
       const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
         createAnchorAndFragment: (_level, metadata, text) => {
           const anchorRegExp = /{([^}]+)}/g;
@@ -61,7 +61,7 @@ export function posts() {
             ? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
             : slugify(text);
 
-          return { anchor: `blog/${metadata.slug}#${fragment}`, fragment };
+          return { anchor: `#${fragment}`, fragment };
         },
       });
 
@@ -84,6 +84,7 @@ export function posts() {
           published,
           tags,
           banner,
+          canonical_url: `${ORIGIN}/blog/${metadata.slug}`,
         },
       };
     })
@@ -111,7 +112,7 @@ export function snippets() {
         createAnchorAndFragment: (level, metadata) =>
           level == 2
             ? {
-                anchor: `snippets/${metadata.slug}`,
+                anchor: `/snippets/${metadata.slug}`,
                 fragment: metadata.slug,
               }
             : {},
@@ -156,12 +157,13 @@ function parseFileToHtmlAndMeta(
   const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
   renderer.link = (href, title, text) => {
-    // if (tweetRegexp.test(href)) {
-    //   const fetchResult = syncFetch(
-    //     `https://publish.twitter.com/oembed?url=${href}&align=center`
-    //   ).json();
-    //   return `<div>${fetchResult.html}</div>`;
-    // }
+    if (tweetRegexp.test(href)) {
+      // TODO: Cannot read property 'bind' of undefined
+      // const fetchResult = await fetch(
+      //   `https://publish.twitter.com/oembed?url=${href}&align=center`
+      // ).then((p) => p.json());
+      // return `<div>${fetchResult.html}</div>`;
+    }
 
     const basePath = dirname(file).split(sep).splice(1, 2).join("/");
     const href_attr = href.startsWith("#")
