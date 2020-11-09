@@ -41,6 +41,16 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
 
     <title>Tim Deschryver</title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+    </script>
+
     %sapper.scripts% %sapper.styles% %sapper.head%
   </head>
   <body data-theme="custom">
