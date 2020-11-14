@@ -259,5 +259,4 @@ I only scratched the surface, if you're also interested (like me) in learning mo
 - [Processing Pipelines Series - Concepts](https://jack-vanlightly.com/blog/2018/4/17/processing-pipelines-series-introduction)
 - [Data Processing Pipelines with TPL Dataflow in C# .NET Core](https://blog.wedport.co.uk/2020/06/22/data-processing-pipelines-with-tpl-dataflow-in-c-net-core/)
 - [15 Years of Concurrency](http://joeduffyblog.com/2016/11/30/15-years-of-concurrency/)
-  SNOWPACK_PUBLIC_GA_TRACKING_ID="G-WDVF05W5J9"
 - [Rx.Net](https://github.com/dotnet/reactive)
