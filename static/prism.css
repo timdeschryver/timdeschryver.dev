@@ -26,7 +26,6 @@ pre[class*='language-'] {
 }
 
 pre[class*='language-'] {
-  overflow: auto;
   position: relative;
 }
 
@@ -55,7 +54,9 @@ code[class*='language-'] {
 
 pre[class*='language-'] .line-highlight {
   background: rgba(0, 0, 0, 0.3);
-  border-left: 0.5em solid rgba(0, 0, 0, 0.45);
+  position: relative;
+  left: -4px;
+  border-left: 6px solid var(--prime-color);
   display: block;
   margin: 0px -1em;
   padding: 0px 0.5em;
@@ -63,10 +64,10 @@ pre[class*='language-'] .line-highlight {
 
 pre[class*='language-'] > .code-heading {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   padding: 0.2em 0.4em;
   font-family: var(--text-font);
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   position: absolute;
   height: var(--font-size);
   top: 0;

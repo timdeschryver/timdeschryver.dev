@@ -143,6 +143,8 @@
 
 {@html post.html}
 
+<hr/>
+
 <p>
   Please consider supporting me if have you enjoyed this post and found it
   useful:

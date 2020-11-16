@@ -209,7 +209,7 @@ function parseFileToHtmlAndMeta(
     const codeBlock = `<code tabindex="0">${highlighted}</code>`
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean)
     const heading = headingParts.length
-      ? `<div class="code-heading">${headingParts.join('•')}</div>`
+      ? `<div class="code-heading">${headingParts.join(' • ')}</div>`
       : ''
     return `<pre class='language-${prismLanguage}'>${heading}${codeBlock}</pre>`
   }
