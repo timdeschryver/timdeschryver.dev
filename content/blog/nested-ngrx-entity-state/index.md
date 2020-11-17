@@ -30,7 +30,7 @@ If you're already familiar with it, feel free to skip this section and go to [Ne
 
 NgRx Entity allows you to manage a collection of entities that have the same type, duh!
 
-> Entity provides an API to manipulate and query entity collections.<br/> > &emsp;• **Reduces boilerplate** for creating reducers that manage a collection of models.<br/> > &emsp;• Provides **performant CRUD operations** for managing entity collections.<br/> > &emsp;• Extensible type-safe adapters for **selecting entity information**.
+> Entity provides an API to manipulate and query entity collections.<br/> &emsp;• **Reduces boilerplate** for creating reducers that manage a collection of models.<br/> &emsp;• Provides **performant CRUD operations** for managing entity collections.<br/> &emsp;• Extensible type-safe adapters for **selecting entity information**.
 
 To use NgRx Entity, you first must define an adapter for a specific type.
 In the snippet below, we're creating an adapter for `Customer` to manage a collection of customers.
