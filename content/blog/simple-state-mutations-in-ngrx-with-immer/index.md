@@ -219,7 +219,7 @@ ctx.setState(
 
 This post is meant to be a short introduction to Immer and to spread the word to the NGXS community (and also to score some points with [Austin](https://twitter.com/amcdnl) of course 😃). If you like what you’re seeing and want some more details or if you’re interested on how Immer works, there are some useful resources below.
 
-The code from the cart example can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer/tree/ngxs-immer) or directly on [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-immer/tree/ngxs-immer).
+The code from the cart example can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer-example/tree/ngxs-immer) or directly on [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-immer/tree/ngxs-immer).
 
 ## More resources
 

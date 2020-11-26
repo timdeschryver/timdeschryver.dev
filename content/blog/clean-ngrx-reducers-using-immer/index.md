@@ -168,7 +168,7 @@ Simply put, I like it. But this doesn’t mean I’ll use it everywhere (hint, t
 
 This post is meant to be a short introduction to Immer and to spread the word to the NgRx community. If you like what you’re seeing and want some more details or if you’re interested on how it’s working there are some useful resources below.
 
-The code can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer) or directly on [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-immer).
+The code can be found on [GitHub](https://github.com/timdeschryver/ngrx-immer-example) or directly on [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-immer).
 
 ## More resources
 

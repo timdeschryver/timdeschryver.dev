@@ -189,4 +189,4 @@ export const customersReducer = createReducer(
 
 You can play around with the example code from this post in the following StackBlitz.
 
-<iframe src="https://stackblitz.com/edit/ngrx-nested-entity?file=src/app/customers.reducer.ts?ctl=1&embed=1" title="ngrx-nested-entity" loading="lazy"></iframe>
+<iframe src="https://stackblitz.com/edit/ngrx-nested-entity?file=src/app/customers.reducer.ts&ctl=1&embed=1" title="ngrx-nested-entity" loading="lazy"></iframe>

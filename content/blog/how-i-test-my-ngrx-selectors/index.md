@@ -91,7 +91,7 @@ export const getCartSummary = createSelector(getAllCartSummary, (cart) =>
 )
 ```
 
-If you’re interested in the whole application you can take a look at the [GitHub repository](https://github.com/timdeschryver/ngrx-immer/tree/ngrx).
+If you’re interested in the whole application you can take a look at the [GitHub repository](https://github.com/timdeschryver/ngrx-immer-example/tree/ngrx).
 
 ## Update
 
