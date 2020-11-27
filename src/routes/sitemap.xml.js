@@ -18,13 +18,14 @@ async function generate(req) {
         posts(published: true) {
           metadata {
             slug
+            modified
           }
         }
       }
     `,
   })
 
-  const lastMod = `<lastmod>${new Date().toISOString()}</lastmod>`
+  const globalLastMod = `<lastmod>${new Date().toISOString()}</lastmod>`
   return `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
     xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" 
@@ -36,27 +37,27 @@ async function generate(req) {
       <loc>${process.env.BASE_PATH}</loc>
       <priority>1.0</priority>
       <changefreq>daily</changefreq>
-      ${lastMod}
+      ${globalLastMod}
     </url>
     <url>
       <loc>${process.env.BASE_PATH}/snippets</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
-      ${lastMod}
+      ${globalLastMod}
     </url>
     <url>
       <loc>${process.env.BASE_PATH}/blog</loc>
       <changefreq>daily</changefreq>
       <priority>0.6</priority>
-      ${lastMod}
+      ${globalLastMod}
     </url>
     ${response.data.posts
       .map(
-        post => `<url>
+        (post) => `<url>
           <loc>${process.env.BASE_PATH}/blog/${post.metadata.slug}</loc>
           <changefreq>daily</changefreq>
           <priority>0.8</priority>
-          ${lastMod}
+          <lastmod>${new Date(post.metadata.modified).toISOString()}</lastmod>
         </url>`,
       )
       .join('\n')}
@@ -64,7 +65,7 @@ async function generate(req) {
       <loc>${process.env.BASE_PATH}/resources/ngrx</loc>
       <changefreq>monthly</changefreq>
       <priority>0.1</priority>
-      ${lastMod}
+      ${globalLastMod}
     </url>
   </urlset>`
 }

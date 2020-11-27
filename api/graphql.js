@@ -4,6 +4,7 @@ var apolloServerMicro = require('apollo-server-micro');
 var gql = require('graphql-tag');
 var fs = require('fs');
 var path = require('path');
+var child_process = require('child_process');
 var marked = require('marked');
 var highlightCode = require('gatsby-remark-prismjs/highlight-code');
 require('prismjs/components/prism-bash');
@@ -41,6 +42,7 @@ const typeDefs = gql__default['default']`
     description: String
     author: String
     date(displayAs: String): String
+    modified(displayAs: String): String
     tags: [String]
     banner: String
     bannerCredit: String
@@ -69,14 +71,14 @@ const resolvers = {
       const filteredPosts =
         published === null || published === undefined
           ? posts
-          : posts.filter(post => post.metadata.published === published);
+          : posts.filter((post) => post.metadata.published === published);
 
       return filteredPosts.filter(
         (_, i) => i < (first || Number.MAX_SAFE_INTEGER),
       )
     },
     post: (_parent, { slug }, { posts }) =>
-      posts.find(post => post.metadata.slug === slug),
+      posts.find((post) => post.metadata.slug === slug),
 
     snippets: (_parent, _args, { snippets }) => {
       return snippets
@@ -88,6 +90,7 @@ const resolvers = {
   },
   PostMetadata: {
     date,
+    modified,
     canonical_url(metadata) {
       return (
         metadata.canonical_url ||
@@ -125,6 +128,16 @@ function date(metadata, { displayAs }) {
     : metadata.date.toString()
 }
 
+function modified(metadata, { displayAs }) {
+  return displayAs === 'human'
+    ? new Date(metadata.modified).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      })
+    : metadata.modified.toString()
+}
+
 const langs = {
   bash: 'bash',
   html: 'markup',
@@ -158,6 +171,7 @@ function posts() {
         },
       });
 
+      const modified = getLastModifiedDate(file);
       const published = metadata.published === 'true';
       const tags = metadata.tags
         .split(',')
@@ -178,6 +192,7 @@ function posts() {
           published,
           tags,
           banner,
+          modified,
         },
       }
     })
@@ -322,7 +337,7 @@ function parseFileToHtmlAndMeta(
     const codeBlock = `<code tabindex="0">${highlighted}</code>`;
     const headingParts = [file, ...createHeadingParts(metadata)].filter(Boolean);
     const heading = headingParts.length
-      ? `<div class="code-heading">${headingParts.join('•')}</div>`
+      ? `<div class="code-heading">${headingParts.join(' • ')}</div>`
       : '';
     return `<pre class='language-${prismLanguage}'>${heading}${codeBlock}</pre>`
   };
@@ -411,6 +426,16 @@ function slugify(string) {
 
 function sortByDate(a, b) {
   return a.metadata.date < b.metadata.date ? 1 : -1
+}
+
+function getLastModifiedDate(filePath) {
+  const buffer = child_process.execSync(`git log -1 --pretty="format:%ci" ${filePath}`);
+
+  if (!buffer) {
+    return null
+  }
+
+  return buffer.toString().trim()
 }
 
 const apolloServerConfig = {

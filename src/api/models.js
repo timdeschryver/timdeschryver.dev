@@ -1,5 +1,6 @@
 import { readdirSync, lstatSync, readFileSync } from 'fs'
 import { join, extname, dirname, sep } from 'path'
+import { execSync } from 'child_process'
 import marked from 'marked'
 import highlightCode from 'gatsby-remark-prismjs/highlight-code'
 import 'prismjs/components/prism-bash'
@@ -45,6 +46,7 @@ export function posts() {
         },
       })
 
+      const modified = getLastModifiedDate(file)
       const published = metadata.published === 'true'
       const tags = metadata.tags
         .split(',')
@@ -65,6 +67,7 @@ export function posts() {
           published,
           tags,
           banner,
+          modified,
         },
       }
     })
@@ -298,4 +301,14 @@ function slugify(string) {
 
 function sortByDate(a, b) {
   return a.metadata.date < b.metadata.date ? 1 : -1
+}
+
+function getLastModifiedDate(filePath) {
+  const buffer = execSync(`git log -1 --pretty="format:%ci" ${filePath}`)
+
+  if (!buffer) {
+    return null
+  }
+
+  return buffer.toString().trim()
 }

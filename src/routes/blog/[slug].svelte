@@ -108,6 +108,10 @@
     vertical-align: middle;
     margin-right: 1em;
   }
+
+  .time-heading {
+    margin-top: 0;
+  }
 </style>
 
 <svelte:head>
@@ -139,11 +143,17 @@
 </svelte:head>
 
 <h1>{post.metadata.title}</h1>
-<time datetime="{post.metadata.date}">{post.metadata.date}</time>
+<div class="time-heading">
+  <time datetime="{post.metadata.date}">{post.metadata.date}</time>
+  {#if post.metadata.modified !== post.metadata.date}
+    <span class="time"> | Modified on</span>
+    <time datetime="{post.metadata.modified}">{post.metadata.modified}</time>
+  {/if}
+</div>
 
 {@html post.html}
 
-<hr/>
+<hr />
 
 <p>
   Please consider supporting me if have you enjoyed this post and found it

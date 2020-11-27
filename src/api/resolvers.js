@@ -4,14 +4,14 @@ export const resolvers = {
       const filteredPosts =
         published === null || published === undefined
           ? posts
-          : posts.filter(post => post.metadata.published === published)
+          : posts.filter((post) => post.metadata.published === published)
 
       return filteredPosts.filter(
         (_, i) => i < (first || Number.MAX_SAFE_INTEGER),
       )
     },
     post: (_parent, { slug }, { posts }) =>
-      posts.find(post => post.metadata.slug === slug),
+      posts.find((post) => post.metadata.slug === slug),
 
     snippets: (_parent, _args, { snippets }) => {
       return snippets
@@ -23,6 +23,7 @@ export const resolvers = {
   },
   PostMetadata: {
     date,
+    modified,
     canonical_url(metadata) {
       return (
         metadata.canonical_url ||
@@ -58,4 +59,14 @@ function date(metadata, { displayAs }) {
         day: '2-digit',
       })
     : metadata.date.toString()
+}
+
+function modified(metadata, { displayAs }) {
+  return displayAs === 'human'
+    ? new Date(metadata.modified).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+      })
+    : metadata.modified.toString()
 }

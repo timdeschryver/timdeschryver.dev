@@ -19,6 +19,7 @@ export const typeDefs = gql`
     description: String
     author: String
     date(displayAs: String): String
+    modified(displayAs: String): String
     tags: [String]
     banner: String
     bannerCredit: String

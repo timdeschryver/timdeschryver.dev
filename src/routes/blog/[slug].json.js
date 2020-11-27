@@ -16,6 +16,7 @@ export async function get(req, res) {
             tags
             folder
             date(displayAs: "human")
+            modified(displayAs: "human")
           }
         }
       }
