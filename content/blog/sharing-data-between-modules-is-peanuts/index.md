@@ -165,6 +165,7 @@ As you can already see in the examples above sharing data between modules can be
 - components aren’t tightly coupled with the state tree anymore, making it easier to modify the state tree structure
 
 Keep in mind that if a feature module is being lazy loaded, that in order to select the data, the module must have been loaded.
+We can use a [custom preloading strategy](/blog/preload-lazy-loaded-modules-based-on-user-roles) to load specific lazy loaded modules on the start up.
 
 If you want to see the project, you can take a look at the [GitHub repo](https://github.com/timdeschryver/ngrx-family-grocery-list), or play with it in [StackBlitz](https://stackblitz.com/github/timdeschryver/ngrx-family-grocery-list).
 

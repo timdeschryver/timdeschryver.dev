@@ -42,9 +42,7 @@ cd my-awesome-app npm start
 
 When we navigate to [http://localhost:4200](http://localhost:4200) we should see our application.
 
-![](./images/0.png)
-
-the default Angular startup screen
+![the default Angular startup screen](./images/0.png)
 
 So far so good, let’s also run the tests
 
@@ -52,15 +50,11 @@ npm test
 
 This should open a new browser window and our tests should run. Don’t worry if one test is failing, this is working as intended.
 
-![](./images/1.png)
-
-two tests are succeeding and one is failing from the startup template
+![two tests are succeeding and one is failing from the startup template](./images/1.png)
 
 Before we’re going to use Jest as our test runner, let’s fix this failing test so we can start with a clean slate. To fix the failing test, change the `title` inside the `AppComponent` to “my-awesome-app”. Because we’ve changed our title we should also change the corresponding test, this means changing the “should have as title ‘app’” test description to “should have as title ‘my-awesome-app’” and change the assertion that our title should be “app”, to be “my-awesome-app”. If we did everything right, all tests should pass.
 
-![](./images/2.png)
-
-all 3 tests are succeeding
+![all 3 tests are succeeding](./images/2.png)
 
 ## Adding Jest
 
@@ -97,9 +91,7 @@ If we now run `npm test`, our tests are using the Jest runner and better yet eve
 
 > With minimal effort we can integrate Jest within our Angular project!
 
-![](./images/3.png)
-
-all 3 tests are still succeeding
+![all 3 tests are still succeeding](./images/3.png)
 
 I think now would be the perfect time to remove all the [Karma](https://github.com/karma-runner/karma) dependencies and configuration files, just to have our project cleaner. We can remove all the Karma dependencies with the following command
 
@@ -123,9 +115,7 @@ Because we’ve refactored our tests by using the Jest syntax, we could also rem
 
 If we re-run the tests, everything should still turn up green.
 
-![](./images/4.png)
-
-all 3 tests are still succeeding
+![all 3 tests are still succeeding](./images/4.png)
 
 > After this post was written, someone pointed me to [briebug/jest-schematics](https://github.com/briebug/jest-schematic), which is an schematic that does all these steps above for your. If you run `` `ng add @briebug/jest``` it adds and configures jest-preset-angular and removes the karma dependencies and files. This means you don’t have to do a single thing!
 
@@ -151,9 +141,7 @@ test(’it creates my component’, () => {
 
 With this change we can test our library with the same script as our application, which is `npm test`. If we run this script we can see that both of our spec files are being picked up by Jest, and that the tests are passing.
 
-![](./images/5.png)
-
-the tests from the application as well as the library are succeeding
+![the tests from the application as well as the library are succeeding](./images/5.png)
 
 Before we can use our library inside of our application we have to build it first. This can be done by adding a build script inside the `package.json` from our application. I would also suggest to rename the default build script from `build` to `build:app`, so it is always clear what you’re building.
 
@@ -164,9 +152,7 @@ Before we can use our library inside of our application we have to build it firs
 
 By using the created script `npm run build:lib`, we can build the library.
 
-![](./images/6.png)
-
-the library is being build
+![the library is being build](./images/6.png)
 
 > As we can see, it builds our library inside the dist folder. This is also the folder where the `paths` created by the Angular CLI inside `tsconfig.json` are pointing at.
 
@@ -191,9 +177,7 @@ export class AppModule {}
 
 And now we can use our library’s component inside our `AppComponent` template by adding `<lib-my-awesome-lib></lib-my-awesome-lib>` in the html markup. If we start our application we can see our library component.
 
-![](./images/7.png)
-
-the library component is being rendered inside our application
+![the library component is being rendered inside our application](./images/7.png)
 
 With our application working let’s re-run our tests to make sure we didn’t break anything. And of course… our application tests are failing because we didn’t import our `MyAwesomeLibModule` into the `TestBed`. So just like in our `AppModule` we can add `MyAwesomeLibModule` as an import.
 
@@ -208,9 +192,7 @@ TestBed.configureTestingModule({
 
 With this in place our tests will be green again, right? Well not exactly, when we run our tests we get the following error
 
-![](./images/8.png)
-
-the application tests are failing because there exists several different files, or packages with the name my-awesome-lib
+![the application tests are failing because there exists several different files, or packages with the name my-awesome-lib](./images/8.png)
 
 ## Splitting up Jest
 
@@ -260,15 +242,11 @@ With the Jest config files created we can use the `—-config` flag to let Jest 
 "test:app": "jest --config ./jest.app.config.js",
 ```
 
-![](./images/9.png)
-
-with the command npm run test:lib, only the library tests ran and are succeeding,
+![with the command npm run test:lib, only the library tests ran and are succeeding](./images/9.png)
 
 But we’re not there yet. While our library tests are succeeding, our application tests are still failing.
 
-![](./images/10.png)
-
-with the command: npm run test:app, only the application tests ran but are failing,
+![with the command: npm run test:app, only the application tests ran but are failing](./images/10.png)
 
 If we take a look at the error message, we can see that Jest is having some troubles to find our library. In order to fix this we’ll have to re-open the Jest configuration `jest.app.config`, and we have to let Jest know where it can find our library by using the `modulePaths` property.
 
@@ -283,9 +261,7 @@ module.exports = {
 }
 ```
 
-![](./images/11.png)
-
-with the command: npm run test:app, only the applications tests ran and are succeeding this time
+![with the command: npm run test:app, only the applications tests ran and are succeeding this time](./images/11.png)
 
 And voila, our tests finally show up green.
 
@@ -299,7 +275,7 @@ To make it ourselves easy we can create a command that test both our library and
 "test:app": "jest --config ./jest.app.config.js",
 ```
 
-![](./images/12.gif)
+![See it in action](./images/12.gif)
 
 As last note I want to quickly mention that it’s also a possibility to use Jest and Jasmine side-by-side. For example you can keep using Jasmine for your existing code base and use Jest when you create a new library.
 
