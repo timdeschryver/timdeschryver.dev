@@ -60,7 +60,7 @@ The next step is to create the `.pa11yci` config file. This file contains the c
     "wait": 2000,
     "ignore": ["notice"]
   },
-  "urls": ["[http://localhost:4000](http://localhost:4000)"]
+  "urls": ["http://localhost:4000"]
 }
 ```
 

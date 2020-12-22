@@ -313,6 +313,76 @@ This gives us the following flow of the refactored pipeline:
 
 ![How the pipeline reacts to the last commit](./images/run.png)
 
+### Only run affected Cypress tests
+
+A few weeks after I wrote this blog post, I encountered the blog post, [Test grepping in Cypress using Module API](https://filiphric.com/test-grepping-in-cypress), written by [Filip Hric](https://twitter.com/filip_hric/). In this post, Filip explains how to run specific Cypress tests by using the `cypress.run()` method.
+
+Based on his knowledge, I changed the default `cypress run` command to a custom implementation that only runs the affected tests based on the `Marker.AffectedProjects` variable that we set in the release pipeline.
+
+I came up with the following script that maps affected projects to the Cypress tests. The Cypress test are grouped per feature in a directory.
+
+```js:run-affected-cypress-tests.js
+const cypress = require('cypress')
+
+// Read the affected projects
+const [projectsArg] = process.argv.slice(2)
+const affectedProjects = (projectsArg || '').split(';').filter(Boolean)
+
+// A mapping to map which projects affect a specific feature
+const affectedProjectsToE2E = {
+  FeatureA: {
+    projects: ['BackendProject01', 'FrontendProject01'],
+    directories: ['feature-a'],
+  },
+  FeatureB: {
+    projects: ['BackendProject02', 'FrontendProject01'],
+    directories: ['feature-b'],
+  },
+}
+
+// Filter features based on affected projected argument
+const affectedDirectories = Object.values(affectedProjectsToE2E).reduce(
+  (e2eToRun, e2eGroup) => {
+    if (
+      affectedProjects.length === 0 ||
+      e2eGroup.projects.some((p) => affectedProjects.includes(p))
+    ) {
+      return [...e2eToRun, ...e2eGroup.directories]
+    }
+
+    return e2eToRun
+  },
+  [],
+)
+
+console.log('Running following E2E tests ' + affectedDirectories.join(';'))
+
+// Run cypress for specific features (grouped in directories)
+cypress.run({
+  spec: affectedDirectories.map(
+    (directory) => `./cypress/integration/${directory}/*.ts`,
+  ),
+})
+```
+
+The yaml file to run the Cypress tests is straightforward, we use the np, task to run the `run-affected-cypress-tests.js` script and we pass it the affected projects as an argument.
+
+```yml{6,13}:e2e-tests.yml
+jobs:
+  - job: Run_E2E_Tests
+    displayName: Run Affected E2E Tests
+    variables:
+      retries: 1
+      AffectedProjects: $[stageDependencies.ProjectMarker.Mark.outputs['Marker.AffectedProjects']]
+    steps:
+      - task: Npm@1
+        displayName: 'Run E2E'
+        inputs:
+          command: custom
+          workingDir: '$(Pipeline.Workspace)\Artifacts\E2E'
+          customCommand: 'node run-affected-cypress-tests.js -- $(AffectedProjects)'
+```
+
 ### Conclusion
 
 The trick to making your CI/CD pipeline faster is to lower the amount of work.
@@ -352,3 +422,5 @@ Our latest run, with affected 2 projects, took 23 minutes in total, which is mor
 As you can see, the test stage takes up most of the time, 20 minutes, or 85% of the total time.
 We could try to make this stage smarter and only run certain tests, but this will take more time to implement and to maintain.
 I also don't want to cut into these end-to-end tests because they prevent regression and they make sure that our software is working.
+
+With the modified test stage ([Only run affected Cypress tests](#only-run-affected-cypress-tests)), we managed to spare another 14 minutes.
