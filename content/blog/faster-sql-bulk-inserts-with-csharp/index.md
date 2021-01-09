@@ -321,6 +321,13 @@ By using a [SQL Bulk Copy](#sql-bulk-copy) in our migration, we've won many hour
 If you know another way to insert a hundred-thousands of records in a fast way, feel free to send me a DM at [@tim_deschryver](/twitter).
 I'd love to hear and learn from you.
 
+Recommendations from our community:
+
+- [C# Bulk Operations](https://bulk-operations.net/)
+- [Dapper Plus](https://dapper-plus.net/overview)
+- [Entity Framework Plus](https://entityframework-plus.net/)
+- [EFCore.BulkExtensions](https://github.com/borisdj/EFCore.BulkExtensions)
+
 ### Results
 
 ```txt
@@ -332,7 +339,7 @@ Entity Framework: 10ms
 Table Valued Parameter: 12ms
 BulkCopy: 3ms
 
-- 10 Customer -
+- 10 Customers -
 Simple: 121ms
 Simple (shared connection): 119ms
 Manual: 13ms
@@ -340,7 +347,7 @@ Entity Framework: 13ms
 Table Valued Parameter: 13ms
 BulkCopy: 3ms
 
-- 100 Customer -
+- 100 Customers -
 Simple: 1122ms
 Simple (shared connection): 958ms
 Manual: 39ms
@@ -348,7 +355,7 @@ Entity Framework: 38ms
 Table Valued Parameter: 15ms
 BulkCopy: 5ms
 
-- 1_000 Customer -
+- 1_000 Customers -
 Simple: 10457ms
 Simple (shared connection): 7923ms
 Manual: 557ms
@@ -356,7 +363,7 @@ Entity Framework: 155ms
 Table Valued Parameter: 49ms
 BulkCopy: 17ms
 
-- 10_000 Customer -
+- 10_000 Customers -
 Simple: 161930ms
 Simple (shared connection): 130205ms
 Manual: 17006ms
@@ -364,7 +371,7 @@ Entity Framework: 1015ms
 Table Valued Parameter: 108ms
 BulkCopy: 187ms
 
-- 100_000 Customer -
+- 100_000 Customers -
 Simple: SKIPPED
 Simple (shared connection): SKIPPED
 Manual: 23637ms
@@ -372,7 +379,7 @@ Entity Framework: 12290ms
 Table Valued Parameter: 2090ms
 BulkCopy: 1921ms
 
-- 1_000_000 Customer -
+- 1_000_000 Customers -
 Simple: SKIPPED
 Simple (shared connection): SKIPPED
 Manual: SKIPPED
@@ -380,3 +387,5 @@ Entity Framework: 119269ms
 Table Valued Parameter: 12259ms
 BulkCopy: 9510ms
 ```
+
+![Chart representing the results](./images/chart.jpg)
