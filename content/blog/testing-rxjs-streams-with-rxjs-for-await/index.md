@@ -56,7 +56,7 @@ test('rxjs-for-await', async () => {
 })
 ```
 
-When we compare this test to other RxJS testing strategies using marble tests we can clearly see the differences where the focus point lies on for these tests.
+When we compare this test to other RxJS testing strategies, using the marble syntax we can clearly see the differences between the two and and each other's focus.
 
 ## RxJS Testing
 
@@ -65,7 +65,7 @@ In the test case below, you can see that every frame of the stream is asserted, 
 This is important when you're writing operators, and that's probably why this approach is used in the RxJS codebase to test the RxJS operators.
 But it also makes things more complex, especially if you're not used to reading or writing marble diagrams.
 
-> For more information about the `TestScheduler`, I refer you to the following posts written by [Kevin Kreuzer](https://twitter.com/kreuzercode), [Marble testing with RxJS testing utils](https://medium.com/@kevinkreuzer/marble-testing-with-rxjs-testing-utils-3ae36ac3346a) and [Testing asynchronous RxJs operators](https://medium.com/angular-in-depth/testing-asynchronous-rxjs-operators-5495784f249e).
+> For more information about RxJS (and marble) testing, I would like to refer you to [Jay Phelps](https://twitter.com/_jayphelps)'s talk [Don’t Lose Your Marbles, We Can Test RxJS Code](https://www.youtube.com/watch?v=s9FY-MBW1rc) at RxJS live.
 
 ```ts
 import { TestScheduler } from 'rxjs/testing'
@@ -139,10 +139,11 @@ I think that marble tests are great for testing implementation details, every fr
 But the advantages don't outweigh the disadvantages when it comes to testing most of the code that lives inside an application. Here, we should be interested in the output of a stream. Marble diagrams are also not helping to enlarge the pit of success, I haven't encountered a developer yet that immediately gets marble diagrams and feel comfortable to write their first test cases with it.
 Most of the tests I've seen in application code are also brittle to change, e.g. they fail when a detail, for example a timer duration, is modified.
 
-[Alex Okrushko](https://twitter.com/AlexOkrushko) did point out a drawback to this approach. Some tests will take longer to run because you can't mock times. This is crucial when you have timers that wait multiple seconds. Mocking times is possible with marble tests, and with [`ObserverSpy`](#observerspy).
+[Alex Okrushko](https://twitter.com/AlexOkrushko) did point out a drawback to this approach. Some tests will take longer to run (and might even time-out), or you will have to mock the timers. This is crucial when you have timers that wait multiple seconds. This is not the case with marble tests, and also with [`ObserverSpy`](#observerspy).
+
 For more info about fake times, see [https://ncjamieson.com/testing-with-fake-time/](https://ncjamieson.com/testing-with-fake-time/) by [Nicholas Jamieson](https://twitter.com/ncjamieson), and see the [`ObserverSpy docs`](https://github.com/hirezio/observer-spy#-for-time-based-rxjs-code-timeouts--intervals--animations---use-faketime).
 
-That's why I like `rxjs-for-await`. It helps to reduce the complexity of writing and reading these tests. Simply put, it's simply input in, and output out.
+That's why I like `rxjs-for-await`. It helps to reduce the complexity of writing and reading RxJS tests. Simply put, it's simply input in, and output out.
 That's why I wrote all the tests for `rx-query` using the `rxjs-for-await` package. For more use-cases, check out [the test cases](https://github.com/timdeschryver/rx-query/blob/master/rx-query/query.spec.ts) inside the repository.
 
 ## Alternatives
