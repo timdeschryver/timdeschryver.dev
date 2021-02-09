@@ -228,7 +228,7 @@ public static class AsyncExtensions
 }
 ```
 
-### Conlusion
+### Conclusion
 
 The use case that inspired this post was one of the few times where I actually needed to use parallel programming.
 It's also the first time that it has such a big impact.
