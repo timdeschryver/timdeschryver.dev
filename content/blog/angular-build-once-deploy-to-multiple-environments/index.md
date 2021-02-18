@@ -93,9 +93,15 @@ So we went back to the drawing board and asked for some help in the [AngularInDe
 
 We needed to have the config variables loaded in before the application booted up, in order to do this we took the bootstrapping process a step further. We had to load the config file first, before everything else, before the application was loaded in. Angular boots up the application module inside the `main.ts` file. In order to solve our problem we had to postpone this process until we loaded our config variables. Because [`platformBrowserDynamic`](https://angular.io/api/platform-browser-dynamic) accepts providers, we saw an opportunity to define the config here.
 
-The code below loads the config file via the [`fetch API`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This is a Promise, so we can know for sure that the config file will be loaded before we bootstrap the application module. The self-declared `APP_CONFIG` token is used here to store the configuration variables.
+The code below loads the config file via the [`fetch API`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This is a Promise, so we can know for sure that the config file will be loaded before we bootstrap the application module.
 
 ```ts:main.ts
+import { enableProdMode } from '@angular/core'
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+import { environment } from './environments/environment'
+import { AppConfig, APP_CONFIG } from './app.config'
+import { AppModule } from './app/app.module'
+
 fetch('/assets/config.json')
   .then((response) => response.json())
   .then((config) => {
@@ -107,6 +113,19 @@ fetch('/assets/config.json')
       .bootstrapModule(AppModule)
       .catch((err) => console.error(err))
   })
+```
+
+We store the retrieved config in the `APP_CONFIG` (type-safe) token, which is defined in our application. The token consists of all of the configuration variables needed in the application. See the [Angular documentation](https://angular.io/guide/dependency-injection-providers#injecting-a-configuration-object) for more info about the configuration token.
+In our code base, this looks like this.
+
+```ts:app.config.ts
+export class AppConfig {
+  serviceUrl: string
+  someSecret: string
+  toggle1: boolean
+}
+
+export let APP_CONFIG = new InjectionToken<AppConfig>('APP_CONFIG')
 ```
 
 ## Using APP_CONFIG
