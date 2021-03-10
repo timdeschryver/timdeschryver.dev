@@ -316,7 +316,7 @@ function parseFileToHtmlAndMeta(
 
     if (!prismLanguage) {
       console.warn('did not found a language for: ' + language);
-      return `<pre class='language-text'><code>${source}</code></pre>`
+      return `<pre class='language-text' aria-hidden="true"><code>${source}</code></pre>`
     }
 
     const highlightedLines = highlightCode__default['default'](
@@ -339,7 +339,7 @@ function parseFileToHtmlAndMeta(
     const heading = headingParts.length
       ? `<div class="code-heading">${headingParts.join(' • ')}</div>`
       : '';
-    return `<pre class='language-${prismLanguage}'>${heading}${codeBlock}</pre>`
+    return `<pre class='language-${prismLanguage}' aria-hidden="true">${heading}${codeBlock}</pre>`
   };
 
   renderer.codespan = (source) => {
@@ -362,7 +362,7 @@ function parseFileToHtmlAndMeta(
 
     return `
       <h${level} id="${fragment}">
-        <a href="${anchor}" class="anchor" aria-hidden="true" tabindex="-1">${headingText}</a>
+        <a href="${anchor}" class="anchor" tabindex="-1">${headingText}</a>
       </h${level}>`
   };
 
