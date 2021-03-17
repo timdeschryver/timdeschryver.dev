@@ -39,7 +39,6 @@ In code, this looks like this.
 
 ```ts
 @Component({
-  selector: 'app-component',
   template: `
     <form>
       <label for="text">A label</label>
@@ -68,7 +67,6 @@ To create a two-way binding we use the banana in a box syntax (`[()]`), the form
 
 ```ts{6,11-13}
 @Component({
-  selector: 'app-component',
   template: `
     <form>
       <label for="text">Text</label>
@@ -131,7 +129,6 @@ Angular makes things easier for us by already parsing the value of the input con
 
 ```ts
 @Component({
-  selector: 'app-component',
   template: `
     <form>
       <label for="text">Text</label>
@@ -196,7 +193,6 @@ When the TypeScript model has an initial value or when it's reassigned a new val
 
 ```ts
 @Component({
-  selector: 'app-component',
   template: `
     <label for="select">Select</label>
     <select id="select" name="formSelect" [(ngModel)]="model.select">
@@ -264,7 +260,6 @@ All checkbox elements within the same group must have unique names, otherwise, a
 
 ```ts
 @Component({
-  selector: 'app-component',
   template: `
     <label>Checkbox list</label>
     <div *ngFor="let check of model.checks">
@@ -351,14 +346,13 @@ While this is enough for the simple cases, we can also reorganize the structure 
 Because the template model doesn't need to reflect the TypeScript model, it allows us to be flexible with the structures we use to shape the form.
 
 This allows us as developers to model the template as efficiently as possible for certain use-cases.
-I find it easier to group the checkboxes in a nested hierarchy to make it effortless to validate the checkbox group, e.g. when at least one checkbox needs to be checked.
+I find it easier to group the checkboxes in a nested hierarchy to make it [effortless to validate the checkbox group](#custom-validators), e.g. when at least one checkbox needs to be checked.
 
 The snippet below uses the [`ngModelGroup` directive](https://angular.io/api/forms/NgModelGroup) to group the checkboxes. Behind the scenes, Angular creates a new [`FormGroup`](https://angular.io/api/forms/FormGroup) instance and adds a new leaf in the template model with the given name.
 This change doesn't impact the TypeScript model and is purely a change to the template model to make it easier to use.
 
 ```ts{5,9}
 @Component({
-  selector: 'app-component',
   template: `
     <label>Checkbox list</label>
     <div *ngFor="let check of model.checks" ngModelGroup="formCheckbox">
@@ -450,7 +444,6 @@ A radio group is similar to a checkbox list. The difference is that in contrast 
 
 ```ts
 @Component({
-  selector: 'app-component',
   template: `
     <label>Radio group</label>
     <div>
@@ -525,7 +518,431 @@ TypeScript Model Value
 
 To play around with the form controls and see how changes reflect on the template model and the TypeScript model, you can take a look at the following StackBlitz.
 
-<iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/72ef36ff10cdf972736a7786c527b24464d74ff5?ctl=1&embed=1" title="angular-forms-guide-input-types" loading="lazy"></iframe>
+<iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/7194d3ddab3d7d99079c4127e70540dfb714d41e?ctl=1&embed=1" title="angular-forms-guide-input-types" loading="lazy"></iframe>
+
+## Validators
+
+Validation with template-driven forms is done by adding attributes (directives) to a form control.
+This makes it feel like you're using the Web platform, which is always pleasant.
+
+> I can highly recommend [Kara Erickson](https://twitter.com/karaforthewin)'s talk [Angular Form Validation](https://www.youtube.com/watch?v=kM5QBOWrUVI) to get a better understanding of Angular validators.
+
+### Built-in validators
+
+The Angular `FormsModule` comes with a set of directives that implement the [native HTML form validation attributes](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#using_built-in_form_validation), except for the `min` and `max` validators. Recently, a [Pull Request](https://github.com/angular/angular/pull/39063) was merged, so I assume that these missing validators will be available in one of the future releases.
+
+```html
+<input required />
+<input minlength="3" minlength="10" />
+<input pattern="/@/" />
+```
+
+### Dynamic Validators
+
+To make the validators dynamic, the static value of an attribute needs to be replaced with a component variable. When the value of the variable changes, it re-triggers the validator with the new value.
+
+Because the validator revalidates, it's effortless to create dynamic and conditional validators.
+For example, to make a field required based on another form control, we bind the value of the second control to the `required` attribute. When that value is truthy, the control is required, otherwise, it isn't required. In the following snippet, the name control is required when the checkbox `makeNameRequired` is checked.
+
+```ts{20}
+@Component({
+  template: `
+    <form>
+      <div class="checkbox-container">
+        <input
+          type="checkbox"
+          id="makeNameRequired"
+          name="makeNameRequired"
+          [(ngModel)]="model.makeNameRequired"
+        />
+        <label for="makeNameRequired">Make "name" required</label>
+      </div>
+
+      <label for="text">Name</label>
+      <input
+        type="text"
+        id="text"
+        name="text"
+        [(ngModel)]="model.name"
+        [required]="model.makeNameRequired"
+      />
+    </form>
+  `,
+})
+export class AppComponent {
+  model = {
+    makeNameRequired: false,
+    name: '',
+  }
+}
+```
+
+Depending on the desired user experience, hiding the control (by using the `*ngIf` directive) or disabling the control (with the `disabled` attribute), also removes all of the validators of the control.
+
+### Custom Validators
+
+While the built-in validators are providing a good starting point and are sufficient for basic forms, we need to write custom validators that fit the specific needs of our forms.
+
+To create a custom validator we must create a new Angular directive, implementing the [`Validator` interface](https://angular.io/api/forms/Validator)(1). The validator also needs to be registered to the Angular validators, therefore we register the directive to the Angular validators (`NG_VALIDATORS`) (2).
+
+As an example, I've created the `RequiredCheckboxGroupValidatorDirective` validator.
+This validator requires that at least N checkboxes need to be checked inside a checkbox group.
+
+```ts{11-18,23-35}
+import { Directive, Input } from '@angular/core'
+import {
+  AbstractControl,
+  ValidationErrors,
+  NG_VALIDATORS,
+  Validator,
+} from '@angular/forms'
+
+@Directive({
+  selector: '[requiredCheckboxGroup][ngModelGroup]',
+  // 2: register the custom validator as an Angular Validator
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: RequiredCheckboxGroupValidatorDirective,
+      multi: true,
+    },
+  ],
+})
+export class RequiredCheckboxGroupValidatorDirective implements Validator {
+  @Input() requiredCheckboxGroup = 1
+
+  // 1: implement the validate method
+  validate(control: AbstractControl): ValidationErrors | null {
+    // the value of the control is an object that holds the value of each checkbox
+    // the value's signature looks like this, `{ 'check-one': false, 'check-two': true }`
+    const selected = Object.values(control.value).filter(Boolean).length
+    if (selected < this.requiredCheckboxGroup) {
+      return {
+        requiredCheckboxGroup: this.requiredCheckboxGroup,
+      }
+    }
+
+    return null
+  }
+}
+```
+
+A best practice is to extract the `validate` method out of the directive, and to define it as a stand-alone [validator function (`ValidatorFn`)](https://angular.io/api/forms/ValidatorFn). The gained benefits are that the logic inside the validator is easier to test and that it's now possible to reuse the validator in a reactive form.
+
+```ts{9-20,36}
+import { Directive, Input } from '@angular/core'
+import {
+  AbstractControl,
+  ValidationErrors,
+  NG_VALIDATORS,
+  Validator,
+} from '@angular/forms'
+
+function requiredCheckboxGroup(requiredCheckboxes: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const selected = Object.values(control.value).filter(Boolean).length
+    if (selected < requiredCheckboxes) {
+      return {
+        requiredCheckboxGroup: requiredCheckboxes,
+      }
+    }
+
+    return null
+  }
+}
+
+@Directive({
+  selector: '[requiredCheckboxGroup][ngModelGroup]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: RequiredCheckboxGroupValidatorDirective,
+      multi: true,
+    },
+  ],
+})
+export class RequiredCheckboxGroupValidatorDirective implements Validator {
+  @Input() requiredCheckboxGroup = 1
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    return requiredCheckboxGroup(this.requiredCheckboxGroup)(control)
+  }
+}
+```
+
+The `validate` method needs to return a `null` value when the value of the control is valid.
+Otherwise, if the value is invalid, the `validate` method needs to return an [`ValidationErrors object`](https://angular.io/api/forms/ValidationErrors) with (details of) the validation errors.
+
+To use the `RequiredCheckboxGroupValidatorDirective` validator, we can now append the directive to a control, or in this case to a model group.
+
+```html{2}
+<label>Pick a time</label>
+<div class="flex space-x-4" ngModelGroup="times" [requiredCheckboxGroup]="1">
+  <div class="checkbox-container" *ngFor="let time of model.times">
+    <input
+      type="checkbox"
+      [id]="time.label"
+      [name]="time.label"
+      [(ngModel)]="time.selected"
+    />
+    <label [for]="time.label">{{ time.label }}</label>
+  </div>
+</div>
+```
+
+In Displaying Validation Errors (needs to be written), we'll see how we can transform this object into human-friendly messages.
+
+#### Revalidate Custom Validators
+
+There's one problem with the current version of the validator. To set the minimum required selected checkboxes, the `RequiredCheckboxGroupValidatorDirective` validator uses the `requiredCheckboxGroup` input property, but the validator doesn't revalidate the validity of the checkbox group when the value of the `requiredCheckboxGroup` input property changes.
+
+To trigger the validator when the value of an input property changes, we need to make several changes to the directive:
+
+- register a change handler with the [`registerOnValidatorChange` hook](https://angular.io/api/forms/Validator#registerOnValidatorChange) (1)
+- create a getter and a setter for the input property (2)
+- invoke the change handler when an input property receives a new value in the setter (3)
+
+```ts{37-49, 55-58}
+import { Directive, Input } from '@angular/core'
+import {
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
+  NG_VALIDATORS,
+  Validator,
+} from '@angular/forms'
+
+function requiredCheckboxGroup(requiredCheckboxes: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const selected = Object.values(control.value).filter(Boolean).length
+    if (selected < requiredCheckboxes) {
+      return {
+        requiredCheckboxGroup: requiredCheckboxes,
+      }
+    }
+
+    return null
+  }
+}
+
+@Directive({
+  selector: '[requiredCheckboxGroup][ngModelGroup]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: RequiredCheckboxGroupValidatorDirective,
+      multi: true,
+    },
+  ],
+})
+export class RequiredCheckboxGroupValidatorDirective implements Validator {
+  private _requiredCheckboxGroup = 1
+  private _onChange?: () => void
+
+  // 2: create a getter and a setter for the input property
+  @Input()
+  get requiredCheckboxGroup() {
+    return this._requiredCheckboxGroup
+  }
+
+  set requiredCheckboxGroup(value: number) {
+    this._requiredCheckboxGroup = value
+    // 3: invoke the change handler
+    if (this._onChange) {
+      this._onChange()
+    }
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    return requiredCheckboxGroup(this.requiredCheckboxGroup)(control)
+  }
+
+  // 1: register the change handler
+  registerOnValidatorChange?(fn: () => void): void {
+    this._onChange = fn
+  }
+}
+```
+
+To give another example, let's take a look at another widely used validator is a comparison validator to compare two values, for example to validate the values of two input controls e.g. password and password confirmation.
+
+```ts
+function equalTo(value: any): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (control.value !== value) {
+      return {
+        equalTo: value,
+      }
+    }
+
+    return null
+  }
+}
+
+@Directive({
+  selector: '[equalTo][ngModel]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: EqualToValidatorDirective,
+      multi: true,
+    },
+  ],
+})
+export class EqualToValidatorDirective implements Validator {
+  private _equalTo: any
+  private _onChange?: () => void
+
+  @Input()
+  get equalTo() {
+    return this._equalTo
+  }
+
+  set equalTo(value: any) {
+    this._equalTo = value
+    if (this._onChange) {
+      this._onChange()
+    }
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    return equalTo(this.equalTo)(control)
+  }
+
+  registerOnValidatorChange?(fn: () => void): void {
+    this._onChange = fn
+  }
+}
+```
+
+#### Async Validators
+
+To validate form controls require an HTTP request to be validated, we need to create an asynchronous validator.
+The async validator almost looks identical to a synchronous validator, with subtle differences:
+
+- the validator needs to be provided to the Angular asynchronous validators, `NG_ASYNC_VALIDATORS` (instead of `NG_VALIDATORS`)
+- the validator needs to implement the [`AsyncValidator` interface](https://angular.io/api/forms/AsyncValidator) (instead of `Validator`)
+- the validate method needs to return an Observable containing the `ValidationErrors` or `null`. It's important to know that Angular expects that the Observable stream completes at some point.
+
+```ts{12-16, 22-30}
+import { Directive, Inject } from '@angular/core'
+import {
+  NG_ASYNC_VALIDATORS,
+  AsyncValidator,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms'
+
+@Directive({
+  selector: '[uniqueUsername][ngModel]',
+  providers: [
+    {
+      provide: NG_ASYNC_VALIDATORS,
+      useExisting: UniqueUsernameValidatorDirective,
+      multi: true,
+    },
+  ],
+})
+export class UniqueUsernameValidatorDirective implements AsyncValidator {
+  constructor(@Inject(UsersService) private usersService: UsersService) {}
+
+  validate(
+    control: AbstractControl,
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+    return this.usersService.isUsernameTaken(control.value as string).pipe(
+      map((taken) => {
+        return taken ? { usernameTaken: true } : null
+      }),
+    )
+  }
+}
+```
+
+Using the asynchronous validator isn't different from using a synchronous validator, we can just add the directive to a control.
+A common pattern with asynchronous validation is to use the [`ngModelOptions`](https://angular.io/api/forms/NgModel#properties) configuration to trigger the validators when the user leaves the input control, and not on every change.
+
+```html{7,8}
+<label for="username">Username</label>
+<input
+  type="text"
+  id="username"
+  name="username"
+  [(ngModel)]="model.username"
+  [ngModelOptions]="{ updateOn: 'blur' }"
+  uniqueUsername
+/>
+```
+
+#### Nice to knows
+
+- An asynchronous validator is only invoked when all the synchronous validators of that control are valid
+- While an asynchronous validator is pending, the state of the form control (and the form) isn't `valid` nor `invalid`, but the control is given the `pending` state
+
+### Testing Validators
+
+Simple validators can be tested by just putting the `ValidatorFn` method under test, and this might also be a good start for the more complex validators. But to test the revalidation behavior we need to write a test that uses the DOM.
+
+To write this test we can create a host component that "hosts" the directive by using the regular Angular TestBed, and this works fine, but... I like to use [Angular Testing Library](https://github.com/testing-library/angular-testing-library/) because it removes some of the setup (e.g. I don't need to create a host component, nor do I have to trigger a change detection cycle), plus I also use the Angular Testing Library [to test my components](/blog/good-testing-practices-with-angular-testing-library).
+
+In the following two tests, we verify that the `EqualToValidatorDirective` directive (written in [Revalidate Custom Validators](#revalidate-custom-validators)) has the expected behavior. Therefore,
+
+- the first test verifies that the control is valid when the input control has the same value as the comparison value,
+- while the second test verifies that the validity of the control gets revalidated when the comparison value changes
+
+```ts
+it('is valid when it has the same value as the comparison value', async () => {
+  const component = await render(EqualToValidatorDirective, {
+    template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
+    imports: [FormsModule],
+    componentProperties: {
+      compareValue: 'value1',
+    },
+  })
+
+  const model = component.fixture.debugElement.children[0].injector.get(NgForm)
+  const input = screen.getByRole('textbox')
+
+  userEvent.type(input, 'value2')
+  expect(model.controls.sut.invalid).toBeTruthy()
+  expect(model.controls.sut.errors).toEqual({
+    equalTo: 'value1',
+  })
+
+  userEvent.clear(input)
+  userEvent.type(input, 'value1')
+  expect(model.controls.sut.valid).toBeTruthy()
+  expect(model.controls.sut.errors).toBeNull()
+})
+
+it('revalidates on input change', async () => {
+  const component = await render(EqualToValidatorDirective, {
+    template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
+    imports: [FormsModule],
+    componentProperties: {
+      compareValue: 'value1',
+    },
+  })
+
+  const model = component.fixture.debugElement.children[0].injector.get(NgForm)
+  const input = screen.getByRole('textbox')
+
+  userEvent.type(input, 'value2')
+  expect(model.controls.sut.invalid).toBeTruthy()
+  expect(model.controls.sut.errors).toEqual({
+    equalTo: 'value1',
+  })
+
+  component.fixture.componentInstance.compareValue = 'value2'
+  expect(model.controls.sut.valid).toBeTruthy()
+  expect(model.controls.sut.errors).toBeNull()
+})
+```
+
+### Validators Example
+
+The examples that we created in this section are available in the following StackBlitz.
+
+<iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/7e22775c8644c3d0929d1a0822dc9e964167e882?ctl=1&embed=1" title="angular-forms-guide-input-types" loading="lazy"></iframe>
 
 The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide).
 
