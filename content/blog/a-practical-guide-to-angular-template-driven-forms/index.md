@@ -588,7 +588,7 @@ To create a custom validator we must create a new Angular directive, implementin
 As an example, I've created the `RequiredCheckboxGroupValidatorDirective` validator.
 This validator requires that at least N checkboxes need to be checked inside a checkbox group.
 
-```ts{11-18,23-35}
+```ts{11-18,23-37}
 import { Directive, Input } from '@angular/core'
 import {
   AbstractControl,
@@ -618,7 +618,9 @@ export class RequiredCheckboxGroupValidatorDirective implements Validator {
     const selected = Object.values(control.value).filter(Boolean).length
     if (selected < this.requiredCheckboxGroup) {
       return {
-        requiredCheckboxGroup: this.requiredCheckboxGroup,
+        requiredCheckboxGroup: {
+          requiredCheckboxes: this.requiredCheckboxGroup,
+        },
       }
     }
 
@@ -643,7 +645,7 @@ function requiredCheckboxGroup(requiredCheckboxes: number): ValidatorFn {
     const selected = Object.values(control.value).filter(Boolean).length
     if (selected < requiredCheckboxes) {
       return {
-        requiredCheckboxGroup: requiredCheckboxes,
+        requiredCheckboxGroup: { requiredCheckboxes },
       }
     }
 
@@ -671,7 +673,7 @@ export class RequiredCheckboxGroupValidatorDirective implements Validator {
 ```
 
 The `validate` method needs to return a `null` value when the value of the control is valid.
-Otherwise, if the value is invalid, the `validate` method needs to return an [`ValidationErrors object`](https://angular.io/api/forms/ValidationErrors) with (details of) the validation errors.
+Otherwise, if the value is invalid, the `validate` method needs to return an [`ValidationErrors` object](https://angular.io/api/forms/ValidationErrors) with (details of) the validation errors. The returned details will be used to create user-friendly [Validation Messages](#creating-validation-messages).
 
 To use the `RequiredCheckboxGroupValidatorDirective` validator, we can now append the directive to a control, or in this case to a model group.
 
@@ -717,7 +719,7 @@ function requiredCheckboxGroup(requiredCheckboxes: number): ValidatorFn {
     const selected = Object.values(control.value).filter(Boolean).length
     if (selected < requiredCheckboxes) {
       return {
-        requiredCheckboxGroup: requiredCheckboxes,
+        requiredCheckboxGroup: { requiredCheckboxes },
       }
     }
 
@@ -944,6 +946,419 @@ The examples that we created in this section are available in the following Stac
 
 <iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/7e22775c8644c3d0929d1a0822dc9e964167e882?ctl=1&embed=1" title="angular-forms-guide-input-types" loading="lazy"></iframe>
 
-The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide).
+## Form Errors
 
-> This guide is a Work In Process. During the next weeks, I'll probably cover validation, nested forms, how to test template-driven forms, control value accessors, and dynamic forms. If you have anything you want to see here or if you have suggestions feel free to reach out on [Twitter](https://timdeschryver.dev/twitter) or [create an issue on GitHub](https://github.com/timdeschryver/angular-forms-guide/issues/new).
+In this section, we're going to take a look at how to translate the validation errors to create human-friendly messages, and how to show and hide these validation messages in our forms. But first, we need to get familiar with the states of a form control.
+
+### Control States
+
+The most obvious state of a form control is the `status` property. The value of `status` can be one of the following, `'VALID'`, `'INVALID'`, `'PENDING'` (while an async validator waits on a result), or `'DISABLED'`. You can also use the shorthand properties `valid`, `invalid`, `pending`, and `disabled`, which are all booleans.
+
+Other useful states are `pristine` and its counterpart `dirty`. These two states mark a control when its value has been changed by a user. The control starts in the `pristine` status and when the user changes its value, the state of the control transforms to `dirty`. Both properties are also booleans.
+
+The last two useful states are `untouched` and the opposite, `touched`. When the user leaves a control (this triggers the `blur` event), the status of the control is updated from `untouched` to `touched`. Again, both properties are also booleans.
+
+The same states are also available on form groups (`NgModelGroup`) and forms (`NgForm`). A form also has a `submitted` property, which becomes `true` when the submit event is triggered.
+
+#### CSS Classes
+
+All control states have an equivalent CSS class.
+To obtain the class of a state, simply prepend the state with `ng-`.
+
+This results in the following class names, `.ng-valid`,`.ng-invalid`,`.ng-pending`,`.ng-pristine`,`.ng-dirty`,`.ng-untouched` and `.ng-touched`. Sadly, there is no `.ng-submitted` class when a form has been submitted.
+
+These class names can be used to style the control field of our forms.
+For example, to change the border color to red when an invalid control is touched by the user, we can use the following styles.
+
+```css
+input.ng-invalid.ng-touched:not(:focus),
+select.ng-invalid.ng-touched:not(:focus),
+textarea.ng-invalid.ng-touched:not(:focus) {
+  border-color: red;
+}
+
+/* all of the checkboxes inside a required checkbox group */
+[requiredcheckboxgroup].ng-invalid.ng-touched input {
+  border-color: red;
+}
+```
+
+#### Disabled State
+
+A form control can be disabled by adding the `disabled` attribute to the HTML element.
+When a control is disabled, its `status` will be changed to `DISABLED`.
+As a shortcut to check if a form control is disabled, we can also use the `disabled` and `enabled` properties.
+It's important to know that if a control is disabled, all the validators of that control are also disabled and the value of the form model will be equal to `undefined`.
+
+### Validation Messages
+
+Now that we understand the basics of the different form control states, we can start the implementation to show validation messages to our users.
+
+#### Control Errors
+
+All the results of the [validators](#validators) are added to the `errors` property of the form control instance.
+This `errors` property is an object, a key-value pair where each key is the name of a validator and the value contains the error details.
+Be aware that `errors` is `null` when the form control is valid.
+
+For example, for our custom validator [RequiredCheckboxGroupValidatorDirective](#custom-validators), the error key is `requiredCheckboxGroup`, and details contain the number of required checkboxes.
+
+To help users to fill in the form correctly, we need to translate the error details into a user-friendly message.
+A naive implementation might look like this.
+Notice that the messages are hidden until the control is touched by the user, and of course only when the control invalid.
+
+```html
+<input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
+<div *ngIf="name.invalid && name.touched">
+  <div *ngIf="name.errors.required">
+    Name is required.
+  </div>
+  <div *ngIf="name.errors.minlength">
+    Name must be at least {{ name.errors.minlength.requiredLength }} characters
+    long.
+  </div>
+</div>
+```
+
+While the above solution works for simple projects, this doesn't scale in larger projects because it has some problems:
+
+- the solution is brittle for changes, we have to manually add and remove validation messages when the validation logic of a form control is changed.
+- it will lead to a bad user experience, 1) the wording of the messages won't be consistent, 2) the criteria when a message is shown is different depending on the developer who wrote the form
+- creating or updating a new form will take a longer time because the form needs to be manually tied together, which also needs to be tested
+
+To obtain a better experience for our users, we have to come up with an abstraction layer(s).
+This extra layer will do two things:
+
+- the result of the validator(s) are mapped to a validation message
+- the layer determines when the message appears
+
+If we build the layer correctly, it would be possible to use these two features independently of each other.
+While this might take some time, it will drastically improve the time it takes to develop and maintain forms in the long run.
+Luckily, there are already some battle-tested libraries available, [Angular Material](https://material.angular.io/) and [Error Tailer](https://github.com/ngneat/error-tailor) by ngneat.
+
+To give us a better understanding of the internals of such a validation layer, we're building the different pieces of the layer ourselves.
+This solution is based on a similar custom-made solution that fits our specific needs.
+
+#### Configuring Validation Messages
+
+The first step towards reusable validation messages is to create a coat rack to hang up message templates.
+We do this by creating a new `InjectionToken` called `VALIDATION_MESSAGES`.
+Later on, we use the provided templates to build the validation messages.
+
+```ts:validation-message.ts
+import { InjectionToken } from '@angular/core'
+
+export interface ValidationMessages {
+  [errorKey: string]: (...errorDetails: any[]) => string
+}
+
+export const VALIDATION_MESSAGES = new InjectionToken<ValidationMessages>(
+  'VALIDATION_MESSAGES',
+)
+```
+
+To configure a message template, we provide the template as a factory function for each validator.
+While we're configuring the Angular Modules, these templates are provided via the `VALIDATION_MESSAGES` token.
+
+For the built-in Angular validators, I like to provide these message templates in a central module.
+
+```ts{6-16}:validators.module.ts
+import { VALIDATION_MESSAGES } from './validation-message'
+
+@NgModule({
+  providers: [
+    {
+      provide: VALIDATION_MESSAGES,
+      useValue: {
+        required: () => 'This field is required',
+        email: () => 'This field must be a valid email',
+        minlength: (details: any) =>
+          `This field must have a minimum length of ${details.requiredLength}`,
+        maxlength: (details: any) =>
+          `This field must have a maximum length of ${details.requiredLength}`,
+      },
+      multi: true,
+    },
+  ],
+})
+export class ValidatorModule {}
+```
+
+For the custom validators, I provide the message template in the same module wherein the validator is declared.
+
+> Because I follow the [SCAM](https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do) principles, coined by [Lars Gyrup Brink Nielsen](https://twitter.com/LayZeeDK), this only doesn't look clean but it's also easy to use.
+
+```ts{8-16}
+import { VALIDATION_MESSAGES } from './validation-message'
+
+@NgModule({
+  declarations: [RequiredCheckboxGroupValidatorDirective],
+  exports: [RequiredCheckboxGroupValidatorDirective],
+  providers: [
+    {
+      provide: VALIDATION_MESSAGES,
+      useValue: {
+        requiredCheckboxGroup: (details: any) =>
+          `This field must have at least ${details.requiredCheckboxes} ${
+            details.groupName || 'items'
+          } selected`,
+      },
+      multi: true,
+    },
+  ],
+})
+export class RequiredCheckboxGroupValidatorModule {}
+```
+
+#### Validate Pipe
+
+To transform the form control errors to a validation message, we create a new [Angular Pipe](https://angular.io/guide/pipes) named `ValidatePipe`. I like to use a pipe for this, just because the pipe doesn't contain any markup which makes it reusable in multiple cases.
+
+To assemble the message, the validate pipe needs to have access to the coat rack of [validation message templates](#configuring-validation-messages). To make these templates available in the validate pipe, the `VALIDATION_MESSAGES` token is injected into the pipe.
+
+Next, the form control errors are passed to the `transform` method of the validate pipe and the corresponding message templates can be looked up by using the error key and the injected messages. When the message template is found, the method is invoked with the error details.
+
+This implementation of the `ValidatePipe` pipe doesn't show all the validation messages, just the message for the first error.
+When an error isn't configured, a default validation message is returned.
+
+```ts:validate-pipe.ts
+import { Pipe, PipeTransform, Inject } from '@angular/core'
+import { ValidationMessages, VALIDATION_MESSAGES } from './validation-message'
+
+@Pipe({ name: 'validate' })
+export class ValidatePipe implements PipeTransform {
+  // create a key-value pair out of the provided validation messages
+  readonly validationMessage = this.validationMessages.reduce(
+    (all, entry) => ({ ...all, ...entry }),
+    {} as ValidationMessages,
+  )
+
+  constructor(
+    @Inject(VALIDATION_MESSAGES)
+    readonly validationMessages: ValidationMessages[],
+  ) {}
+
+  transform(validationErrors: ValidationErrors | null) {
+    // pluck the first error out of the errors
+    const [error] = Object.entries(validationErrors || {})
+    if (!error) {
+      return ''
+    }
+
+    // create the validation message
+    const [errorKey, errorDetails] = error
+    const template = this.validationMessage[errorKey]
+    return template ? template(errorDetails) : 'This field is invalid'
+  }
+}
+```
+
+We can now perform the first refactor to the initial implementation and replace the inline messages in the template with the `validate` pipe.
+
+This change ensures that the same validation messages are used throughout the whole application.
+Because the validation messages are centralized it's also easy to change a message at a later time.
+
+```html{3}
+<input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
+<div *ngIf="name.invalid && name.touched">
+  {{ name.errors | validate }}
+</div>
+```
+
+#### Error Component
+
+To make sure that all the validation messages look and behave the same way, we need to create a component, `ControlErrorComponent`.
+
+The component is in charge of two things:
+
+- it determines the markup and style of the message,
+- it controls when the validation message is visible
+
+In the template of `ControlErrorComponent`, the errors are shown when a control is invalid and if it's been touched by a user.
+To render the validation message, the `validate` pipe is used (created in [Validate Pipe](#validate-pipe)).
+
+```ts{7-13}:control-error.component.ts
+import { Component, Input } from '@angular/core'
+import { AbstractControl, NgForm } from '@angular/forms'
+
+@Component({
+  selector: 'app-control-error',
+  template: `
+    <div
+      role="alert"
+      class="mt-1 text-sm text-red-600"
+      [hidden]="control.valid || !control.touched"
+    >
+      {{ control.errors | validate }}
+    </div>
+  `,
+  styles: [
+    `
+      :host {
+        margin: 0 !important;
+      }
+    `,
+  ],
+})
+export class ControlErrorComponent {
+  @Input() control: AbstractControl
+}
+```
+
+After the second refactor, the snippet now uses the `ControlErrorComponent` component instead of the `*ngIf` directive in the original snippet.
+The abstracted `ControlErrorComponent` component has the benefit that there is a uniform design and behavior, leading to a better user experience. From a technical perspective, we're protected against future design changes because we'll have to change the design only once.
+
+```html{2,4}
+<input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
+<app-control-error [control]="name.control">
+  {{ name.errors | validate }}
+</app-control-error>
+```
+
+#### Error Directive
+
+The current implementation requires that the `ControlErrorComponent` component is added to a form control in order to show the message.
+
+To solve this problem, we're introducing a new directive called `ErrorDirective`.
+The job of the error directive is to dynamically render the `ControlErrorComponent` when a form control (or a form group) is rendered.
+
+```ts:error.directive.ts
+import {
+  Directive,
+  ComponentFactoryResolver,
+  AfterViewInit,
+  ViewContainerRef,
+  Optional,
+} from '@angular/core'
+import { NgControl, NgModelGroup } from '@angular/forms'
+import { ControlErrorComponent } from './control-error.component'
+import { FormFieldDirective } from './form-field.directive'
+
+@Directive({
+  selector: '[ngModel], [ngModelGroup]',
+})
+export class ErrorDirective implements AfterViewInit {
+  constructor(
+    readonly componentFactoryResolver: ComponentFactoryResolver,
+    readonly viewContainerRef: ViewContainerRef,
+    @Optional() readonly ngModel: NgControl,
+    @Optional() readonly ngModelGroup: NgModelGroup,
+    @Optional() readonly formFieldDirective: FormFieldDirective,
+  ) {}
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const control = this.ngModel?.control ?? this.ngModelGroup?.control
+      if (control && !this.formFieldDirective) {
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+          ControlErrorComponent,
+        )
+        const errorContainer = this.viewContainerRef.createComponent(
+          componentFactory,
+        )
+        errorContainer.instance.control = control
+      }
+    })
+  }
+}
+```
+
+The way that the directive is written, the error component is added to the DOM under the input element.
+
+![The directive renders the validation message under the form control](./images/email.png)
+
+This works fine for the simple controls, but it's causing troubles for form groups and checkboxes because the error might be shown in between multiple elements.
+
+![The validation message of a checkbox is added between the form control and the label](./images/checkbox.png)
+
+To fix this behavior, we create a second directive called `FormFieldDirective`.
+The idea behind this directive is the same as the `ErrorDirective` directive, but instead that the validation message is added after form control, the message will be appended to the bottom of the form control's container.
+
+```ts:form-field.directive.ts
+import {
+  Directive,
+  ComponentFactoryResolver,
+  AfterViewInit,
+  ViewContainerRef,
+  Optional,
+  ContentChild,
+  ElementRef,
+} from '@angular/core'
+import { NgModel, NgModelGroup } from '@angular/forms'
+import { ControlErrorComponent } from './control-error.component'
+
+@Directive({
+  selector: '[formField]',
+})
+export class FormFieldDirective implements AfterViewInit {
+  @ContentChild(NgModel) ngModelChild?: NgModel
+  @ContentChild(NgModelGroup) ngModelGroupChild?: NgModelGroup
+
+  constructor(
+    private element: ElementRef,
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private viewContainerRef: ViewContainerRef,
+    @Optional() private ngModelGroup: NgModelGroup,
+  ) {}
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const control =
+        this.ngModelGroup?.control ??
+        this.ngModelChild?.control ??
+        this.ngModelGroupChild?.control
+      if (control) {
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+          ControlErrorComponent,
+        )
+        this.viewContainerRef.clear()
+
+        const errorContainer = this.viewContainerRef.createComponent(
+          componentFactory,
+        )
+
+        const host = this.element.nativeElement as HTMLElement
+        host.style.flexWrap = 'wrap'
+        host.appendChild(errorContainer.location.nativeElement)
+
+        errorContainer.instance.control = control
+      }
+    })
+  }
+}
+```
+
+To use the form field directive we have to add the `formField` attribute to the form control container.
+We could also use the `ControlErrorComponent` like before, but I find this solution to be more in-line with the `ErrorDirective`.
+
+```html
+<div class="checkbox-container" formField>
+  <input type="checkbox" id="tac" name="tac" ngModel required />
+  <label for="tac">I agree with the terms and conditions</label>
+</div>
+```
+
+After the last refactor, we don't have any code in our forms to display the validation messages.
+
+```html
+<input type="text" name="name" ngModel required minlength="4" />
+```
+
+### Form Helpers
+
+So far we're only marking the invalid form controls and are only showing validation messages when a user has touched the form control.
+But the user also expects feedback when she submits the form.
+
+To implement this feature, we have options.
+
+The first one is to add a new condition to the [Error Component](#error-component) and check if the form has been submitted by using the `submitted` property on the form. Besides this, to add the red border color to invalid controls, a `submitted` class should also be added to the form. That's why having a `.ng-submitted` class would be useful, sadly this is not (yet?) the case.
+
+The second option is to touch all form controls when a user submits the form.
+This is simply done by invoking the [`markAllAsTouched` method](https://angular.io/api/forms/AbstractControl#markallastouched) of the form.
+
+### Errors Example
+
+A demo about form control states and validation messages can be found in the following StackBlitz.
+
+<iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/ac48e7de21dc5a67fe338e1315bfd5e5999a6c49?ctl=1&embed=1" title="angular-forms-guide-form-errors" loading="lazy"></iframe>
+
+> The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide). This guide is a Work In Process. During the next weeks, I'll probably cover validation, nested forms, how to test template-driven forms, control value accessors, and dynamic forms. If you have anything you want to see here or if you have suggestions feel free to reach out on [Twitter](https://timdeschryver.dev/twitter) or [create an issue on GitHub](https://github.com/timdeschryver/angular-forms-guide/issues/new).
