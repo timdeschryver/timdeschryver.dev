@@ -44,13 +44,7 @@ self.addEventListener('fetch', (event) => {
 
 	// don't try to handle e.g. data: URIs
 	if (!url.protocol.startsWith('http')) return;
-	if (
-		url.hostname.includes('googletagmanager') ||
-		url.hostname.includes('google-analytics') ||
-		url.hostname.includes('stackblitz')
-	) {
-		return;
-	}
+
 	// ignore dev server requests
 	if (url.hostname === self.location.hostname && url.port !== self.location.port) return;
 
@@ -74,8 +68,7 @@ self.addEventListener('fetch', (event) => {
 			} catch (err) {
 				const response = await cache.match(event.request);
 				if (response) return response;
-
-				throw err;
+				console.error(err, event.request);
 			}
 		})
 	);
