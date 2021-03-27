@@ -1,19 +1,21 @@
-<script context="module">  export async function preload() {
-    const res = await this.fetch('snippets.json')
+<script context="module" lang="ts">
+	export const prerender = true;
 
-    if (res.ok) {
-      const { snippets } = await res.json()
-      return { snippets }
-    }
-    this.error(500, 'Something went wrong...')
-  }
+	export async function load({ fetch }) {
+		const result = await fetch(`/snippets.json`);
+		const { snippets } = await result.json();
+		return {
+			props: {
+				snippets
+			}
+		};
+	}
 </script>
 
-<script>
-  import Head from '../../components/Head.svelte'
-  import Snippets from '../../components/Snippets.svelte'
-
-  export let snippets
+<script lang="ts">
+	import Head from '$lib/Head.svelte';
+	import Snippets from '$lib/Snippets.svelte';
+	export let snippets;
 </script>
 
 <Head title="Snippets - Tim Deschryver" />

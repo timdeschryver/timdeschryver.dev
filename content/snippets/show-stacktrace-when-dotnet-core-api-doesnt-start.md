@@ -4,7 +4,7 @@ slug: show-stacktrace-when-dotnet-core-api-doesnt-start
 image: snippets/images/show-stacktrace-when-dotnet-core-api-doesnt-start.png
 author: Tim Deschryver
 date: 2020-07-22
-tags: .NET, C#, debug
+tags: dotnet, C#, debug
 ---
 
 ## Show stacktrace when dotnet core API doesn't start
@@ -19,11 +19,11 @@ Update the `web.config` and set the `ASPNETCORE_DETAILEDERRORS` environment vari
 
 ```html
 <system.webServer>
-  <httpErrors errorMode="Detailed" />
-  <aspNetCore processPath="dotnet">
-    <environmentVariables>
-      <environmentVariable name="ASPNETCORE_DETAILEDERRORS" value="true" />
-    </environmentVariables>
-  </aspNetCore>
+	<httpErrors errorMode="Detailed" />
+	<aspNetCore processPath="dotnet">
+		<environmentVariables>
+			<environmentVariable name="ASPNETCORE_DETAILEDERRORS" value="true" />
+		</environmentVariables>
+	</aspNetCore>
 </system.webServer>
 ```

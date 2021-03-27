@@ -1,13 +1,6 @@
-name: CI
+name: ci
 
-on:
-  pull_request:
-    branches:
-      - master
-
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,10 +8,11 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -31,12 +25,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install
-        run: npm ci
+        run: npm i
 
       - name: Build
         run: npm run build
-        env:
-          BASE_PATH: http://localhost:3000
-
-      - name: Test
-        run: npm run test-against-build

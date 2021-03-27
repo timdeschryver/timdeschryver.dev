@@ -4,7 +4,7 @@ slug: make-your-csharp-applications-faster-with-linq-joins
 description: If you don't watch out your C# application might suddenly perform badly. As a solution, we can limit the number of operations with a LINQ Join.
 author: Tim Deschryver
 date: 2020-03-09T07:29:01.542Z
-tags: .NET, C#, LINQ, performance
+tags: dotnet, C#, LINQ, performance
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Marc Sendra Martorell](https://unsplash.com/@marcsm) on [Unsplash](https://unsplash.com)
 published: true

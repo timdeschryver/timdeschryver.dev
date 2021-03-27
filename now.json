@@ -1,33 +1,31 @@
 {
-  "version": 2,
-  "name": "timdeschryver.dev",
-  "alias": ["timdeschryver.dev", "www.timdeschryver.dev"],
-  "redirects": [
-    { "source": "/posts/(.*)", "destination": "/blog/$1" },
-    { "source": "/posts", "destination": "/blog" },
-    {
-      "source": "/newsletter",
-      "destination": "https://tinyletter.com/timdeschryver"
-    },
-    {
-      "source": "/twitter",
-      "destination": "https://twitter.com/tim_deschryver"
-    },
-    {
-      "source": "/github",
-      "destination": "http://github.com/timdeschryver"
-    }
-  ],
-  "functions": {
-    "api/graphql.js": {
-      "includeFiles": "content/**/*.md"
-    }
-  },
-  "build": {
-    "env": {
-      "TD_SLACK_HOOK": "@td_slack_hook",
-      "GA_TRACKING_ID": "@td_ga_tracking_id",
-      "BASE_PATH": "https://timdeschryver.dev"
-    }
-  }
+	"version": 2,
+	"name": "timdeschryver.dev",
+	"alias": ["timdeschryver.dev", "www.timdeschryver.dev"],
+	"redirects": [
+		{ "source": "/posts/(.*)", "destination": "/blog/$1" },
+		{ "source": "/posts", "destination": "/blog" },
+		{
+			"source": "/newsletter",
+			"destination": "https://tinyletter.com/timdeschryver"
+		},
+		{
+			"source": "/twitter",
+			"destination": "https://twitter.com/tim_deschryver"
+		},
+		{
+			"source": "/github",
+			"destination": "http://github.com/timdeschryver"
+		},
+		{
+			"source": "/support",
+			"destination": "https://www.paypal.com/donate?hosted_button_id=59M5TFPQJS8SQ"
+		}
+	],
+	"build": {
+		"env": {
+			"VITE_PUBLIC_GA_TRACKING_ID": "@td_ga_tracking_id",
+			"VITE_PUBLIC_BASE_PATH": "https://timdeschryver.dev"
+		}
+	}
 }

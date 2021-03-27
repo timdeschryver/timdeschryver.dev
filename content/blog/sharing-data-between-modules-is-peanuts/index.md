@@ -40,15 +40,15 @@ In the root module we have our family members and we’ll also use [@ngrx/router
 
 ```ts
 export interface State {
-  family: {
-    familyMembers: {
-      [id: string]: {
-        id: string
-        name: string
-        avatar: string
-      }
-    }
-  }
+	family: {
+		familyMembers: {
+			[id: string]: {
+				id: string;
+				name: string;
+				avatar: string;
+			};
+		};
+	};
 }
 ```
 
@@ -176,7 +176,3 @@ A big thank you to [Nate Lapinski](https://twitter.com/nate_lapinski), [Max Wiza
 - [Parameterized selectors](/blog/parameterized-selectors)
 - [Normalizing state](/blog/normalizing-state)
 - [Advanced NgRx](https://slides.com/gerardsans/angularsp-advanced-ngrx#/)
-
-## Did you know you can also create your custom selector factory
-
-https://twitter.com/gerardsans/status/1037359745466884096

@@ -15,9 +15,7 @@ One of the difficulties we experiences was validating fields that are dependent 
 For example, conditional validation or validation where multiple fields are needed to validate a control.
 
 Now, when we look back at those forms, we notice that most of the forms are build differently.
-We're not the only ones that struggle with this. I asked the question of how to implement a conditional validation in Angular Forms on Twitter, and they were multiple answers on how to tackle this problem. All of them were different but there was a consensus, it isn't always straightforward, nor is it easy.
-
-[https://twitter.com/tim_deschryver/status/1360597421340979206](https://twitter.com/tim_deschryver/status/1360597421340979206)
+We're not the only ones that struggle with this. I asked the question of how to implement a conditional validation in Angular Forms on Twitter, and they were multiple answers on how to tackle this problem. [All of them were different but there was a consensus, it isn't always straightforward, nor is it easy](https://twitter.com/tim_deschryver/status/1360597421340979206).
 
 To streamline our forms and to make the validation easier I started a proof of concept to validate forms differently.
 
@@ -63,28 +61,26 @@ For example, in the validator below `name` becomes required when `strict` is tru
 
 ```ts
 formValidator = createValidator<FormValue>(this.form, {
-  name: {
-    validator: required(),
-    when: (_, form) => form.strict,
-  },
-})
+	name: {
+		validator: required(),
+		when: (_, form) => form.strict
+	}
+});
 ```
 
 Without the `createValidator` wrapper, we need to juggle with validators by adding or removing validators of the control.
 If you use the [Taiga UI](https://taiga-ui.dev/) kit, you can use the `tuiValidator` directive.
 
-[https://twitter.com/Waterplea/status/1361223782367690754](https://twitter.com/Waterplea/status/1361223782367690754)
-
 ```ts
 this.form.get('strict')!.valueChanges.subscribe((strict) => {
-  if (strict) {
-    this.form.get('string')!.setValidators(Validators.required)
-    this.form.get('string')!.updateValueAndValidity()
-  } else {
-    this.form.get('string')!.setValidators(null)
-    this.form.get('string')!.updateValueAndValidity()
-  }
-})
+	if (strict) {
+		this.form.get('string')!.setValidators(Validators.required);
+		this.form.get('string')!.updateValueAndValidity();
+	} else {
+		this.form.get('string')!.setValidators(null);
+		this.form.get('string')!.updateValueAndValidity();
+	}
+});
 ```
 
 Doing this can quickly become bloated and hazardous for large forms when there's cohesion between different controls.
@@ -99,9 +95,9 @@ In the snippet below, `passwordConfirmation` needs to be equal to the value of `
 
 ```ts
 formValidator = createValidator<User>(this.form, {
-  password: [required(), minLength(7)],
-  passwordConfirmation: equal((user) => user.password),
-})
+	password: [required(), minLength(7)],
+	passwordConfirmation: equal((user) => user.password)
+});
 ```
 
 To implement this scenario with the Forms API, we have two options.

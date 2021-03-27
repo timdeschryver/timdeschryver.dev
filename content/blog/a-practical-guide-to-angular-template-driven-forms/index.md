@@ -39,12 +39,12 @@ In code, this looks like this.
 
 ```ts
 @Component({
-  template: `
-    <form>
-      <label for="text">A label</label>
-      <input type="text" id="text" name="formText" ngModel />
-    </form>
-  `,
+	template: `
+		<form>
+			<label for="text">A label</label>
+			<input type="text" id="text" name="formText" ngModel />
+		</form>
+	`
 })
 export class AppComponent {}
 ```
@@ -55,7 +55,7 @@ This form results in the following form value.
 
 ```json
 {
-  "formText": ""
+	"formText": ""
 }
 ```
 
@@ -129,26 +129,21 @@ Angular makes things easier for us by already parsing the value of the input con
 
 ```ts
 @Component({
-  template: `
-    <form>
-      <label for="text">Text</label>
-      <input type="text" id="text" name="formText" [(ngModel)]="model.text" />
+	template: `
+		<form>
+			<label for="text">Text</label>
+			<input type="text" id="text" name="formText" [(ngModel)]="model.text" />
 
-      <label for="number">Number</label>
-      <input
-        type="number"
-        id="number"
-        name="formNumber"
-        [(ngModel)]="model.number"
-      />
-    </form>
-  `,
+			<label for="number">Number</label>
+			<input type="number" id="number" name="formNumber" [(ngModel)]="model.number" />
+		</form>
+	`
 })
 export class AppComponent {
-  model = {
-    text: null,
-    number: null,
-  }
+	model = {
+		text: null,
+		number: null
+	};
 }
 ```
 
@@ -193,35 +188,35 @@ When the TypeScript model has an initial value or when it's reassigned a new val
 
 ```ts
 @Component({
-  template: `
-    <label for="select">Select</label>
-    <select id="select" name="formSelect" [(ngModel)]="model.select">
-      <option [value]="null">Default Option</option>
-      <option *ngFor="let option of options" [value]="option.value">
-        {{ option.label }}
-      </option>
-    </select>
-  `,
+	template: `
+		<label for="select">Select</label>
+		<select id="select" name="formSelect" [(ngModel)]="model.select">
+			<option [value]="null">Default Option</option>
+			<option *ngFor="let option of options" [value]="option.value">
+				{{ option.label }}
+			</option>
+		</select>
+	`
 })
 export class AppComponent {
-  model = {
-    select: null,
-  }
+	model = {
+		select: null
+	};
 
-  options = [
-    {
-      value: 1,
-      label: 'Option One',
-    },
-    {
-      value: 2,
-      label: 'Option Two',
-    },
-    {
-      value: 3,
-      label: 'Option Three',
-    },
-  ]
+	options = [
+		{
+			value: 1,
+			label: 'Option One'
+		},
+		{
+			value: 2,
+			label: 'Option Two'
+		},
+		{
+			value: 3,
+			label: 'Option Three'
+		}
+	];
 }
 ```
 
@@ -260,39 +255,39 @@ All checkbox elements within the same group must have unique names, otherwise, a
 
 ```ts
 @Component({
-  template: `
-    <label>Checkbox list</label>
-    <div *ngFor="let check of model.checks">
-      <input
-        type="checkbox"
-        [id]="'formCheckbox-' + check.id"
-        [name]="'formCheckbox-' + check.id"
-        [(ngModel)]="check.selected"
-      />
-      <label [for]="'formCheckbox-' + check.id">{{ check.label }}</label>
-    </div>
-  `,
+	template: `
+		<label>Checkbox list</label>
+		<div *ngFor="let check of model.checks">
+			<input
+				type="checkbox"
+				[id]="'formCheckbox-' + check.id"
+				[name]="'formCheckbox-' + check.id"
+				[(ngModel)]="check.selected"
+			/>
+			<label [for]="'formCheckbox-' + check.id">{{ check.label }}</label>
+		</div>
+	`
 })
 export class AppComponent {
-  model = {
-    checks: [
-      {
-        id: 'check-one',
-        label: 'Check One',
-        selected: false,
-      },
-      {
-        id: 'check-two',
-        label: 'Check Two',
-        selected: false,
-      },
-      {
-        id: 'check-three',
-        label: 'Check Three',
-        selected: false,
-      },
-    ],
-  }
+	model = {
+		checks: [
+			{
+				id: 'check-one',
+				label: 'Check One',
+				selected: false
+			},
+			{
+				id: 'check-two',
+				label: 'Check Two',
+				selected: false
+			},
+			{
+				id: 'check-three',
+				label: 'Check Three',
+				selected: false
+			}
+		]
+	};
 }
 ```
 
@@ -444,46 +439,46 @@ A radio group is similar to a checkbox list. The difference is that in contrast 
 
 ```ts
 @Component({
-  template: `
-    <label>Radio group</label>
-    <div>
-      <input
-        type="radio"
-        id="radio-1"
-        name="formRadioGroup"
-        [value]="1"
-        [(ngModel)]="model.radio"
-      />
-      <label for="radio-1">Radio One</label>
-    </div>
+	template: `
+		<label>Radio group</label>
+		<div>
+			<input
+				type="radio"
+				id="radio-1"
+				name="formRadioGroup"
+				[value]="1"
+				[(ngModel)]="model.radio"
+			/>
+			<label for="radio-1">Radio One</label>
+		</div>
 
-    <div>
-      <input
-        type="radio"
-        id="radio-2"
-        name="formRadioGroup"
-        [value]="2"
-        [(ngModel)]="model.radio"
-      />
-      <label for="radio-2">Radio Two</label>
-    </div>
+		<div>
+			<input
+				type="radio"
+				id="radio-2"
+				name="formRadioGroup"
+				[value]="2"
+				[(ngModel)]="model.radio"
+			/>
+			<label for="radio-2">Radio Two</label>
+		</div>
 
-    <div>
-      <input
-        type="radio"
-        id="radio-3"
-        name="formRadioGroup"
-        [value]="3"
-        [(ngModel)]="model.radio"
-      />
-      <label for="radio-3">Radio Three</label>
-    </div>
-  `,
+		<div>
+			<input
+				type="radio"
+				id="radio-3"
+				name="formRadioGroup"
+				[value]="3"
+				[(ngModel)]="model.radio"
+			/>
+			<label for="radio-3">Radio Three</label>
+		</div>
+	`
 })
 export class AppComponent {
-  model = {
-    radio: null,
-  }
+	model = {
+		radio: null
+	};
 }
 ```
 
@@ -673,7 +668,7 @@ export class RequiredCheckboxGroupValidatorDirective implements Validator {
 ```
 
 The `validate` method needs to return a `null` value when the value of the control is valid.
-Otherwise, if the value is invalid, the `validate` method needs to return an [`ValidationErrors` object](https://angular.io/api/forms/ValidationErrors) with (details of) the validation errors. The returned details will be used to create user-friendly [Validation Messages](#creating-validation-messages).
+Otherwise, if the value is invalid, the `validate` method needs to return an [`ValidationErrors` object](https://angular.io/api/forms/ValidationErrors) with (details of) the validation errors. The returned details will be used to create user-friendly [Validation Messages](#validation-messages).
 
 To use the `RequiredCheckboxGroupValidatorDirective` validator, we can now append the directive to a control, or in this case to a model group.
 
@@ -770,50 +765,50 @@ To give another example, let's take a look at another widely used validator is a
 
 ```ts
 function equalTo(value: any): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (control.value !== value) {
-      return {
-        equalTo: value,
-      }
-    }
+	return (control: AbstractControl): ValidationErrors | null => {
+		if (control.value !== value) {
+			return {
+				equalTo: value
+			};
+		}
 
-    return null
-  }
+		return null;
+	};
 }
 
 @Directive({
-  selector: '[equalTo][ngModel]',
-  providers: [
-    {
-      provide: NG_VALIDATORS,
-      useExisting: EqualToValidatorDirective,
-      multi: true,
-    },
-  ],
+	selector: '[equalTo][ngModel]',
+	providers: [
+		{
+			provide: NG_VALIDATORS,
+			useExisting: EqualToValidatorDirective,
+			multi: true
+		}
+	]
 })
 export class EqualToValidatorDirective implements Validator {
-  private _equalTo: any
-  private _onChange?: () => void
+	private _equalTo: any;
+	private _onChange?: () => void;
 
-  @Input()
-  get equalTo() {
-    return this._equalTo
-  }
+	@Input()
+	get equalTo() {
+		return this._equalTo;
+	}
 
-  set equalTo(value: any) {
-    this._equalTo = value
-    if (this._onChange) {
-      this._onChange()
-    }
-  }
+	set equalTo(value: any) {
+		this._equalTo = value;
+		if (this._onChange) {
+			this._onChange();
+		}
+	}
 
-  validate(control: AbstractControl): ValidationErrors | null {
-    return equalTo(this.equalTo)(control)
-  }
+	validate(control: AbstractControl): ValidationErrors | null {
+		return equalTo(this.equalTo)(control);
+	}
 
-  registerOnValidatorChange?(fn: () => void): void {
-    this._onChange = fn
-  }
+	registerOnValidatorChange?(fn: () => void): void {
+		this._onChange = fn;
+	}
 }
 ```
 
@@ -893,51 +888,51 @@ In the following two tests, we verify that the `EqualToValidatorDirective` direc
 
 ```ts
 it('is valid when it has the same value as the comparison value', async () => {
-  const component = await render(EqualToValidatorDirective, {
-    template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
-    imports: [FormsModule],
-    componentProperties: {
-      compareValue: 'value1',
-    },
-  })
+	const component = await render(EqualToValidatorDirective, {
+		template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
+		imports: [FormsModule],
+		componentProperties: {
+			compareValue: 'value1'
+		}
+	});
 
-  const model = component.fixture.debugElement.children[0].injector.get(NgForm)
-  const input = screen.getByRole('textbox')
+	const model = component.fixture.debugElement.children[0].injector.get(NgForm);
+	const input = screen.getByRole('textbox');
 
-  userEvent.type(input, 'value2')
-  expect(model.controls.sut.invalid).toBeTruthy()
-  expect(model.controls.sut.errors).toEqual({
-    equalTo: 'value1',
-  })
+	userEvent.type(input, 'value2');
+	expect(model.controls.sut.invalid).toBeTruthy();
+	expect(model.controls.sut.errors).toEqual({
+		equalTo: 'value1'
+	});
 
-  userEvent.clear(input)
-  userEvent.type(input, 'value1')
-  expect(model.controls.sut.valid).toBeTruthy()
-  expect(model.controls.sut.errors).toBeNull()
-})
+	userEvent.clear(input);
+	userEvent.type(input, 'value1');
+	expect(model.controls.sut.valid).toBeTruthy();
+	expect(model.controls.sut.errors).toBeNull();
+});
 
 it('revalidates on input change', async () => {
-  const component = await render(EqualToValidatorDirective, {
-    template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
-    imports: [FormsModule],
-    componentProperties: {
-      compareValue: 'value1',
-    },
-  })
+	const component = await render(EqualToValidatorDirective, {
+		template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
+		imports: [FormsModule],
+		componentProperties: {
+			compareValue: 'value1'
+		}
+	});
 
-  const model = component.fixture.debugElement.children[0].injector.get(NgForm)
-  const input = screen.getByRole('textbox')
+	const model = component.fixture.debugElement.children[0].injector.get(NgForm);
+	const input = screen.getByRole('textbox');
 
-  userEvent.type(input, 'value2')
-  expect(model.controls.sut.invalid).toBeTruthy()
-  expect(model.controls.sut.errors).toEqual({
-    equalTo: 'value1',
-  })
+	userEvent.type(input, 'value2');
+	expect(model.controls.sut.invalid).toBeTruthy();
+	expect(model.controls.sut.errors).toEqual({
+		equalTo: 'value1'
+	});
 
-  component.fixture.componentInstance.compareValue = 'value2'
-  expect(model.controls.sut.valid).toBeTruthy()
-  expect(model.controls.sut.errors).toBeNull()
-})
+	component.fixture.componentInstance.compareValue = 'value2';
+	expect(model.controls.sut.valid).toBeTruthy();
+	expect(model.controls.sut.errors).toBeNull();
+});
 ```
 
 ### Validators Example
@@ -974,12 +969,12 @@ For example, to change the border color to red when an invalid control is touche
 input.ng-invalid.ng-touched:not(:focus),
 select.ng-invalid.ng-touched:not(:focus),
 textarea.ng-invalid.ng-touched:not(:focus) {
-  border-color: red;
+	border-color: red;
 }
 
 /* all of the checkboxes inside a required checkbox group */
 [requiredcheckboxgroup].ng-invalid.ng-touched input {
-  border-color: red;
+	border-color: red;
 }
 ```
 
@@ -1009,13 +1004,10 @@ Notice that the messages are hidden until the control is touched by the user, an
 ```html
 <input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
 <div *ngIf="name.invalid && name.touched">
-  <div *ngIf="name.errors.required">
-    Name is required.
-  </div>
-  <div *ngIf="name.errors.minlength">
-    Name must be at least {{ name.errors.minlength.requiredLength }} characters
-    long.
-  </div>
+	<div *ngIf="name.errors.required">Name is required.</div>
+	<div *ngIf="name.errors.minlength">
+		Name must be at least {{ name.errors.minlength.requiredLength }} characters long.
+	</div>
 </div>
 ```
 
@@ -1332,8 +1324,8 @@ We could also use the `ControlErrorComponent` like before, but I find this solut
 
 ```html
 <div class="checkbox-container" formField>
-  <input type="checkbox" id="tac" name="tac" ngModel required />
-  <label for="tac">I agree with the terms and conditions</label>
+	<input type="checkbox" id="tac" name="tac" ngModel required />
+	<label for="tac">I agree with the terms and conditions</label>
 </div>
 ```
 

@@ -1,4 +1,3 @@
-node_modules
-dist
-coverage
-src/lambda/*.out.js
+.svelte/**
+static/**
+node_modules/**

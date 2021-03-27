@@ -1,8 +1,8 @@
-@import './fonts/system/font-face.css';
+@import "./fonts/system/font-face.css";
 
 :root {
-  --text-font: 'system';
-  --head-font: 'system';
+  --text-font: "system";
+  --head-font: "system";
 
   --background-color: #fbfbfb;
   --spacing: 1.5em;
@@ -125,7 +125,7 @@ code {
   line-height: 1;
 }
 
-pre > code[class*='language-'] {
+pre > code[class*="language-"] {
   font-size: 1em;
 }
 
@@ -173,19 +173,20 @@ a:focus {
   outline: 2px solid var(--prime-color);
 }
 
-:focus {
-  filter: brightness(120%) saturate(120%) !important;
-}
-
 a:hover,
 button:hover,
 pre:hover,
-h2:hover {
+h2:hover,
+a:focus,
+button:focus,
+pre:focus,
+h2:focus,
+button.active {
   filter: brightness(120%) saturate(120%);
 }
 
 .anchor:before {
-  content: '#';
+  content: "#";
   position: absolute;
   color: var(--prime-color);
   font-size: 150%;
@@ -221,7 +222,7 @@ ul > li {
 }
 
 ul > li:before {
-  content: '';
+  content: "";
   border-radius: 100px;
   position: absolute;
   top: 0.9rem;
@@ -235,7 +236,7 @@ img {
   width: 100%;
 }
 
-#sapper > *:not(footer) {
+#svelte > *:not(footer) {
   display: grid;
   grid-template-columns:
     minmax(1.2rem, 1fr)
@@ -243,15 +244,15 @@ img {
     minmax(1.2rem, 1fr);
 }
 
-#sapper {
+#svelte {
   margin-top: 0;
 }
 
-#sapper > * > * {
+#svelte > * > * {
   grid-column: 2;
 }
 
-[data-schema='dark'] main > *:not(pre) {
+[data-schema="dark"] main > *:not(pre) {
   color: white;
   mix-blend-mode: difference;
 }
@@ -263,18 +264,19 @@ main > h4 {
   filter: drop-shadow(0.05em 0.05em var(--prime-color));
 }
 
-#sapper > main > pre,
-#sapper > main > iframe,
-#sapper > main > figure,
-#sapper > main > table,
-#sapper > main > blockquote {
+#svelte > main > pre,
+#svelte > main > iframe,
+#svelte > main > figure,
+#svelte > main > table,
+#svelte > main > blockquote,
+#svelte > main > .wide {
   grid-column: 1 / 4;
   width: 100%;
   max-width: 80ch;
   justify-self: center;
 }
 
-#sapper > main > iframe {
+#svelte > main > iframe {
   max-width: 100%;
 }
 
@@ -298,7 +300,7 @@ small {
   font-size: 80%;
 }
 
-input:not([type='color']),
+input:not([type="color"]),
 textarea,
 select {
   padding: 0.4em;
