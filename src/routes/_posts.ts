@@ -13,6 +13,8 @@ import 'prismjs/components/prism-diff.js';
 import 'prismjs/components/prism-csharp.js';
 import 'prismjs/components/prism-sql.js';
 
+import { ISODate } from '$lib/formatters';
+
 const blogPath = 'content/blog';
 const snippetsPath = 'content/snippets';
 const langs = {
@@ -41,13 +43,13 @@ export function readPosts(): {
 		slug: string;
 		description: string;
 		author: string;
-		date: Date;
+		date: string;
+		modified: string;
 		tags: string[];
 		banner: string;
 		bannerCredit: string;
 		published: boolean;
 		folder: string;
-		modified: Date;
 		canonical: string;
 		edit: string;
 	};
@@ -92,11 +94,12 @@ export function readPosts(): {
 				html,
 				metadata: {
 					...metadata,
+					date: ISODate(metadata.date),
+					modified: ISODate(modified),
 					folder,
 					published,
 					tags,
 					banner,
-					modified,
 					canonical,
 					edit
 				}
@@ -111,7 +114,7 @@ export function readSnippets(): {
 		title: string;
 		slug: string;
 		author: string;
-		date: Date;
+		date: string;
 		tags: string[];
 		url: string;
 	};
@@ -150,7 +153,7 @@ export function readSnippets(): {
 				html,
 				metadata: {
 					...metadata,
-					date: new Date(metadata.date),
+					date: ISODate(metadata.date),
 					tags,
 					image,
 					url
