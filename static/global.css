@@ -236,13 +236,14 @@ img {
   width: 100%;
 }
 
-#svelte > *:not(footer) {
+#svelte > *:not(footer, script){
   display: grid;
   grid-template-columns:
     minmax(1.2rem, 1fr)
     minmax(auto, 58ch)
     minmax(1.2rem, 1fr);
 }
+
 
 #svelte {
   margin-top: 0;
@@ -350,6 +351,7 @@ tbody tr:nth-child(even) {
 
 [hidden] {
   display: none !important;
+  visibility: hidden;
 }
 
 ::selection {

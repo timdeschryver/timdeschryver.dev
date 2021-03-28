@@ -16,6 +16,7 @@
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	export let post;
+	let y;
 </script>
 
 <svelte:head>
@@ -46,7 +47,11 @@
 	<meta name="og:image" content={post.metadata.banner} />
 </svelte:head>
 
+<svelte:window bind:scrollY={y} />
+
 <h1>{post.metadata.title}</h1>
+
+<a href="/blog" class="back-to-blog" hidden={y < 330}>All posts</a>
 
 <div class="time-heading">
 	<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
@@ -118,5 +123,24 @@
 	}
 	.time-heading {
 		margin-top: 0;
+	}
+
+	.back-to-blog {
+		display: block;
+		position: fixed;
+		max-width: auto;
+		margin: 0;
+		top: 20px;
+		left: 20px;
+		padding: 4px 8px;
+		font-size: 0.8em;
+		background: var(--prime-color-03);
+		border: 1px solid var(--prime-color);
+	}
+
+	@media screen and (max-width: 1150px) {
+		.back-to-blog {
+			display: none;
+		}
 	}
 </style>

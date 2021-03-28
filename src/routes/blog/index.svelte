@@ -17,20 +17,21 @@
 	import Head from '$lib/Head.svelte';
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	export let metadata;
 	export let tags;
 
-	let query = $page.query.get('q');
+	let query;
+	let params;
 
-	$: if (typeof window !== 'undefined') {
-		let params = new URLSearchParams(window.location.search);
-
+	onMount(() => {
+		params = new URLSearchParams(window.location.search);
 		// fallback, in the vercel build `query` seems to be undefined
-		if (query === null) {
-			query = params.get('q') || '';
-		}
+		query = $page.query.get('q') || params.get('q') || '';
+	});
 
+	$: if (params) {
 		if (query) {
 			params.set('q', query);
 			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
@@ -90,7 +91,7 @@
 <ul>
 	{#each filteredPosts as post, i}
 		<li style="--i: {i}">
-			<a sveltekit:prefetch href={`/blog/${post.slug}`}>
+			<a sveltekit:prefetch href={`/blog/${post.slug}`} hidden={typeof query !== 'string'}>
 				<h2>{post.title}</h2>
 				<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 			</a>
@@ -105,7 +106,7 @@
 		top: 0;
 	}
 
-	@media (max-width: 1150px) {
+	@media screen and (max-width: 1150px) {
 		time {
 			display: none;
 		}
