@@ -960,7 +960,7 @@ The same states are also available on form groups (`NgModelGroup`) and forms (`N
 All control states have an equivalent CSS class.
 To obtain the class of a state, simply prepend the state with `ng-`.
 
-This results in the following class names, `.ng-valid`,`.ng-invalid`,`.ng-pending`,`.ng-pristine`,`.ng-dirty`,`.ng-untouched` and `.ng-touched`. Sadly, there is no `.ng-submitted` class when a form has been submitted.
+This results in the following class names, `.ng-valid`, `.ng-invalid`, `.ng-pending`, `.ng-pristine`, `.ng-dirty`, `.ng-untouched` and `.ng-touched`. Sadly, there is no `.ng-submitted` class when a form has been submitted.
 
 These class names can be used to style the control field of our forms.
 For example, to change the border color to red when an invalid control is touched by the user, we can use the following styles.

@@ -19,7 +19,7 @@ We're not the only ones that struggle with this. I asked the question of how to 
 
 To streamline our forms and to make the validation easier I started a proof of concept to validate forms differently.
 
-### Goals
+## Goals
 
 The goal is to come up with a solution for more complex forms, but also that it can be used for the simple forms.
 
@@ -30,7 +30,7 @@ These validation rules must be reusable (and testable). We get extra points if c
 I also don't want the solution to be destructive because I don't want to rewrite existing forms.
 Therefore, the solution has to build a layer on top of the existing Angular Forms API.
 
-### The proposal
+## The proposal
 
 The Angular Forms API already provides the basic building blocks to make these goals possible.
 An [`AbstractControl`](https://angular.io/api/forms/AbstractControl) has the method [`setError`](https://angular.io/api/forms/AbstractControl#setErrors), which is all that's needed to make a form (control) valid or invalid.
@@ -50,11 +50,11 @@ To see this in action, please have a look at the following examples.
 
 <iframe src="https://stackblitz.com/edit/create-validator-poc?ctl=1&embed=1&file=src/app/user-form/user-form.component.ts" title="create-validator-poc" loading="lazy"></iframe>
 
-### The differences
+## The differences
 
 Let's highlight the differences and the benefits compared to the default behavior by comparing the two.
 
-#### Conditional Validation
+### Conditional Validation
 
 To disable and enable form validation based on a control's value, we use `when`.
 For example, in the validator below `name` becomes required when `strict` is true.
@@ -87,7 +87,7 @@ Doing this can quickly become bloated and hazardous for large forms when there's
 In our case, we overruled a previously validator with a different one. It was after a couple of debugging sessions that we were able to reproduce this hidden bug.
 With the `when` syntax, it becomes easier to see the coherence between (multiple) controls and (multiple) validators.
 
-#### Access to the form value
+### Access to the form value
 
 In each validator, we have access to the value of the whole form.
 Having access to the form value is useful when you need to compare properties of a form (e.g. with the `equal` rule), or when the validation is based on multiple form values.
@@ -116,26 +116,26 @@ this.form.get('password')!.valueChanges.subscribe((password) => {
 
 Just like [Conditional Validation](#conditional-validation) this becomes tricky for bigger forms.
 
-#### Statically Typed
+### Statically Typed
 
 When you pass a type to `createValidator<T>`, the rest of the validation is statically typed.
 
 While building the validator, properties of the form model are auto-completed and the value of a form control and the form will be typed in all of the validator rules. The built-in validators are also typed so we can't make the mistake of using the wrong validator.
 For example, you won't be able to use a number validation (e.g. `greaterThan`) for a property that holds a string value.
 
-#### Main difference
+### Main difference
 
 To make the above use cases possible, the whole form is validated on every change.
 This impact is negligible for synchronous validators because these are just methods that are invoked, thus should be fast and has a low impact on the performance.
 This is a different story for asynchronous validators, where this behavior might have an impact.
 
-### Impact
+## Impact
 
 As a developer, the `createValidator` wrapper intends to make it easier to write and read the validation logic of your Angular forms.
 Its minimal API (with the common supplied validation rules) should also allow a quick transition towards the `createValidator` wrapper.
 Refactoring existing forms will have a minimal impact because the status and the value of the form remain the same as before.
 
-### Final thoughts
+## Final thoughts
 
 While this is just a simple proof of concept, I can see the benefits of adding an extra layer on top of the Angular Forms API and use the basis as building blocks. Because of this, and because of the common validation rules that behave the same as the built-in Angular validator I expect it to be a small and quick shift if we decide to pull the trigger.
 

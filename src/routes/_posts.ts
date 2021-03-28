@@ -239,7 +239,7 @@ function parseFileToHtmlAndMeta(
 			// add space to render the line
 			.replace(/<span class="line-highlight"><\/span>/g, '<span class="line-highlight"> </span>');
 
-		const codeBlock = `<code tabindex="0">${highlighted}</code>`;
+		const codeBlock = `<code>${highlighted}</code>`;
 		const headingParts = [
 			file ? `<span class="file">${file}</span>` : undefined,
 			...createHeadingParts(metadata)
