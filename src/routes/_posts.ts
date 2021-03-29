@@ -1,5 +1,5 @@
-import { readdirSync, lstatSync, readFileSync } from 'fs';
-import { join, extname, dirname, sep, normalize } from 'path';
+import fs from 'fs';
+import path from 'path';
 import { execSync } from 'child_process';
 import marked from 'marked/lib/marked.js';
 import highlightCode from 'gatsby-remark-prismjs/highlight-code.js';
@@ -38,6 +38,7 @@ export const snippets = readSnippets();
 
 export function readPosts(): {
 	html: string;
+	tldr: string;
 	metadata: {
 		title: string;
 		slug: string;
@@ -49,19 +50,25 @@ export function readPosts(): {
 		banner: string;
 		bannerCredit: string;
 		published: boolean;
-		folder: string;
 		canonical: string;
 		edit: string;
 	};
 }[] {
-	console.log('[generate] posts');
+	console.log('\x1b[35m[posts] generate\x1b[0m');
 
-	const files = getFiles(blogPath, '.md');
-	return files
-		.map((file) => {
-			const folder = dirname(file).split(sep).pop();
-			const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(file, {
-				createAnchorAndFragment: (_level, metadata, text) => {
+	const folderContent = [...traverseFolder(blogPath, '.md')];
+	const directories = folderContent.reduce((dirs, file) => {
+		dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
+		return dirs;
+	}, {} as { [directory: string]: { file: string; path: string }[] });
+
+	return Object.values(directories)
+		.map((files) => {
+			const postPath = files.find((f) => f.file === 'index.md').path;
+			const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
+
+			const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(postPath, {
+				createAnchorAndFragment: (_level, _metadata, text) => {
 					const anchorRegExp = /{([^}]+)}/g;
 					const anchorOverwrite = anchorRegExp.exec(text);
 					const fragment = anchorOverwrite
@@ -71,32 +78,44 @@ export function readPosts(): {
 					return { anchor: `#${fragment}`, fragment };
 				}
 			});
+			const { html: tldr } = tldrPath
+				? parseFileToHtmlAndMeta(tldrPath, {
+						createAnchorAndFragment: (_level, _metadata, text) => {
+							const anchorRegExp = /{([^}]+)}/g;
+							const anchorOverwrite = anchorRegExp.exec(text);
+							const fragment = anchorOverwrite
+								? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
+								: slugify(text);
 
-			const modified = getLastModifiedDate(file);
+							return { anchor: `#${fragment}`, fragment };
+						}
+				  })
+				: { html: null };
+
+			// disable in dev because this slows down 😪
+			const modified = import.meta.env.DEV ? '' : getLastModifiedDate(postPath);
 			const published = metadata.published === 'true';
 			const tags = metadata.tags
 				.split(',')
 				.map((p) => (p ? p.trim().charAt(0).toUpperCase() + p.trim().slice(1) : p));
-			const banner = normalize(
-				join(import.meta.env.VITE_PUBLIC_BASE_PATH, assetsSrc, metadata.banner)
-			)
+			const banner = path
+				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, assetsSrc, metadata.banner))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
-			const canonical = normalize(
-				join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug)
-			)
+			const canonical = path
+				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
 			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/content/blog/${metadata.slug}/index.md`;
 			return {
 				html,
+				tldr,
 				metadata: {
 					...metadata,
 					date: ISODate(metadata.date),
 					modified: ISODate(modified),
-					folder,
 					published,
 					tags,
 					banner,
@@ -119,11 +138,12 @@ export function readSnippets(): {
 		url: string;
 	};
 }[] {
-	console.log('[generate] snippets');
-	const files = getFiles(snippetsPath, '.md');
-	return files
-		.map((file) => {
-			const { html, metadata } = parseFileToHtmlAndMeta(file, {
+	console.log('\x1b[35m[snippets] generate\x1b[0m');
+
+	const folderContent = [...traverseFolder(snippetsPath, '.md')];
+	return folderContent
+		.map(({ path }) => {
+			const { html, metadata } = parseFileToHtmlAndMeta(path, {
 				createAnchorAndFragment: (level, metadata) =>
 					level == 2
 						? {
@@ -167,9 +187,9 @@ function parseFileToHtmlAndMeta(
 	file,
 	{ createAnchorAndFragment = () => {}, createHeadingParts = () => [] }: any
 ): any {
-	const markdown = readFileSync(file, 'utf-8');
+	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
-	const assetsSrc = dirname(file.replace('content', ''));
+	const assetsSrc = path.dirname(file.replace('content', ''));
 	const renderer = new marked.Renderer();
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
@@ -193,11 +213,13 @@ function parseFileToHtmlAndMeta(
 	};
 
 	renderer.image = function (href, _title, text) {
-		const src = href.startsWith('http') ? href : join(assetsSrc, href);
-		return `<figure>
-	  <img src="${src}" alt="" loading="lazy"/>
-	  <figcaption>${text}</figcaption>
-	</figure>`;
+		const src = href.startsWith('http') ? href : path.join(assetsSrc, href);
+		return `
+			<figure>
+				<img src="${src}" alt="" loading="lazy"/>
+				<figcaption>${text}</figcaption>
+			</figure>
+		`;
 	};
 
 	renderer.code = (source, lang) => {
@@ -276,29 +298,29 @@ function parseFileToHtmlAndMeta(
 	return { html, metadata, assetsSrc };
 }
 
-function getFiles(dir, extension, files = []) {
-	const dirFiles = readdirSync(dir);
-
-	dirFiles.forEach((path) => {
-		const file = join(dir, path);
-		const isDirectory = lstatSync(file).isDirectory();
-
-		if (isDirectory) {
-			return getFiles(file, extension, files);
+export function* traverseFolder(
+	folder: string,
+	extension = '.md'
+): Generator<{ folder: string; file: string; path: string }> {
+	const folders = fs.readdirSync(folder, { withFileTypes: true }) as fs.Dirent[];
+	for (const folderEntry of folders) {
+		if (folderEntry.name.includes('node_modules')) {
+			// ignore folder
+			continue;
 		}
-
-		if (extname(file) === extension) {
-			files.push(file);
+		const entryPath = path.resolve(folder, folderEntry.name);
+		if (folderEntry.isDirectory()) {
+			yield* traverseFolder(entryPath, extension);
+		} else if (path.extname(entryPath) === extension) {
+			yield { folder, file: folderEntry.name, path: entryPath };
 		}
-	});
-
-	return files;
+	}
 }
 
 function extractFrontmatter(markdown) {
 	const match = /---\r?\n([\s\S]+?)\r?\n---/.exec(markdown);
-	const frontMatter = match[1];
-	const content = markdown.slice(match[0].length);
+	const frontMatter = match ? match[1] : '';
+	const content = match ? markdown.slice(match[0].length) : markdown;
 
 	const metadata = frontMatter.split('\n').reduce((data, pair) => {
 		const colonIndex = pair.indexOf(':');

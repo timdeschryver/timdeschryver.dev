@@ -13,10 +13,36 @@
 </script>
 
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
+
 	export let post;
-	let y;
+
+	let tldrToggle;
+	let scrollY;
+
+	onMount(() => {
+		tldrToggle =
+			$page.query.get('tldr') !== null ||
+			new URLSearchParams(window.location.search).get('tldr') !== null;
+	});
+
+	$: if (tldrToggle !== undefined) {
+		let params = new URLSearchParams(window.location.search);
+		if (tldrToggle) {
+			params.set('tldr', '1');
+			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
+		} else {
+			params.delete('tldr');
+			window.history.replaceState(window.history.state, '', `${location.pathname}`);
+		}
+	}
+
+	function tldrClicked() {
+		tldrToggle = !tldrToggle;
+	}
 </script>
 
 <svelte:head>
@@ -47,11 +73,16 @@
 	<meta name="og:image" content={post.metadata.banner} />
 </svelte:head>
 
-<svelte:window bind:scrollY={y} />
+<svelte:window bind:scrollY />
 
 <h1>{post.metadata.title}</h1>
 
-<a href="/blog" class="back-to-blog" hidden={y < 330}>All posts</a>
+<div class="side-actions" hidden={(scrollY || 0) < 330}>
+	<a href="/blog">All posts</a>
+	{#if post.tldr}
+		<button on:click={tldrClicked}>{tldrToggle ? 'Back to post' : 'Just the code'}</button>
+	{/if}
+</div>
 
 <div class="time-heading">
 	<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
@@ -61,7 +92,17 @@
 	{/if}
 </div>
 
-{@html post.html}
+{#if post.tldr}
+	<button class="tldr" on:click={tldrClicked}>
+		👀 {tldrToggle ? 'I want to read the blog post' : 'Just show me the code already '}</button
+	>
+{/if}
+
+{#if tldrToggle && post.tldr}
+	{@html post.tldr}
+{:else}
+	{@html post.html}
+{/if}
 
 <hr />
 
@@ -125,21 +166,34 @@
 		margin-top: 0;
 	}
 
-	.back-to-blog {
+	.side-actions {
 		display: block;
 		position: fixed;
-		max-width: auto;
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		padding: 4px 8px;
-		font-size: 0.8em;
+	}
+
+	.tldr {
+		background: none;
+		border: none;
+		text-align: center;
+		font-weight: 900;
+		font-size: 1rem;
+	}
+
+	.side-actions * {
+		padding: 4px;
 		background: var(--prime-color-03);
 		border: 1px solid var(--prime-color);
+		font-size: 0.8rem;
+		display: block;
+		text-align: center;
+		line-height: 2;
 	}
 
 	@media screen and (max-width: 1150px) {
-		.back-to-blog {
+		.side-actions {
 			display: none;
 		}
 	}
