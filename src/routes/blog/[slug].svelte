@@ -166,14 +166,6 @@
 		margin-top: 0;
 	}
 
-	.side-actions {
-		display: block;
-		position: fixed;
-		margin: 0;
-		top: 20px;
-		left: 20px;
-	}
-
 	.tldr {
 		background: none;
 		border: none;
@@ -182,10 +174,16 @@
 		font-size: 1rem;
 	}
 
+	.side-actions {
+		display: block;
+		position: fixed;
+		margin: 0;
+		top: 20px;
+		left: 20px;
+	}
+
 	.side-actions * {
 		padding: 4px;
-		background: var(--prime-color-03);
-		border: 1px solid var(--prime-color);
 		font-size: 0.8rem;
 		display: block;
 		text-align: center;

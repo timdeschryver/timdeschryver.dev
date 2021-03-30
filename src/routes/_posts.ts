@@ -99,7 +99,9 @@ export function readPosts(): {
 				.split(',')
 				.map((p) => (p ? p.trim().charAt(0).toUpperCase() + p.trim().slice(1) : p));
 			const banner = path
-				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, assetsSrc, metadata.banner))
+				.normalize(
+					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner)
+				)
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
@@ -189,7 +191,7 @@ function parseFileToHtmlAndMeta(
 ): any {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
-	const assetsSrc = path.dirname(file.replace('content', ''));
+	const assetsSrc = path.dirname(file);
 	const renderer = new marked.Renderer();
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
@@ -212,8 +214,15 @@ function parseFileToHtmlAndMeta(
 		return `<a ${attributes}>${text}</a>`;
 	};
 
-	renderer.image = function (href, _title, text) {
-		const src = href.startsWith('http') ? href : path.join(assetsSrc, href);
+	renderer.image = (href, _title, text) => {
+		const src = href.startsWith('http')
+			? href
+			: path
+					.join(assetsSrc, href)
+					.split(path.sep)
+					.filter((_, index, { length }) => index >= length - 3)
+					.join(path.sep);
+
 		return `
 			<figure>
 				<img src="${src}" alt="" loading="lazy"/>
