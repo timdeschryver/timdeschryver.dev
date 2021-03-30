@@ -65,7 +65,7 @@ Because the TypeScript model is coupled to the template model, every change made
 
 To create a two-way binding we use the banana in a box syntax (`[()]`), the form now looks like this.
 
-```ts{6,11-13}
+```ts{5,10-12}
 @Component({
   template: `
     <form>
@@ -344,9 +344,9 @@ This allows us as developers to model the template as efficiently as possible fo
 I find it easier to group the checkboxes in a nested hierarchy to make it [effortless to validate the checkbox group](#custom-validators), e.g. when at least one checkbox needs to be checked.
 
 The snippet below uses the [`ngModelGroup` directive](https://angular.io/api/forms/NgModelGroup) to group the checkboxes. Behind the scenes, Angular creates a new [`FormGroup`](https://angular.io/api/forms/FormGroup) instance and adds a new leaf in the template model with the given name.
-This change doesn't impact the TypeScript model and is purely a change to the template model to make it easier to use.
+This change doesn't impact the TypeScript model and is purely a change to the template model to make it easier to use, for example it becomes easier to [validate](#custom-validators).
 
-```ts{5,9}
+```ts{4}
 @Component({
   template: `
     <label>Checkbox list</label>
