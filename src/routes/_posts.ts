@@ -217,11 +217,12 @@ function parseFileToHtmlAndMeta(
 	renderer.image = (href, _title, text) => {
 		const src = href.startsWith('http')
 			? href
-			: path
+			: '/' +
+			  path
 					.join(assetsSrc, href)
 					.split(path.sep)
-					.filter((_, index, { length }) => index >= length - 3)
-					.join(path.sep);
+					.filter((_, index, { length }) => index >= length - 4)
+					.join('/');
 
 		return `
 			<figure>

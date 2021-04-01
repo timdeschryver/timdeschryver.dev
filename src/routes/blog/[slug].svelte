@@ -85,9 +85,10 @@
 </div>
 
 <div class="time-heading">
+	<span class="time">Published</span>
 	<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
 	{#if post.metadata.modified !== post.metadata.date}
-		<span class="time"> | Modified on</span>
+		<span class="time"> | Modified</span>
 		<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time>
 	{/if}
 </div>

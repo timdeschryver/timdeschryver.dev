@@ -79,7 +79,7 @@ html {
 body {
   background: var(--background-color);
   font-family: var(--text-font);
-  line-height: 1.9;
+  line-height: 1.8;
 }
 
 h1,
@@ -251,6 +251,9 @@ img {
 
 #svelte > * > * {
   grid-column: 2;
+}
+
+#svelte > * > p {
   overflow: auto;
 }
 

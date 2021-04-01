@@ -1353,4 +1353,256 @@ A demo about form control states and validation messages can be found in the fol
 
 <iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/ac48e7de21dc5a67fe338e1315bfd5e5999a6c49?ctl=1&embed=1" title="angular-forms-guide-form-errors" loading="lazy"></iframe>
 
+## Dynamic Forms
+
+To my surprise, creating dynamic (nested) forms with template-driven forms is straightforward.
+I say this because this was always something that I've trouble with when I was using reactive forms.
+
+Let's take a look at the following example to create a team and add, remove, and reorder team members dynamically.
+To give you a better idea, the team form looks like this.
+
+![The team form where a user can add, remove, and reorder team members.](./images/dynamic-nested-form.png)
+
+The code snippet below is trimmed down to only contain the basics, the key features are highlighted and will be discussed afterward.
+
+```ts{7-10, 12, 65-72, 74-77}
+import { Component, Output, ViewChild, EventEmitter } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+@Component({
+  template: `
+    <form #form="ngForm" (submit)="submit()">
+      <!-- iterate over all members of the model -->
+      <fieldset
+        *ngFor="let member of model.members;"
+      >
+        <label [for]="'first-name-' + member.id">First name</label>
+        <!-- input elements have a unique id and name -->
+        <input
+          type="text"
+          [id]="'first-name-' + member.id"
+          [name]="'first-name-' + member.id"
+          [(ngModel)]="member.firstName"
+          required
+        />
+
+        <label [for]="'last-name-' + member.id">Last name</label>
+        <input
+          type="text"
+          [id]="'last-name-' + member.id"
+          [name]="'last-name-' + member.id"
+          [(ngModel)]="member.lastName"
+          required
+        />
+
+        <button
+          type="button"
+          (click)="removeClicked(member.id)"
+          [hidden]="model.members.length === 1"
+        >
+          Remove member
+        </button>
+      </fieldset>
+
+      <button>Submit Form</button>
+      <button
+        type="button"
+        (click)="addClicked()"
+        [hidden]="model.members.length > 5"
+      >
+        Add team member
+      </button>
+    </form>
+  `
+})
+export class DynamicComponentFlat {
+  @Output() submitEmitter = new EventEmitter<any>();
+
+  @ViewChild(NgForm) form!: NgForm;
+
+  model: Team = {
+    members: [
+      {
+        id: Date.now().toString(),
+        firstName: 'Emily',
+        lastName: 'Earnshaw',
+      }
+    ]
+  };
+
+  addClicked() {
+    // mutate the model by adding a new member
+    this.model.members.push({
+      id: Date.now().toString(),
+      lastName: '',
+      firstName: '',
+    });
+  }
+
+  removeClicked(id: string) {
+    // mutate the model by removing the member by id
+    this.model.members = this.model.members.filter((m) => m.id !== id);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      this.submitEmitter.emit(this.model);
+    } else {
+      this.form.form.markAllAsTouched();
+    }
+  }
+}
+```
+
+In [Creating a Form](#creating-a-form), we've already learned that the form in the DOM is a representation of the TypeScript model.
+
+That's why we can simply iterate over a collection of our model to create a nested form and bind the properties of the items to form controls by using two-way binding.
+Every mutation made to that collection (`model.members` in the example) will immediately be applied to the DOM structure.
+
+To mutate the collection variable, we can use one of the [Array prototype methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or reassign the variable to a new value.
+
+### Nested Forms
+
+The template used in the example form uses a flat form model structure, but the (nested) form could also be rewritten as a nested form model. This isn't required, but it has advantages that might be useful in some scenarios.
+
+One advantage is that because a nested form is a `FormGroup`, you can use all its features. For example, the `reset` method to reset all the form controls of the form group to clear all of the form control values, this reset is also reflected in the TypeScript model.
+
+Another advantage is that you can add a validator to the form group. While this is also possible with a flat structure, it requires more effort to add the validator.
+
+To convert a flat form to a nested form, you need to wrap the form controls with a parent element that has the `ngModelGroup` directive.
+
+In the example below, the `id`s of the team members are used as form group keys to distinguish the multiple team member form groups. The example also adds an extra `members` group around the team members to be able to reset all the team members at once.
+
+```ts{9, 12-13, 97-99, 101-103}
+@Component({
+  template: `
+    <form #form="ngForm" (submit)="submit()">
+      <!-- technically this is not needed, but it's added here to showcase the reset -->
+      <ng-container ngModelGroup="members">
+        <!-- iterate over all members of the model -->
+        <fieldset
+          *ngFor="let member of model.members;"
+          [ngModelGroup]="member.id"
+        >
+          <label for="first-name">First name</label>
+          <!-- input elements have a unique id but
+               the name is the same because it belongs to another group -->
+          <input
+            type="text"
+            id="first-name"
+            name="first-name"
+            [(ngModel)]="member.firstName"
+            required
+          />
+
+          <label for="last-name">Last name</label>
+          <input
+            type="text"
+            id="last-name"
+            name="last-name"
+            [(ngModel)]="member.lastName"
+            required
+          />
+
+          <button
+            type="button"
+            (click)="removeClicked(member.id)"
+            [hidden]="model.members.length === 1"
+          >
+            Remove member
+          </button>
+          <button
+            type="button"
+            (click)="memberResetClicked(member.id)"
+          >
+            Reset
+          </button>
+        </fieldset>
+      </ng-container>
+
+      <button>Submit Form</button>
+      <button
+        type="button"
+        (click)="addClicked()"
+        [hidden]="model.members.length > 5"
+      >
+        Add team member
+      </button>
+      <button
+        type="button"
+        (click)="teamResetClicked()"
+      >
+        Reset Team
+      </button>
+      <button
+        type="button"
+        (click)="formResetClicked()"
+      >
+        Reset Form
+      </button>
+    </form>
+  `,
+})
+export class DynamicComponentGrouped {
+  @Output() submitEmitter = new EventEmitter<any>();
+
+  @ViewChild(NgForm) form!: NgForm;
+
+  model: Team = {
+    members: [
+      {
+        id: Date.now().toString(),
+        firstName: 'Emily',
+        lastName: 'Earnshaw',
+      },
+    ],
+  };
+
+  addClicked() {
+    this.model.members.push({
+      id: Date.now().toString(),
+      lastName: '',
+      firstName: '',
+    });
+  }
+
+  removeClicked(id: string) {
+    this.model.members = this.model.members.filter((m) => m.id !== id);
+  }
+
+  teamResetClicked() {
+    this.teamMembersControl.reset();
+  }
+
+  memberResetClicked(id: string) {
+    this.teamMembersControl.get(id)?.reset();
+  }
+
+  formResetClicked() {
+    this.model = {
+      members: [],
+    };
+  }
+
+  get teamMembersControl() {
+    return this.form.form.get('members') as FormGroup;
+  }
+
+  submit() {
+    if (this.form.valid) {
+      this.submitEmitter.emit(this.model);
+    } else {
+      this.form.form.markAllAsTouched();
+    }
+  }
+}
+```
+
+### Dynamic Nested Forms Example
+
+The full example can be found in the following StackBlitz.
+The example also includes the code to reorder the team members and extra validation.
+
+<iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/4e00597f2b67e0585816447e56467992590bef46?ctl=1&embed=1" title="angular-forms-guide-form-errors" loading="lazy"></iframe>
+
 > The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide). This guide is a Work In Process. During the next weeks, I'll probably cover validation, nested forms, how to test template-driven forms, control value accessors, and dynamic forms. If you have anything you want to see here or if you have suggestions feel free to reach out on [Twitter](https://timdeschryver.dev/twitter) or [create an issue on GitHub](https://github.com/timdeschryver/angular-forms-guide/issues/new).
