@@ -4,7 +4,7 @@ slug: a-practical-guide-to-angular-template-driven-forms
 description: The things I looked up while learning the template-driven way
 author: Tim Deschryver
 date: 2021-03-10
-tags: Angular, Guide, Forms
+tags: Angular, Guide, Forms, Template Driven
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Thomas Renaud](https://unsplash.com/@lafabriquedesplis) on [Unsplash](https://unsplash.com)
 published: true
@@ -1604,5 +1604,349 @@ The full example can be found in the following StackBlitz.
 The example also includes the code to reorder the team members and extra validation.
 
 <iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/4e00597f2b67e0585816447e56467992590bef46?ctl=1&embed=1" title="angular-forms-guide-form-errors" loading="lazy"></iframe>
+
+## Sub-Form Components
+
+So far, we've only seen a form that is hosted in a single component.
+This practice is not always convenient, and it might be better to extract some logic by splitting up the component. You refactor the component when it becomes an unmanageable mess or when a part of the form needs to be reusable.
+
+That's where sub-form components come into play, and there are two different solutions to create these.
+
+> The best resource out there about advanced form topics is the talk [Angular Forms](https://www.youtube.com/watch?v=CD_t3m2WMM8) by [Kara Erickson](https://twitter.com/karaforthewin).
+
+### Injecting the Control Container
+
+The simplest and fastest solution is to pass the [`ControlContainer`](https://angular.io/api/forms/ControlContainer) from the parent component to the sub-form component. As the name `ControlContainer` implies, it's a container that serves to group multiple form control instances. Both `NgForm` and `NgModelGroup` are control containers.
+
+To make the parent's form accessible in the sub-form, you must inject the control container as a [view provider](https://angular.io/api/core/Component#viewProviders) in the sub-form component.
+
+```ts{3-11}
+@Component({
+  template: '...',
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      // when the sub-form is a child of a form
+      useExisting: NgForm,
+      // when the sub-form is a child of a model group
+      useExisting: NgModelGroup
+    }
+  ]
+})
+export class SubFormComponent {}
+```
+
+Because the sub-form can be a child of a form or a model group, you have to use the correct parent instance. This makes the sub-form component not as reusable as we'd hoped because we don't know if the sub-form will be used as a child of one of the two parent containers. In an ideal world, we want the sub-form to be used in both cases.
+
+A less brittle solution is to always provide the correct control container (duh...!).
+To do this, we can reuse this snippet that I took from [Ward Bell](https://twitter.com/wardbell).
+The `formViewProvider` always returns the proper parent instance. The provider first tries to return the `NgModelGroup` but falls back to a `NgForm` if the `NgModelGroup` does not exist.
+
+```ts:form-view-provider.ts
+export const formViewProvider: Provider = {
+  provide: ControlContainer,
+  useFactory: _formViewProviderFactory,
+  deps: [
+    [new Optional(), NgForm],
+    [new Optional(), NgModelGroup]
+  ]
+};
+
+export function _formViewProviderFactory(
+  ngForm: NgForm, ngModelGroup: NgModelGroup
+) {
+  return ngModelGroup || ngForm || null;
+}
+```
+
+Which is used in the sub-form component.
+
+```ts{3}
+@Component({
+  template: '...',
+  viewProviders: [formViewProvider]
+})
+export class SubFormComponent {}
+```
+
+Once the control container is injected, you can continue to create the form in the sub-component.
+
+As an example, take a look at the refactored version of the team form.
+In the example, the team members are extracted into a team member sub-component.
+
+```ts{14-19}:team.component.ts
+@Component({
+  selector: 'app-team',
+  template: `
+    <form (submit)="submit()">
+      <label for="team-name">Team name</label>
+      <input
+        type="text"
+        id="team-name"
+        name="team-name"
+        [(ngModel)]="model.name"
+        required
+      />
+
+      <app-team-members
+        [members]="model.members"
+        (add)="addTeamMember()"
+        (remove)="removeTeamMember($event)"
+      >
+      </app-team-members>
+    </form>
+  `,
+})
+export class TeamComponent {
+  @Output() submitEmitter = new EventEmitter<any>();
+  @ViewChild(NgForm) form!: NgForm;
+
+  model: Team = {
+    name: '',
+    members: [
+      {
+        id: Date.now().toString(),
+        firstName: 'Emily',
+        lastName: 'Earnshaw',
+      },
+    ],
+  };
+
+  addTeamMember() {
+    this.model.members.push({
+      id: Date.now().toString(),
+      lastName: '',
+      firstName: '',
+    });
+  }
+
+  removeTeamMember(memberId: string) {
+    this.model.members = this.model.members.filter((m) => m.id !== memberId);
+  }
+
+  submit() {
+    if (this.form.valid) {
+      this.submitEmitter.emit(this.model);
+    } else {
+      this.form.form.markAllAsTouched();
+    }
+  }
+}
+```
+
+The team member component looks like this.
+As you can see, besides injecting the control container, this solution doesn't change how (sub-) forms are built.
+
+```ts:team-member.component.ts
+@Component({
+  selector: 'app-team-members',
+  viewProviders: [formViewProvider],
+  template: `
+    <fieldset
+      *ngFor="let member of members"
+      [ngModelGroup]="member.id"
+      #memberForm="ngModelGroup"
+    >
+      <label [for]="'first-name-' + member.id">First name</label>
+      <input
+        type="text"
+        [id]="'first-name-' + member.id"
+        name="first-name"
+        [(ngModel)]="member.firstName"
+        required
+      />
+
+      <label [for]="'last-name-' + member.id">Last name</label>
+      <input
+        type="text"
+        [id]="'last-name-' + member.id"
+        name="last-name"
+        [(ngModel)]="member.lastName"
+        required
+      />
+
+      <button
+        type="button"
+        (click)="remove.emit(member.id)"
+        [hidden]="members.length === 1"
+      >
+        Remove member
+      </button>
+
+      <button
+        type="button"
+        (click)="memberResetClicked(memberForm)"
+      >
+        Reset
+      </button>
+    </fieldset>
+
+    <button>Submit Form</button>
+    <button
+      type="button"
+      (click)="add.emit()"
+      [hidden]="members.length > 5"
+    >
+      Add team member
+    </button>
+  `,
+})
+export class TeamMemberComponent {
+  @Input() members: TeamMember[] = [];
+  @Output() add = new EventEmitter<void>();
+  @Output() remove = new EventEmitter<string>();
+
+  memberResetClicked(memberForm: NgModelGroup) {
+    memberForm.reset();
+  }
+}
+```
+
+### Control Value Accessor
+
+While the control container approach is simple, it isn't as robust as a Control Value Accessor (or CVA in short).
+
+The control container ties the sub-form specifically to template-driven forms. This isn't a big deal if your team only uses template-driven forms, but it might be a problem when your components are shared across multiple teams, which might use the reactive forms API.
+
+Another benefit of Control Value Accessors is that a Control Value Accessor can also be implemented as an Angular directive.
+
+Depending on the project you're working on, these benefits don't outweigh the extra complexity of a Control Value Accessor.
+
+To create a Control Value Accessor you must implement the [`ControlValueAccessor` interface](https://angular.io/api/forms/ControlValueAccessor).
+I won't go into the details of Control Value Accessors, but here's how a simple typeahead implementation looks like.
+
+To register the Control Value Accessors, you must provide the component or directive to the `NG_VALUE_ACCESSOR` multi-token.
+
+The component or directive, provides an implementation for the `writeValue`, `registerOnChange`, `registerOnTouched`, and optionally `setDisabledState` methods from the `ControlValueAccessor` interface to bind the Angular API to a DOM element.
+
+```ts{8-14, 69-88}:typeahead.directive.ts
+@Directive({
+  selector: 'input[type=text][ngModel][typeaheadItems]',
+  host: {
+    '(input)': 'inputInputted($event)',
+    '(focus)': 'inputFocussed($event)',
+    '(blur)': 'inputBlurred($event)',
+  },
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: TypeaheadDirective,
+    },
+  ],
+})
+export class TypeaheadDirective implements ControlValueAccessor {
+  @Input() typeaheadItems?: { value: any; label: string }[];
+
+  selectedItem: { value: any; label: string } | null = null;
+
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  factory = this.componentFactoryResolver.resolveComponentFactory(
+    TypeaheadItemsComponent
+  );
+  menuItemsRef?: ComponentRef<TypeaheadItemsComponent>;
+
+  constructor(
+    readonly elementRef: ElementRef,
+    readonly componentFactoryResolver: ComponentFactoryResolver,
+    readonly viewContainerRef: ViewContainerRef
+  ) {}
+
+  @HostListener('document:click', ['$event'])
+  documentClicked(event: MouseEvent) {
+    if (event.target !== this.elementRef.nativeElement) {
+      this.menuItemsRef?.instance.itemSelected.unsubscribe();
+      this.menuItemsRef?.destroy();
+      if (!this.selectedItem) {
+        this.writeValue(null);
+      }
+    }
+  }
+
+  inputInputted(event: Event) {
+    this.populateItems((event.target as HTMLInputElement).value);
+    this.onChange(null);
+    this.selectedItem = null;
+  }
+
+  inputFocussed(event: Event) {
+    this.menuItemsRef = this.viewContainerRef.createComponent(this.factory);
+    this.populateItems((event.target as HTMLInputElement).value);
+    this.menuItemsRef.instance.itemSelected.subscribe({
+      next: (value: { value: any; label: string }) => this.itemClicked(value),
+    });
+  }
+
+  inputBlurred() {
+    this.onTouched();
+  }
+
+  itemClicked(item: { value: any; label: string }) {
+    this.onChange(item.value);
+    this.writeValue(item);
+  }
+
+  writeValue(obj: any): void {
+    // update the value of the input element when the model's value changes
+    this.elementRef.nativeElement.value = obj && obj.label ? obj.label : '';
+    this.selectedItem = obj;
+  }
+
+  registerOnChange(fn: any): void {
+    // register the `onChange` hook to update the value of the model
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    // register the `onTouched` hook to mark when the element has been touched
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    // disable the native element when the form or control is disabled
+    this.elementRef.nativeElement.disabled = isDisabled;
+  }
+
+  private populateItems(value: string) {
+    if (this.menuItemsRef) {
+      this.menuItemsRef.instance.data =
+        this.typeaheadItems?.filter((v) => v.label.includes(value)) || [];
+    }
+  }
+}
+```
+
+Next, you can consume the Control Value Accessor as you would with a native/Angular control.
+Meaning that you can simply add the `ngModel` attribute to the Control Value Accessor.
+
+```html{4-11, 14-19}
+<label for="team-level">Team level</label>
+
+<!-- if the CVA is a directive -->
+<input
+  type="text"
+  id="team-level"
+  name="team-level"
+  required
+  [(ngModel)]="model.level"
+  [typeaheadItems]="levels"
+/>
+
+<!-- if the CVA is a component -->
+<app-typeahead
+  name="team-level"
+  required
+  [(ngModel)]="model.level"
+  [typeaheadItems]="levels"
+></app-typeahead>
+```
+
+### Sub-Form Components Example
+
+As always, the example of this section is also available as a StackBlitz project.
+
+<iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/bd3f45fef0ef1cf5efb609d531b4fa306fd689ec?ctl=1&embed=1" title="angular-forms-guide-sub-form-components" loading="lazy"></iframe>
 
 > The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide). This guide is a Work In Process. During the next weeks, I'll probably cover validation, nested forms, how to test template-driven forms, control value accessors, and dynamic forms. If you have anything you want to see here or if you have suggestions feel free to reach out on [Twitter](https://timdeschryver.dev/twitter) or [create an issue on GitHub](https://github.com/timdeschryver/angular-forms-guide/issues/new).

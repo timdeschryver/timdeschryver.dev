@@ -1,12 +1,13 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
+import dotEnv from 'dotenv-extended';
 
 const [slug] = process.argv.slice(2);
-
-require('dotenv-extended').load({
-	path: '.env'
+dotEnv.load({
+	path: '.env.local'
 });
+
 (async () => {
 	try {
 		const url = `https://timdeschryver.dev/blog/${slug}`;
