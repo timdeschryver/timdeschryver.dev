@@ -189,6 +189,9 @@
 		display: block;
 		text-align: center;
 		line-height: 2;
+		border: 1px solid;
+		color: inherit;
+		background: none;
 	}
 
 	@media screen and (max-width: 1150px) {
