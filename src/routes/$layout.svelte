@@ -1,21 +1,8 @@
-<script context="module" lang="ts">
-	export async function load({ fetch }) {
-		const result = await fetch(`/variables.json`);
-		const variables = await result.json();
-		return {
-			props: {
-				variables
-			}
-		};
-	}
-</script>
-
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import { page } from '$app/stores';
 	import Settings from '$lib/Settings.svelte';
-
-	export let variables;
+	import { variables } from '$lib/variables';
 
 	$: segment = $page.path.substring(1);
 	let toggleSettings = false;
