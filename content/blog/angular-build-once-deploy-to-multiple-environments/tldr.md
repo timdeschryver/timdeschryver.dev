@@ -3,7 +3,7 @@
 We want to configure our application with environment specific variables.
 For example, the endpoint of a backend, or a feature toggle.
 
-## 1. Define config
+## 1/3 Define config
 
 ```ts:app.config.ts
 export class AppConfig {
@@ -15,7 +15,7 @@ export class AppConfig {
 export let APP_CONFIG = new InjectionToken<AppConfig>('APP_CONFIG')
 ```
 
-## 2. Load and provide config before bootstrap
+## 2/3 Load and provide config before bootstrap
 
 ```ts:main.ts
 import { enableProdMode } from '@angular/core'
@@ -38,7 +38,7 @@ fetch('/assets/config.json')
   })
 ```
 
-## 3. Inject and use the config
+## 3/3 Inject and use the config
 
 ```ts:app.component.ts
 import { Component, Inject } from '@angular/core';
