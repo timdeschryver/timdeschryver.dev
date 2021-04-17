@@ -64,7 +64,7 @@ export class Component {
 To use the inline validator in the template, you assign the `validator` attribute (this is the selector from the `ValidatorDirective` directive) to the validate method (`scoreValidator`) .
 
 ```html
-<input type="number" name="score" ngModel [validator]="validateScore" />
+<input type="number" name="score" ngModel [validator]="scoreValidator" />
 ```
 
 Instead of having to write all the validators manually, you can also invoke the built-in Angular validators, or invoke your custom validators.
