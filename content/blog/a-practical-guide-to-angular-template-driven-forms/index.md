@@ -27,8 +27,6 @@ Based on Ward's experience, the examples that were talked about on the podcast (
 In this post, I'd like to share my experience with some practical examples.
 The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide).
 
-> This guide is a Work In Process. During the next weeks, I'll probably cover validation, nested forms, how to test template-driven forms, control value accessors, and dynamic forms. If you have anything you want to see here or if you have suggestions feel free to reach out on [Twitter](https://timdeschryver.dev/twitter) or [create an issue on GitHub](https://github.com/timdeschryver/angular-forms-guide/issues/new).
-
 ## Creating a form
 
 If this is your first time building a template-driven form or if you just need a quick refresher, I would suggest starting by reading the [Angular docs](https://angular.io/guide/forms#building-a-template-driven-form). For a more in-depth look at how template-driven forms behave and react, the Angular docs also got you covered at [Data flow in template-driven forms](https://angular.io/guide/forms-overview#data-flow-in-template-driven-forms).
@@ -688,6 +686,8 @@ To use the `RequiredCheckboxGroupValidatorDirective` validator, we can now appen
 ```
 
 In Displaying Validation Errors (needs to be written), we'll see how we can transform this object into human-friendly messages.
+
+> You can also create a [generic validator directive](/blog/a-generic-angular-template-driven-validator) to validate most of your logic without the required setup.
 
 #### Revalidate Custom Validators
 
@@ -1948,5 +1948,3 @@ Meaning that you can simply add the `ngModel` attribute to the Control Value Acc
 As always, the example of this section is also available as a StackBlitz project.
 
 <iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/78bf1b6672ba2c78ae9c7bc1f392195c594a9f6a?ctl=1&embed=1" title="angular-forms-guide-sub-form-components" loading="lazy"></iframe>
-
-> The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide). This guide is a Work In Process. During the next weeks, I'll probably cover validation, nested forms, how to test template-driven forms, control value accessors, and dynamic forms. If you have anything you want to see here or if you have suggestions feel free to reach out on [Twitter](https://timdeschryver.dev/twitter) or [create an issue on GitHub](https://github.com/timdeschryver/angular-forms-guide/issues/new).
