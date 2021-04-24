@@ -1948,3 +1948,10 @@ Meaning that you can simply add the `ngModel` attribute to the Control Value Acc
 As always, the example of this section is also available as a StackBlitz project.
 
 <iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/78bf1b6672ba2c78ae9c7bc1f392195c594a9f6a?ctl=1&embed=1" title="angular-forms-guide-sub-form-components" loading="lazy"></iframe>
+
+## Conclusion
+
+As you can see, you can do everything with template-driven forms.
+Compared to reactive forms, you will end up with less code to maintain.
+My opinion is that template-driven forms also easier to write and to understand, it's easier for the simple and the complex use-cases to built a form. This is certainly true when the person is new to Angular Forms.
+And don't worry, you will still "be reactive" as the template itself is reactive by nature.
