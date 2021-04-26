@@ -1952,6 +1952,7 @@ As always, the example of this section is also available as a StackBlitz project
 ## Conclusion
 
 As you can see, you can do everything with template-driven forms.
-Compared to reactive forms, you will end up with less code to maintain.
-My opinion is that template-driven forms also easier to write and to understand, it's easier for the simple and the complex use-cases to built a form. This is certainly true when the person is new to Angular Forms.
+Speaking from our experience, we ended up with less code to maintain after we migrated some of our bigger forms to the template-driven API.
+My opinion is that template-driven forms, the easy and also the complex ones, are also easier to write and to understand.
+This is certainly true when the person is new to Angular Forms.
 And don't worry, you will still "be reactive" as the template itself is reactive by nature.

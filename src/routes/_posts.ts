@@ -30,7 +30,8 @@ const langs = {
 	yml: 'yaml',
 	diff: 'diff',
 	cs: 'csharp',
-	sql: 'sql'
+	sql: 'sql',
+	svelte: 'svelte'
 };
 
 export const posts = readPosts();
