@@ -1,7 +1,7 @@
 ---
 title: How to test your C# Web API
 slug: how-to-test-your-csharp-web-api
-description: ... or how to use functional testing to have confidence in the code you ship.
+description: How to use functional testing to have confidence in the code you ship.
 author: Tim Deschryver
 date: 2020-03-23
 tags: csharp, dotnet, testing, xunit
@@ -10,17 +10,15 @@ bannerCredit: Photo by [Kinga Cichewicz](https://unsplash.com/@all_who_wander) o
 published: true
 ---
 
-If you've read some of my other blog posts already, you probably know that I'm not a big fan of unit tests.
-Sure, they have their purposes but often it means that one or more parts of the System Under Test are being mocked or stubbed.
-It's this practice that I'm not too keen about.
+If you've read some of my other blog posts, you probably know that I'm not a big fan of unit tests.
+Sure, they have their purposes, but often it means that one or more parts of the System Under Test (SUT) are being mocked or stubbed. It's this practice that I'm not too keen about.
+
 To have full confidence in my code, it are integration tests that I will be grabbing for.
+In my experience, integration tests [are also easier and faster to write](/blog/why-writing-integration-tests-on-a-csharp-api-is-a-productivity-booster).
 
-With an integration test, we test the API from the outside out by spinning up the API client and making an actual HTTP request.
-I get confidence out of it because I mock as little as possible, and I will consume my API in the same way as an application (or user) would.
+With an integration test, we test the API from the outside out by spinning up the (in-memory) API client and making an actual HTTP request. I get confidence out of it because I mock as little as possible, and I will consume my API in the same way as an application (or user) would.
 
-Show me some code!
-
-> The following tests are written in .NET Core 3 and are using [XUnit](https://xunit.net/) as test the runner.
+> The following tests are written in .NET 5 (but this also applies to .NET Core 3) and are using [XUnit](https://xunit.net/) as test the runner.
 > The setup might change with other versions and test runners but the idea remains the same.
 
 ## A simple test
@@ -33,11 +31,10 @@ dotnet add package Microsoft.AspNetCore.Mvc.Testing
 
 > TIP: I also use `FluentAssertions` to write my assertions because the package contains some useful utility methods, and it's easy to read.
 
-The packages includes a `WebApplicationFactory<TEntryPoint>` class which is used to bootstrap the API in memory.
-This is convenient, as we don't need to have the API running before we run these tests.
+The `Microsoft.AspNetCore.Mvc.Testing` packages includes a `WebApplicationFactory<TEntryPoint>` class which is used to create the API in memory. This is convenient, as we don't need to have the API running before we run these integration tests.
 
 In the test class, we inject the factory into the constructor.
-With the factory, we can create a `HttpClient` which will be used in the tests to make HTTP requests.
+With the factory, we can create a `HttpClient` which is used in the tests to make HTTP requests.
 
 ```cs
 public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory<Api.Startup>>
@@ -54,7 +51,7 @@ public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory
 Because the test class implements from XUnit's `IClassFixture` interface, the tests inside this class will share a single test context. The API will only be bootstrapped once for all the tests and will be cleanup afterward.
 
 This is everything we need to write the first test.
-Using the `HttpClient` we can make a GET request, and assert the response it gives back.
+Using the `HttpClient` we can make a GET request and assert the response the API gives back.
 
 ```cs{10-18}
 public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory<Api.Startup>>
@@ -78,21 +75,23 @@ public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory
 }
 ```
 
-How neat is this! To write a test that provides real value, we (almost) had no setup!
+How neat is this!
+To write a test that provides real value, we (almost) have no setup!
 
 ## Writing your own `WebApplicationFactory`
 
 Sadly, in a real application, things get more complicated.
-There will be external dependencies, these will still have need to be mocked or stubbed.
+There are external dependencies, and these might need to be mocked or stubbed.
 
-I suggest to keep using the real instances of dependencies you're in control, for example the database.
-But for dependencies that are out of reach, mostly 3rd-party driven ports, I would use a stubbed instance, or create a mocked instance.
+I suggest keeping the real instances of dependencies that you're in control of, for example, the database.
+For dependencies that are out of your reach, mostly 3rd-party driven ports, we need a stubbed/mocked instance.
+This allows you to return expected data and prevents that test data is created in a 3rd party service.
 
 > [Jimmy Bogard](https://twitter.com/jbogard) explains why you should avoid in-memory databases for your tests in his recent blog post ["Avoid In-Memory Databases for Tests"](https://jimmybogard.com/avoid-in-memory-databases-for-tests/)
 
-Luckily, it's simple to overwrite service instances.
+Luckily, it's simple to change the configuration of the API and to substitute the real interface instances.
 By creating a custom `WebApplicationFactory`, the configuration can be altered before the API is built.
-To do this, overwrite the `ConfigureWebHost` method.
+To do this, override the `ConfigureWebHost` method.
 
 ```cs
 public class ApiWebApplicationFactory : WebApplicationFactory<Api.Startup>
@@ -114,24 +113,26 @@ public class WeatherForecastConfigStub : IWeatherForecastConfigService
 ```
 
 To work with a real database I find it easier to create a separate database to run these tests.
-Therefore, it's needed to provide some integration test settings.
-These settings contain the new connection string that points to the database for the integration tests.
-In more complex scenarios, the same settings can also be used to override environment variables.
+Therefore, it's needed to create a new settings file to provide some environment variables that are used in the tests.
 
-To configure the application, we can use the `ConfigureAppConfiguration` method to add our configuration settings.
+In this example, the settings file contains the new connectionstring pointing towards to the integration test database instance.
 
-```cs{5-12}
+To configure the application, we use the `ConfigureAppConfiguration` method to add our test configuration settings.
+
+```cs{7-14}
 public class ApiWebApplicationFactory : WebApplicationFactory<Api.Startup>
 {
+    public IConfiguration Configuration { get; private set; }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration(config =>
         {
-            var integrationConfig = new ConfigurationBuilder()
-              .AddJsonFile("integrationsettings.json")
-              .Build();
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("integrationsettings.json")
+                .Build();
 
-            config.AddConfiguration(integrationConfig);
+            config.AddConfiguration(Configuration);
         });
 
         builder.ConfigureTestServices(services =>
@@ -152,8 +153,8 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Api.Startup>
 
 ## A custom and reusable fixture
 
-What I like to do is making each test independent from each other.
-This has as benefit that tests won't interfere with each other, and each test can be written/debugged on its own.
+What I like to do is making each test independent from the other.
+This has as benefit that tests won't interfere with each other, and that each test can be written/debugged on its own.
 To be able to do this, we have to perform a reseed of the database before each test runs.
 
 > To reseed my databases I'm using the [Respawn](https://github.com/jbogard/Respawn) package
@@ -174,17 +175,13 @@ public abstract class IntegrationTest : IClassFixture<ApiWebApplicationFactory>
 
     protected readonly ApiWebApplicationFactory _factory;
     protected readonly HttpClient _client;
-    protected readonly IConfiguration _configuration;
 
     public IntegrationTest(ApiWebApplicationFactory fixture)
     {
         _factory = fixture;
         _client = _factory.CreateClient();
-        _configuration = new ConfigurationBuilder()
-              .AddJsonFile("integrationsettings.json")
-              .Build();
 
-        _checkpoint.Reset(_configuration.GetConnectionString("SQL")).Wait();
+        _checkpoint.Reset(_factory.Configuration.GetConnectionString("SQL")).Wait();
     }
 }
 ```
@@ -244,8 +241,8 @@ public async Task Get_Should_ResultInABadRequest_When_ConfigIsInvalid()
 
 ### Testing basic endpoints at once
 
-For tests that require an identical setup we can write a `Theory` with `InlineData` to test multiple endpoints at once.
-This tip only applies for simple queries and are a quick way to verify these endpoints to do fail.
+For tests that require an identical setup, we can write a `Theory` with `InlineData` to test multiple endpoints at once.
+This tip only applies to simple requests and is a quick way to verify that these endpoints don't throw an error.
 
 ```cs
 [Theory]
@@ -256,6 +253,43 @@ public async Task Smoketest_Should_ResultInOK(string endpoint)
 {
     var response = await _client.GetAsync(endpoint);
     response.StatusCode.Should().Be(HttpStatusCode.OK);
+}
+```
+
+### Keep tests short and readable
+
+Making API requests and deserializing the response of the request adds a lot of boilerplate and duplication to your tests. To make a test concise, we can extract this logic and refactor it into an extension method.
+
+```cs
+public static class Extensions
+{
+    public static Task<T> GetAndDeserialize<T>(this HttpClient client, string requestUri)
+    {
+        var response = await _client.GetAsync(requestUri);
+        response.EnsureSuccessStatusCode();
+        var result = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<T>(result);
+
+        // Note: this can be turned into a one-liner with .NET 5, or with the System.Net.Http.Json package
+        // return client.GetFromJsonAsync<T>(requestUri);
+    }
+}
+```
+
+Within a blink of an eye, we can now understand the refactored test.
+
+```cs
+public class WeatherForecastControllerTests: Fixtures.IntegrationTest
+{
+    public WeatherForecastControllerTests(ApiWebApplicationFactory fixture)
+      : base(fixture) {}
+
+    [Fact]
+    public async Task Get_Should_Return_Forecast()
+    {
+        var forecast = await _client.GetAndDeserialize("/weatherforecast");
+        forecast.Should().HaveCount(7);
+    }
 }
 ```
 
@@ -306,7 +340,7 @@ public class IntegrationTestAuthenticationHandler : AuthenticationHandler<Authen
 }
 ```
 
-We must configure application by adding the authentication handler.
+We must configure the application by adding the authentication handler.
 To create an authenticated request we must add the `Authorization` header to the request.
 
 ```cs
@@ -329,7 +363,7 @@ _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Int
 
 The last option is to use a real token.
 This also means that you will have to generate a token before the tests run.
-Once the token is generated it can be stored in order to not having to generate a token for each test, which will slow down the execution of the tests. Plus, we're not testing the authentication in these integration tests.
+Once the token is generated it can be stored to not having to generate a token for each test, which will slow down the execution of the tests. Plus, we're not testing the authentication in these integration tests.
 
 Just like before, we must add the token to the request header, but we're also assigning the token to the header.
 
@@ -351,14 +385,14 @@ public static string GetToken()
 #### Parallel tests
 
 If multiple tests try to read and write to the same database, this may lead to deadlocks.
-That's why we had to turn of the parallelization of our tests.
-For XUnit, this be done by setting the `parallelizeTestCollections` property to `false` inside the `xunit.runner.json` config file.
+That's why we had to turn off the parallelization of our tests.
+For XUnit, this is done by setting the `parallelizeTestCollections` property to `false` inside the `xunit.runner.json` config file.
 Read more about this in the [XUnit docs](https://xunit.net/docs/configuration-files#parallelizeTestCollections).
 
 ```json
 {
-  "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
-  "parallelizeTestCollections": false
+	"$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
+	"parallelizeTestCollections": false
 }
 ```
 
@@ -369,7 +403,7 @@ But now that I've discovered functional testing, I enjoy writing them.
 
 With little to no setup required, the time spent on writing tests has been cut in half.
 Whereas previously most of the time was spent (at least for me) on the setup of the test, and not the actual test itself.
-The time spent on writing them feels more as time well spent.
+The time spent on writing them feels more like time well spent.
 
 If you follow the theory about a refactor, you shouldn't be changing your tests.
 In practice, we found out (the hard way) that this is not always true.
@@ -380,7 +414,7 @@ The test itself will almost not change over time, which also trims down the time
 
 Does this mean I don't write unit tests?
 No, it does not, but they are less written.
-Only for real business logic that don't require dependencies, just input in and a result as output.
+Only for real business logic that doesn't require dependencies, just input in and a result as output.
 
 These integration tests might be slower to run, but it's worth it in my opinion.
 Why? Because they give me more confidence that the code we ship, is actually working, the way it's intended to work.
@@ -393,6 +427,6 @@ The full example can be found on [GitHub](https://github.com/timdeschryver/HowTo
 
 ## More resources
 
-- [The official docs about integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.0)
+- [The official docs about integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests)
 - [Easier functional and integration testing of ASP.NET Core applications](https://www.hanselman.com/blog/EasierFunctionalAndIntegrationTestingOfASPNETCoreApplications.aspx) by [Scott Hanselman](https://twitter.com/shanselman)
 - [Avoid In-Memory Databases for Tests](https://jimmybogard.com/avoid-in-memory-databases-for-tests/) by [Jimmy Bogard](https://twitter.com/jbogard)
