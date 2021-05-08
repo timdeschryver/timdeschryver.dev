@@ -27,7 +27,6 @@ const content = './content/blog';
 		});
 
 		serve.stdout.on('data', async (data) => {
-			console.log(data.toString());
 			if (data.toString().includes('Listening on http://localhost:3000')) {
 				const browser = await chromium.launch({ headless: true });
 				const page = await browser.newPage({
@@ -55,9 +54,15 @@ const content = './content/blog';
 
 					await page.$eval('.details', (el) => {
 						el.style['justify-content'] = 'space-around';
+						el.style['font-size'] = '1.2rem';
+					});
+
+					await page.evaluate(() => {
+						window.scrollTo({ top: document.querySelector('header').clientHeight });
 					});
 
 					await page.screenshot({
+						quality: 80,
 						type: 'jpeg',
 						path: bannerPath
 					});

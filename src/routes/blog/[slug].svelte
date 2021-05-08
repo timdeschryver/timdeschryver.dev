@@ -225,8 +225,14 @@
 		display: flex;
 		justify-content: space-between;
 		margin: 0;
-		font-size: 0.8rem;
+		font-size: 1rem;
 		width: 100%;
+	}
+
+	@media screen and (max-width: 1150px) {
+		.details {
+			font-size: 0.8rem;
+		}
 	}
 
 	.author {
