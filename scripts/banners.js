@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { execSync, exec } from 'child_process';
 import { chromium } from 'playwright';
 
 const content = './content/blog';
@@ -18,33 +19,44 @@ const content = './content/blog';
 	}
 
 	if (generateBanners.length) {
-		const browser = await chromium.launch({ headless: true });
-		const page = await browser.newPage({
-			colorScheme: 'dark',
-			viewport: {
-				width: 940,
-				height: 470
+		// execSync('npm run build', { stdio: 'inherit' });
+		const serve = exec('npm run start');
+		serve.stdout.on('data', async (data) => {
+			console.log(data.toString());
+			if (data.toString().includes('Listening on http://localhost:3000')) {
+				const browser = await chromium.launch({ headless: true });
+				const page = await browser.newPage({
+					colorScheme: 'dark',
+					viewport: {
+						width: 940,
+						height: 470
+					}
+				});
+				let first = true;
+				for (const { post, bannerPath } of generateBanners) {
+					console.log(`[banner] Generating banner for ${post}`);
+
+					await page.goto(`http://localhost:3000/blog/${post}`);
+					if (first) {
+						// to hide BMC message
+						await page.goto(`http://localhost:3000/blog/${post}`);
+						first = false;
+					}
+
+					const header = await page.$('main > header');
+					await header.$eval('.published-at', (el) => {
+						el.style.display = 'none';
+					});
+
+					await page.screenshot({
+						type: 'jpeg',
+						path: bannerPath
+					});
+				}
+				browser.close();
+				serve.kill();
+				process.exit();
 			}
 		});
-		let first = true;
-		for (const { post, bannerPath } of generateBanners) {
-			await page.goto(`http://localhost:3000/blog/${post}`);
-			if (first) {
-				// to hide BMC message
-				await page.goto(`http://localhost:3000/blog/${post}`);
-				first = false;
-			}
-
-			const header = await page.$('main > header');
-			await header.$eval('.published-at', (el) => {
-				el.style.display = 'none';
-			});
-
-			await page.screenshot({
-				type: 'jpeg',
-				path: bannerPath
-			});
-		}
-		browser.close();
 	}
 })();

@@ -5,6 +5,7 @@ node_modules
 /functions
 /.vercel_build_output
 .env.local
+*.log
 
 # these are just copied
 static/blog
