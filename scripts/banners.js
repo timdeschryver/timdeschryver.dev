@@ -19,7 +19,7 @@ const content = './content/blog';
 	}
 
 	if (generateBanners.length) {
-		// execSync('npm run build', { stdio: 'inherit' });
+		execSync('npm run build', { stdio: 'inherit' });
 		const serve = exec('npm run start');
 		serve.stdout.on('data', async (data) => {
 			console.log(data.toString());
