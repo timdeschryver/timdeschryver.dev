@@ -232,15 +232,4 @@
 	.author {
 		margin-top: 0;
 	}
-
-	/* .published-at {
-		font-size: 0.9rem;
-		margin-bottom: 1em;
-		opacity: 0.6;
-	}
-
-	.author {
-		font-size: 0.9rem;
-		opacity: 1;
-	} */
 </style>
