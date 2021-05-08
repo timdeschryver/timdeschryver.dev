@@ -21,20 +21,22 @@ const content = './content/blog';
 	if (generateBanners.length) {
 		execSync('npm run build', { stdio: 'inherit' });
 		const serve = exec('npm run start');
+
 		serve.stdout.on('data', async (data) => {
 			console.log(data.toString());
 			if (data.toString().includes('Listening on http://localhost:3000')) {
 				const browser = await chromium.launch({ headless: true });
 				const page = await browser.newPage({
-					colorScheme: 'dark',
-					viewport: {
-						width: 940,
-						height: 470
-					}
+					colorScheme: 'dark'
 				});
 				let first = true;
 				for (const { post, bannerPath } of generateBanners) {
 					console.log(`[banner] Generating banner for ${post}`);
+
+					await page.setViewportSize({
+						width: 940,
+						height: post.length > 50 ? 700 : 570
+					});
 
 					await page.goto(`http://localhost:3000/blog/${post}`);
 					if (first) {
@@ -55,8 +57,12 @@ const content = './content/blog';
 				}
 				browser.close();
 				serve.kill();
-				process.exit();
+				process.exit(0);
 			}
+		});
+
+		serve.stderr.on('data', async (data) => {
+			console.error(data.toString());
 		});
 	}
 })();

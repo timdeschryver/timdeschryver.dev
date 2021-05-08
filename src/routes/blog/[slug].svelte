@@ -85,12 +85,13 @@
 	<h1>{post.metadata.title}</h1>
 	<div class="details">
 		<div class="published-at">
-			<span>Published</span>
-			<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
 			{#if post.metadata.modified !== post.metadata.date}
-				<span> | Modified</span>
+				<span>Modified</span>
 				<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time
 				>
+			{:else}
+				<span>Published</span>
+				<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
 			{/if}
 		</div>
 		<a class="author" href="https://timdeschryver.dev/twitter">@tim_deschryver</a>
@@ -213,27 +214,33 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		justify-content: space-evenly;
 		text-align: center;
 		margin: 0 auto;
 		padding: 0;
 		font-size: clamp(1.5rem, 4vw, 7rem);
-		position: relative;
 	}
 
 	.details {
-		font-size: 0.7rem;
-		opacity: 0.6;
-		position: absolute;
-		bottom: 23px;
+		display: flex;
+		justify-content: space-around;
+		margin: 0;
+		font-size: 1rem;
+		width: 100%;
 	}
 
-	.published-at {
+	.author {
+		margin-top: 0;
+	}
+
+	/* .published-at {
+		font-size: 0.9rem;
 		margin-bottom: 1em;
+		opacity: 0.6;
 	}
 
 	.author {
 		font-size: 0.9rem;
 		opacity: 1;
-	}
+	} */
 </style>
