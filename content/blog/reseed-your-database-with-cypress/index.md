@@ -5,7 +5,7 @@ description: By using a Cypress task it's possible to run code JavaScript code i
 author: Tim Deschryver
 date: 2019-10-14T08:00:00.000Z
 tags: Cypress, Testing, Reseed, Database, DevOps
-banner: ./images/banner.jpeg
+banner: ./images/banner.jpg
 bannerCredit: Photo by [Francesco Gallarotti](https://unsplash.com/@gallarotti) on [Unsplash](https://unsplash.com)
 published: true
 ---
@@ -85,6 +85,6 @@ To change it at a global level, change the default timeout inside `cypress.json`
 Or modify the timeout value on a task level by changing the options.
 
 ```ts
-cy.task('db:teardown', null, { timeout: 30000 })
-cy.task('db:seed', null, { timeout: 30000 })
+cy.task('db:teardown', null, { timeout: 30000 });
+cy.task('db:seed', null, { timeout: 30000 });
 ```

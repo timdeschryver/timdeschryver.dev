@@ -5,7 +5,7 @@ description: The Angular Testing Library provides utility functions to interact 
 author: Tim Deschryver
 date: 2019-10-03T13:00:00.000Z
 tags: Angular, Testing, testing-library, angular-testing-library
-banner: ./images/banner.jpeg
+banner: ./images/banner.jpg
 bannerCredit: Photo by [Liudmyla Denysiuk](https://unsplash.com/@hedgehog90) on [Unsplash](https://unsplash.com)
 published: true
 ---

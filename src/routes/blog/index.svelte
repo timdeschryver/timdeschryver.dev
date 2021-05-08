@@ -73,6 +73,8 @@
 
 <Head title="Blog - Tim Deschryver" />
 
+<div />
+
 <div>
 	<input
 		type="search"
@@ -104,6 +106,10 @@
 		position: absolute;
 		left: -15em;
 		top: 0;
+		font-size: 0.5rem;
+		opacity: 0.7;
+		letter-spacing: 0.1em;
+		line-height: 2.2;
 	}
 
 	@media screen and (max-width: 1150px) {

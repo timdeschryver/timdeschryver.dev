@@ -27,6 +27,12 @@
 		tldrToggle =
 			$page.query.get('tldr') !== null ||
 			new URLSearchParams(window.location.search).get('tldr') !== null;
+
+		if (!window.location.hash) {
+			requestAnimationFrame(() => {
+				window.scrollTo({ top: document.querySelector('header').clientHeight });
+			});
+		}
 	});
 
 	$: if (tldrToggle !== undefined) {
@@ -75,21 +81,27 @@
 
 <svelte:window bind:scrollY />
 
-<h1>{post.metadata.title}</h1>
+<header>
+	<h1>{post.metadata.title}</h1>
+	<div class="details">
+		<div class="published-at">
+			{#if post.metadata.modified !== post.metadata.date}
+				<span>Modified</span>
+				<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time
+				>
+			{:else}
+				<span>Published</span>
+				<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
+			{/if}
+		</div>
+		<a class="author" href="https://timdeschryver.dev/twitter">@tim_deschryver</a>
+	</div>
+</header>
 
-<div class="side-actions" hidden={(scrollY || 0) < 330}>
+<div class="side-actions" hidden={(scrollY || 0) < 1000}>
 	<a href="/blog">All posts</a>
 	{#if post.tldr}
 		<button on:click={tldrClicked}>{tldrToggle ? 'Back to post' : 'Just the code'}</button>
-	{/if}
-</div>
-
-<div class="time-heading">
-	<span class="time">Published</span>
-	<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
-	{#if post.metadata.modified !== post.metadata.date}
-		<span class="time"> | Modified</span>
-		<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time>
 	{/if}
 </div>
 
@@ -141,9 +153,6 @@
 </div>
 
 <style>
-	h1 {
-		word-break: break-word;
-	}
 	.article-action {
 		background: none;
 		margin: 0;
@@ -162,9 +171,6 @@
 	}
 	.article-actions {
 		text-align: center;
-	}
-	.time-heading {
-		margin-top: 0;
 	}
 
 	.tldr {
@@ -198,5 +204,38 @@
 		.side-actions {
 			display: none;
 		}
+	}
+
+	:global(#svelte > main) > header {
+		grid-column: 1 / 4;
+		min-height: 100vh;
+		min-width: 90%;
+		max-width: 90%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-evenly;
+		text-align: center;
+		margin: 0 auto;
+		padding: 0;
+		font-size: clamp(1.5rem, 4vw, 7rem);
+	}
+
+	.details {
+		display: flex;
+		justify-content: space-between;
+		margin: 0;
+		font-size: 1rem;
+		width: 100%;
+	}
+
+	@media screen and (max-width: 1150px) {
+		.details {
+			font-size: 0.8rem;
+		}
+	}
+
+	.author {
+		margin-top: 0;
 	}
 </style>

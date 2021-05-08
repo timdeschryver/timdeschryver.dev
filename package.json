@@ -21,7 +21,9 @@
 		"copy:blog:local": "copyfiles \"content/blog/**\" static --exclude=\"**/index.md\" --up=1",
 		"copy:snippets:local": "copyfiles \"content/snippets/**\" static  --exclude=\"**/*.md\" --up=1",
 		"g": "node ./scripts/generate",
-		"p": "node ./scripts/devto"
+		"p": "node ./scripts/devto",
+		"banners": " node ./scripts/banners.js",
+		"pre-commit": "npm run banners && git add ./content/**/banner.jpg && lint-staged"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "next",
@@ -36,8 +38,11 @@
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-svelte3": "^3.1.0",
 		"gatsby-remark-prismjs": "^4.2.0",
+		"husky": "^6.0.0",
+		"lint-staged": "^11.0.0",
 		"marked": "^2.0.1",
 		"node-fetch": "^2.6.1",
+		"playwright": "^1.10.0",
 		"prettier": "~2.2.1",
 		"prettier-plugin-svelte": "^2.2.0",
 		"prismjs": "^1.23.0",
@@ -48,5 +53,11 @@
 		"typescript": "^4.0.0",
 		"vite": "^2.1.0"
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"lint-staged": {
+		"*.{js,ts,json,md,svelte}": [
+			"prettier --write",
+			"git add"
+		]
+	}
 }
