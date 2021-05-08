@@ -22,6 +22,10 @@ const content = './content/blog';
 		execSync('npm run build', { stdio: 'inherit' });
 		const serve = exec('npm run start');
 
+		serve.stderr.on('data', (data) => {
+			console.error(data.toString());
+		});
+
 		serve.stdout.on('data', async (data) => {
 			console.log(data.toString());
 			if (data.toString().includes('Listening on http://localhost:3000')) {
@@ -45,9 +49,12 @@ const content = './content/blog';
 						first = false;
 					}
 
-					const header = await page.$('main > header');
-					await header.$eval('.published-at', (el) => {
+					await page.$eval('main > header .published-at', (el) => {
 						el.style.display = 'none';
+					});
+
+					await page.$eval('.details', (el) => {
+						el.style['justify-content'] = 'space-around';
 					});
 
 					await page.screenshot({
@@ -59,10 +66,6 @@ const content = './content/blog';
 				serve.kill();
 				process.exit(0);
 			}
-		});
-
-		serve.stderr.on('data', async (data) => {
-			console.error(data.toString());
 		});
 	}
 })();
