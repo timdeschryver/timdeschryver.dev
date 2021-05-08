@@ -38,7 +38,7 @@
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-svelte3": "^3.1.0",
 		"gatsby-remark-prismjs": "^4.2.0",
-		"husky": "4.3.0",
+		"husky": "^6.0.0",
 		"lint-staged": "^11.0.0",
 		"marked": "^2.0.1",
 		"node-fetch": "^2.6.1",
@@ -53,5 +53,11 @@
 		"typescript": "^4.0.0",
 		"vite": "^2.1.0"
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"lint-staged": {
+		"*.{js,ts,json,md,svelte}": [
+			"prettier --write",
+			"git add"
+		]
+	}
 }
