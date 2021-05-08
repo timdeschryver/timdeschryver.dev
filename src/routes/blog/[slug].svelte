@@ -27,6 +27,12 @@
 		tldrToggle =
 			$page.query.get('tldr') !== null ||
 			new URLSearchParams(window.location.search).get('tldr') !== null;
+
+		if (!window.location.hash) {
+			requestAnimationFrame(() => {
+				window.scrollTo({ top: document.querySelector('header').clientHeight });
+			});
+		}
 	});
 
 	$: if (tldrToggle !== undefined) {
@@ -75,21 +81,26 @@
 
 <svelte:window bind:scrollY />
 
-<h1>{post.metadata.title}</h1>
+<header>
+	<h1>{post.metadata.title}</h1>
+	<div class="details">
+		<div class="published-at">
+			<span>Published</span>
+			<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
+			{#if post.metadata.modified !== post.metadata.date}
+				<span> | Modified</span>
+				<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time
+				>
+			{/if}
+		</div>
+		<a class="author" href="https://timdeschryver.dev/twitter">@tim_deschryver</a>
+	</div>
+</header>
 
-<div class="side-actions" hidden={(scrollY || 0) < 330}>
+<div class="side-actions" hidden={(scrollY || 0) < 1000}>
 	<a href="/blog">All posts</a>
 	{#if post.tldr}
 		<button on:click={tldrClicked}>{tldrToggle ? 'Back to post' : 'Just the code'}</button>
-	{/if}
-</div>
-
-<div class="time-heading">
-	<span class="time">Published</span>
-	<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
-	{#if post.metadata.modified !== post.metadata.date}
-		<span class="time"> | Modified</span>
-		<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time>
 	{/if}
 </div>
 
@@ -141,9 +152,6 @@
 </div>
 
 <style>
-	h1 {
-		word-break: break-word;
-	}
 	.article-action {
 		background: none;
 		margin: 0;
@@ -162,9 +170,6 @@
 	}
 	.article-actions {
 		text-align: center;
-	}
-	.time-heading {
-		margin-top: 0;
 	}
 
 	.tldr {
@@ -198,5 +203,37 @@
 		.side-actions {
 			display: none;
 		}
+	}
+
+	:global(#svelte > main) > header {
+		grid-column: 1 / 4;
+		min-height: 100vh;
+		min-width: 90%;
+		max-width: 90%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		margin: 0 auto;
+		padding: 0;
+		font-size: clamp(1.5rem, 4vw, 7rem);
+		position: relative;
+	}
+
+	.details {
+		font-size: 0.7rem;
+		opacity: 0.6;
+		position: absolute;
+		bottom: 23px;
+	}
+
+	.published-at {
+		margin-bottom: 1em;
+	}
+
+	.author {
+		font-size: 0.9rem;
+		opacity: 1;
 	}
 </style>

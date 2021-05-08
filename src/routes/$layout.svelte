@@ -21,7 +21,7 @@
 </script>
 
 <header>
-	<h1><a href="/">Tim Deschryver</a></h1>
+	<h2><a href="/">Tim Deschryver</a></h2>
 	<nav>
 		<a href="/blog" sveltekit:prefetch class:active={segment.startsWith('blog')}>Blog</a>
 		<a href="/snippets" sveltekit:prefetch class:active={segment.startsWith('snippets')}>
@@ -178,7 +178,7 @@
 	}
 
 	@media (max-width: 520px) {
-		h1 {
+		h2 {
 			font-size: 1.4rem;
 		}
 		nav {

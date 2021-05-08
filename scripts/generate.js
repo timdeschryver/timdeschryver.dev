@@ -32,7 +32,7 @@ description:
 author: Tim Deschryver
 date: ${new Date().toISOString().split('T')[0]}
 tags: 
-banner: ./images/banner.jpg
+banner: ./images/banner.png
 bannerCredit: Photo by [](https://unsplash.com/@) on [Unsplash](https://unsplash.com)
 published: true
 ---

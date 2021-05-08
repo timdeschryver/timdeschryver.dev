@@ -27,38 +27,34 @@ The Effect listens to every action that gets dispatched and when it retrieves an
 To retrieve the customers within the application, we have to dispatch the `[Customers Page] Get` action (`CustomerPageActions.opened`). Inside the component where we want to show a list of all the customers, we have to use a selector to select all the customers from the Global Store state.
 
 ```ts
-import { Injectable } from '@angular/core'
-import { Actions } from '@ngrx/effects'
-import { CustomersService } from '../services/customers.service'
+import { Injectable } from '@angular/core';
+import { Actions } from '@ngrx/effects';
+import { CustomersService } from '../services/customers.service';
 
 @Injectable()
 export class CustomersEffects {
-  // to define an Effect, use the `createEffect` method
-  loadCustomers = createEffect(() => {
-    this.actions.pipe(
-      // filter out the actions, except for `[Customers Page] Opened`
-      ofType(CustomerPageActions.opened),
-      switchMap(() =>
-        // call the service
-        this.customersService.getCustomers().pipe(
-          // return a Success action when the HTTP request was successfull (`[Customers Api] Load Sucess`)
-          map((customers) =>
-            CustomerApiActions.loadCustomersSuccess(customers),
-          ),
-          // return a Failed action when something went wrong during the HTTP request (`[Customers Api] Load Failed`)
-          catchError((error) =>
-            of(CustomerApiActions.loadCustomersFailed(error)),
-          ),
-        ),
-      ),
-    )
-  })
+	// to define an Effect, use the `createEffect` method
+	loadCustomers = createEffect(() => {
+		this.actions.pipe(
+			// filter out the actions, except for `[Customers Page] Opened`
+			ofType(CustomerPageActions.opened),
+			switchMap(() =>
+				// call the service
+				this.customersService.getCustomers().pipe(
+					// return a Success action when the HTTP request was successfull (`[Customers Api] Load Sucess`)
+					map((customers) => CustomerApiActions.loadCustomersSuccess(customers)),
+					// return a Failed action when something went wrong during the HTTP request (`[Customers Api] Load Failed`)
+					catchError((error) => of(CustomerApiActions.loadCustomersFailed(error)))
+				)
+			)
+		);
+	});
 
-  constructor(
-    // inject Actions from @ngrx/effects
-    private actions: Actions,
-    private customersService: CustomersService,
-  ) {}
+	constructor(
+		// inject Actions from @ngrx/effects
+		private actions: Actions,
+		private customersService: CustomersService
+	) {}
 }
 ```
 
@@ -100,16 +96,12 @@ We can use RxJS to create a reactive JavaScript API that dispatches actions to t
 
 ```ts
 online = createEffect(() => {
-  return merge(
-    of(navigator.onLine),
-    fromEvent(window, 'online').pipe(mapTo(true)),
-    fromEvent(window, 'offline').pipe(mapTo(false)),
-  ).pipe(
-    map((online) =>
-      online ? DeviceActions.online() : DeviceActions.offline(),
-    ),
-  )
-})
+	return merge(
+		of(navigator.onLine),
+		fromEvent(window, 'online').pipe(mapTo(true)),
+		fromEvent(window, 'offline').pipe(mapTo(false))
+	).pipe(map((online) => (online ? DeviceActions.online() : DeviceActions.offline())));
+});
 ```
 
 ## Reusing Effects
@@ -140,20 +132,20 @@ The Effect opens the dialog, and when the dialog closes it returns a correspondi
 
 ```ts
 openDialog = createEffect(() => {
-  return this.actions.pipe(
-    ofType(WelcomePageActions.loginClicked),
-    exhaustMap((_) => {
-      let dialogRef = this.dialog.open(LoginDialog)
-      return dialogRef.afterClosed()
-    }),
-    map((result: any) => {
-      if (result === undefined) {
-        return LoginDialogActions.closed()
-      }
-      return LoginDialogActions.loggedIn(result)
-    }),
-  )
-})
+	return this.actions.pipe(
+		ofType(WelcomePageActions.loginClicked),
+		exhaustMap((_) => {
+			let dialogRef = this.dialog.open(LoginDialog);
+			return dialogRef.afterClosed();
+		}),
+		map((result: any) => {
+			if (result === undefined) {
+				return LoginDialogActions.closed();
+			}
+			return LoginDialogActions.loggedIn(result);
+		})
+	);
+});
 ```
 
 ## Showing notifications
@@ -164,18 +156,18 @@ For Effects that don't result in another action (like this one), it's important 
 
 ```ts
 reminder = createEffect(
-  () => {
-    return this.actions.pipe(
-      ofType(ReminderActions.reminder),
-      map(({ payload }) => {
-        this.snackBar.openFromComponent(ReminderComponent, {
-          data: payload,
-        })
-      }),
-    )
-  },
-  { dispatch: false },
-)
+	() => {
+		return this.actions.pipe(
+			ofType(ReminderActions.reminder),
+			map(({ payload }) => {
+				this.snackBar.openFromComponent(ReminderComponent, {
+					data: payload
+				});
+			})
+		);
+	},
+	{ dispatch: false }
+);
 ```
 
 ## Enhance your action with Global Store state
@@ -208,7 +200,7 @@ detail = createEffect(() => {
       of(action).pipe(withLatestFrom(this.store.select(selectProducts))),
     ),
     filter(([{ payload }, products]) => !!products[payload.sku]),
-    mergeMap([{payload}] => {
+    mergeMap(([{payload}]) => {
       ...
     })
   )
@@ -259,15 +251,15 @@ Because every dispatched action emits a new value to the `actions` source, we ca
 
 ```ts
 trackEvents = createEffect(
-  () => {
-    return this.actions.pipe(
-      tap(({ type, payload }) => {
-        appInsights.trackEvent(type, payload)
-      }),
-    )
-  },
-  { dispatch: false },
-)
+	() => {
+		return this.actions.pipe(
+			tap(({ type, payload }) => {
+				appInsights.trackEvent(type, payload);
+			})
+		);
+	},
+	{ dispatch: false }
+);
 ```
 
 ## Navigate based on actions
