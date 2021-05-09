@@ -3,10 +3,9 @@ title: Parameterized selectors
 slug: parameterized-selectors
 description: How can I select an entity from the store by its id?
 author: Tim Deschryver
-date: 2018-05-07T13:58:02.917Z
+date: 2018-05-07
 tags: NgRx, Redux, Angular, State
 banner: ./images/banner.jpg
-bannerCredit: Photo by [Ryan Grewell](https://unsplash.com/@ryangrewell) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
@@ -14,92 +13,41 @@ published: true
 
 This question popped up several times lately and in this post, I’ll provide some suggestions to create a selector that works with parameters, so let’s not waste any time, and let’s get started!
 
-## EDIT 2018–08–17: [NgRx 6.1](https://github.com/ngrx/platform/blob/master/CHANGELOG.md#610-2018-08-01)
+## Update 2021-05-09
 
-> The following will be more or less a copy of the [NgRx docs](https://ngrx.io/guide/store/selectors#using-selectors-with-props).
+Selectors with props [will be deprecated in NgRx v11](https://github.com/ngrx/platform/issues/2980).
+Use a [factory selector](#factory-selector) to select state based on a parameter.
 
-As of [NgRx 6.1](https://github.com/ngrx/platform/blob/master/CHANGELOG.md#610-2018-08-01) selectors also accepts an extra `props` argument. Which means you can now define a selector as the following:
+## Factory selector
 
-```ts:selector.ts
-export const getCount = createSelector(
-  getCounterValue,
-  (counter, props) => counter * props.multiply,
-)
-```
-
-Inside your component you can use the selector as usual but you can define the `props` value:
-
-```ts:component.ts
-counter$ = this.store.select(fromRoot.getCount, { multiply: 2 })
-```
-
-Keep in mind that a selector is memoized, meaning it will cache the result from the last parameters. If you would re-use the above selector but with another `props` value, it would clear the previous cache. If both selectors would be used at the same time, as in the example below, the selector would be invoked with every `props` value, thus the memoization would be more or less useless.
-
-```ts:component.ts
-counter2$ = this.store.select(fromRoot.getCount, {
-  id: 'counter2',
-  multiply: 2,
-})
-counter4$ = this.store.select(fromRoot.getCount, {
-  id: 'counter4',
-  multiply: 4,
-})
-```
-
-Every time the counter value changes in the above example, the selector would be invoked 2 times, one time for `counter2`, the other time for `counter4`. To allow memoization we can use a factory function to create the selector.
-
-```ts:selector.ts
-export const getCount = () =>
-  createSelector(
-    (state, props) => state.counter[props.id],
-    (counter, props) => counter * props.multiply,
-  )
-```
-
-And in our component we can invoke the factory function `fromRoot.getCount()` to create a new selector instance for each counter, allowing each instance to have its own cache.
-
-```ts:selector.ts
-counter2$ = this.store.select(fromRoot.getCount(), {
-  id: 'counter2',
-  multiply: 2,
-})
-counter4$ = this.store.select(fromRoot.getCount(), {
-  id: 'counter4',
-  multiply: 4,
-})
-```
-
-## Static parameter
-
-If the parameter doesn’t change over time we can use a [factory function](https://medium.com/javascript-scene/javascript-factory-functions-with-es6-4d224591a8b1) `selectCustomer` which has a parameter `id` and returns a selector. Making it possible to use the `id` parameter in our selector to retrieve the customer, resulting in the following:
+If the parameter doesn’t change over time we can use a [factory function](https://medium.com/javascript-scene/javascript-factory-functions-with-es6-4d224591a8b1). In the next example, the factory selector `selectCustomer` has a parameter `id` and returns a selector. We can use the `id` parameter in the selector to retrieve the customer by its id.
 
 ```ts:customers.selectors.ts
 export const selectCustomer = (id: string) =>
-  createSelector(selectCustomers, (customers) => customers[id])
+  createSelector(selectCustomers, (customers) => customers[id]);
 ```
 
 We can then call `selectCustomer` in the component and pass it an `id`:
 
 ```ts:customer.component.ts
 class CustomersComponent {
-  customer$ = store.select(customers.selectCustomer('47'))
+  customer$ = store.select(customers.selectCustomer('47'));
 }
 ```
 
-## Dynamic parameter
+## A selector with a dynamic parameter
 
-If the `id` parameter is dynamic we can create a selector that instead of returning customers, returns a function which expects a parameter `id`. The selector becomes:
+If the `id` parameter is dynamic, we can create a selector that returns a function which expects the `id` parameter. The selector now becomes:
 
 ```ts:customers.selectors.ts
-export const selectCustomer = createSelector(
-  selectCustomers,
-  (customers) => (id: string) => customers[id],
-)
+export const selectCustomer = createSelector(selectCustomers, (customers) => (id: string) =>
+  customers[id]
+);
 
-// tip: it’s also possible to memoize the function if needed
+// Tip: it’s also possible to memoize the function if needed
 export const selectCustomer = createSelector(selectCustomers, (customers) =>
-  memoize((id: string) => customers[id]),
-)
+  memoize((id: string) => customers[id])
+);
 ```
 
 And in our component:
@@ -110,31 +58,34 @@ class CustomersComponent {
 }
 ```
 
-For this example, I’m also going to show the HTML, because it’s maybe not that straight forward. Because the selector returns a function now, we can call it like a normal function in our HTML:
+For this example, I’m also going to show the HTML, because it’s not that straightforward.
+Because the selector returns a function now, we can invoke it like a normal function in our HTML template.s
 
 ```html:customer.component.html
 {{ (customers$ | async)(id).name }}
 ```
 
-To overcome this syntax inside the HTML we can also solve this with the RxJS `map` operator, as mentioned by [Juliano Pável](https://medium.com/u/727c16f25ce2).
+A better approach to invoke the selector would be to use the [RxJS `map` operator](https://rxjs.dev/api/operators/map).
+For this, we select the customer, which returns the function, and then we can invoke it by providing our customer id to the function.
 
 ```ts:customer.component.ts
 class CustomersComponent {
   customer$ = store
-    .select(customers.selectCurrentCustomer)
-    .pipe(map((fun) => fun(this.customerId)))
+    .select(customers.selectCustomer)
+    .pipe(map((fun) => fun(this.customerId)));
 }
 ```
 
-## Filtering data in the component (within the RxJS stream)
+## Filtering data in the component
 
-We can also hook into the RxJS stream and map/filter our selector result by using one or more RxJS operators.
+The above can also be re-written by using one or more RxJS operators.
+We can extend, map, and filter a selector's result within the component.
 In the snippet below, we select all the customers from the store and retrieve the current customer from it.
 
 ```ts:customer.component.ts
 class CustomersComponent {
   customer$ = store
-    .select(customers.selectCurrentCustomer)
+    .select(customers.selectCustomers)
     .pipe(map((customers) => customers[this.customerId]))
 }
 ```
@@ -143,11 +94,13 @@ This approach does have a few drawbacks:
 
 - it's different than other selectors, the projection logic is spread in the selector and in the component
 - it's harder to test
-- it's not that performant but in most cases, you won't notice the difference
+- it's less performant, but in most cases, you won't notice the difference
+
+> Because of these drawbacks, the [NgRx ESLint Plugin](https://github.com/timdeschryver/eslint-plugin-ngrx) has two rules ([avoid-mapping-selectors](avoid-mapping-selectors) and [avoid-combining-selectors](https://github.com/timdeschryver/eslint-plugin-ngrx/blob/master/docs/rules/avoid-combining-selectors.md)) to warn and to prevent using selectors like this.
 
 ## Using Global Store State
 
-While the above examples work, for me retrieving data from the store like this feels a bit dirty and I consider it a bad practice in most cases. In my opinion, it's better to persist this "filter" state in the store, in our example it would mean that the `id` parameter would exist somewhere in the store.
+While the above examples answer the question on how to select state based on a parameter, for me retrieving data from the store like this feels a bit dirty and I consider it a bad practice in most cases. In my opinion, it's better to persist this "filter" state in the global store, in our example it would mean that the `id` parameter would exist somewhere in the store.
 
 This has the benefit that we're going to be fully reactive.
 When the filter's state changes, the selectors will be re-invoked (with the updated state), and our component will receive the new filtered state.
@@ -164,54 +117,70 @@ const reducer = createReducer(
 )
 ```
 
-We also have to create a selector `selectSelectedCustomerId` to select the `selectedCustomerId` from the state. Because selectors are composable we can use both selectors to get the selected customer in the `selectSelectedCustomer` selector.
-The selectors looks like this:
+We also have to create a selector `selectSelectedCustomerId` to select the `selectedCustomerId` from the state.
+Because selectors are composable, we're able to use both selectors to get the selected customer in the `selectSelectedCustomer` selector.
 
 ```ts:customers.selectors.ts
 export const selectSelectedCustomerId = createSelector(
   selectCustomerEntities,
-  fromCustomers.selectedCustomerId,
-)
+  fromCustomers.selectedCustomerId
+);
 
 export const selectSelectedCustomer = createSelector(
   selectCustomers,
   selectSelectedCustomerId,
-  (customers, selectedId) => customers[selectedId],
-)
+  (customers, selectedId) => customers[selectedId]
+);
 ```
 
-In the component, we can consume the selector the ‘usual way’ without having to worry about the customer's id.
+In the component, we can consume the selector in the "usual way" without having to worry about the customer's id.
 
 ```ts:customer.component.ts
 class CustomersComponent {
-  customer$ = store.select(customers.selectSelectedCustomer)
+  customer$ = store.select(customers.selectSelectedCustomer);
 }
 ```
 
-In the future when we have another filter, or when we add an action that changes the filter we don't have to worry about displaying the correct data in the component. It will just work because this selector is entirely driven my the Store's state.
+In the future when we have another filter, or when we add an action that changes the filter we don't have to worry about displaying the correct data in the component. It will just work because this selector is entirely driven by the Store's state.
 
 ## NgRx Router Store
 
-Another possibility would be to use [@ngrx/router-store](https://ngrx.io/guide/router-store), this module connects the route with the store. In other words, all the route information will be available in the store thus also in the selectors. After installing the `ngrx/router-store` module and having it imported in our `AppModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters (`customerId` in our case). Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, she or he would see the customer’s details of customer 47. The selector looks roughly the same:
+Another possibility would be to use [@ngrx/router-store](https://ngrx.io/guide/router-store), this module connects the Angular router module with the NgRx global store. In other words, all the route information will be available in the store, and thus also in the selectors.
+
+Starting from NgRx v8, the router module also exposes a [handful of useful selectors](https://ngrx.io/guide/router-store/selectors#router-selectors) to selector route state.
 
 ```ts:customers.selectors.ts
-export const selectRouterState = createFeatureSelector<RouterReducerState>(
-  'router',
-)
+export const selectRouterState = createFeatureSelector<RouterReducerState>('router');
+
+export const { selectRouteParams } = getSelectors(selectRouterState);
+
+export const selectCurrentCustomer = createSelector(
+  selectCustomers,
+  selectRouteParams,
+  (customers, { customerId }) => customers[customerId]
+);
+```
+
+For older versions of NgRx, or if you want to write this manually you can do the following.
+
+After installing the `ngrx/router-store` module and registering the `RouterModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters (`customerId` in our case). Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, she or he would see the customer’s details of customer 47. The selector looks roughly the same.
+
+```ts:customers.selectors.ts
+export const selectRouterState = createFeatureSelector<RouterReducerState>('router');
 
 export const selectRouteParameters = createSelector(
   selectRouterState,
-  (router) => router.state.root.firstChild.params,
-)
+  (router) => router.state.root.firstChild.params
+);
 
 export const selectCurrentCustomer = createSelector(
   selectCustomers,
   selectRouteParameters,
-  (customers, route) => customers[route.customerId],
-)
+  (customers, route) => customers[route.customerId]
+);
 ```
 
-And the component remains the same (except for the selector’s name):
+And the component remains the same (except for the selector's name):
 
 ```ts:customer.component.ts
 class CustomersComponent {
@@ -226,4 +195,3 @@ In my opinion the code we ended up with looks cleaner than the code we started w
 ## Some extra resources
 
 - [NgRx Selectors How to stop worrying about your Store structure — David East & Todd Motto @ ng-conf 2018](https://www.youtube.com/watch?v=Y4McLi9scfc) - the last part will show you an example with `ngrx/router-store`
-- [The](https://github.com/reduxjs/reselect/#q-how-do-i-create-a-selector-that-takes-an-argument) [reduxjs](https://github.com/reduxjs)/[reselect](https://github.com/reduxjs/reselect) [docs about parameterization with](https://github.com/reduxjs/reselect/#q-how-do-i-create-a-selector-that-takes-an-argument) [`createSelector`](https://github.com/reduxjs/reselect/#q-how-do-i-create-a-selector-that-takes-an-argument)

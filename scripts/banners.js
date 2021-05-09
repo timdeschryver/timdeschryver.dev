@@ -62,12 +62,12 @@ const content = './content/blog';
 					});
 
 					await page.screenshot({
-						quality: 80,
+						quality: 100,
 						type: 'jpeg',
 						path: bannerPath
 					});
 				}
-				browser.close();
+				await browser.close();
 				serve.kill();
 				process.exit(0);
 			}

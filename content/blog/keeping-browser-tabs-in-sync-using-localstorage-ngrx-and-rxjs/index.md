@@ -1,22 +1,23 @@
 ---
 title: Keeping browser tabs in sync using localStorage, NgRx, and RxJS
 slug: keeping-browser-tabs-in-sync-using-localstorage-ngrx-and-rxjs
-description: We’re going to take a look at how we can keep state in sync when a user has multiple tabs open.
+description: We’re going to take a look at how we can keep the state in sync when a user has multiple tabs open.
 author: Tim Deschryver
-date: 2018-12-03T09:08:06.254Z
+date: 2018-12-03
 tags: Angular, NgRx, RxJS, Redux
 banner: ./images/banner.jpg
-bannerCredit: Photo by [Faye Cornish](https://unsplash.com/@fcornish) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
-In this post, we’re going to take a look at how we can keep our application state in sync when a user has multiple tabs open. We’re going to make this happen by using the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [NgRx](https://ngrx.io/) (Store and Effects), and [RxJS](http://rxjsdocs.com/). A basic knowledge of NgRx is needed to follow the examples.
+Update: Depending on the use case, the [Broadcast Channel API](https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API) might be better compared to using the Local Storage. The idea behind this post will still remain the same, and the code will almost look identical. Just, swap out local storage with a broadcast channel.
+
+In this post, we’re going to take a look at how we can keep our application state in sync when a user has multiple tabs open. We’re going to make this happen by using the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API), [NgRx](https://ngrx.io/) (Store and Effects), and [RxJS](http://rxjsdocs.com/). Basic knowledge of NgRx is needed to follow the examples.
 
 There are two ways of syncing state that I know of. One of them is to send the actions from one tab to another tab, the other is to send the (partial) state from one tab to another tab. While both of these ways have very similar implementations, they both shine in their own way.
 
 As a starting point, we’re going to pick up where we left off in a previous post [Let’s have a chat about Actions and Action Creators within NgRx](/blog/lets-have-a-chat-about-actions-and-action-creators-within-ngrx) where we created a simple grocery list.
 
-## Syncing state by sending actions from one tab to another tab
+## Syncing state by sending actions from one tab to another tab
 
 Knowing that our state is predictable because we’re using NgRx to manage the state of our application, we can leverage its power to rebuild the state. Thus if we store every dispatched action into the local storage and we dispatch them again in the same order, we know that we will have the same outcome, i.e. the same state. If you’re familiar with the [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension), you have probably already used or at least seen this concept by rewinding and replaying actions.
 
@@ -64,7 +65,7 @@ Note that we can’t just simply store and retrieve the actions from the local s
 
 Now that we’ve stored the actions inside our local storage, the next step is to notify the other tabs and dispatch the same actions there. Here again, we’re also going to use an effect. We use the RxJS function [`fromEvent`](https://rxjs.dev/api/index/function/fromEvent) to listen to the browser event [`window.storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Responding_to_storage_changes_with_the_StorageEvent) and get notified when the local storage changes in another tab.
 
-> The [`StorageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent 'A StorageEvent is sent to a window when a storage area it has access to is changed within the context of another document.') is fired whenever a change is made to the [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage "The Storage interface of the Web Storage API provides access to a particular domain's session or local storage. It allows, for example, the addition, modification, or deletion of stored data items.") object (note that this event is not fired for sessionStorage changes). This won't work on the same page that is making the changes — it is really a way for other pages on the domain using the storage to sync any changes that are made. Pages on other domains can't access the same storage objects. — MDN web docs
+> The [`StorageEvent`](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent 'A StorageEvent is sent to a window when a storage area it has access to is changed within the context of another document.') is fired whenever a change is made to the [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Storage "The Storage interface of the Web Storage API provides access to a particular domain's session or local storage. It allows, for example, the addition, modification, or deletion of stored data items.") object (note that this event is not fired for sessionStorage changes). This won't work on the same page that is making the changes — it is really a way for other pages on the domain using the storage to sync any changes that are made. Pages on other domains can't access the same storage objects. — MDN web docs
 
 ```ts
 @Effect()
@@ -127,35 +128,35 @@ onChange = fromEvent<StorageEvent>(window, 'storage').pipe(
 
 Et voila, we’ve got a working demo. As you can see in the GIF above the “Toggle checked off groceries” isn’t synced to the other tabs, this is because we don’t store this action in the local storage.
 
-## Syncing state by sending the state from one tab to another
+## Syncing state by sending the state from one tab to another
 
 This way of syncing state across tabs uses the same techniques as the first one. But the difference is that we store the whole state in the local storage.
 
 ### Storing state to local storage
 
-In the grocery list application we already have a meta-reducer which does exactly this. The `persistStateReducer` reducer persists the state to the local storage in order to reload the state when we reopen the grocery list. Therefore, we don’t have to change anything for this step.
+In the grocery list application, we already have a meta-reducer that does exactly this. The `persistStateReducer` reducer persists the state to the local storage to reload the state when we reopen the grocery list. Therefore, we don’t have to change anything for this step.
 
 ```ts
 export function persistStateReducer(reducer: ActionReducer<State>) {
-  const localStorageKey = '__groceries'
-  return (state: State | undefined, action: Action) => {
-    // on state initialization the state is undefined
-    // we want to retrieve the state from local storage now
-    if (state === undefined) {
-      const persisted = localStorage.getItem(localStorageKey)
+	const localStorageKey = '__groceries';
+	return (state: State | undefined, action: Action) => {
+		// on state initialization the state is undefined
+		// we want to retrieve the state from local storage now
+		if (state === undefined) {
+			const persisted = localStorage.getItem(localStorageKey);
 
-      // if we got something in local storage return it
-      // otherwise use the reducer to instantiate the state
-      return persisted ? JSON.parse(persisted) : reducer(state, action)
-    }
+			// if we got something in local storage return it
+			// otherwise use the reducer to instantiate the state
+			return persisted ? JSON.parse(persisted) : reducer(state, action);
+		}
 
-    // on every action we call the "normal" reducer
-    const newState = reducer(state, action)
+		// on every action we call the "normal" reducer
+		const newState = reducer(state, action);
 
-    // update local storage with the new state
-    localStorage.setItem(localStorageKey, JSON.stringify(nextState))
-    return newState
-  }
+		// update local storage with the new state
+		localStorage.setItem(localStorageKey, JSON.stringify(nextState));
+		return newState;
+	};
 }
 ```
 
@@ -186,13 +187,13 @@ Now the only thing left to do is to update the state. We can do this by adding a
 
 ```ts
 export function updateStateReducer(reducer: ActionReducer<State>) {
-  return (state: State | undefined, action: Action) => {
-    if (action.type === 'UPDATE_GROCERIES_STATE') {
-      // replace the current state with the new state
-      return action.payload.newState
-    }
-    return reducer(state, action)
-  }
+	return (state: State | undefined, action: Action) => {
+		if (action.type === 'UPDATE_GROCERIES_STATE') {
+			// replace the current state with the new state
+			return action.payload.newState;
+		}
+		return reducer(state, action);
+	};
 }
 ```
 
@@ -202,10 +203,10 @@ This gives us the same result as before, but in a slightly different way:
 
 ## Conclusion
 
-In a redux based system, like NgRx, I find it simple and straightforward to handle different event sources, just to name a few: user interaction, browser events, communication with a web API, and so forth.
+In a redux-based system, like NgRx, I find it simple and straightforward to handle different event sources, just to name a few: user interaction, browser events, communication with a web API, and so forth.
 
 By using @ngrx/effects in combination with RxJS it’s possible to write the stream of these events in just a few lines of codes, while not decreasing the readability of our code.
 
-Both approaches do have their pros and cons. With the action based approach you have more control over the flow. But, the downside is that you have to maintain more code. The action based approach also gives you the opportunity to invoke side effects. The state based approach is the opposite. With just a couple of lines, you can start syncing state but you pay a price in controllability.
+Both approaches do have their pros and cons. With the action-based approach, you have more control over the flow. But, the downside is that you have to maintain more code. The action-based approach also allows you to invoke side effects. The state-based approach is the opposite. With just a couple of lines, you can start syncing state but you pay a price in controllability.
 
 The examples from this post can be found on [GitHub](https://github.com/timdeschryver/ngrx-family-grocery-list/).
