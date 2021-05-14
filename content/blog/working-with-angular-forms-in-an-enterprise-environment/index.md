@@ -232,11 +232,11 @@ CVA’s allows us to create common reusable components, think of a generic perso
       <form-field
         formControlName="firstName"
         label="First name"
-      ></new-form-field>
+      ></form-field>
       <form-field
         formControlName="name"
         label="Name"
-      ></new-form-field>
+      ></form-field>
     </div>
   `,
 	providers: [
