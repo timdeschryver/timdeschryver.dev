@@ -95,6 +95,13 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@squoosh/cli@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@squoosh/cli/-/cli-0.6.4.tgz#56c09956957f36447e37ffb8cc477f03aa95a33d"
+  integrity sha512-UxT2f+7s2OJXQaNRy6nwATFoTClfcyVT8VqN+hzVrWCkYV5GnYRkpVpXJTPcRBPnXe+GcrvDAH9ziJVGtRTC2A==
+  dependencies:
+    web-streams-polyfill "^3.0.0"
+
 "@sveltejs/adapter-node@next":
   version "1.0.0-next.10"
   resolved "https://registry.yarnpkg.com/@sveltejs/adapter-node/-/adapter-node-1.0.0-next.10.tgz#7ad40673bc79c3dd585983743132c83714c8cb4a"
@@ -1976,6 +1983,11 @@ vite@^2.1.0:
     rollup "^2.38.5"
   optionalDependencies:
     fsevents "~2.3.1"
+
+web-streams-polyfill@^3.0.0:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.0.3.tgz#f49e487eedeca47a207c1aee41ee5578f884b42f"
+  integrity sha512-d2H/t0eqRNM4w2WvmTdoeIvzAUSpK7JmATB8Nr2lb7nQ9BTIJVjbQ/TRFVEh2gUH1HwclPdoPtfMoFfetXaZnA==
 
 which@^2.0.1:
   version "2.0.2"

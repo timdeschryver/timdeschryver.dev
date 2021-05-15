@@ -22,10 +22,12 @@
 		"copy:snippets:local": "copyfiles \"content/snippets/**\" static  --exclude=\"**/*.md\" --up=1",
 		"g": "node ./scripts/generate",
 		"p": "node ./scripts/devto",
-		"banners": " node ./scripts/banners.js",
-		"pre-commit": "npm run banners && git add ./content/**/banner.jpg && lint-staged"
+		"banners": "node ./scripts/banners.js",
+		"pre-commit": "npm run banners && git add ./content/**/banner.jpg && lint-staged",
+		"optimize:image": "node ./scripts/optimize-image.js"
 	},
 	"devDependencies": {
+		"@squoosh/cli": "^0.6.4",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "next",
 		"@sveltejs/adapter-vercel": "next",
@@ -57,6 +59,10 @@
 	"lint-staged": {
 		"*.{js,ts,json,md,svelte}": [
 			"prettier --write",
+			"git add"
+		],
+		"*.{jpg,jpeg,png,gif}": [
+			"npm run optimize:image",
 			"git add"
 		]
 	}
