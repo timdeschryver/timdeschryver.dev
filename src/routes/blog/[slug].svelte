@@ -1,7 +1,14 @@
 <script context="module" lang="ts">
 	export const prerender = true;
 
-	export async function load({ page, fetch }) {
+	export async function load({
+		page,
+		fetch
+	}): Promise<{
+		props: {
+			post: any;
+		};
+	}> {
 		const result = await fetch(`/blog/${page.params.slug}.json`);
 		const { post } = await result.json();
 		return {
@@ -218,7 +225,7 @@
 		text-align: center;
 		margin: 0 auto;
 		padding: 0;
-		font-size: clamp(1.5rem, 4vw, 7rem);
+		font-size: clamp(1rem, 4vw, 7rem);
 	}
 
 	.details {

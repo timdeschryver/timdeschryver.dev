@@ -1,6 +1,11 @@
 <script>
+	/* eslint-disable */
+	// @ts-nocheck
+
 	import { onMount, onDestroy } from 'svelte';
 	let bmc;
+	let y;
+
 	onMount(() => {
 		bmc = document.querySelector('#bmc-wbtn');
 		// content of the script
@@ -218,19 +223,19 @@
 		}
 
 		bmc = document.querySelector('#bmc-wbtn');
-		bmc.style.display = 'none';
 	});
-
-	let y;
-	$: if (bmc && y > 1000) {
-		bmc.style.display = 'flex';
-	}
 
 	onDestroy(() => {
-		if (bmc) {
-			bmc.style.display = 'none';
-		}
+		bmc = undefined;
 	});
+
+	$: if (bmc) {
+		if (y > 1000) {
+			bmc.style.display = bmc.nextSibling.display = 'flex';
+		} else {
+			bmc.style.display = bmc.nextSibling.display = 'none';
+		}
+	}
 </script>
 
 <svelte:head>
