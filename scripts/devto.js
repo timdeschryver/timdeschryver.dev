@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
 import dotEnv from 'dotenv-extended';
@@ -15,6 +15,9 @@ dotEnv.load({
 			.replace(/\.\/images\//g, `${url}/images/`)
 			.replace(/\(\/blog\//g, `(https://timdeschryver.dev/blog/`);
 		const { metadata, content } = extractFrontmatter(file);
+
+		const hasTLDR = existsSync(join('./content/blog', slug, 'tldr.md'));
+		const tldr = hasTLDR ? `[Read the TLDR on timdeschryver.dev](${url}?tldr=true)` : '';
 
 		const devToContent = content
 			.split('\n')
@@ -50,6 +53,8 @@ ${Object.entries(devToMeta)
 Follow me on Twitter at [@tim_deschryver](https://timdeschryver.dev/twitter) | Subscribe to the [Newsletter](https://timdeschryver.dev/newsletter) | Originally published on [timdeschryver.dev](${url}).
 
 -------
+
+${tldr}
 
 ${devToContent}
 
