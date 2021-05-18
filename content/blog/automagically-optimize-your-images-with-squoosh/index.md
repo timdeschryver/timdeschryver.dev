@@ -9,6 +9,7 @@ banner: ./images/banner.jpg
 published: true
 ---
 
+Optimizing your images is important to have faster website and a good user experience.
 For my blog, I used to use the [Image Optimizer](https://github.com/marketplace/actions/image-optimizer) Github Action to optimize my images.
 
 The downside to this approach was that the optimization was only performed on Pull Requests. When I'm publishing a new blog post, I usually just pushed to the `main` branch, thus new images wouldn't be optimized. As a counter measurement, I also used [Squoosh](https://squoosh.app/) to optimize the banner images as this was mostly the only image I used.
@@ -19,11 +20,9 @@ Let's take a look at how we can automate this threaded task and optimize our ima
 
 I'm assuming you're already using [lint-staged](https://github.com/okonet/lint-staged) to some extent, for example, to run a linter or prettier on touched files. We extend the `lint-staged` configuration to run an optimization to images (`*.{jpg,jpeg,png,gif}`), and re-add them to our commit with `git add`.
 
-```json{6-9}:package.json
+```json{3}:package.json
 {
 	"lint-staged": {
-		"*.{js,ts,json,svelte}": ["eslint --fix", "git add"],
-		"*.{prettier}": ["prettier --write", "git add"],
 		"*.{jpg,jpeg,png,gif}": ["node ./scripts/optimize-image.js", "git add"]
 	}
 }
@@ -32,13 +31,13 @@ I'm assuming you're already using [lint-staged](https://github.com/okonet/lint-s
 To run `lint-staged` as a pre-commit step, I'm using [husky](https://typicode.github.io/husky/#/) with a `pre-commit` git hook.
 
 The `optimize-image.js` script, executes the Squoosh CLI to optimize the image.
-Note that we don't need to pass an argument to this script, because lint-staged already passes the file's location as an argument.
+Note that we don't need to pass an argument to this script, because lint-staged already passes the file's path as an argument.
 
 The reason why we need a custom script is because we need to pass the image path to the Squoosh CLI twice. Once to specify the output directory, and the second time as the argument to be optimized. In this case, we just want to overwrite the original image, so we use the `dirname` method to get the directory of te image.
 
 If the Squoosh CLI would overwrite the initial image (or have a config flag for it), we could have simply executed the Squoosh CLI without the need to create a custom script for it.
 
-```js
+```js:optimize-image.js
 import { execSync } from 'child_process';
 import { dirname } from 'path';
 import { writeFileSync } from 'fs';

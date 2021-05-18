@@ -14,19 +14,23 @@ function generate(allPosts: ReturnType<typeof posts>) {
 	const publishedPosts = allPosts.filter((post) => post.metadata.published);
 	const nodes = publishedPosts.map((post) => {
 		const link = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog/${post.metadata.slug}`;
+		const tldr = post.tldr
+			? `<p><a href="${link}?tldr=true">Read the <strong>TLDR version</strong> on timdeschryver.dev</a></p>`
+			: `<p>Read <strong>${post.metadata.title}</strong> on <a href="${link}">timdeschryver.dev</a></p>`;
 		return {
 			title: post.metadata.title,
 			description: post.metadata.description,
 			link,
 			pubDate: UTCDate(post.metadata.date),
-			content:
+			content: (
 				`<img class="webfeedsFeaturedVisual" src="${post.metadata.banner}" alt="${post.metadata.title}"/>` +
-				`<p>Read <strong>${post.metadata.title}</strong> on my <a href="${link}">blog</a></p>` +
+				tldr +
 				post.html
-					.replace(/&/g, '&amp;')
-					.replace(/</g, '&lt;')
-					.replace(/>/g, '&gt;')
-					.replace(/"/g, '&quot;')
+			)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
 		};
 	});
 

@@ -17,7 +17,7 @@ dotEnv.load({
 		const { metadata, content } = extractFrontmatter(file);
 
 		const hasTLDR = existsSync(join('./content/blog', slug, 'tldr.md'));
-		const tldr = hasTLDR ? `[Read the TLDR on timdeschryver.dev](${url}?tldr=true)` : '';
+		const tldr = hasTLDR ? `[Read the TLDR version on timdeschryver.dev](${url}?tldr=true)` : '';
 
 		const devToContent = content
 			.split('\n')
