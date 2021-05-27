@@ -19,6 +19,7 @@ const blogPath = 'content/blog';
 const snippetsPath = 'content/snippets';
 const langs = {
 	bash: 'bash',
+	sh: 'bash',
 	html: 'markup',
 	sv: 'markup',
 	js: 'javascript',
@@ -188,7 +189,12 @@ export function readSnippets(): {
 
 function parseFileToHtmlAndMeta(
 	file,
-	{ createAnchorAndFragment = () => {}, createHeadingParts = () => [] }: any
+	{
+		createAnchorAndFragment = () => {
+			// noop
+		},
+		createHeadingParts = () => []
+	}: any
 ): any {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
@@ -353,8 +359,8 @@ function slugify(string) {
 		.replace(/\s+/g, '-') // Replace spaces with -
 		.replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
 		.replace(/&/g, '-and-') // Replace & with 'and'
-		.replace(/[^\w\-]+/g, '') // Remove all non-word characters
-		.replace(/\-\-+/g, '-') // Replace multiple - with single -
+		.replace(/[^\w-]+/g, '') // Remove all non-word characters
+		.replace(/--+/g, '-') // Replace multiple - with single -
 		.replace(/^-+/, '') // Trim - from start of text
 		.replace(/-+$/, ''); // Trim - from end of text
 }
