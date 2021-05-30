@@ -10,6 +10,17 @@ bannerCredit: Photo by [Thomas Renaud](https://unsplash.com/@lafabriquedesplis) 
 published: true
 ---
 
+## What you'll learn
+
+- [Creating a Template-Driven Form](#creating-a-template-driven-form)
+- [Validators](#validators)
+- [Form Errors](#form-errors)
+- [Dynamic Forms](#dynamic-forms)
+- [Sub-Form Components](#sub-form-components)
+- [Conclusion](#conclusion)
+
+## Intro
+
 In Angular, we have two ways to build forms, which are template-driven and reactive.
 While both ways are different to use, they're both built on top of a common Forms API.
 
@@ -27,7 +38,7 @@ Based on Ward's experience, the examples that were talked about on the podcast (
 In this post, I'd like to share my experience with some practical examples.
 The code used in this guide can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide).
 
-## Creating a form
+## Creating a Template-Driven Form
 
 If this is your first time building a template-driven form or if you just need a quick refresher, I would suggest starting by reading the [Angular docs](https://angular.io/guide/forms#building-a-template-driven-form). For a more in-depth look at how template-driven forms behave and react, the Angular docs also got you covered at [Data flow in template-driven forms](https://angular.io/guide/forms-overview#data-flow-in-template-driven-forms).
 

@@ -1,7 +1,7 @@
 ---
 title: How to set up a dynamic CI/CD pipeline with Github Actions
 slug: how-to-set-up-a-dynamic-ci-cd-pipeline-with-github-actions
-description: Creating a single pipeline for you Pull Requests and Merges
+description: Learn how to create a single workflow that runs on multiple environments conditional conditional steps
 author: Tim Deschryver
 date: 2021-05-25
 tags: DevOps, CICD, GitHub
@@ -18,6 +18,8 @@ Because having a single workflow avoids duplication and thus makes it easier to 
 
 So I took some time to merge the two workflows into a single workflow.
 To get this right, I needed a couple of iterations and a lot of failing builds, and that's why I decided to write a small post about it. The workflow that we'll end up with will run in multiple environments during a Pull Request and will include a conditional release step when the Pull Request is merged to the `main` branch.
+
+In this post, we learn how to create a single workflow that runs on multiple environments with conditional steps. This offers a good solution to reuse the workflow between Pull Requests and Merges.
 
 Let's dive in!
 
