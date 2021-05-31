@@ -108,11 +108,11 @@ To be able to test the feedback component we must be able to render the componen
 The `render` function takes the component under test as the first argument and has an optional second argument for more options see [`RenderOptions`](https://testing-library.com/docs/angular-testing-library/api#renderoptions), which we'll be covering soon.
 
 ```ts
-import { render } from '@testing-library/angular'
+import { render } from '@testing-library/angular';
 
-it('should render the form' async () => {
-  const component = await render(FeedbackComponent)
-})
+it('should render the form', async () => {
+	await render(FeedbackComponent);
+});
 ```
 
 > It doesn't have to be more than this as setup to test a simple component
@@ -121,8 +121,10 @@ In this case, it throws an exception because we're making use of reactive forms 
 To solve this we must provide both of the missing modules. To provide these modules we use the `imports` property on the `RenderOptions`, similar to how `TestBed.configureTestingModule` works.
 
 ```ts
+import { render } from '@testing-library/angular';
+
 it('should render the form', async () => {
-	const component = await render(FeedbackComponent, {
+	await render(FeedbackComponent, {
 		imports: [ReactiveFormsModule, MaterialModule]
 	});
 });
@@ -142,20 +144,38 @@ To verify the nodes an end-user sees we use [queries](https://testing-library.co
 > A query looks for the given text (as a `string` or `RegExp`) in the component, which is the first argument of the query. The optional second argument is [TextMatch](https://testing-library.com/docs/dom-testing-library/api-queries#textmatch).
 
 In our test, to verify that the form is rendered with the correct title we can use the `getByText` query.
+To use the query, we must import the `screen` object first.
+You can think of `screen`, as the view that a end-user sees, it contains DOM of the page.
 
 ```ts
+import { render, screen } from '@testing-library/angular';
+
 it('should render the form', async () => {
-	const component = await render(FeedbackComponent, {
+	await render(FeedbackComponent, {
 		imports: [ReactiveFormsModule, MaterialModule]
 	});
 
-	component.getByText(/Feedback form/i);
+	screen.getByText(/Feedback form/i);
 });
 ```
 
-In the above snippet, you don't see an assertion. This is because the `getBy` and `getAllBy` queries throw an error when the query isn't able to find the given text in the document. If we don't want `Angular Testing Library` to throw an error we can use the `queryBy` and `queryAllBy` queries instead.
+In the above snippet, you don't see an assertion. This is because the `getBy` and `getAllBy` queries throw an error when the query isn't able to find the given text in the document. If we don't want Angular Testing Library to throw an error we can use the `queryBy` and `queryAllBy` queries instead, these queries return `null` if the element(s) can't be found.
 
-> The error will print out the component's DOM elements with syntax highlighting
+For async code, it's also possible to wait for a moment until the element becomes visible or until a timeout occurs.
+If you want to test async code, the queries you're looking for are `findByText` and `findAllByText`.
+Before every check if the element is visible, Angular Testing Library will trigger a change detection cycle.
+
+```ts
+import { render, screen } from '@testing-library/angular';
+
+it('should render the form', async () => {
+	await render(FeedbackComponent, {
+		imports: [ReactiveFormsModule, MaterialModule]
+	});
+
+	await screen.findByText(/Feedback form/i);
+});
+```
 
 ## Setting `@Input()` and `@Output()` properties
 
@@ -164,9 +184,11 @@ To assign these properties, we can use `componentProperties` from the `RenderOpt
 In the case of the feedback component, we assign `shirtSizes` to a collection of t-shirt sizes and we assign `submitForm` to be a spy. Later on, we can use this spy to the verify the form submission.
 
 ```ts
+import { render } from '@testing-library/angular';
+
 it('form should display error messages and submit if valid', async () => {
-	const submitSpy = jasmine.createSpy('submit');
-	const component = await render(FeedbackComponent, {
+	const submitSpy = jest.fn();
+	await render(FeedbackComponent, {
 		imports: [ReactiveFormsModule, MaterialModule],
 		componentProperties: {
 			shirtSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
@@ -177,6 +199,28 @@ it('form should display error messages and submit if valid', async () => {
 			} as any
 		}
 	});
+});
+```
+
+Another way to do this, is to use the template syntax.
+This wraps the component into a host component.
+
+```ts
+import { render } from '@testing-library/angular';
+
+it('form should display error messages and submit if valid', async () => {
+	const submitSpy = jest.fn();
+	await render(
+		'<feedback-form [shirtSizes]="shirtSizes" (submitForm)="submit($event)"></feedback-form>',
+		{
+			declarations: [FeedbackComponent],
+			imports: [ReactiveFormsModule, MaterialModule],
+			componentProperties: {
+				shirtSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+				submit: submitSpy
+			}
+		}
+	);
 });
 ```
 
@@ -196,26 +240,28 @@ Good to know: an event will run a change detection cycle by calling `detectChang
 
 ### Clicking on elements
 
-To click on an element, we use the `component.click()` function.
+To click on an element, we use the `fireEvent.click` method.
 
 ```ts
+import { render, screen, fireEvent } from '@testing-library/angular';
+
 it('form should display error messages and submit if valid', async () => {
-	const submitSpy = jasmine.createSpy('submit');
-	const component = await render(FeedbackComponent, {
-		imports: [ReactiveFormsModule, MaterialModule],
-		componentProperties: {
-			shirtSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-			submitForm: {
-				emit: submitSpy
-			} as any
+	const submitSpy = jest.fn();
+	await render(
+		'<feedback-form [shirtSizes]="shirtSizes" (submitForm)="submit($event)"></feedback-form>',
+		{
+			declarations: [FeedbackComponent],
+			imports: [ReactiveFormsModule, MaterialModule],
+			componentProperties: {
+				shirtSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+				submit: submitSpy
+			}
 		}
-	});
+	);
 
-	// first, get the submit button
-	const submit = component.getByText(/Submit your feedback/i);
+	const submit = screen.getByText(/Submit your feedback/i);
 
-	// secondly, click on the button
-	component.click(submit);
+	fireEvent.click(submit);
 
 	expect(submitSpy).not.toHaveBeenCalled();
 });
@@ -223,36 +269,40 @@ it('form should display error messages and submit if valid', async () => {
 
 Because we're able to click on the submit button now, we can also verify that the form has not been submitted because it's currently invalid.
 
-We can use the second parameter to fire a right click:
+We can use the second parameter (the options, which are the equivalent to the options of a JavaScript click) to fire a right click.
 
 ```ts
-component.click(submit, { button: 2 });
+fireEvent.click(submit, { button: 2 });
 ```
 
 ### Filling in input fields
 
 To make the form valid, we must be able to fill in the fields.
-We we can use this by using various events.
+We can use this by using various events.
 
 ```ts
-it('form should display error messages and submit if valid', async () => {
-	const submitSpy = jasmine.createSpy('submit');
-	const component = await render(FeedbackComponent, {
-		imports: [ReactiveFormsModule, MaterialModule],
-		componentProperties: {
-			shirtSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-			submitForm: {
-				emit: submitSpy
-			} as any
-		}
-	});
+import { render, screen, fireEvent } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
 
-	// use queries to find form fields
-	const name = component.getByLabelText(/name/i);
-	const rating = component.getByLabelText(/rating/i);
-	const description = component.getByLabelText(/description/i);
-	const shirtSize = component.getByLabelText(/t-shirt size/i);
-	const submit = component.getByText(/submit your feedback/i);
+it('form should display error messages and submit if valid', async () => {
+	const submitSpy = jest.fn();
+	await render(
+		'<feedback-form [shirtSizes]="shirtSizes" (submitForm)="submit($event)"></feedback-form>',
+		{
+			declarations: [FeedbackComponent],
+			imports: [ReactiveFormsModule, MaterialModule],
+			componentProperties: {
+				shirtSizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+				submit: submitSpy
+			}
+		}
+	);
+
+	const name = screen.getByLabelText(/name/i);
+	const rating = screen.getByLabelText(/rating/i);
+	const description = screen.getByLabelText(/description/i);
+	const shirtSize = screen.getByLabelText(/t-shirt size/i);
+	const submit = screen.getByText(/submit your feedback/i);
 
 	const inputValues = {
 		name: 'Tim',
@@ -261,31 +311,29 @@ it('form should display error messages and submit if valid', async () => {
 		shirtSize: 'M'
 	};
 
-	component.click(submit);
+	fireEvent.click(submit);
 	expect(submitSpy).not.toHaveBeenCalled();
 
 	// fill in the name field with the `input` event
 	// the second argument sets the value of the target, similar to the JavaScript API
-	component.input(name, {
+	fireEvent.input(name, {
 		target: {
 			value: inputValues.name
 		}
 	});
 
-	// an easier way to accomplish the same result is to use the `type` event
-	component.type(rating, inputValues.rating);
-	component.type(description, inputValues.description);
+	// an easier way to accomplish the same result is to use the `type` event from userEvent
+	userEvent.type(rating, inputValues.rating.toString());
+	userEvent.type(description, inputValues.description);
 
 	// to select a value from the select component, we first have to click on the selectbox before clicking on the select option
-	component.click(shirtSize);
-	// because the select options aren't rendered in the component, we have to look for them outside our component
-	// we use `getByText` (exported from `@testing-library/angular`) to search for our select option on the document's body
-	component.click(getByText(document.body, 'L'));
+	userEvent.click(shirtSize);
+	userEvent.click(screen.getByText('L'));
 
 	// an easier way to select options is to use the `selectOptions` event
-	component.selectOptions(shirtSize, inputValues.shirtSize);
+	userEvent.selectOptions(shirtSize, inputValues.shirtSize);
 
-	component.click(submit);
+	userEvent.click(submit);
 	// our form is valid, so now we can verify it has been called with the form value
 	expect(submitSpy).toHaveBeenCalledWith(inputValues);
 });
@@ -296,20 +344,12 @@ This time we get the form fields by their corresponding label, this has the bene
 
 > The `getByLabelText` and `queryByLabelText` are also looking at `aria-labels` to find an element
 
-To fill in form fields you notice we have two ways of doing it, the first one is via the `input` event, the second one with the `type` event.
-With `input` we just fire the [JavaScript `input` event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) to set the form value, via the second parameter we assign the event's value to the value in our test case.
-`type` is a new introduced (user-)event (introduced in v7.2). Besides writing text in the form field, `type` will also simulate the same events an end-user makes while interacting with our form to fill in the form field. This means that it also fires other events like `keydown` and `keyup`.
+In the above form example, we notice that there are two different API's to fill in the input field.
+The first one is via the `input` method and the second one with the `type` method from [userEvent](https://testing-library.com/docs/ecosystem-user-event/).
 
-Because we're using the Angular Material select element, we can't set the value with the `input` event.
-That's why we must click on the select element before we can select a select option by clicking on it the option.
-Here again, we can use the new `selectOptions` (user-)event (introduced in v7.4) to select options from a select element.
-The `selectOptions` (user-)event will not only work for Angular Material, but it also works for native select elements.
-`selectOptions` is a user event, thus it will also fire other events to simulate an end-user's interaction with the select element.
+The difference between both API's is that `input` just fires the [JavaScript `input` event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) to set the form value.
 
-As you can notice we have 2 different types of events, the JavaScript events, and the user events.
-The difference between the two, is that a JavaScript event will only fire the event and nothing more.
-Whereas a user event will fire multiple events to replicate a real behavior while interacting with the component.
-For now, only `type` and `selectOptions` are implemented as user events.
+Whereas `type` (from `userEvent`) also replicates the same events an end-user would trigger while interacting with our form to fill in the form field. This means that the input field also receive other events like `keydown` and `keyup`. Besides that, that API from the `userEvent` methods is also easier to work with. Because of these two reasons, this is the preferred way to interact with the component in your tests.
 
 ### Invalid controls
 
@@ -320,19 +360,19 @@ If we blank out an input field, we should see a validation message.
 This looks as follows.
 
 ```ts
-component.type(name, '');
-component.getByText('Name is required');
+userEvent.type(name, '');
+screen.getByText('Name is required');
 expect(name.getAttribute('aria-invalid')).toBe('true');
 
-component.type(name, 'Bob');
-expect(component.queryByText('Name is required')).toBeNull();
+userEvent.type(name, 'Bob');
+expect(screen.queryByText('Name is required')).toBeNull();
 expect(name.getAttribute('aria-invalid')).toBe('false');
 
-component.type(rating, 15);
-component.queryByText('Rating must be between 0 and 10');
+userEvent.type(rating, 15);
+screen.queryByText('Rating must be between 0 and 10');
 expect(rating.getAttribute('aria-invalid')).toBe('true');
 
-component.type(rating, inputValues.rating);
+userEvent.type(rating, inputValues.rating);
 expect(rating.getAttribute('aria-invalid')).toBe('false');
 ```
 
@@ -368,9 +408,12 @@ Besides the setup our test looks the same.
 In the test below, I choose to write the test in a more compact way which I find to come in handy for bigger forms.
 
 ```ts
+import { render, screen, fireEvent } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
+
 it('form should display error messages and submit if valid (container)', async () => {
-	const submitSpy = jasmine.createSpy('submit');
-	const component = await render(FeedbackContainer, {
+	const submitSpy = jest.fn();
+	await render(FeedbackContainer, {
 		declarations: [FeedbackComponent],
 		imports: [ReactiveFormsModule, MaterialModule],
 		providers: [
@@ -384,7 +427,7 @@ it('form should display error messages and submit if valid (container)', async (
 		]
 	});
 
-	const submit = component.getByText('Submit your feedback');
+	const submit = screen.getByText('Submit your feedback');
 	const inputValues = [
 		{ value: 'Tim', label: /name/i, name: 'name' },
 		{ value: 7, label: /rating/i, name: 'rating' },
@@ -397,14 +440,14 @@ it('form should display error messages and submit if valid (container)', async (
 	];
 
 	inputValues.forEach(({ value, label }) => {
-		const control = component.getByLabelText(label);
+		const control = screen.getByLabelText(label);
 		if (control.tagName === 'MAT-SELECT') {
-			component.selectOptions(control, value as string);
+			userEvent.selectOptions(control, value.toString());
 		} else {
-			component.type(control, value);
+			userEvent.type(control, value.toString());
 		}
 	});
-	component.click(submit);
+	userEvent.click(submit);
 
 	expect(submitSpy).toHaveBeenCalledWith(
 		inputValues.reduce((form, { value, name }) => {
@@ -448,27 +491,24 @@ I find it more readable, plus it's more flexible if you want to use a different 
 
 ```ts
 it('should show the dashboard for an admin', () => {
-  const { component, handleClick } = setup({ name: 'Tim', roles: ['admin'] })
-  ...
-})
+	const { handleClick } = setup({ name: 'Tim', roles: ['admin'] });
+});
 
 it('should show the dashboard for an employee', () => {
-  const { component, handleClick } = setup({ name: 'Alicia', roles: ['employee'] })
-  ...
-})
+	const { handleClick } = setup({ name: 'Alicia', roles: ['employee'] });
+});
 
-function setup(user, handleClick = jest.fn()) {
-  const component = render(DashboardComponent, {
-    componentProperties: {
-      user,
-      handleClick,
-    },
-  })
+async function setup(user, handleClick = jest.fn()) {
+	const component = await render(DashboardComponent, {
+		componentProperties: {
+			user,
+			handleClick
+		}
+	});
 
-  return {
-    component,
-    handleClick,
-  }
+	return {
+		handleClick
+	};
 }
 ```
 

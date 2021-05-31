@@ -1,7 +1,7 @@
 ---
-title: How to set up a dynamic CI/CD pipeline with Github Actions
+title: How to set up a dynamic CI/CD pipeline with GitHub Actions
 slug: how-to-set-up-a-dynamic-ci-cd-pipeline-with-github-actions
-description: Learn how to create a single workflow that runs on multiple environments conditional conditional steps
+description: Learn how to create a single workflow that runs on multiple environments with conditional steps
 author: Tim Deschryver
 date: 2021-05-25
 tags: DevOps, CICD, GitHub
@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 published: true
 ---
 
-When Github released [Github Actions](https://docs.github.com/en/actions) I moved most of my CI/CD pipelines to use a Github workflow. Each project had two workflows, one workflow that ran on Pull Requests, and a second workflow that was triggered when someone pushed a commit to the `main` branch. These two workflows were almost identical copies, except for the part that the `main` branch workflow included a release step.
+When Github released [GitHub Actions](https://docs.github.com/en/actions) I moved most of my CI/CD pipelines to use a Github workflow. Each project had two workflows, one workflow that ran on Pull Requests, and a second workflow that was triggered when someone pushed a commit to the `main` branch. These two workflows were almost identical copies, except for the part that the `main` branch workflow included a release step.
 
 Now, after a big year, I noticed that several workflows of projects that I'm working on have conditionally configured some steps in their workflow. I'm not sure, but I think that this wasn't always the case... or I completely missed that this was a possibility in the documentation when I initially set up my workflow pipelines.
 
@@ -19,7 +19,7 @@ Because having a single workflow avoids duplication and thus makes it easier to 
 So I took some time to merge the two workflows into a single workflow.
 To get this right, I needed a couple of iterations and a lot of failing builds, and that's why I decided to write a small post about it. The workflow that we'll end up with will run in multiple environments during a Pull Request and will include a conditional release step when the Pull Request is merged to the `main` branch.
 
-In this post, we learn how to create a single workflow that runs on multiple environments with conditional steps. This offers a good solution to reuse the workflow between Pull Requests and Merges.
+In this post, we learn how to create a single workflow that runs on multiple environments and with conditional steps. This offers a good solution to reuse the workflow between Pull Requests and Merges.
 
 Let's dive in!
 

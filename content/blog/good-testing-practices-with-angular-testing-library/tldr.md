@@ -1,0 +1,1 @@
+For examples, you can take a look at the [example tests](https://github.com/testing-library/angular-testing-library/tree/main/apps/example-app/src/app/examples) in the [Angular Testing Library repository](https://github.com/testing-library/angular-testing-library).
