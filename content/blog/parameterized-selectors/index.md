@@ -31,7 +31,7 @@ We can then call `selectCustomer` in the component and pass it an `id`:
 
 ```ts:customer.component.ts
 class CustomersComponent {
-  customer$ = store.select(customers.selectCustomer('47'));
+  customer$ = this.store.select(customers.selectCustomer('47'));
 }
 ```
 
@@ -84,19 +84,37 @@ In the snippet below, we select all the customers from the store and retrieve th
 
 ```ts:customer.component.ts
 class CustomersComponent {
-  customer$ = store
-    .select(customers.selectCustomers)
-    .pipe(map((customers) => customers[this.customerId]))
+	customer$ = store
+		.select(customers.selectCustomers)
+		.pipe(map((customers) => customers[this.customerId]));
 }
 ```
 
-This approach does have a few drawbacks:
+## Drawbacks
+
+These approaches do have a few drawbacks:
 
 - it's different than other selectors, the projection logic is spread in the selector and in the component
 - it's harder to test
 - it's less performant, but in most cases, you won't notice the difference
 
-> Because of these drawbacks, the [NgRx ESLint Plugin](https://github.com/timdeschryver/eslint-plugin-ngrx) has two rules ([avoid-mapping-selectors](avoid-mapping-selectors) and [avoid-combining-selectors](https://github.com/timdeschryver/eslint-plugin-ngrx/blob/master/docs/rules/avoid-combining-selectors.md)) to warn and to prevent using selectors like this.
+> Because of these drawbacks, the [NgRx ESLint Plugin](https://github.com/timdeschryver/eslint-plugin-ngrx) has two rules ([avoid-mapping-selectors](https://github.com/timdeschryver/eslint-plugin-ngrx/blob/main/docs/rules/avoid-mapping-selectors.md) and [avoid-combining-selectors](https://github.com/timdeschryver/eslint-plugin-ngrx/blob/main/docs/rules/avoid-combining-selectors.md)) to warn and to prevent using selectors like this.
+
+Therefore, I prefer to [keep that state in the global store](#using-global-store-state) when possible.
+
+When that isn't possible, a good middle-ground might be to go fully reactive.
+This eliminates most of the drawbacks and it requires less code.
+Note, that doing this might be a sign that you need a [@ngrx/component-store](https://ngrx.io/guide/component-store) 😉.
+
+```ts:customer.component.ts
+class CustomersComponent {
+	customerId$ = new Subject<long>();
+	customer$ = this.customerId$.pipe(
+		distinctUntilChanged(),
+		concatLatestFrom((customerId) => this.store.select(customers.selectCustomers(customerId)))
+	);
+}
+```
 
 ## Using Global Store State
 
@@ -137,7 +155,7 @@ In the component, we can consume the selector in the "usual way" without having 
 
 ```ts:customer.component.ts
 class CustomersComponent {
-  customer$ = store.select(customers.selectSelectedCustomer);
+  customer$ = this.store.select(customers.selectSelectedCustomer);
 }
 ```
 
@@ -163,7 +181,7 @@ export const selectCurrentCustomer = createSelector(
 
 For older versions of NgRx, or if you want to write this manually you can do the following.
 
-After installing the `ngrx/router-store` module and registering the `RouterModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters (`customerId` in our case). Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, she or he would see the customer’s details of customer 47. The selector looks roughly the same.
+After installing the `@ngrx/router-store` module and registering the `RouterModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters (`customerId` in our case). Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, she or he would see the customer’s details of customer 47. The selector looks roughly the same.
 
 ```ts:customers.selectors.ts
 export const selectRouterState = createFeatureSelector<RouterReducerState>('router');
@@ -184,7 +202,7 @@ And the component remains the same (except for the selector's name):
 
 ```ts:customer.component.ts
 class CustomersComponent {
-  customer$ = store.select(customers.selectCurrentCustomer)
+  customer$ = this.store.select(customers.selectCurrentCustomer)
 }
 ```
 
@@ -194,4 +212,4 @@ In my opinion the code we ended up with looks cleaner than the code we started w
 
 ## Some extra resources
 
-- [NgRx Selectors How to stop worrying about your Store structure — David East & Todd Motto @ ng-conf 2018](https://www.youtube.com/watch?v=Y4McLi9scfc) - the last part will show you an example with `ngrx/router-store`
+- [NgRx Selectors How to stop worrying about your Store structure — David East & Todd Motto @ ng-conf 2018](https://www.youtube.com/watch?v=Y4McLi9scfc) - the last part will show you an example with `@ngrx/router-store`
