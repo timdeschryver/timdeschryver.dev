@@ -174,15 +174,13 @@ reminder = createEffect(
 
 This is useful for when you want to enhance an action with data from within the store state.
 This isn't a silver bullet, it's probably easier (to write/test/read) to add the data to the action when it's dispatched.
-But when that data isn't available when the action is dispatched, use the [RxJS `withLatestFrom` operator](https://rxjs.dev/api/operators/withLatestFrom) to retrieve the data with a selector.
+But when that data isn't available when the action is dispatched, use the [NgRx `concatLatestFrom` operator](https://ngrx.io/api/effects/concatLatestFrom) to retrieve the data with a selector. It's similar to RxJS's `withLatestFrom` operator with the exception that `concatLatestFrom` is lazy, meaning that it will only invoke the selector when the effect receives a filtered action.
 
 ```ts
 checkout = createEffect(() => {
   return this.actions.pipe(
     ofType(CheckoutPageActions.submitted),
-    concatMap((action) =>
-      of(action).pipe(withLatestFrom(this.store.select(selectUserInfo))),
-    ),
+    concatLatestFrom(() => this.store.select(selectUserInfo)),
     map([action, user] => {
       ...
     })
@@ -196,9 +194,7 @@ To take it a step further, the data retrieved by the selector can be used to che
 detail = createEffect(() => {
   return this.actions.pipe(
     ofType(ProductDetailPage.loaded),
-    concatMap((action) =>
-      of(action).pipe(withLatestFrom(this.store.select(selectProducts))),
-    ),
+    concatLatestFrom(() => this.store.select(selectProducts)),
     filter(([{ payload }, products]) => !!products[payload.sku]),
     mergeMap(([{payload}]) => {
       ...
