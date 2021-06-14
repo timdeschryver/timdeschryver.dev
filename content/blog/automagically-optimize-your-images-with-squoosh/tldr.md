@@ -3,7 +3,7 @@ To optimze images in a new project, follow these steps.
 ## Install dependencies
 
 ```sh
-npm install --save-dev @squoosh/cli husky lint-staged
+npm install --save-dev @squoosh/lib husky lint-staged
 ```
 
 ## Configure husky
@@ -51,18 +51,20 @@ Configure [lint-staged](https://github.com/okonet/lint-staged) to minify images.
 
 ## Creating optimize-image.js
 
-Invoke Squoosh on the image.
+Invoke [Squoosh](https://github.com/GoogleChromeLabs/squoosh/tree/dev/libsquoosh#libsquoosh) on the image.
 
 ```js:optimize-image.js
-import { execSync } from 'child_process';
-import { dirname } from 'path';
 import { writeFileSync } from 'fs';
+import { ImagePool } from '@squoosh/lib';
 
+const imagePool = new ImagePool();
 const [img] = process.argv.slice(2);
 
-try {
-	execSync(`npx @squoosh/cli --mozjpeg auto --output-dir "${dirname(img)}" "${img}"`);
-} catch (err) {
-	writeFileSync('optimize-image.log', err.message, { encoding: 'utf8', flag: 'w' });
-}
+const image = imagePool.ingestImage(img);
+await image.encode({
+	mozjpeg: {}
+});
+const { binary } = await image.encodedWith.mozjpeg;
+await writeFileSync(img, binary);
+await imagePool.close();
 ```

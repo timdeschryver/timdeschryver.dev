@@ -28,7 +28,7 @@
 		"prepare": "husky install"
 	},
 	"devDependencies": {
-		"@squoosh/cli": "^0.6.4",
+		"@squoosh/lib": "^0.2.3",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "next",
 		"@sveltejs/adapter-vercel": "next",
@@ -56,7 +56,6 @@
 		"typescript": "^4.0.0",
 		"vite": "^2.1.0"
 	},
-	"dependencies": {},
 	"lint-staged": {
 		"*.{js,ts,json,svelte}": [
 			"eslint --fix",
