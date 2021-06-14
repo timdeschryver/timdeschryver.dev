@@ -1,7 +1,7 @@
 ---
 title: Parameterized selectors
 slug: parameterized-selectors
-description: How can I select an entity from the store by its id?
+description: NgRx Selectors with Props
 author: Tim Deschryver
 date: 2018-05-07
 tags: NgRx, Redux, Angular, State
@@ -15,128 +15,77 @@ This question popped up several times lately and in this post, I’ll provide so
 
 ## Update 2021-05-09
 
-Selectors with props [will be deprecated in NgRx v11](https://github.com/ngrx/platform/issues/2980).
-Use a [factory selector](#factory-selector) to select state based on a parameter.
+Selectors with props [will be deprecated in NgRx v12](https://ngrx.io/guide/migration/v12), more information behind this decision can be found in the following [GitHub issue](https://github.com/ngrx/platform/issues/2980).
 
-## Factory selector
+## Factory selectors
 
-If the parameter doesn’t change over time we can use a [factory function](https://medium.com/javascript-scene/javascript-factory-functions-with-es6-4d224591a8b1). In the next example, the factory selector `selectCustomer` has a parameter `id` and returns a selector. We can use the `id` parameter in the selector to retrieve the customer by its id.
+To pass a parameter to a selector we must wrap the selector in a factory method, this is what I call a factory selector.
+Throughout this post we'll use a simple example, which is a selector that returns a customer from the global store state based on a passed id parameter.
+
+The simplest implementation is a factory selector `selectCustomer` with a parameter `id` that returns the selector created by using the `createSelector` method. The selector uses the `id` parameter to retrieve the customer by the passed id in the projector.
 
 ```ts:customers.selectors.ts
 export const selectCustomer = (id: string) =>
   createSelector(selectCustomers, (customers) => customers[id]);
 ```
 
-We can then call `selectCustomer` in the component and pass it an `id`:
+In the component, the selector `selectCustomer` is used as a normal selector, but we must pass a parameter to the selector.
+This results that the customer with id 47 is selector from the global store state.
 
 ```ts:customer.component.ts
-class CustomersComponent {
+class CustomerComponent {
   customer$ = this.store.select(customers.selectCustomer('47'));
 }
 ```
 
-## A selector with a dynamic parameter
+### Memoization
 
-If the `id` parameter is dynamic, we can create a selector that returns a function which expects the `id` parameter. The selector now becomes:
+In contrast to a normal NgRx selector where the selector is shared across multiple components, we now have a new instance of the selector every time the selector factory is invoked. This has the effect that we lose the memoization benefits of the selector.
+
+**For most cases this is fine and you won't notice the difference.**
+**But when the selector has to so expensive work, you can add a memoization layer on top as a countermeasure.**
+
+To accomplish this, we must bring our own memoization method to the table, for example [lodash.memoize](https://www.npmjs.com/package/lodash.memoize). After this, we can simply wrap the selector inside of the `memoize` method. Note that this is a simple example and that you probably don't need to memoize an entity lookup.
 
 ```ts:customers.selectors.ts
-export const selectCustomer = createSelector(selectCustomers, (customers) => (id: string) =>
-  customers[id]
-);
+import memoize from 'lodash.memoize'
 
-// Tip: it’s also possible to memoize the function if needed
-export const selectCustomer = createSelector(selectCustomers, (customers) =>
-  memoize((id: string) => customers[id])
+export const selectCustomer = memoize((id: string) =>
+  createSelector(selectCustomers, (customers) => customers[id])
 );
 ```
 
-And in our component:
+By doing this, consuming the selector is no different than before.
+It's important to keep in mind that this builds up an in-memory cache, so that's why it's better that the added entry is disposed of when it's possible.
 
 ```ts:customer.component.ts
-class CustomersComponent {
-  customers$ = this.store.select(customers.selectCustomer)
+class CustomerComponent {
+  customer$ = this.store.select(customers.selectCustomer('47'));
 }
 ```
 
-For this example, I’m also going to show the HTML, because it’s not that straightforward.
-Because the selector returns a function now, we can invoke it like a normal function in our HTML template.s
+## What About Using Global Store State
 
-```html:customer.component.html
-{{ (customers$ | async)(id).name }}
-```
-
-A better approach to invoke the selector would be to use the [RxJS `map` operator](https://rxjs.dev/api/operators/map).
-For this, we select the customer, which returns the function, and then we can invoke it by providing our customer id to the function.
-
-```ts:customer.component.ts
-class CustomersComponent {
-  customer$ = store
-    .select(customers.selectCustomer)
-    .pipe(map((fun) => fun(this.customerId)));
-}
-```
-
-## Filtering data in the component
-
-The above can also be re-written by using one or more RxJS operators.
-We can extend, map, and filter a selector's result within the component.
-In the snippet below, we select all the customers from the store and retrieve the current customer from it.
-
-```ts:customer.component.ts
-class CustomersComponent {
-	customer$ = store
-		.select(customers.selectCustomers)
-		.pipe(map((customers) => customers[this.customerId]));
-}
-```
-
-## Drawbacks
-
-These approaches do have a few drawbacks:
-
-- it's different than other selectors, the projection logic is spread in the selector and in the component
-- it's harder to test
-- it's less performant, but in most cases, you won't notice the difference
-
-> Because of these drawbacks, the [NgRx ESLint Plugin](https://github.com/timdeschryver/eslint-plugin-ngrx) has two rules ([avoid-mapping-selectors](https://github.com/timdeschryver/eslint-plugin-ngrx/blob/main/docs/rules/avoid-mapping-selectors.md) and [avoid-combining-selectors](https://github.com/timdeschryver/eslint-plugin-ngrx/blob/main/docs/rules/avoid-combining-selectors.md)) to warn and to prevent using selectors like this.
-
-Therefore, I prefer to [keep that state in the global store](#using-global-store-state) when possible.
-
-When that isn't possible, a good middle-ground might be to go fully reactive.
-This eliminates most of the drawbacks and it requires less code.
-Note, that doing this might be a sign that you need a [@ngrx/component-store](https://ngrx.io/guide/component-store) 😉.
-
-```ts:customer.component.ts
-class CustomersComponent {
-	customerId$ = new Subject<long>();
-	customer$ = this.customerId$.pipe(
-		distinctUntilChanged(),
-		concatLatestFrom((customerId) => this.store.select(customers.selectCustomers(customerId)))
-	);
-}
-```
-
-## Using Global Store State
-
-While the above examples answer the question on how to select state based on a parameter, for me retrieving data from the store like this feels a bit dirty and I consider it a bad practice in most cases. In my opinion, it's better to persist this "filter" state in the global store, in our example it would mean that the `id` parameter would exist somewhere in the store.
+While the above examples do provide an answer to the question on how to select a slice of the state based on a parameter, for me retrieving data from the store like this feels a bit dirty and I consider it a bad practice in most cases. In my opinion, it's better to persist this property in the global store. In our example, it would mean that the `id` parameter of the selected customer would be added to the global store.
 
 This has the benefit that we're going to be fully reactive.
-When the filter's state changes, the selectors will be re-invoked (with the updated state), and our component will receive the new filtered state.
+When the property state changes, the selectors will be re-invoked (with the updated state), and our component will receive the new state that fits the criteria based on these "filter" properties.
 
-To implement this we must define actions that we can dispatch whenever a filter (the customer's id) changes. For example when the user clicks on a customer or when the user navigates to a customer's page, we dispatch an action. These actions are updating the `selectedCustomerId` property in the store state.
+To implement this in the global store, we first define actions to dispatch when a filter (the customer's id) changes. For example when the user clicks on a customer or when the user navigates to a customer's page, we dispatch an action.
+
+The reducer below reacts to the `customerClicked` action to update the `selectedCustomerId` property in the global store state.
 
 ```ts{3-6}:customers.reducer.ts
 const reducer = createReducer(
-  initialState,
-  on(customerClicked, customPageLoaded, (state, action) => ({
-    ...state,
-    selectedCustomerId: action.customerId,
-  })),
-)
+	initialState,
+	on(customerClicked, customPageLoaded, (state, action) => ({
+		...state,
+		selectedCustomerId: action.customerId
+	}))
+);
 ```
 
-We also have to create a selector `selectSelectedCustomerId` to select the `selectedCustomerId` from the state.
-Because selectors are composable, we're able to use both selectors to get the selected customer in the `selectSelectedCustomer` selector.
+We also have to create a selector `selectSelectedCustomerId` to access the selected id from the global state.
 
 ```ts:customers.selectors.ts
 export const selectSelectedCustomerId = createSelector(
@@ -151,26 +100,30 @@ export const selectSelectedCustomer = createSelector(
 );
 ```
 
-In the component, we can consume the selector in the "usual way" without having to worry about the customer's id.
+In the component, we consume the selector without having to worry about the customer's id.
+In larger components with more filters, this refactor makes the component and the selector easier to maintain.
 
 ```ts:customer.component.ts
-class CustomersComponent {
+class CustomerComponent {
   customer$ = this.store.select(customers.selectSelectedCustomer);
 }
 ```
 
-In the future when we have another filter, or when we add an action that changes the filter we don't have to worry about displaying the correct data in the component. It will just work because this selector is entirely driven by the Store's state.
+In the future when there's a change to the filters that affect the result of the selector, we don't have to worry about having to change how we invoke the selector to show the correct data in the component. It will just work because this selector is entirely driven by the Store's state.
 
-## NgRx Router Store
+## A Better Solution With NgRx Router Store
 
-Another possibility would be to use [@ngrx/router-store](https://ngrx.io/guide/router-store), this module connects the Angular router module with the NgRx global store. In other words, all the route information will be available in the store, and thus also in the selectors.
+Another possibility is to use [@ngrx/router-store](https://ngrx.io/guide/router-store). This module connects the Angular router module with the NgRx global store. In other words, all the route information will be available in the store and thus also in the [selectors](https://ngrx.io/guide/router-store/selectors).
 
-Starting from NgRx v8, the router module also exposes a [handful of useful selectors](https://ngrx.io/guide/router-store/selectors#router-selectors) to selector route state.
+To use the state of the URL, we make use of the `getSelectors` method to create all the router store selectors.
+In the example below, we then use the `selectRouteParams` selector to read the customer id from the URL, e.g. https//localhost:4200/customers/47.
 
 ```ts:customers.selectors.ts
-export const selectRouterState = createFeatureSelector<RouterReducerState>('router');
+import { createFeatureSelector } from '@ngrx/store';
+import { getSelectors, RouterReducerState } from '@ngrx/router-store';
 
-export const { selectRouteParams } = getSelectors(selectRouterState);
+const selectRouterState = createFeatureSelector<RouterReducerState>('router');
+const { selectRouteParams } = getSelectors(selectRouterState);
 
 export const selectCurrentCustomer = createSelector(
   selectCustomers,
@@ -179,37 +132,15 @@ export const selectCurrentCustomer = createSelector(
 );
 ```
 
-For older versions of NgRx, or if you want to write this manually you can do the following.
-
-After installing the `@ngrx/router-store` module and registering the `RouterModule`, we’ll first have to create a selector `selectRouteParameters` to retrieve the route parameters (`customerId` in our case). Thereafter we can use the created selector in `selectCurrentCustomer` to select the current customer. This means that when a user clicks on a link or navigates directly to `/customers/47`, she or he would see the customer’s details of customer 47. The selector looks roughly the same.
-
-```ts:customers.selectors.ts
-export const selectRouterState = createFeatureSelector<RouterReducerState>('router');
-
-export const selectRouteParameters = createSelector(
-  selectRouterState,
-  (router) => router.state.root.firstChild.params
-);
-
-export const selectCurrentCustomer = createSelector(
-  selectCustomers,
-  selectRouteParameters,
-  (customers, route) => customers[route.customerId]
-);
-```
-
-And the component remains the same (except for the selector's name):
+Nothing has changed to consume the selector.
 
 ```ts:customer.component.ts
-class CustomersComponent {
-  customer$ = this.store.select(customers.selectCurrentCustomer)
+class CustomerComponent {
+  customer$ = this.store.select(customers.selectCurrentCustomer);
 }
 ```
 
 ## That’s a wrap
 
-In my opinion the code we ended up with looks cleaner than the code we started with. I hope this was useful if you were looking for a way to parameterize your selector.
-
-## Some extra resources
-
-- [NgRx Selectors How to stop worrying about your Store structure — David East & Todd Motto @ ng-conf 2018](https://www.youtube.com/watch?v=Y4McLi9scfc) - the last part will show you an example with `@ngrx/router-store`
+In my opinion, the code we ended up doesn't only look cleaner but also is more manageable in comparison with the code we that we started with.
+An additional benefit with using `@ngrx/router-store` is that the parameters are persisted in the URL, and that you can share the URL.
