@@ -9,9 +9,9 @@
 <Head title="Tim Deschryver" />
 
 <section>
-	<a href="https://timdeschryver.dev/twitter">Twitter</a>
+	<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>
 	|
-	<a href="https://timdeschryver.dev/github">GitHub</a>
+	<a href="https://timdeschryver.dev/github" rel="external">GitHub</a>
 </section>
 
 <style>

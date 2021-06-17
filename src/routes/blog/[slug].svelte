@@ -129,18 +129,13 @@
 <Support />
 
 <div class="article-actions">
-	<a
-		class="article-action"
-		target="_blank"
-		rel="nofollow noreferrer"
-		href="https://timdeschryver.dev/support"
-	>
+	<a class="article-action" target="_blank" rel="external" href="https://timdeschryver.dev/support">
 		Support the blog
 	</a>
 	<a
 		class="article-action"
 		target="_blank"
-		rel="nofollow noreferrer"
+		rel="external"
 		href="https://twitter.com/intent/tweet?text={post.metadata.title}&via=tim_deschryver&url={post
 			.metadata.canonical}"
 	>
@@ -150,11 +145,11 @@
 		class="article-action"
 		href="https://twitter.com/search?q={post.metadata.canonical}"
 		target="_blank"
-		rel="nofollow noreferrer"
+		rel="external"
 	>
 		Discuss on Twitter
 	</a>
-	<a class="article-action" target="_blank" rel="nofollow noreferrer" href={post.metadata.edit}>
+	<a class="article-action" target="_blank" rel="external" href={post.metadata.edit}>
 		Edit on GitHub
 	</a>
 </div>

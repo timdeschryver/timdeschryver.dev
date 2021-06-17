@@ -66,7 +66,7 @@
 
 {#if segment}
 	<footer>
-		<a rel="nofollow noreferrer" href="https://twitter.com/intent/user?screen_name=tim_deschryver">
+		<a rel="external" href="https://twitter.com/intent/user?screen_name=tim_deschryver">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="32"

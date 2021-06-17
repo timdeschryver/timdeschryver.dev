@@ -69,7 +69,7 @@ export function readPosts(): {
 			const postPath = files.find((f) => f.file === 'index.md').path;
 			const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
 
-			const { html, metadata, assetsSrc } = parseFileToHtmlAndMeta(postPath, {
+			const { html, metadata } = parseFileToHtmlAndMeta(postPath, {
 				createAnchorAndFragment: (_level, _metadata, text) => {
 					const anchorRegExp = /{([^}]+)}/g;
 					const anchorOverwrite = anchorRegExp.exec(text);
@@ -161,7 +161,7 @@ export function readSnippets(): {
 						metadata.image
 							? `<a
 				target="_blank"
-				rel="noopener noreferrer"
+				rel="external"
 				href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${
 									import.meta.env.VITE_PUBLIC_BASE_PATH
 							  }/snippets/${metadata.slug}">Share</a>`
@@ -214,8 +214,7 @@ function parseFileToHtmlAndMeta(
 		const href_attr = `href="${href}"`;
 		const title_attr = title ? `title="${title}"` : '';
 		const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : '';
-		const rel_attr =
-			href.startsWith('/') || href.startsWith('#') ? `` : 'rel="nofollow noreferrer"';
+		const rel_attr = href.startsWith('/') || href.startsWith('#') ? `` : 'rel="external"';
 		const attributes = [href_attr, title_attr, prefetch_attr, rel_attr].filter(Boolean).join(' ');
 
 		return `<a ${attributes}>${text}</a>`;
