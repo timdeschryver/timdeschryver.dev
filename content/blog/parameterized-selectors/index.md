@@ -1,5 +1,5 @@
 ---
-title: Parameterized selectors
+title: Parameterized NgRx Selectors
 slug: parameterized-selectors
 description: NgRx Selectors with Props
 author: Tim Deschryver
@@ -36,6 +36,27 @@ This results that the customer with id 47 is selector from the global store stat
 class CustomerComponent {
   customer$ = this.store.select(customers.selectCustomer('47'));
 }
+```
+
+### Child Selectors with Props
+
+If you need to pass a selector to a child selector, how would you do that?
+This is actually not that hard to implement.
+Because a factory selector is simply a method, it can be invoked from a parent selector.
+
+In the example below, `selectCustomerOrders` is a factory selector that receives a customer id, and the selector invokes the factory selectors `selectCustomer` and `selectCustomerOrders` with the given customer id as parameter.
+With the results from both selectors, the selector creates a new object that consists of the customer and the customers' orders.
+
+```ts:customers.selectors.ts
+export const selectCustomerOrders = (customerId: string) =>
+	createSelector(
+		selectCustomer(customerId),
+		selectCustomerOrders(customerId),
+		(customer, orders) => ({
+			customer,
+			orders
+		})
+	);
 ```
 
 ### Memoization
