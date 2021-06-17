@@ -318,7 +318,7 @@ Not that we always must use the fastest solution out there, but I think it's goo
 
 By using a [SQL Bulk Copy](#sql-bulk-copy) in our migration, we've won many hours that would otherwise be wasted while waiting on a migration run to complete.
 
-If you know another way to insert a hundred-thousands of records in a fast way, feel free to send me a DM at [@tim_deschryver](/twitter).
+If you know another way to insert a hundred-thousands of records in a fast way, feel free to send me a DM at [@tim_deschryver](https://twitter.com/tim_deschryver).
 I'd love to hear and learn from you.
 
 Recommendations from our community:
