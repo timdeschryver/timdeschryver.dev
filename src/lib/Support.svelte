@@ -261,7 +261,7 @@
 		class="support"
 		href="https://www.buymeacoffee.com/timdeschryver"
 		target="_blank"
-		rel="nofollow noreferrer"
+		rel="external"
 	>
 		<img
 			src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
@@ -272,7 +272,7 @@
 	<a
 		class="support"
 		target="_blank"
-		rel="nofollow noreferrer"
+		rel="external"
 		href="https://www.paypal.com/donate?hosted_button_id=59M5TFPQJS8SQ"
 	>
 		<img

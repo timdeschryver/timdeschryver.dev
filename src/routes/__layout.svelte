@@ -27,7 +27,7 @@
 		<a href="/snippets" sveltekit:prefetch class:active={segment.startsWith('snippets')}>
 			Snippets
 		</a>
-		<a href="/newsletter" rel="external">Newsletter</a>
+		<a href="https://tinyletter.com/timdeschryver" rel="external">Newsletter</a>
 
 		<button aria-label="settings" class="settings-button" on:click={settingsClicked}>
 			<svg
@@ -66,7 +66,7 @@
 
 {#if segment}
 	<footer>
-		<a rel="nofollow noreferrer" href="https://twitter.com/intent/user?screen_name=tim_deschryver">
+		<a rel="external" href="https://twitter.com/intent/user?screen_name=tim_deschryver">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="32"
@@ -87,7 +87,7 @@
 				/>
 			</svg>
 		</a>
-		<a href="/newsletter">
+		<a href="https://tinyletter.com/timdeschryver" rel="external">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="48"

@@ -10,16 +10,16 @@
 	},
 	"scripts": {
 		"dev": "svelte-kit dev",
-		"prebuild": "rimraf .svelte && rimraf .vercel_build_output",
+		"prebuild": "rimraf .svelte && rimraf .vercel_build_output && npm run copy:content",
 		"build": "svelte-kit build",
-		"postbuild": "npm run copy:blog && npm run copy:snippets",
-		"start": "svelte-kit start",
-		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write .",
-		"copy:blog": "copyfiles \"content/blog/**\" .vercel_build_output/static --exclude=\"**/index.md\" --up=1",
-		"copy:snippets": "copyfiles \"content/snippets/**\" .vercel_build_output/static  --exclude=\"**/*.md\" --up=1",
-		"copy:blog:local": "copyfiles \"content/blog/**\" static --exclude=\"**/index.md\" --up=1",
-		"copy:snippets:local": "copyfiles \"content/snippets/**\" static  --exclude=\"**/*.md\" --up=1",
+		"preview": "svelte-kit preview",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"copy:content": "npm run copy:blog && npm run copy:snippets",
+		"copy:blog": "copyfiles \"content/blog/**\" static --exclude=\"**/index.md\" --up=1",
+		"copy:snippets": "copyfiles \"content/snippets/**\" static  --exclude=\"**/*.md\" --up=1",
 		"g": "node ./scripts/generate",
 		"p": "node ./scripts/devto",
 		"banners": "node ./scripts/banners.js",
@@ -55,19 +55,5 @@
 		"tslib": "^2.0.0",
 		"typescript": "^4.0.0",
 		"vite": "^2.1.0"
-	},
-	"lint-staged": {
-		"*.{js,ts,json,svelte}": [
-			"eslint --fix",
-			"git add"
-		],
-		"*.{prettier}": [
-			"prettier --write",
-			"git add"
-		],
-		"*.{jpg,jpeg,png,gif}": [
-			"npm run optimize:image",
-			"git add"
-		]
 	}
 }
