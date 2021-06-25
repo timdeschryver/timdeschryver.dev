@@ -164,6 +164,7 @@ li > a {
 button:focus,
 a:focus {
   outline: 2px solid var(--prime-color);
+  outline-offset: .25em;
 }
 
 a:hover,

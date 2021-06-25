@@ -3,7 +3,7 @@
 
 	export async function load({
 		page,
-		fetch
+		fetch,
 	}): Promise<{
 		props: {
 			post: any;
@@ -13,8 +13,8 @@
 		const { post } = await result.json();
 		return {
 			props: {
-				post
-			}
+				post,
+			},
 		};
 	}
 </script>
@@ -108,13 +108,13 @@
 <div class="side-actions" hidden={(scrollY || 0) < 1000}>
 	<a href="/blog">All posts</a>
 	{#if post.tldr}
-		<button on:click={tldrClicked}>{tldrToggle ? 'Back to post' : 'Just the code'}</button>
+		<button on:click={tldrClicked}>{tldrToggle ? 'Full Version' : 'TLDR Version'}</button>
 	{/if}
 </div>
 
 {#if post.tldr}
 	<button class="tldr" on:click={tldrClicked}>
-		👀 {tldrToggle ? 'I want to read the blog post' : 'Just show me the code already '}</button
+		👀 {tldrToggle ? 'I want to read the blog post' : 'Just show me the code already'}</button
 	>
 {/if}
 
@@ -189,6 +189,7 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
+		width: 115px;
 	}
 
 	.side-actions * {
@@ -200,6 +201,7 @@
 		border: 1px solid;
 		color: inherit;
 		background: none;
+		width: 100%;
 	}
 
 	@media screen and (max-width: 1150px) {

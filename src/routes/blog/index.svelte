@@ -7,8 +7,8 @@
 		return {
 			props: {
 				metadata,
-				tags
-			}
+				tags,
+			},
 		};
 	}
 </script>
@@ -47,7 +47,7 @@
 	$: if (query) {
 		filteredPosts = metadata.filter((p) => {
 			return queryParts.every(
-				(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q)
+				(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q),
 			);
 		});
 	} else {
@@ -118,7 +118,9 @@
 		}
 	}
 	a {
-		vertical-align: middle;
+		display: block;
+		background: none;
+		border: none;
 	}
 	h2 {
 		margin-top: 0;
