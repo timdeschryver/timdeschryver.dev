@@ -12,12 +12,22 @@ published: true
 The next project I'm setting up will use AutoFixture from the start to set up the "arrange" part of a test and here is why.
 
 When a new project is in the start-up phase all models are relatively small, simple, and do not have a lot of relations.
-This makes the tests easy to arrange and also easy to read. Because the team is mostly spending time implementing new features, there's a lot of focus on writing tests, thus for every feature, there will be one or more tests.
+This makes the tests easy to arrange and also easy to read. Because the team is mostly spending their time implementing new features, there's a lot of focus on writing new tests for these new features. For every feature, there are one or more tests that go with that feature.
 
-Throughout the lifetime of the project, these models keep on growing and new tests are becoming harder to write, and existing tests are feeling like a chore to maintain. The team is now also maintaining the existing codebase of the project, and are extending the existing behavior step by step. Because of the current state of the project, fewer tests will be written, nor will the existing tests be updated. The team will only spend time to existing tests when they're failing.
+Throughout the lifetime of the project, these models keep on growing, making it harder to write new tests, sadly
+the existing tests are starting to feel like a chore to maintain.
+
+Once the basic functionality is developed, the team is also maintaining the existing codebase and thus new features (from scratch) are less developed. Instead, the behavior of the application is extended step by step.
+These smaller changes feel to have a lower impact, resulting that fewer tests are written.
+The existing tests also receive less attention.
+
+Because of the current state of the project, a failing test only receives attention when it's failing. With every addition, things are getting worse.
+
+Because of the current state of the project, a failing test only receives attention when it's failing. With every addition, things are getting worse.
 
 At some point, arranging a test might even be the trickiest part of the test.
-Worse, when the requirements change, we might lose the confidence the tests were giving us because not all tests have been updated. The team is forced to change the application's code and the test code in one single go. When this point is reached, it's usually too late and the team wonders when things were starting to go downhill.
+Worse, when the requirements change, we might lose the confidence the tests were giving us previously because they're not kept up to date.  
+The team is forced to change the application's code and the test code in one single go. When this point is reached, it's usually too late and the team wonders when things were starting to go downhill.
 
 From my experience, a good test setup is a crucial factor that makes a test easy and fast to write (and to maintain), otherwise, a bad test setup makes the tests feel like an unpleasant chore to maintain which is a loss of time. This is caused because the tests are too much coupled to the application's codebase.
 Another point that makes unit tests hard to maintain are those tests that are testing implementation details, which is why I prefer to write [integration tests](/blog/how-to-test-your-csharp-web-api) but that's not what this blog post is about.
@@ -118,7 +128,7 @@ Besides that, the test setup alone could take up a whole lot of lines of code.
 
 Now that we've seen the problem, let's see how AutoFixture provides a solution.
 
-If you're not familiar with AutoFixture, the short version (as the name implies) is that the library automagically creates test fixture instances (known as specimens) for your objects with random test data. To be honest "random data" is not the correct term to use here, [Constrained Non-Deterministic](https://blog.ploeh.dk/2009/03/05/ConstrainedNon-Determinism/) data with [Explicit Expectations](https://blog.ploeh.dk/2009/03/11/ExplicitExpectations/) would be a much better term. You will for example notice that string properties will have the property name postfixed with a GUID as value, numbers will always be positive, or that collections will be created with 3 instances.
+If you're not familiar with AutoFixture, the short version (as the name implies) is that the library automagically creates test fixture instances (known as specimens) for your objects with random test data. To be honest "random data" is not the correct term to use here, [Constrained Non-Deterministic](https://blog.ploeh.dk/2009/03/05/ConstrainedNon-Determinism/) data with [Explicit Expectations](https://blog.ploeh.dk/2009/03/11/ExplicitExpectations/) would be a much better term. For example, you will notice that string properties have the property name postfixed with a GUID as value, that numbers are always positive, and there are always 3 items in a collection.
 
 > Values are carefully generated to stay far away from any boundary conditions that may cause the SUT to behave differently in each test run.
 
@@ -138,7 +148,7 @@ public void Should_create_a_customer()
 }
 ```
 
-This will give us the following customer's value, which will change every time the test is run.
+This gives us the following customer's value, which does change every time the test is run.
 As you can see below, all properties of the `Customer` object have a random value, even the nested `Address` and `Orders` objects.
 
 ```json
@@ -282,7 +292,7 @@ A specimen allows for a more generic approach to impact the generated data.
 For example, if we want to prefix all product SKU's, we can implement this as a specimen.
 
 To do so, create a new class and implement the `ISpecimenBuilder` interface.
-Every generated object will pass through this builder.
+Every generated object passes through this builder.
 Via reflection, we're looking for properties with the name `ProductSku`.
 If we find that property, the desired value is returned, otherwise, a new `NoSpecimen` instance is returned.
 By doing this, AutoFixtures knows if the property already has a user-defined value or if it needs to generate a value for that property.
@@ -352,9 +362,9 @@ The default generated model is perfect for quick and simple test cases, while th
 
 Since there's only a little bit of documentation that can be found in the AutoFixture repository, I really liked and learned a lot from the [blog posts](https://blog.ploeh.dk/tags/#AutoFixture-ref) written by [Mark Seemann](https://twitter.com/ploeh), who is also the creator of AutoFixture. So definitely make sure to check those out!
 
-Lastly, here are some highlights why I think you should be using AutoFixture as a test fixture builder:
+Lastly, here are some highlights of why I think you should be using AutoFixture as a test fixture builder:
 
-- tests remain clean and focused about the requirements;
+- tests remain clean and focused; the requirements are clearly visible
 - low coupling between test code and application code; application code can change without having an impact on the existing tests
 - test setup code doesn't need to be discussed, implemented, nor maintained; the defaults values of AutoFixture provide a good baseline that can be patched where needed, you also don't need to reflect on providing proper test data because constrained non-deterministic data is everything you need for your test data
 - AutoFixture's API is extensible for manual overwrites; properties can be overwritten with Customizations and SpecimenBuilders. For specific one-off tests, the object under test can be overwritten in the test

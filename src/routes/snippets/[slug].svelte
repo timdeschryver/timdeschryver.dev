@@ -8,8 +8,8 @@
 		return {
 			props: {
 				snippets,
-				snippet
-			}
+				snippet,
+			},
 		};
 	}
 </script>
@@ -22,9 +22,7 @@
 	export let snippet;
 
 	onMount(() => {
-		document.getElementById(snippet.metadata.slug).scrollIntoView({
-			behavior: 'smooth'
-		});
+		document.getElementById(snippet.metadata.slug).scrollIntoView();
 	});
 </script>
 
