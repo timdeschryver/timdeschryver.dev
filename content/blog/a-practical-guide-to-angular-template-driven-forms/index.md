@@ -53,7 +53,7 @@ In code, this looks like this.
 			<label for="text">A label</label>
 			<input type="text" id="text" name="formText" ngModel />
 		</form>
-	`
+	`,
 })
 export class AppComponent {}
 ```
@@ -146,12 +146,12 @@ Angular makes things easier for us by already parsing the value of the input con
 			<label for="number">Number</label>
 			<input type="number" id="number" name="formNumber" [(ngModel)]="model.number" />
 		</form>
-	`
+	`,
 })
 export class AppComponent {
 	model = {
 		text: null,
-		number: null
+		number: null,
 	};
 }
 ```
@@ -205,26 +205,26 @@ When the TypeScript model has an initial value or when it's reassigned a new val
 				{{ option.label }}
 			</option>
 		</select>
-	`
+	`,
 })
 export class AppComponent {
 	model = {
-		select: null
+		select: null,
 	};
 
 	options = [
 		{
 			value: 1,
-			label: 'Option One'
+			label: 'Option One',
 		},
 		{
 			value: 2,
-			label: 'Option Two'
+			label: 'Option Two',
 		},
 		{
 			value: 3,
-			label: 'Option Three'
-		}
+			label: 'Option Three',
+		},
 	];
 }
 ```
@@ -275,7 +275,7 @@ All checkbox elements within the same group must have unique names, otherwise, a
 			/>
 			<label [for]="'formCheckbox-' + check.id">{{ check.label }}</label>
 		</div>
-	`
+	`,
 })
 export class AppComponent {
 	model = {
@@ -283,19 +283,19 @@ export class AppComponent {
 			{
 				id: 'check-one',
 				label: 'Check One',
-				selected: false
+				selected: false,
 			},
 			{
 				id: 'check-two',
 				label: 'Check Two',
-				selected: false
+				selected: false,
 			},
 			{
 				id: 'check-three',
 				label: 'Check Three',
-				selected: false
-			}
-		]
+				selected: false,
+			},
+		],
 	};
 }
 ```
@@ -482,11 +482,11 @@ A radio group is similar to a checkbox list. The difference is that in contrast 
 			/>
 			<label for="radio-3">Radio Three</label>
 		</div>
-	`
+	`,
 })
 export class AppComponent {
 	model = {
-		radio: null
+		radio: null,
 	};
 }
 ```
@@ -779,7 +779,7 @@ function equalTo(value: any): ValidatorFn {
 	return (control: AbstractControl): ValidationErrors | null => {
 		if (control.value !== value) {
 			return {
-				equalTo: value
+				equalTo: value,
 			};
 		}
 
@@ -793,9 +793,9 @@ function equalTo(value: any): ValidatorFn {
 		{
 			provide: NG_VALIDATORS,
 			useExisting: EqualToValidatorDirective,
-			multi: true
-		}
-	]
+			multi: true,
+		},
+	],
 })
 export class EqualToValidatorDirective implements Validator {
 	private _equalTo: any;
@@ -903,8 +903,8 @@ it('is valid when it has the same value as the comparison value', async () => {
 		template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
 		imports: [FormsModule],
 		componentProperties: {
-			compareValue: 'value1'
-		}
+			compareValue: 'value1',
+		},
 	});
 
 	const model = component.fixture.debugElement.children[0].injector.get(NgForm);
@@ -913,7 +913,7 @@ it('is valid when it has the same value as the comparison value', async () => {
 	userEvent.type(input, 'value2');
 	expect(model.controls.sut.invalid).toBeTruthy();
 	expect(model.controls.sut.errors).toEqual({
-		equalTo: 'value1'
+		equalTo: 'value1',
 	});
 
 	userEvent.clear(input);
@@ -927,8 +927,8 @@ it('revalidates on input change', async () => {
 		template: `<form><input [equalTo]='compareValue' ngModel name="sut" /></form>`,
 		imports: [FormsModule],
 		componentProperties: {
-			compareValue: 'value1'
-		}
+			compareValue: 'value1',
+		},
 	});
 
 	const model = component.fixture.debugElement.children[0].injector.get(NgForm);
@@ -937,7 +937,7 @@ it('revalidates on input change', async () => {
 	userEvent.type(input, 'value2');
 	expect(model.controls.sut.invalid).toBeTruthy();
 	expect(model.controls.sut.errors).toEqual({
-		equalTo: 'value1'
+		equalTo: 'value1',
 	});
 
 	component.fixture.componentInstance.compareValue = 'value2';
@@ -969,9 +969,9 @@ The same states are also available on form groups (`NgModelGroup`) and forms (`N
 #### CSS Classes
 
 All control states have an equivalent CSS class.
-To obtain the class of a state, simply prepend the state with `ng-`.
+To obtain the class of a state, simply prepend the state of the control with `ng-`.
 
-This results in the following class names, `.ng-valid`, `.ng-invalid`, `.ng-pending`, `.ng-pristine`, `.ng-dirty`, `.ng-untouched` and `.ng-touched`. Sadly, there is no `.ng-submitted` class when a form has been submitted.
+This results in the following class names, `.ng-valid`, `.ng-invalid`, `.ng-pending`, `.ng-pristine`, `.ng-dirty`, `.ng-untouched` and `.ng-touched`. The release of Angular v12.1 introduced the `.ng-submitted` class, which is added to the form after a form submission.
 
 These class names can be used to style the control field of our forms.
 For example, to change the border color to red when an invalid control is touched by the user, we can use the following styles.
