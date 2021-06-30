@@ -56,10 +56,6 @@
   );
 }
 
-[data-schema="dark"] main > *:not(pre) {
-  color: var(--fg-color);
-  mix-blend-mode: difference;
-} 
 
 @media (min-width: 1220px) {
   :root {
