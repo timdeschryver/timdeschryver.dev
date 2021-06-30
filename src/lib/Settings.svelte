@@ -33,7 +33,7 @@
 </script>
 
 <div class="settings">
-	<label for="bg">Background color</label>
+	<label for="bg">Background</label>
 	<input id="bg" type="color" bind:value={colorBg} />
 
 	<label for="theme">Theme</label>
@@ -64,7 +64,7 @@
 		width: 100%;
 		max-width: 80ch;
 		display: grid;
-		grid-template-columns: 1fr 3fr;
+		grid-template-columns: 1fr 2fr;
 		grid-template-rows: repeat(3, 1fr);
 		align-items: center;
 		padding: 1em 0;

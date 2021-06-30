@@ -131,7 +131,7 @@
 		border-bottom: 2px solid transparent;
 		border-right: 3px solid transparent;
 		animation: slide-top 0.3s both;
-		animation-delay: calc(var(--i) * 0.05s);
+		animation-delay: calc(var(--i) * 0.03s);
 	}
 	@keyframes slide-top {
 		from {

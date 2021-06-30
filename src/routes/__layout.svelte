@@ -161,6 +161,7 @@
 	nav {
 		margin-top: 0.2em;
 		position: relative;
+		font-size: 1rem;
 	}
 
 	nav > a:not(:last-child) {
@@ -176,14 +177,8 @@
 	}
 
 	@media (max-width: 520px) {
-		h2 {
-			font-size: 1.4rem;
-		}
-		nav {
-			font-size: 0.7rem;
-		}
 		nav > a:not(:last-child) {
-			margin-right: 0.1em;
+			margin-right: 0.2em;
 		}
 	}
 	header {

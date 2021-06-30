@@ -20,7 +20,7 @@
 </script>
 
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
@@ -50,6 +50,12 @@
 				.filter((_, i) => i <= 3)
 				.join(''),
 		);
+	});
+
+	onDestroy(() => {
+		if (typeof document !== 'undefined') {
+			document.documentElement.style.setProperty('--hue', '47');
+		}
 	});
 
 	$: if (tldrToggle !== undefined) {
@@ -201,7 +207,6 @@
 		left: 20px;
 		width: 125px;
 	}
-
 	.side-actions * {
 		padding: 4px;
 		font-size: 0.8rem;
@@ -213,6 +218,12 @@
 		background: none;
 		width: 100%;
 		cursor: pointer;
+	}
+
+	@media (max-width: 1300px) {
+		.side-actions {
+			width: 110px;
+		}
 	}
 
 	@media screen and (max-width: 1150px) {
