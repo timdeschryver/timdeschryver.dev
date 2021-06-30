@@ -40,6 +40,16 @@
 				window.scrollTo({ top: document.querySelector('header').clientHeight });
 			});
 		}
+
+		document.documentElement.style.setProperty(
+			'--hue',
+			window
+				.btoa(post.metadata.slug)
+				.split('')
+				.filter((l) => Number(l) >= 0)
+				.filter((_, i) => i <= 3)
+				.join(''),
+		);
 	});
 
 	$: if (tldrToggle !== undefined) {
@@ -156,12 +166,12 @@
 
 <style>
 	.article-action {
+		color: var(--accent-color);
 		background: none;
 		margin: 0;
 		cursor: pointer;
 		text-decoration: none;
 		text-transform: uppercase;
-		color: var(--prime-color);
 		font-size: 0.75rem;
 		line-height: 2.5;
 		border: none;
@@ -189,7 +199,7 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		width: 115px;
+		width: 125px;
 	}
 
 	.side-actions * {
@@ -202,6 +212,7 @@
 		color: inherit;
 		background: none;
 		width: 100%;
+		cursor: pointer;
 	}
 
 	@media screen and (max-width: 1150px) {

@@ -44,7 +44,7 @@
 									a,
 									function (t) {
 										return e[t];
-									}.bind(null, a)
+									}.bind(null, a),
 								);
 						return o;
 					}),
@@ -69,27 +69,27 @@
 					var o = document.querySelector('script[data-name="BMC-Widget"]');
 					new FontFace(
 						'Avenir Book1',
-						'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/710789a0-1557-48a1-8cec-03d52d663d74.eot)'
+						'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/710789a0-1557-48a1-8cec-03d52d663d74.eot)',
 					),
 						new FontFace(
 							'Avenir Book2',
-							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/710789a0-1557-48a1-8cec-03d52d663d74.eot)'
+							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/710789a0-1557-48a1-8cec-03d52d663d74.eot)',
 						),
 						new FontFace(
 							'Avenir Book3',
-							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/710789a0-1557-48a1-8cec-03d52d663d74.eot)'
+							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/710789a0-1557-48a1-8cec-03d52d663d74.eot)',
 						),
 						new FontFace(
 							'Avenir Book4',
-							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/65d75eb0-2601-4da5-a9a4-9ee67a470a59.woff)'
+							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/65d75eb0-2601-4da5-a9a4-9ee67a470a59.woff)',
 						),
 						new FontFace(
 							'Avenir Book5',
-							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/65d75eb0-2601-4da5-a9a4-9ee67a470a59.woff)'
+							'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/65d75eb0-2601-4da5-a9a4-9ee67a470a59.woff)',
 						);
 					new FontFace(
 						'Avenir Book6',
-						'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/65d75eb0-2601-4da5-a9a4-9ee67a470a59.woff)'
+						'url(https://bmc-cdn.nyc3.digitaloceanspaces.com/Fonts/65d75eb0-2601-4da5-a9a4-9ee67a470a59.woff)',
 					)
 						.load()
 						.then(function (e) {
@@ -218,7 +218,7 @@
 								(e.innerHTML =
 									'<img src="https://cdn.buymeacoffee.com/widget/assets/coffee%20cup.svg" alt="Buy Me A Coffee" style="height: 40px; width: 40px; margin: 0; padding: 0;">');
 						});
-				}
+				},
 			]);
 		}
 
@@ -263,11 +263,7 @@
 		target="_blank"
 		rel="external"
 	>
-		<img
-			src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-			alt="Buy Me A Coffee"
-			style="width: 217px !important;"
-		/>
+		<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
 	</a>
 	<a
 		class="support"
@@ -295,5 +291,6 @@
 		display: inline-block;
 		vertical-align: middle;
 		margin-right: 1em;
+		margin-top: 0;
 	}
 </style>

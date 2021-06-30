@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 published: true
 ---
 
-For most of our Cypress tests, we have a [seed for each test](/blog/reseed-your-database-with-cypress).a
+For most of our Cypress tests, we have a [seed for each test](/blog/reseed-your-database-with-cypress).
 However, this might lead to a lot of different data seeds, which can become an unmaintainable spaghetti bowl. Especially for large data objects that have one or more child relations.
 
 As a solution, we can patch the incoming HTTP response by using the [intercept](https://docs.cypress.io/api/commands/intercept) and [reply](https://docs.cypress.io/api/commands/intercept#Providing-a-stub-response-with-req-reply) methods of Cypress.

@@ -261,7 +261,7 @@ public class NoOrdersCustomization : ICustomization
 
 Next, we can use `NoOrdersCustomization` to customize the fixture by replacing the inline customization with the new `NoOrdersCustomization` class.
 
-```cs:NoOrdersDataAttribute.cs{3}
+```cs{3}:NoOrdersDataAttribute.cs
 public class NoOrdersDataAttribute : AutoDataAttribute
 {
     public NoOrdersDataAttribute() : base(() => new Fixture().Customize(new NoOrdersCustomization())){ }
