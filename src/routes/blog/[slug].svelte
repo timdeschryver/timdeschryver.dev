@@ -20,7 +20,7 @@
 </script>
 
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
@@ -39,6 +39,22 @@
 			requestAnimationFrame(() => {
 				window.scrollTo({ top: document.querySelector('header').clientHeight });
 			});
+		}
+
+		document.documentElement.style.setProperty(
+			'--hue',
+			window
+				.btoa(post.metadata.slug)
+				.split('')
+				.filter((l) => Number(l) >= 0)
+				.filter((_, i) => i <= 3)
+				.join(''),
+		);
+	});
+
+	onDestroy(() => {
+		if (typeof document !== 'undefined') {
+			document.documentElement.style.setProperty('--hue', '47');
 		}
 	});
 
@@ -156,12 +172,12 @@
 
 <style>
 	.article-action {
+		color: var(--accent-color);
 		background: none;
 		margin: 0;
 		cursor: pointer;
 		text-decoration: none;
 		text-transform: uppercase;
-		color: var(--prime-color);
 		font-size: 0.75rem;
 		line-height: 2.5;
 		border: none;
@@ -189,9 +205,8 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		width: 115px;
+		width: 125px;
 	}
-
 	.side-actions * {
 		padding: 4px;
 		font-size: 0.8rem;
@@ -202,6 +217,13 @@
 		color: inherit;
 		background: none;
 		width: 100%;
+		cursor: pointer;
+	}
+
+	@media (max-width: 1300px) {
+		.side-actions {
+			width: 110px;
+		}
 	}
 
 	@media screen and (max-width: 1150px) {

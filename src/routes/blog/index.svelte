@@ -131,7 +131,7 @@
 		border-bottom: 2px solid transparent;
 		border-right: 3px solid transparent;
 		animation: slide-top 0.3s both;
-		animation-delay: calc(var(--i) * 0.05s);
+		animation-delay: calc(var(--i) * 0.03s);
 	}
 	@keyframes slide-top {
 		from {
@@ -149,14 +149,20 @@
 		border: 1px solid;
 	}
 	button {
-		background: var(--prime-color);
+		background-color: transparent;
 		border: none;
 		padding: 0.2em 0.5em;
-		margin: 0.3em;
-		opacity: 0.7;
+		margin: 0.3em 0.6em 0.3em 0;
+		opacity: 0.8;
 		border-radius: 2px;
 		transition: opacity 300ms;
 		cursor: pointer;
 		font-size: 0.65rem;
+		border: 1px solid transparent;
+	}
+
+	button.active {
+		border-color: currentColor;
+		opacity: 1;
 	}
 </style>

@@ -4,10 +4,7 @@
 
 code[class*="language-"],
 pre[class*="language-"] {
-  font-family: "Cascadia", Consolas, Menlo, Monaco, "Andale Mono WT",
-    "Andale Mono", "Lucida Console", "Lucida Sans Typewriter",
-    "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono",
-    "Nimbus Mono L", "Courier New", Courier, monospace;
+  font-family: "Dank Mono", "Operator Mono Lig", "Operator Mono Lig", "Fira Code", "Cascadia Mono", "JetBrains Mono", "Victor Mono", Consolas, monospace;
   line-height: 1.375;
   direction: ltr;
   text-align: left;
@@ -55,7 +52,7 @@ code[class*="language-"] {
 
 pre[class*="language-"] .line-highlight {
   background: rgba(0, 0, 0, 0.3);
-  border-left: 0.3em solid var(--prime-color);
+  border-left: 0.3em solid var(--accent-color);
   display: block;
   margin: 0px -1em;
   padding: 0px 0.7em;
@@ -104,100 +101,6 @@ pre[class*="language-"] > .code-heading > a {
 
 .token.entity {
   cursor: help;
-}
-
-/* Custom  */
-
-[data-theme="custom"] pre[class*="language-"] {
-  background: #333;
-  color: rgba(143, 188, 187, 1);
-}
-
-[data-theme="custom"] .token.comment,
-[data-theme="custom"] .token.prolog,
-[data-theme="custom"] .token.doctype,
-[data-theme="custom"] .token.cdata {
-  opacity: 0.7;
-}
-
-[data-theme="custom"] .token.punctuation {
-  opacity: 0.8;
-}
-
-[data-theme="custom"] .token.namespace {
-  opacity: 0.9;
-}
-
-[data-theme="custom"] .token.tag,
-[data-theme="custom"] .token.operator,
-[data-theme="custom"] .token.number,
-[data-theme="custom"] .token.function {
-  color: var(--prime-color);
-}
-
-[data-theme="custom"] .token.property,
-[data-theme="custom"] .token.parameter,
-[data-theme="custom"] .token.attr-value {
-  color: rgba(143, 188, 187, 1);
-}
-
-[data-theme="custom"] .token.tag-id,
-[data-theme="custom"] .token.selector,
-[data-theme="custom"] .token.atrule-id {
-  color: #eeebff;
-}
-
-[data-theme="custom"] code.language-javascript,
-[data-theme="custom"] .token.attr-name {
-  color: var(--prime-color);
-}
-
-[data-theme="custom"] code.language-css,
-[data-theme="custom"] code.language-scss,
-[data-theme="custom"] .token.boolean,
-[data-theme="custom"] .token.string,
-[data-theme="custom"] .token.entity,
-[data-theme="custom"] .token.url,
-[data-theme="custom"] .language-css .token.string,
-[data-theme="custom"] .language-scss .token.string,
-[data-theme="custom"] .style .token.string,
-[data-theme="custom"] .token.keyword,
-[data-theme="custom"] .token.control,
-[data-theme="custom"] .token.directive,
-[data-theme="custom"] .token.unit,
-[data-theme="custom"] .token.statement,
-[data-theme="custom"] .token.regex,
-[data-theme="custom"] .token.atrule {
-  color: var(--prime-color);
-}
-
-[data-theme="custom"] .token.placeholder,
-[data-theme="custom"] .token.variable {
-  color: var(--prime-color);
-}
-
-[data-theme="custom"] .token.deleted {
-  color: rgba(255, 121, 198, 1);
-  background: rgba(255, 121, 198, 0.1);
-}
-
-[data-theme="custom"] .token.inserted {
-  color: rgba(80, 250, 123, 1);
-  background: rgba(80, 250, 123, 0.1);
-}
-
-[data-theme="custom"] pre[class*="language-"] {
-  border: 1px solid var(--prime-color);
-}
-
-[data-theme="custom"] code[class*="language-"] {
-  background: var(--prime-color-01);
-}
-
-[data-theme="custom"] pre[class*="language-"] > .code-heading {
-  border-bottom: 2px solid;
-  background: var(--prime-color-01);
-  color: var(--prime-color);
 }
 
 /* Nord  */

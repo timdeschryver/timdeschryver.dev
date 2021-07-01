@@ -10,7 +10,7 @@
 	afterUpdate(() => {
 		if (typeof gtag === 'function' && variables) {
 			gtag('config', variables.gtag_id, {
-				page_path: window.location.pathname
+				page_path: window.location.pathname,
 			});
 		}
 	});
@@ -28,7 +28,6 @@
 			Snippets
 		</a>
 		<a href="https://tinyletter.com/timdeschryver" rel="external">Newsletter</a>
-
 		<button aria-label="settings" class="settings-button" on:click={settingsClicked}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -162,35 +161,27 @@
 	nav {
 		margin-top: 0.2em;
 		position: relative;
-	}
-
-	nav > a {
-		padding: 0.3em 0.7em;
+		font-size: 1rem;
 	}
 
 	nav > a:not(:last-child) {
 		margin-right: 0.5em;
 	}
 
-	nav a:hover,
-	nav a:focus {
-		filter: none;
+	nav > a.active {
+		text-decoration: revert;
+	}
+
+	.settings-button svg {
+		fill: currentColor;
 	}
 
 	@media (max-width: 520px) {
-		h2 {
-			font-size: 1.4rem;
-		}
-		nav {
-			font-size: 0.7rem;
-		}
 		nav > a:not(:last-child) {
-			margin-right: 0.1em;
+			margin-right: 0.2em;
 		}
 	}
 	header {
-		background-color: rgba(248, 196, 0, 1);
-		color: black;
 		padding: 0.77em 0;
 	}
 	footer {
@@ -198,14 +189,7 @@
 	}
 	footer > a {
 		margin-top: 0;
-		color: var(--prime-color);
 		margin: 0.7em 0.4em;
-	}
-	/* https://neumorphism.io/#f8c400 */
-	.active {
-		border-radius: 10px;
-		background: #f8c400;
-		box-shadow: 6px 6px 11px #d3a700, -6px -6px 11px #ffe100;
 	}
 	.settings-button {
 		position: absolute;
@@ -219,7 +203,7 @@
 	}
 	.settings-container {
 		margin-top: 0;
-		background-color: rgba(255, 255, 255, 0.3);
+		background-color: rgba(255, 255, 255, 0.1);
 	}
 	.bg-color-fill {
 		fill: var(--background-color);
