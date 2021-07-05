@@ -31,16 +31,6 @@
 	let scrollY;
 
 	onMount(() => {
-		tldrToggle =
-			$page.query.get('tldr') !== null ||
-			new URLSearchParams(window.location.search).get('tldr') !== null;
-
-		if (!window.location.hash) {
-			requestAnimationFrame(() => {
-				window.scrollTo({ top: document.querySelector('header').clientHeight });
-			});
-		}
-
 		document.documentElement.style.setProperty(
 			'--hue',
 			window
@@ -50,6 +40,16 @@
 				.filter((_, i) => i <= 3)
 				.join(''),
 		);
+
+		tldrToggle =
+			$page.query.get('tldr') !== null ||
+			new URLSearchParams(window.location.search).get('tldr') !== null;
+
+		if (!window.location.hash) {
+			requestAnimationFrame(() => {
+				window.scrollTo({ top: document.querySelector('header').clientHeight });
+			});
+		}
 	});
 
 	onDestroy(() => {

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { createHash } from 'crypto';
 import marked from 'marked/lib/marked.js';
 import highlightCode from 'gatsby-remark-prismjs/highlight-code.js';
 import 'prismjs/components/prism-bash.js';
@@ -32,7 +33,7 @@ const langs = {
 	diff: 'diff',
 	cs: 'csharp',
 	sql: 'sql',
-	svelte: 'svelte'
+	svelte: 'svelte',
 };
 
 export const posts = readPosts();
@@ -78,7 +79,7 @@ export function readPosts(): {
 						: slugify(text);
 
 					return { anchor: `#${fragment}`, fragment };
-				}
+				},
 			});
 			const { html: tldr } = tldrPath
 				? parseFileToHtmlAndMeta(tldrPath, {
@@ -90,7 +91,7 @@ export function readPosts(): {
 								: slugify(text);
 
 							return { anchor: `#${fragment}`, fragment };
-						}
+						},
 				  })
 				: { html: null };
 
@@ -102,7 +103,7 @@ export function readPosts(): {
 				.map((p) => (p ? p.trim().charAt(0).toUpperCase() + p.trim().slice(1) : p));
 			const banner = path
 				.normalize(
-					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner)
+					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner),
 				)
 				.replace(/\\/g, '/')
 				.replace('/', '//');
@@ -124,8 +125,8 @@ export function readPosts(): {
 					tags,
 					banner,
 					canonical,
-					edit
-				}
+					edit,
+				},
 			};
 		})
 		.sort(sortByDate);
@@ -152,7 +153,7 @@ export function readSnippets(): {
 					level == 2
 						? {
 								anchor: `snippets/${metadata.slug}`,
-								fragment: metadata.slug
+								fragment: metadata.slug,
 						  }
 						: {},
 				createHeadingParts: (metadata) => {
@@ -165,9 +166,9 @@ export function readSnippets(): {
 				href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${
 									import.meta.env.VITE_PUBLIC_BASE_PATH
 							  }/snippets/${metadata.slug}">Share</a>`
-							: ''
+							: '',
 					];
-				}
+				},
 			});
 			const tags = metadata.tags.split(',').map((p) => (p ? p.trim() : p));
 			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image}`;
@@ -180,8 +181,8 @@ export function readSnippets(): {
 					date: ISODate(metadata.date),
 					tags,
 					image,
-					url
-				}
+					url,
+				},
 			};
 		})
 		.sort(sortByDate);
@@ -193,8 +194,8 @@ function parseFileToHtmlAndMeta(
 		createAnchorAndFragment = () => {
 			// noop
 		},
-		createHeadingParts = () => []
-	}: any
+		createHeadingParts = () => [],
+	}: any,
 ): any {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
@@ -265,9 +266,11 @@ function parseFileToHtmlAndMeta(
 			});
 		}
 
+		const id = createHash('md5').update(source).digest('hex');
+
 		if (!prismLanguage) {
 			console.warn('did not found a language for: ' + language);
-			return `<pre class='language-text' aria-hidden="true" tabindex="-1"><code>${source}</code></pre>`;
+			return `<pre id="${id}" class='language-text' aria-hidden="true" tabindex="-1"><code>${source}</code></pre>`;
 		}
 
 		const highlightedLines = highlightCode(prismLanguage, source, {}, linesHighlight);
@@ -280,12 +283,12 @@ function parseFileToHtmlAndMeta(
 		const codeBlock = `<code>${highlighted}</code>`;
 		const headingParts = [
 			file ? `<span class="file">${file}</span>` : undefined,
-			...createHeadingParts(metadata)
+			...createHeadingParts(metadata),
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' • ')}</div>`
 			: '';
-		return `<pre class='language-${prismLanguage}' aria-hidden="true" tabindex="-1">${heading}${codeBlock}</pre>`;
+		return `<pre id="${id}" class='language-${prismLanguage}' aria-hidden="true" tabindex="-1">${heading}${codeBlock}</pre>`;
 	};
 
 	renderer.codespan = (source) => {
@@ -308,7 +311,7 @@ function parseFileToHtmlAndMeta(
 
 	const html = marked(
 		content.replace(/^\t+/gm, (match) => match.split('\t').join('  ')),
-		{ renderer }
+		{ renderer },
 	);
 
 	return { html, metadata, assetsSrc };
@@ -316,7 +319,7 @@ function parseFileToHtmlAndMeta(
 
 export function* traverseFolder(
 	folder: string,
-	extension = '.md'
+	extension = '.md',
 ): Generator<{ folder: string; file: string; path: string }> {
 	const folders = fs.readdirSync(folder, { withFileTypes: true }) as fs.Dirent[];
 	for (const folderEntry of folders) {
