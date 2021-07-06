@@ -240,6 +240,7 @@ ul > li:before {
 	left: 0;
 	height: 8px;
 	width: 8px;
+	background: var(--accent-color);
 }
 
 img {
