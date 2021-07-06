@@ -1,6 +1,6 @@
 .svelte-kit/**
 .vercel_build_output/**
-static/**
+static/**/*.md
 build/**
 node_modules/**
 package-lock.json
