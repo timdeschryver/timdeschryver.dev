@@ -696,7 +696,7 @@ To use the `RequiredCheckboxGroupValidatorDirective` validator, we can now appen
 </div>
 ```
 
-In Displaying Validation Errors (needs to be written), we'll see how we can transform this object into human-friendly messages.
+In [Displaying Validation Errors](#displaying-validation-errors), we'll see how we can transform this object into human-friendly messages.
 
 > You can also create a [generic validator directive](/blog/a-generic-angular-template-driven-validator) to validate most of your logic without the required setup.
 

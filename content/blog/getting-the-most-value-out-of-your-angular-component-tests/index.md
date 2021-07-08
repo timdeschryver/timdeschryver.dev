@@ -88,7 +88,7 @@ it('renders the entities', async () => {
 })
 ```
 
-We see that because of how the component test was previously written, there are no big changes to the modified test. The only part that is affected, is the test setup. **The test doesn't contain the internal details of the component, therefore it's easier to refactor the component without having to worry to go back to the tests.**
+We see that because of how the component test was previously written, there are no big changes to the modified test. The only part that is affected, is the test setup. **The test doesn't contain the internal details of the component, therefore it's easier to refactor the component without having to worry to go back to the test.**
 
 If you're comfortable with the Angular `TestBed`, the added configuration of `render` (the second argument) must feel familiar. That's because `render` is a simple wrapper around the `TestBed` and the API is kept identical, with some smart defaults.
 
@@ -227,10 +227,15 @@ it('renders the table', async () => {
 });
 ```
 
-The last addition which we'll make to the component are two buttons, one to create a new entity, and the second button to edit an existing entity.
+In the last addition to the component, we're adding two buttons.
+One button to create a new entity, and the second button to edit an existing entity.
+Both actions result that a modal will be opened.
+Because we're testing the entities component we don't care about the modal's implementation, that's why the modal is mocked in the test case.
+The modal will be tested separately.
+
 The test below asserts that the modal service is invoked when a user clicks on these buttons.
 
-```ts{5,6,8,56-59,61-71}
+```ts{5,6,8,56-59,61-72}
 import {
     render,
     screen,
@@ -299,6 +304,7 @@ it('renders the table', async () => {
             name: /edit/i,
         }),
     );
+    // to have an example, let's say that there's a delay before the modal is opened
     waitFor(() =>
         expect(modalMock.open).toHaveBeenCalledWith('edit entity', 'Entity 2')
     );
@@ -320,7 +326,7 @@ The `within` method is used because there's an edit button for every row in the 
 With `within` we can specify which edit button we want to click, in the test above it's the edit button that corresponds with "Entity 2".
 
 The second method `waitFor`, is used to wait until the assertion inside its callback is successful.
-In this example, the component adds a delay between the edit button click event before opening the modal.
+In this example, the component uses a delay between the edit button click event before opening the modal (just to have an example where `waitFor` can be used).
 With `waitFor` we can wait till that happens.
 
 ## Bonus examples
