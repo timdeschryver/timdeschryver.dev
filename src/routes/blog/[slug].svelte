@@ -30,7 +30,17 @@
 	let tldrToggle;
 	let scrollY;
 
+	let headings: HTMLElement[] = [];
+	let pres: HTMLElement[] = [];
+
 	onMount(() => {
+		headings = window.history.pushState
+			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
+			: [];
+		pres = [...(document.querySelectorAll('pre') as any)];
+
+		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
+
 		document.documentElement.style.setProperty(
 			'--hue',
 			window
@@ -55,6 +65,7 @@
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
 			document.documentElement.style.setProperty('--hue', '47');
+			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
 		}
 	});
 
@@ -71,6 +82,24 @@
 
 	function tldrClicked() {
 		tldrToggle = !tldrToggle;
+	}
+
+	let lastHeading;
+	$: {
+		if (typeof window !== 'undefined') {
+			const heading = headings.find((h) => h.offsetTop <= scrollY);
+			if (lastHeading !== heading) {
+				lastHeading = heading;
+				window.history.pushState(null, null, heading ? `#${heading?.id}` : ' ');
+			}
+		}
+	}
+
+	function copyOnClick(e: PointerEvent) {
+		if (e.ctrlKey && navigator.clipboard && navigator.clipboard.writeText) {
+			const { origin, pathname } = window.location;
+			navigator.clipboard.writeText(`${origin}${pathname}#${(e.currentTarget as HTMLElement).id}`);
+		}
 	}
 </script>
 
