@@ -281,6 +281,10 @@ main > h2,
 main > h3,
 main > h4 {
 	filter: drop-shadow(0.05em 0.05em var(--accent-color-03));
+}
+
+main > h2,
+main > h3 {
 	text-transform: uppercase;
 }
 

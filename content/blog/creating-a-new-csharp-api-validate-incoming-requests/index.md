@@ -4,7 +4,7 @@ slug: creating-a-new-csharp-api-validate-incoming-requests
 description: Clean validation with MediatR, FluentValidation and the Problem Detail specification
 author: Tim Deschryver
 date: 2021-01-22
-tags: dotnet, csharp, architecture
+tags: dotnet, csharp, architecture, api
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Davies Designs Studio](https://unsplash.com/@davies_designs) on [Unsplash](https://unsplash.com)
 published: true

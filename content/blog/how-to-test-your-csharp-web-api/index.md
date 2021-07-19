@@ -39,11 +39,11 @@ With the factory, we can create a `HttpClient` which is used in the tests to mak
 ```cs
 public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory<Api.Startup>>
 {
-    public HttpClient Client { get; }
+    readonly HttpClient _client;
 
     public WeatherForecastControllerTests(WebApplicationFactory<Api.Startup> fixture)
     {
-        Client = fixture.CreateClient();
+        _client = fixture.CreateClient();
     }
 }
 ```
@@ -56,7 +56,7 @@ Using the `HttpClient` we can make a GET request and assert the response the API
 ```cs{10-18}
 public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory<Api.Startup>>
 {
-    readonly HttpClient _client { get; }
+    readonly HttpClient _client;
 
     public WeatherForecastControllerTests(WebApplicationFactory<Api.Startup> fixture)
     {
@@ -64,7 +64,7 @@ public class WeatherForecastControllerTests: IClassFixture<WebApplicationFactory
     }
 
     [Fact]
-    public async Task Get_Should_Retrieve_Forecast()
+    public async Task GET_retrieves_weather_forecast()
     {
         var response = await _client.GetAsync("/weatherforecast");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -195,7 +195,7 @@ public class WeatherForecastControllerTests: Fixtures.IntegrationTest
       : base(fixture) {}
 
     [Fact]
-    public async Task Get_Should_Return_Forecast()
+    public async Task GET_retrieves_weather_forecast()
     {
         var response = await _client.GetAsync("/weatherforecast");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -221,7 +221,7 @@ In the code below we use the `InvalidWeatherForecastConfigStub` class to fake an
 
 ```cs{4-11}
 [Fact]
-public async Task Get_Should_ResultInABadRequest_When_ConfigIsInvalid()
+public async Task GET_with_invalid_config_results_in_a_bad_request()
 {
     var client = _factory.WithWebHostBuilder(builder =>
     {
@@ -249,7 +249,7 @@ This tip only applies to simple requests and is a quick way to verify that these
 [InlineData("/endoint1")]
 [InlineData("/endoint2/details")]
 [InlineData("/endoint3?amount=10&page=1")]
-public async Task Smoketest_Should_ResultInOK(string endpoint)
+public async Task Smoketest_endpoint_with_different_params_are_OK(string endpoint)
 {
     var response = await _client.GetAsync(endpoint);
     response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -285,7 +285,7 @@ public class WeatherForecastControllerTests: Fixtures.IntegrationTest
       : base(fixture) {}
 
     [Fact]
-    public async Task Get_Should_Return_Forecast()
+    public async Task GET_retrieves_weather_forecast()
     {
         var forecast = await _client.GetAndDeserialize("/weatherforecast");
         forecast.Should().HaveCount(7);
