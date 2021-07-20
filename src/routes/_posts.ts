@@ -16,8 +16,8 @@ import 'prismjs/components/prism-sql.js';
 
 import { ISODate } from '$lib/formatters';
 
-const blogPath = './content/blog';
-const snippetsPath = './content/snippets';
+const blogPath = 'content/blog';
+const snippetsPath = 'content/snippets';
 const langs = {
 	bash: 'bash',
 	sh: 'bash',
