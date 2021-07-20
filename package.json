@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"dev": "svelte-kit dev",
-		"prebuild": "rimraf .svelte && rimraf .vercel_build_output && npm run copy:content",
+		"prebuild": "rimraf .svelte-kit && rimraf .vercel_build_output && npm run copy:content",
 		"build": "svelte-kit build",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -54,6 +54,6 @@
 		"svelte-preprocess": "^4.0.0",
 		"tslib": "^2.0.0",
 		"typescript": "^4.0.0",
-		"vite": "^2.1.0"
+		"vite": "2.3.7"
 	}
 }
