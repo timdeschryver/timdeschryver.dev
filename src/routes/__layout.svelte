@@ -161,7 +161,7 @@
 	nav {
 		margin-top: 0.2em;
 		position: relative;
-		font-size: 1rem;
+		font-size: 0.8rem;
 	}
 
 	nav > a:not(:last-child) {

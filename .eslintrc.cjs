@@ -11,6 +11,9 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 'off',
 	},
+	globals: {
+		gtag: true,
+	},
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2019,

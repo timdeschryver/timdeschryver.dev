@@ -105,7 +105,7 @@
 	time {
 		position: absolute;
 		left: -15em;
-		top: 0;
+		top: 2px;
 		font-size: 0.5rem;
 		opacity: 0.7;
 		letter-spacing: 0.1em;
@@ -124,7 +124,7 @@
 	}
 	h2 {
 		margin-top: 0;
-		font-size: 0.9em;
+		font-size: 1rem;
 	}
 	li {
 		padding: 0.5em 0;
