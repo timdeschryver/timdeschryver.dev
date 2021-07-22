@@ -154,3 +154,12 @@ public class Startup
 ```
 
 ![Only a successful request is cached by the browser](./images/good-cache.png)
+
+## Conclusion
+
+I was wrong thinking that .NET's caching middleware `ResponseCachingMiddleware` removed the cache headers for invalid requests.  
+This is important because otherwise the invalid response ends up in the cache of the client.
+
+By looking at the [source code](https://github.com/dotnet/aspnetcore/blob/main/src/Middleware/ResponseCaching/src/ResponseCachingMiddleware.cs) and the [tests](https://github.com/dotnet/aspnetcore/blob/main/src/Middleware/ResponseCaching/test/ResponseCachingMiddlewareTests.cs), we see that the caching middleware actually serves as a server-side cache.
+
+To prevent that invalid requests are cached, you must manually remove the cache headers from the response. The easiest way to do this, is to [write your own middleware](#good-hybrid).
