@@ -347,7 +347,7 @@ To create an authenticated request we must add the `Authorization` header to the
 builder.ConfigureTestServices(services =>
 {
     services.AddAuthentication("IntegrationTest")
-        .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
+        .AddScheme<AuthenticationSchemeOptions, IntegrationTestAuthenticationHandler>(
           "IntegrationTest",
           options => { }
         );
