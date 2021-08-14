@@ -53,14 +53,14 @@
 			};
 			let dataAttributes = {
 				schema: darkSchema ? 'dark' : 'light',
-				theme: 'night-owl',
+				theme: darkSchema ? 'rose-pine-dark' : 'rose-pine-dawn',
 			};
 
 			for (let i = 0; i < localStorage.length; i++) {
 				let key = localStorage.key(i);
 				let value = localStorage.getItem(key);
 				if (key === 'theme' && value === 'custom') {
-					value = 'night-owl';
+					value = 'rose-pine-moon';
 					localStorage.setItem(key, value);
 				}
 

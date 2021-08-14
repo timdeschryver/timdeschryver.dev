@@ -5,7 +5,7 @@
 	--head-font: 'system';
 
 	--hue: 47;
-	--base-saturation: 75%;
+	--base-saturation: 100%;
 	--base-lightness: 75%;
 
 	--spacing: 1.5em;
@@ -194,6 +194,13 @@ button:hover,
 pre:hover,
 h2:hover {
 	filter: brightness(120%) saturate(120%);
+}
+
+[data-schema='light'] a:hover,
+[data-schema='light'] button:hover,
+[data-schema='light'] pre:hover,
+[data-schema='light'] h2:hover {
+	filter: brightness(95%) saturate(95%);
 }
 
 .anchor:before {

@@ -38,6 +38,9 @@
 
 	<label for="theme">Theme</label>
 	<select id="theme" bind:value={codeTheme}>
+		<option value="rose-pine-moon">Rosé Pine Moon</option>
+		<option value="rose-pine-dark">Rosé Pine Dark</option>
+		<option value="rose-pine-dawn">Rosé Pine Dawn</option>
 		<option value="night-owl">Night Owl</option>
 		<option value="atom-dark">Atom Dark</option>
 		<option value="dracula">Dracula</option>

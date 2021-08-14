@@ -2,469 +2,924 @@
 
 /* Defaults  */
 
-code[class*="language-"],
-pre[class*="language-"] {
-  font-family: "Dank Mono", "Operator Mono Lig", "Operator Mono Lig", "Fira Code", "Cascadia Mono", "JetBrains Mono", "Victor Mono", Consolas, monospace;
-  line-height: 1.375;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
+code[class*='language-'],
+pre[class*='language-'] {
+	font-family: 'Cartograph CF', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Fira Code',
+		'Cascadia Mono', 'JetBrains Mono', 'Victor Mono', Consolas, monospace;
+	line-height: 1.375;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
 
-  -moz-tab-size: 4;
-  -o-tab-size: 4;
-  tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
 
-  -webkit-hyphens: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
 }
 
-pre[class*="language-"] {
-  overflow: auto;
-  position: relative;
+pre[class*='language-'] {
+	overflow: auto;
+	position: relative;
 }
 
 @media print {
-  code[class*="language-"],
-  pre[class*="language-"] {
-    text-shadow: none;
-  }
+	code[class*='language-'],
+	pre[class*='language-'] {
+		text-shadow: none;
+	}
 }
 
-:not(pre) > code[class*="language-"] {
-  padding: 0.1em 0.3em;
-  border-radius: 0.3em;
+:not(pre) > code[class*='language-'] {
+	padding: 0.1em 0.3em;
+	border-radius: 0.3em;
 }
 
-pre[class*="language-"] > code {
-  padding: 1em;
-  display: block;
-  margin-top: 0;
-  line-height: 2;
+pre[class*='language-'] > code {
+	padding: 1em;
+	display: block;
+	margin-top: 0;
+	line-height: 2;
 }
 
-code[class*="language-"] {
-  word-break: break-all;
+code[class*='language-'] {
+	word-break: break-all;
 }
 
-pre[class*="language-"] .line-highlight {
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 0.3em solid var(--accent-color);
-  display: block;
-  margin: 0px -1em;
-  padding: 0px 0.7em;
+pre[class*='language-'] .line-highlight {
+	background: rgba(0, 0, 0, 0.3);
+	border-left: 0.3em solid var(--accent-color);
+	display: block;
+	margin: 0px -1em;
+	padding: 0px 0.7em;
 }
 
-pre[class*="language-"] > .code-heading {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.2em 0.4em;
-  font-family: var(--text-font);
-  font-size: 0.85rem;
-  position: absolute;
-  height: var(--font-size);
-  top: 0;
-  left: 0;
-  right: 0;
-  color: #fff;
-  opacity: 0.8;
+pre[class*='language-'] > .code-heading {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0.2em 0.4em;
+	font-family: var(--text-font);
+	font-size: 0.85rem;
+	position: absolute;
+	height: var(--font-size);
+	top: 0;
+	left: 0;
+	right: 0;
+	color: #fff;
+	opacity: 0.8;
 }
-pre[class*="language-"] > .code-heading > .file {
-  width: 100%;
-}
-
-pre[class*="language-"] > .code-heading + code {
-  margin-top: var(--spacing);
+pre[class*='language-'] > .code-heading > .file {
+	width: 100%;
 }
 
-pre[class*="language-"] > .code-heading > * {
-  margin: 0 0.4em;
+pre[class*='language-'] > .code-heading + code {
+	margin-top: var(--spacing);
 }
 
-pre[class*="language-"] > .code-heading > a {
-  font-weight: 900;
-  font-size: initial;
+pre[class*='language-'] > .code-heading > * {
+	margin: 0 0.4em;
+}
+
+pre[class*='language-'] > .code-heading > a {
+	font-weight: 900;
+	font-size: initial;
 }
 
 .token.important,
 .token.bold {
-  font-weight: 900;
+	font-weight: 900;
 }
 
 .token.italic {
-  font-style: italic;
+	font-style: italic;
 }
 
 .token.entity {
-  cursor: help;
+	cursor: help;
 }
 
 /* Nord  */
 
-[data-theme="nord"] code[class*="language-"],
-[data-theme="nord"] pre[class*="language-"] {
-  color: #f8f8f2;
-  background: none;
+[data-theme='nord'] code[class*='language-'],
+[data-theme='nord'] pre[class*='language-'] {
+	color: #f8f8f2;
+	background: none;
 }
 
-[data-theme="nord"] :not(pre) > code[class*="language-"],
-[data-theme="nord"] pre[class*="language-"] {
-  background: #2e3440;
+[data-theme='nord'] :not(pre) > code[class*='language-'],
+[data-theme='nord'] pre[class*='language-'] {
+	background: #2e3440;
 }
 
-[data-theme="nord"] .token.comment,
-[data-theme="nord"] .token.prolog,
-[data-theme="nord"] .token.doctype,
-[data-theme="nord"] .token.cdata {
-  color: #636f88;
+[data-theme='nord'] .token.comment,
+[data-theme='nord'] .token.prolog,
+[data-theme='nord'] .token.doctype,
+[data-theme='nord'] .token.cdata {
+	color: #636f88;
 }
 
-[data-theme="nord"] .token.punctuation {
-  color: #81a1c1;
+[data-theme='nord'] .token.punctuation {
+	color: #81a1c1;
 }
 
-[data-theme="nord"] .namespace {
-  opacity: 0.7;
+[data-theme='nord'] .namespace {
+	opacity: 0.7;
 }
 
-[data-theme="nord"] .token.property,
-[data-theme="nord"] .token.tag,
-[data-theme="nord"] .token.constant,
-[data-theme="nord"] .token.symbol,
-[data-theme="nord"] .token.deleted {
-  color: #81a1c1;
+[data-theme='nord'] .token.property,
+[data-theme='nord'] .token.tag,
+[data-theme='nord'] .token.constant,
+[data-theme='nord'] .token.symbol,
+[data-theme='nord'] .token.deleted {
+	color: #81a1c1;
 }
 
-[data-theme="nord"] .token.number {
-  color: #b48ead;
+[data-theme='nord'] .token.number {
+	color: #b48ead;
 }
 
-[data-theme="nord"] .token.boolean {
-  color: #81a1c1;
+[data-theme='nord'] .token.boolean {
+	color: #81a1c1;
 }
 
-[data-theme="nord"] .token.selector,
-[data-theme="nord"] .token.attr-name,
-[data-theme="nord"] .token.string,
-[data-theme="nord"] .token.char,
-[data-theme="nord"] .token.builtin,
-[data-theme="nord"] .token.inserted {
-  color: #a3be8c;
+[data-theme='nord'] .token.selector,
+[data-theme='nord'] .token.attr-name,
+[data-theme='nord'] .token.string,
+[data-theme='nord'] .token.char,
+[data-theme='nord'] .token.builtin,
+[data-theme='nord'] .token.inserted {
+	color: #a3be8c;
 }
 
-[data-theme="nord"] .token.operator,
-[data-theme="nord"] .token.entity,
-[data-theme="nord"] .token.url,
-[data-theme="nord"] .language-css .token.string,
-[data-theme="nord"] .style .token.string,
-[data-theme="nord"] .token.variable {
-  color: #81a1c1;
+[data-theme='nord'] .token.operator,
+[data-theme='nord'] .token.entity,
+[data-theme='nord'] .token.url,
+[data-theme='nord'] .language-css .token.string,
+[data-theme='nord'] .style .token.string,
+[data-theme='nord'] .token.variable {
+	color: #81a1c1;
 }
 
-[data-theme="nord"] .token.atrule,
-[data-theme="nord"] .token.attr-value,
-[data-theme="nord"] .token.function,
-[data-theme="nord"] .token.class-name {
-  color: #88c0d0;
+[data-theme='nord'] .token.atrule,
+[data-theme='nord'] .token.attr-value,
+[data-theme='nord'] .token.function,
+[data-theme='nord'] .token.class-name {
+	color: #88c0d0;
 }
 
-[data-theme="nord"] .token.keyword {
-  color: #81a1c1;
+[data-theme='nord'] .token.keyword {
+	color: #81a1c1;
 }
 
-[data-theme="nord"] .token.regex,
-[data-theme="nord"] .token.important {
-  color: #ebcb8b;
+[data-theme='nord'] .token.regex,
+[data-theme='nord'] .token.important {
+	color: #ebcb8b;
 }
 
 /* Dracula */
 
-[data-theme="dracula"] code[class*="language-"],
-[data-theme="dracula"] pre[class*="language-"] {
-  color: #f8f8f2;
-  background: none;
+[data-theme='dracula'] code[class*='language-'],
+[data-theme='dracula'] pre[class*='language-'] {
+	color: #f8f8f2;
+	background: none;
 }
 
-[data-theme="dracula"] :not(pre) > code[class*="language-"],
-[data-theme="dracula"] pre[class*="language-"] {
-  background: #282a36;
+[data-theme='dracula'] :not(pre) > code[class*='language-'],
+[data-theme='dracula'] pre[class*='language-'] {
+	background: #282a36;
 }
 
-[data-theme="dracula"] .token.comment,
-[data-theme="dracula"] .token.prolog,
-[data-theme="dracula"] .token.doctype,
-[data-theme="dracula"] .token.cdata {
-  color: #6272a4;
+[data-theme='dracula'] .token.comment,
+[data-theme='dracula'] .token.prolog,
+[data-theme='dracula'] .token.doctype,
+[data-theme='dracula'] .token.cdata {
+	color: #6272a4;
 }
 
-[data-theme="dracula"] .token.punctuation {
-  color: #f8f8f2;
+[data-theme='dracula'] .token.punctuation {
+	color: #f8f8f2;
 }
 
-[data-theme="dracula"] .namespace {
-  opacity: 0.7;
+[data-theme='dracula'] .namespace {
+	opacity: 0.7;
 }
 
-[data-theme="dracula"] .token.property,
-[data-theme="dracula"] .token.tag,
-[data-theme="dracula"] .token.constant,
-[data-theme="dracula"] .token.symbol,
-[data-theme="dracula"] .token.deleted {
-  color: #ff79c6;
+[data-theme='dracula'] .token.property,
+[data-theme='dracula'] .token.tag,
+[data-theme='dracula'] .token.constant,
+[data-theme='dracula'] .token.symbol,
+[data-theme='dracula'] .token.deleted {
+	color: #ff79c6;
 }
 
-[data-theme="dracula"] .token.boolean,
-[data-theme="dracula"] .token.number {
-  color: #bd93f9;
+[data-theme='dracula'] .token.boolean,
+[data-theme='dracula'] .token.number {
+	color: #bd93f9;
 }
 
-[data-theme="dracula"] .token.selector,
-[data-theme="dracula"] .token.attr-name,
-[data-theme="dracula"] .token.string,
-[data-theme="dracula"] .token.char,
-[data-theme="dracula"] .token.builtin,
-[data-theme="dracula"] .token.inserted {
-  color: #50fa7b;
+[data-theme='dracula'] .token.selector,
+[data-theme='dracula'] .token.attr-name,
+[data-theme='dracula'] .token.string,
+[data-theme='dracula'] .token.char,
+[data-theme='dracula'] .token.builtin,
+[data-theme='dracula'] .token.inserted {
+	color: #50fa7b;
 }
 
-[data-theme="dracula"] .token.operator,
-[data-theme="dracula"] .token.entity,
-[data-theme="dracula"] .token.url,
-[data-theme="dracula"] .language-css .token.string,
-[data-theme="dracula"] .style .token.string,
-[data-theme="dracula"] .token.variable {
-  color: #f8f8f2;
+[data-theme='dracula'] .token.operator,
+[data-theme='dracula'] .token.entity,
+[data-theme='dracula'] .token.url,
+[data-theme='dracula'] .language-css .token.string,
+[data-theme='dracula'] .style .token.string,
+[data-theme='dracula'] .token.variable {
+	color: #f8f8f2;
 }
 
-[data-theme="dracula"] .token.atrule,
-[data-theme="dracula"] .token.attr-value,
-[data-theme="dracula"] .token.function,
-[data-theme="dracula"] .token.class-name {
-  color: #f1fa8c;
+[data-theme='dracula'] .token.atrule,
+[data-theme='dracula'] .token.attr-value,
+[data-theme='dracula'] .token.function,
+[data-theme='dracula'] .token.class-name {
+	color: #f1fa8c;
 }
 
-[data-theme="dracula"] .token.keyword {
-  color: #8be9fd;
+[data-theme='dracula'] .token.keyword {
+	color: #8be9fd;
 }
 
-[data-theme="dracula"] .token.regex,
-[data-theme="dracula"] .token.important {
-  color: #ffb86c;
+[data-theme='dracula'] .token.regex,
+[data-theme='dracula'] .token.important {
+	color: #ffb86c;
 }
 
 /* Atom Dark */
 
-[data-theme="atom-dark"] code[class*="language-"],
-[data-theme="atom-dark"] pre[class*="language-"] {
-  color: #c5c8c6;
-  background: none;
+[data-theme='atom-dark'] code[class*='language-'],
+[data-theme='atom-dark'] pre[class*='language-'] {
+	color: #c5c8c6;
+	background: none;
 }
 
-[data-theme="atom-dark"] :not(pre) > code[class*="language-"],
-[data-theme="atom-dark"] pre[class*="language-"] {
-  background: #1d1f21;
+[data-theme='atom-dark'] :not(pre) > code[class*='language-'],
+[data-theme='atom-dark'] pre[class*='language-'] {
+	background: #1d1f21;
 }
 
-[data-theme="atom-dark"] .token.comment,
-[data-theme="atom-dark"] .token.prolog,
-[data-theme="atom-dark"] .token.doctype,
-[data-theme="atom-dark"] .token.cdata {
-  color: #7c7c7c;
+[data-theme='atom-dark'] .token.comment,
+[data-theme='atom-dark'] .token.prolog,
+[data-theme='atom-dark'] .token.doctype,
+[data-theme='atom-dark'] .token.cdata {
+	color: #7c7c7c;
 }
 
-[data-theme="atom-dark"] .token.punctuation {
-  color: #c5c8c6;
+[data-theme='atom-dark'] .token.punctuation {
+	color: #c5c8c6;
 }
 
-[data-theme="atom-dark"] .namespace {
-  opacity: 0.7;
+[data-theme='atom-dark'] .namespace {
+	opacity: 0.7;
 }
 
-[data-theme="atom-dark"] .token.property,
-[data-theme="atom-dark"] .token.keyword,
-[data-theme="atom-dark"] .token.tag {
-  color: #96cbfe;
+[data-theme='atom-dark'] .token.property,
+[data-theme='atom-dark'] .token.keyword,
+[data-theme='atom-dark'] .token.tag {
+	color: #96cbfe;
 }
 
-[data-theme="atom-dark"] .token.class-name {
-  color: #ffffb6;
-  text-decoration: underline;
+[data-theme='atom-dark'] .token.class-name {
+	color: #ffffb6;
+	text-decoration: underline;
 }
 
-[data-theme="atom-dark"] .token.boolean,
-[data-theme="atom-dark"] .token.constant {
-  color: #99cc99;
+[data-theme='atom-dark'] .token.boolean,
+[data-theme='atom-dark'] .token.constant {
+	color: #99cc99;
 }
 
-[data-theme="atom-dark"] .token.symbol,
-[data-theme="atom-dark"] .token.deleted {
-  color: #f92672;
+[data-theme='atom-dark'] .token.symbol,
+[data-theme='atom-dark'] .token.deleted {
+	color: #f92672;
 }
 
-[data-theme="atom-dark"] .token.number {
-  color: #ff73fd;
+[data-theme='atom-dark'] .token.number {
+	color: #ff73fd;
 }
 
-[data-theme="atom-dark"] .token.selector,
-[data-theme="atom-dark"] .token.attr-name,
-[data-theme="atom-dark"] .token.string,
-[data-theme="atom-dark"] .token.char,
-[data-theme="atom-dark"] .token.builtin,
-[data-theme="atom-dark"] .token.inserted {
-  color: #a8ff60;
+[data-theme='atom-dark'] .token.selector,
+[data-theme='atom-dark'] .token.attr-name,
+[data-theme='atom-dark'] .token.string,
+[data-theme='atom-dark'] .token.char,
+[data-theme='atom-dark'] .token.builtin,
+[data-theme='atom-dark'] .token.inserted {
+	color: #a8ff60;
 }
 
-[data-theme="atom-dark"] .token.variable {
-  color: #c6c5fe;
+[data-theme='atom-dark'] .token.variable {
+	color: #c6c5fe;
 }
 
-[data-theme="atom-dark"] .token.operator {
-  color: #ededed;
+[data-theme='atom-dark'] .token.operator {
+	color: #ededed;
 }
 
-[data-theme="atom-dark"] .token.entity {
-  color: #ffffb6;
-  cursor: help;
+[data-theme='atom-dark'] .token.entity {
+	color: #ffffb6;
+	cursor: help;
 }
 
-[data-theme="atom-dark"] .token.url {
-  color: #96cbfe;
+[data-theme='atom-dark'] .token.url {
+	color: #96cbfe;
 }
 
-[data-theme="atom-dark"] .language-css .token.string,
-[data-theme="atom-dark"] .style .token.string {
-  color: #87c38a;
+[data-theme='atom-dark'] .language-css .token.string,
+[data-theme='atom-dark'] .style .token.string {
+	color: #87c38a;
 }
 
-[data-theme="atom-dark"] .token.atrule,
-[data-theme="atom-dark"] .token.attr-value {
-  color: #f9ee98;
+[data-theme='atom-dark'] .token.atrule,
+[data-theme='atom-dark'] .token.attr-value {
+	color: #f9ee98;
 }
 
-[data-theme="atom-dark"] .token.function {
-  color: #dad085;
+[data-theme='atom-dark'] .token.function {
+	color: #dad085;
 }
 
-[data-theme="atom-dark"] .token.regex {
-  color: #e9c062;
+[data-theme='atom-dark'] .token.regex {
+	color: #e9c062;
 }
 
-[data-theme="atom-dark"] .token.important {
-  color: #fd971f;
+[data-theme='atom-dark'] .token.important {
+	color: #fd971f;
 }
 
 /* Night Owl */
 /* Sara Vieira https://github.com/SaraVieira/prism-theme-night-owl/blob/master/style.css */
 
-[data-theme="night-owl"] pre[class*="language-"]::-moz-selection,
-[data-theme="night-owl"] pre[class*="language-"] ::-moz-selection,
-[data-theme="night-owl"] code[class*="language-"]::-moz-selection,
-[data-theme="night-owl"] code[class*="language-"] ::-moz-selection {
-  text-shadow: none;
-  background: rgba(29, 59, 83, 0.99);
+[data-theme='night-owl'] pre[class*='language-']::-moz-selection,
+[data-theme='night-owl'] pre[class*='language-'] ::-moz-selection,
+[data-theme='night-owl'] code[class*='language-']::-moz-selection,
+[data-theme='night-owl'] code[class*='language-'] ::-moz-selection {
+	text-shadow: none;
+	background: rgba(29, 59, 83, 0.99);
 }
 
-[data-theme="night-owl"] pre[class*="language-"]::selection,
-[data-theme="night-owl"] pre[class*="language-"] ::selection,
-[data-theme="night-owl"] code[class*="language-"]::selection,
-[data-theme="night-owl"] code[class*="language-"] ::selection {
-  text-shadow: none;
-  background: rgba(29, 59, 83, 0.99);
+[data-theme='night-owl'] pre[class*='language-']::selection,
+[data-theme='night-owl'] pre[class*='language-'] ::selection,
+[data-theme='night-owl'] code[class*='language-']::selection,
+[data-theme='night-owl'] code[class*='language-'] ::selection {
+	text-shadow: none;
+	background: rgba(29, 59, 83, 0.99);
 }
 
-[data-theme="night-owl"] :not(pre) > code[class*="language-"],
-[data-theme="night-owl"] pre[class*="language-"] {
-  color: white;
-  background: #011627;
+[data-theme='night-owl'] :not(pre) > code[class*='language-'],
+[data-theme='night-owl'] pre[class*='language-'] {
+	color: white;
+	background: #011627;
 }
 
-[data-theme="night-owl"] .token.comment,
-[data-theme="night-owl"] .token.prolog,
-[data-theme="night-owl"] .token.cdata {
-  color: rgb(99, 119, 119);
-  font-style: italic;
+[data-theme='night-owl'] .token.comment,
+[data-theme='night-owl'] .token.prolog,
+[data-theme='night-owl'] .token.cdata {
+	color: rgb(99, 119, 119);
+	font-style: italic;
 }
 
-[data-theme="night-owl"] .token.punctuation {
-  color: rgb(199, 146, 234);
+[data-theme='night-owl'] .token.punctuation {
+	color: rgb(199, 146, 234);
 }
 
-[data-theme="night-owl"] .namespace {
-  color: rgb(178, 204, 214);
+[data-theme='night-owl'] .namespace {
+	color: rgb(178, 204, 214);
 }
 
-[data-theme="night-owl"] .token.deleted {
-  color: rgba(239, 83, 80, 0.56);
-  font-style: italic;
+[data-theme='night-owl'] .token.deleted {
+	color: rgba(239, 83, 80, 0.56);
+	font-style: italic;
 }
 
-[data-theme="night-owl"] .token.symbol,
-[data-theme="night-owl"] .token.property {
-  color: rgb(128, 203, 196);
+[data-theme='night-owl'] .token.symbol,
+[data-theme='night-owl'] .token.property {
+	color: rgb(128, 203, 196);
 }
 
-[data-theme="night-owl"] .token.tag,
-[data-theme="night-owl"] .token.operator,
-[data-theme="night-owl"] .token.keyword {
-  color: rgb(127, 219, 202);
+[data-theme='night-owl'] .token.tag,
+[data-theme='night-owl'] .token.operator,
+[data-theme='night-owl'] .token.keyword {
+	color: rgb(127, 219, 202);
 }
 
-[data-theme="night-owl"] .token.boolean {
-  color: rgb(255, 88, 116);
+[data-theme='night-owl'] .token.boolean {
+	color: rgb(255, 88, 116);
 }
 
-[data-theme="night-owl"] .token.number {
-  color: rgb(247, 140, 108);
+[data-theme='night-owl'] .token.number {
+	color: rgb(247, 140, 108);
 }
 
-[data-theme="night-owl"] .token.constant,
-[data-theme="night-owl"] .token.function,
-[data-theme="night-owl"] .token.builtin,
-[data-theme="night-owl"] .token.char {
-  color: rgb(130, 170, 255);
+[data-theme='night-owl'] .token.constant,
+[data-theme='night-owl'] .token.function,
+[data-theme='night-owl'] .token.builtin,
+[data-theme='night-owl'] .token.char {
+	color: rgb(130, 170, 255);
 }
 
-[data-theme="night-owl"] .token.selector,
-[data-theme="night-owl"] .token.doctype {
-  color: rgb(199, 146, 234);
-  font-style: italic;
+[data-theme='night-owl'] .token.selector,
+[data-theme='night-owl'] .token.doctype {
+	color: rgb(199, 146, 234);
+	font-style: italic;
 }
 
-[data-theme="night-owl"] .token.attr-name,
-[data-theme="night-owl"] .token.inserted {
-  color: rgb(173, 219, 103);
-  font-style: italic;
+[data-theme='night-owl'] .token.attr-name,
+[data-theme='night-owl'] .token.inserted {
+	color: rgb(173, 219, 103);
+	font-style: italic;
 }
 
-[data-theme="night-owl"] .token.string,
-[data-theme="night-owl"] .token.url,
-[data-theme="night-owl"] .token.entity,
-[data-theme="night-owl"] .language-css .token.string,
-[data-theme="night-owl"] .style .token.string {
-  color: rgb(173, 219, 103);
+[data-theme='night-owl'] .token.string,
+[data-theme='night-owl'] .token.url,
+[data-theme='night-owl'] .token.entity,
+[data-theme='night-owl'] .language-css .token.string,
+[data-theme='night-owl'] .style .token.string {
+	color: rgb(173, 219, 103);
 }
 
-[data-theme="night-owl"] .token.class-name,
-[data-theme="night-owl"] .token.atrule,
-[data-theme="night-owl"] .token.attr-value {
-  color: rgb(255, 203, 139);
+[data-theme='night-owl'] .token.class-name,
+[data-theme='night-owl'] .token.atrule,
+[data-theme='night-owl'] .token.attr-value {
+	color: rgb(255, 203, 139);
 }
 
-[data-theme="night-owl"] .token.regex,
-[data-theme="night-owl"] .token.important,
-[data-theme="night-owl"] .token.variable {
-  color: rgb(214, 222, 235);
+[data-theme='night-owl'] .token.regex,
+[data-theme='night-owl'] .token.important,
+[data-theme='night-owl'] .token.variable {
+	color: rgb(214, 222, 235);
 }
 
-[data-theme="night-owl"] .token.important,
-[data-theme="night-owl"] .token.bold {
-  font-weight: bold;
+[data-theme='night-owl'] .token.important,
+[data-theme='night-owl'] .token.bold {
+	font-weight: bold;
 }
 
-[data-theme="night-owl"] .token.italic {
-  font-style: italic;
+[data-theme='night-owl'] .token.italic {
+	font-style: italic;
+}
+
+/*
+  Rosé Pine Dark
+  https://github.com/rose-pine/prism
+*/
+
+[data-theme='rose-pine-dark'] code[class*='language-'],
+[data-theme='rose-pine-dark'] pre[class*='language-'] {
+	color: #e0def4;
+	background: #191724;
+}
+
+/* Selection */
+[data-theme='rose-pine-dark'] code[class*='language-']::-moz-selection,
+[data-theme='rose-pine-dark'] pre[class*='language-']::-moz-selection,
+[data-theme='rose-pine-dark'] code[class*='language-'] ::-moz-selection,
+[data-theme='rose-pine-dark'] pre[class*='language-'] ::-moz-selection {
+	background: #2a2837;
+}
+
+[data-theme='rose-pine-dark'] code[class*='language-']::selection,
+[data-theme='rose-pine-dark'] pre[class*='language-']::selection,
+[data-theme='rose-pine-dark'] code[class*='language-'] ::selection,
+[data-theme='rose-pine-dark'] pre[class*='language-'] ::selection {
+	background: #2a2837;
+}
+
+/* Code (block & inline) */
+[data-theme='rose-pine-dark'] :not(pre) > code[class*='language-'],
+[data-theme='rose-pine-dark'] pre[class*='language-'] {
+	color: #e0def4;
+	background: #191724;
+}
+
+/* Inline code */
+[data-theme='rose-pine-dark'] :not(pre) > code[class*='language-'] {
+	padding: 0.1em;
+	border-radius: 0.3em;
+	white-space: normal;
+	color: #e0def4;
+	background: #191724;
+}
+
+[data-theme='rose-pine-dark'] .token.important,
+[data-theme='rose-pine-dark'] .token.bold {
+	font-weight: bold;
+}
+
+[data-theme='rose-pine-dark'] .token.italic,
+[data-theme='rose-pine-dark'] .token.selector,
+[data-theme='rose-pine-dark'] .token.doctype,
+[data-theme='rose-pine-dark'] .token.attr-name,
+[data-theme='rose-pine-dark'] .token.inserted,
+[data-theme='rose-pine-dark'] .token.deleted,
+[data-theme='rose-pine-dark'] .token.comment,
+[data-theme='rose-pine-dark'] .token.prolog,
+[data-theme='rose-pine-dark'] .token.cdata,
+[data-theme='rose-pine-dark'] .token.constant,
+[data-theme='rose-pine-dark'] .token.parameter,
+[data-theme='rose-pine-dark'] .token.url {
+	font-style: italic;
+}
+
+[data-theme='rose-pine-dark'] .token.url {
+	text-decoration: underline;
+}
+
+[data-theme='rose-pine-dark'] .namespace {
+	opacity: 0.7;
+}
+
+/* Syntax highlighting */
+[data-theme='rose-pine-dark'] .token.constant {
+	color: #e0def4;
+}
+
+[data-theme='rose-pine-dark'] .token.comment,
+[data-theme='rose-pine-dark'] .token.prolog,
+[data-theme='rose-pine-dark'] .token.cdata,
+[data-theme='rose-pine-dark'] .token.punctuation {
+	color: #555169;
+}
+
+[data-theme='rose-pine-dark'] .token.delimiter,
+[data-theme='rose-pine-dark'] .token.important,
+[data-theme='rose-pine-dark'] .token.atrule,
+[data-theme='rose-pine-dark'] .token.operator,
+[data-theme='rose-pine-dark'] .token.keyword {
+	color: #31748f;
+}
+
+[data-theme='rose-pine-dark'] .token.tag,
+[data-theme='rose-pine-dark'] .token.tag .punctuation,
+[data-theme='rose-pine-dark'] .token.doctype,
+[data-theme='rose-pine-dark'] .token.variable,
+[data-theme='rose-pine-dark'] .token.regex,
+[data-theme='rose-pine-dark'] .token.class-name,
+[data-theme='rose-pine-dark'] .token.selector,
+[data-theme='rose-pine-dark'] .token.inserted {
+	color: #9ccfd8;
+}
+
+[data-theme='rose-pine-dark'] .token.boolean,
+[data-theme='rose-pine-dark'] .token.entity,
+[data-theme='rose-pine-dark'] .token.number,
+[data-theme='rose-pine-dark'] .token.symbol,
+[data-theme='rose-pine-dark'] .token.function {
+	color: #ebbcba;
+}
+
+[data-theme='rose-pine-dark'] .token.string,
+[data-theme='rose-pine-dark'] .token.char,
+[data-theme='rose-pine-dark'] .token.property,
+[data-theme='rose-pine-dark'] .token.attr-value,
+[data-theme='rose-pine-dark'] .token.attr-value .punctuation {
+	color: #f6c177;
+}
+
+[data-theme='rose-pine-dark'] .token.parameter,
+[data-theme='rose-pine-dark'] .token.url,
+[data-theme='rose-pine-dark'] .token.name,
+[data-theme='rose-pine-dark'] .token.attr-name,
+[data-theme='rose-pine-dark'] .token.builtin {
+	color: #c4a7e7;
+}
+
+[data-theme='rose-pine-dark'] .token.deleted {
+	color: #eb6f92;
+}
+
+/* Insertions & deletions */
+[data-theme='rose-pine-dark'] .token.inserted {
+	background: rgba(156 207 216 0.12);
+}
+
+[data-theme='rose-pine-dark'] .token.deleted {
+	background: rgba(235 111 146 0.12);
+}
+
+/* Line highlighting */
+[data-theme='rose-pine-dark'] pre[data-line] {
+	position: relative;
+}
+
+[data-theme='rose-pine-dark'] pre[class*='language-'] > code[class*='language-'] {
+	position: relative;
+	z-index: 1;
+}
+
+/*
+  Rosé Pine Dawn
+  https://github.com/rose-pine/prism
+*/
+
+[data-theme='rose-pine-dawn'] code[class*='language-'],
+[data-theme='rose-pine-dawn'] pre[class*='language-'] {
+	color: #575279;
+	background: #faf4ed;
+}
+
+/* Selection */
+[data-theme='rose-pine-dawn'] code[class*='language-']::-moz-selection,
+[data-theme='rose-pine-dawn'] pre[class*='language-']::-moz-selection,
+[data-theme='rose-pine-dawn'] code[class*='language-'] ::-moz-selection,
+[data-theme='rose-pine-dawn'] pre[class*='language-'] ::-moz-selection {
+	background: #eee9e6;
+}
+
+[data-theme='rose-pine-dawn'] code[class*='language-']::selection,
+[data-theme='rose-pine-dawn'] pre[class*='language-']::selection,
+[data-theme='rose-pine-dawn'] code[class*='language-'] ::selection,
+[data-theme='rose-pine-dawn'] pre[class*='language-'] ::selection {
+	background: #eee9e6;
+}
+
+/* Code (block & inline) */
+[data-theme='rose-pine-dawn'] :not(pre) > code[class*='language-'],
+[data-theme='rose-pine-dawn'] pre[class*='language-'] {
+	color: #575279;
+	background: #faf4ed;
+}
+
+/* Inline code */
+[data-theme='rose-pine-dawn'] :not(pre) > code[class*='language-'] {
+	padding: 0.1em;
+	border-radius: 0.3em;
+	white-space: normal;
+	color: #575279;
+	background: #faf4ed;
+}
+
+/* Text style & opacity */
+[data-theme='rose-pine-dawn'] .token.entity {
+	cursor: help;
+}
+
+[data-theme='rose-pine-dawn'] .token.important,
+[data-theme='rose-pine-dawn'] .token.bold {
+	font-weight: bold;
+}
+
+[data-theme='rose-pine-dawn'] .token.italic,
+[data-theme='rose-pine-dawn'] .token.selector,
+[data-theme='rose-pine-dawn'] .token.doctype,
+[data-theme='rose-pine-dawn'] .token.attr-name,
+[data-theme='rose-pine-dawn'] .token.inserted,
+[data-theme='rose-pine-dawn'] .token.deleted,
+[data-theme='rose-pine-dawn'] .token.comment,
+[data-theme='rose-pine-dawn'] .token.prolog,
+[data-theme='rose-pine-dawn'] .token.cdata,
+[data-theme='rose-pine-dawn'] .token.constant,
+[data-theme='rose-pine-dawn'] .token.parameter,
+[data-theme='rose-pine-dawn'] .token.url {
+	font-style: italic;
+}
+
+[data-theme='rose-pine-dawn'] .token.url {
+	text-decoration: underline;
+}
+
+[data-theme='rose-pine-dawn'] .namespace {
+	opacity: 0.7;
+}
+
+/* Syntax highlighting */
+[data-theme='rose-pine-dawn'] .token.constant {
+	color: #575279;
+}
+
+[data-theme='rose-pine-dawn'] .token.comment,
+[data-theme='rose-pine-dawn'] .token.prolog,
+[data-theme='rose-pine-dawn'] .token.cdata,
+[data-theme='rose-pine-dawn'] .token.punctuation {
+	color: #9893a5;
+}
+
+[data-theme='rose-pine-dawn'] .token.delimiter,
+[data-theme='rose-pine-dawn'] .token.important,
+[data-theme='rose-pine-dawn'] .token.atrule,
+[data-theme='rose-pine-dawn'] .token.operator,
+[data-theme='rose-pine-dawn'] .token.keyword {
+	color: #286983;
+}
+
+[data-theme='rose-pine-dawn'] .token.tag,
+[data-theme='rose-pine-dawn'] .token.tag .punctuation,
+[data-theme='rose-pine-dawn'] .token.doctype,
+[data-theme='rose-pine-dawn'] .token.variable,
+[data-theme='rose-pine-dawn'] .token.regex,
+[data-theme='rose-pine-dawn'] .token.class-name,
+[data-theme='rose-pine-dawn'] .token.selector,
+[data-theme='rose-pine-dawn'] .token.inserted {
+	color: #56949f;
+}
+
+[data-theme='rose-pine-dawn'] .token.boolean,
+[data-theme='rose-pine-dawn'] .token.entity,
+[data-theme='rose-pine-dawn'] .token.number,
+[data-theme='rose-pine-dawn'] .token.symbol,
+[data-theme='rose-pine-dawn'] .token.function {
+	color: #d7827e;
+}
+
+[data-theme='rose-pine-dawn'] .token.string,
+[data-theme='rose-pine-dawn'] .token.char,
+[data-theme='rose-pine-dawn'] .token.property,
+[data-theme='rose-pine-dawn'] .token.attr-value,
+[data-theme='rose-pine-dawn'] .token.attr-value .punctuation {
+	color: #ea9d34;
+}
+
+[data-theme='rose-pine-dawn'] .token.parameter,
+[data-theme='rose-pine-dawn'] .token.url,
+[data-theme='rose-pine-dawn'] .token.name,
+[data-theme='rose-pine-dawn'] .token.attr-name,
+[data-theme='rose-pine-dawn'] .token.builtin {
+	color: #907aa9;
+}
+
+[data-theme='rose-pine-dawn'] .token.deleted {
+	color: #b4637a;
+}
+
+/* Insertions & deletions */
+[data-theme='rose-pine-dawn'] .token.inserted {
+	background: rgba(86 148 159 0.12);
+}
+
+[data-theme='rose-pine-dawn'] .token.deleted {
+	background: rgba(180 99 122 0.12);
+}
+
+/* Line highlighting */
+[data-theme='rose-pine-dawn'] pre[data-line] {
+	position: relative;
+}
+
+[data-theme='rose-pine-dawn'] pre[class*='language-'] > code[class*='language-'] {
+	position: relative;
+	z-index: 1;
+}
+
+/*
+  Rosé Pine Moon
+  https://github.com/rose-pine/prism
+*/
+
+[data-theme='rose-pine-moon'] code[class*='language-'],
+[data-theme='rose-pine-moon'] pre[class*='language-'] {
+	color: #e0def4;
+	background: #232136;
+}
+
+/* Selection */
+[data-theme='rose-pine-moon'] code[class*='language-']::-moz-selection,
+[data-theme='rose-pine-moon'] pre[class*='language-']::-moz-selection,
+[data-theme='rose-pine-moon'] code[class*='language-'] ::-moz-selection,
+[data-theme='rose-pine-moon'] pre[class*='language-'] ::-moz-selection {
+	background: #312f44;
+}
+
+[data-theme='rose-pine-moon'] code[class*='language-']::selection,
+[data-theme='rose-pine-moon'] pre[class*='language-']::selection,
+[data-theme='rose-pine-moon'] code[class*='language-'] ::selection,
+[data-theme='rose-pine-moon'] pre[class*='language-'] ::selection {
+	background: #312f44;
+}
+
+/* Code (block & inline) */
+[data-theme='rose-pine-moon'] :not(pre) > code[class*='language-'],
+[data-theme='rose-pine-moon'] pre[class*='language-'] {
+	color: #e0def4;
+	background: #232136;
+}
+
+/* Inline code */
+[data-theme='rose-pine-moon'] :not(pre) > code[class*='language-'] {
+	padding: 0.1em;
+	border-radius: 0.3em;
+	white-space: normal;
+	color: #e0def4;
+	background: #232136;
+}
+
+/* Text style & opacity */
+[data-theme='rose-pine-moon'] .token.entity {
+	cursor: help;
+}
+
+[data-theme='rose-pine-moon'] .token.important,
+[data-theme='rose-pine-moon'] .token.bold {
+	font-weight: bold;
+}
+
+[data-theme='rose-pine-moon'] .token.italic,
+[data-theme='rose-pine-moon'] .token.selector,
+[data-theme='rose-pine-moon'] .token.doctype,
+[data-theme='rose-pine-moon'] .token.attr-name,
+[data-theme='rose-pine-moon'] .token.inserted,
+[data-theme='rose-pine-moon'] .token.deleted,
+[data-theme='rose-pine-moon'] .token.comment,
+[data-theme='rose-pine-moon'] .token.prolog,
+[data-theme='rose-pine-moon'] .token.cdata,
+[data-theme='rose-pine-moon'] .token.constant,
+[data-theme='rose-pine-moon'] .token.parameter,
+[data-theme='rose-pine-moon'] .token.url {
+	font-style: italic;
+}
+
+[data-theme='rose-pine-moon'] .token.url {
+	text-decoration: underline;
+}
+
+[data-theme='rose-pine-moon'] .namespace {
+	opacity: 0.7;
+}
+
+/* Syntax highlighting */
+[data-theme='rose-pine-moon'] .token.constant {
+	color: #e0def4;
+}
+
+[data-theme='rose-pine-moon'] .token.comment,
+[data-theme='rose-pine-moon'] .token.prolog,
+[data-theme='rose-pine-moon'] .token.cdata,
+[data-theme='rose-pine-moon'] .token.punctuation {
+	color: #59546d;
+}
+
+[data-theme='rose-pine-moon'] .token.delimiter,
+[data-theme='rose-pine-moon'] .token.important,
+[data-theme='rose-pine-moon'] .token.atrule,
+[data-theme='rose-pine-moon'] .token.operator,
+[data-theme='rose-pine-moon'] .token.keyword {
+	color: #3e8fb0;
+}
+
+[data-theme='rose-pine-moon'] .token.tag,
+[data-theme='rose-pine-moon'] .token.tag .punctuation,
+[data-theme='rose-pine-moon'] .token.doctype,
+[data-theme='rose-pine-moon'] .token.variable,
+[data-theme='rose-pine-moon'] .token.regex,
+[data-theme='rose-pine-moon'] .token.class-name,
+[data-theme='rose-pine-moon'] .token.selector,
+[data-theme='rose-pine-moon'] .token.inserted {
+	color: #9ccfd8;
+}
+
+[data-theme='rose-pine-moon'] .token.boolean,
+[data-theme='rose-pine-moon'] .token.entity,
+[data-theme='rose-pine-moon'] .token.number,
+[data-theme='rose-pine-moon'] .token.symbol,
+[data-theme='rose-pine-moon'] .token.function {
+	color: #ea9a97;
+}
+
+[data-theme='rose-pine-moon'] .token.string,
+[data-theme='rose-pine-moon'] .token.char,
+[data-theme='rose-pine-moon'] .token.property,
+[data-theme='rose-pine-moon'] .token.attr-value,
+[data-theme='rose-pine-moon'] .token.attr-value .punctuation {
+	color: #f6c177;
+}
+
+[data-theme='rose-pine-moon'] .token.parameter,
+[data-theme='rose-pine-moon'] .token.url,
+[data-theme='rose-pine-moon'] .token.name,
+[data-theme='rose-pine-moon'] .token.attr-name,
+[data-theme='rose-pine-moon'] .token.builtin {
+	color: #c4a7e7;
+}
+
+[data-theme='rose-pine-moon'] .token.deleted {
+	color: #eb6f92;
+}
+
+/* Insertions & deletions */
+[data-theme='rose-pine-moon'] .token.inserted {
+	background: rgba(156 207 216 0.12);
+}
+
+[data-theme='rose-pine-moon'] .token.deleted {
+	background: rgba(235 111 146 0.12);
+}
+
+/* Line highlighting */
+[data-theme='rose-pine-moon'] pre[data-line] {
+	position: relative;
+}
+
+[data-theme='rose-pine-moon'] pre[class*='language-'] > code[class*='language-'] {
+	position: relative;
+	z-index: 1;
 }
