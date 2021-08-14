@@ -17,7 +17,10 @@ published: true
 - [Form Errors](#form-errors)
 - [Dynamic Forms](#dynamic-forms)
 - [Sub-Form Components](#sub-form-components)
+- [Testing Template-Driven Forms](#testing-template-drive-forms)
 - [Conclusion](#conclusion)
+
+> Didn't find what you're looking for? Feel free to reach out to me on [Twitter](https://twitter.com/tim_deschryver)
 
 ## Intro
 
@@ -1960,6 +1963,67 @@ As always, the example of this section is also available as a StackBlitz project
 
 <iframe src="https://stackblitz.com/github/timdeschryver/angular-forms-guide/tree/78bf1b6672ba2c78ae9c7bc1f392195c594a9f6a?ctl=1&embed=1" title="angular-forms-guide-sub-form-components" loading="lazy"></iframe>
 
+## Testing Template-Driven Forms
+
+It's often said that template-driven forms are hard to test, and that it's easier to test reactive driven forms.
+This claim depends on what your understanding is of a test, and how you test a form.
+
+The difference between the two kind of forms is that a reactive form can be tested without that you have to interact with the DOM, you can manually set form values with the reactive API. With a template-driven form, you can't do this and you are obligated to test the form by interacting with the DOM.
+
+For me, I want to test the form like a user would fill in the form. This means by interacting with the DOM.
+This practice makes sure that the template is correctly connected with the form model, and gives me confidence that the form is working as expected.
+
+At the project I'm working on, we switched from reactive driven forms to template driven forms.
+Because the tests were written like this, the switch between the two syntaxes didn't affect the tests.
+The result was that we were confident to ship the new refactored forms, using the template-driven syntax.
+
+To test forms, I like to use the [Angular Testing Library](https://github.com/testing-library/angular-testing-library/) (I may be biased because I'm the maintainer of the library). I like the simplicity to render forms, and I like the API because it's intuitive to use.
+
+As an example, let's fill out a simple form by using the Angular Testing Library.
+To know more about testing Angular component, take a look at my [other articles about this topic](https://timdeschryver.dev/blog?q=Testing-library+Angular).
+
+```ts
+it('builds up the form model', async () => {
+	const submitEmitter = { emit: jest.fn() };
+	await render(FormComponent, {
+		componentProperties: {
+			submitEmitter,
+		},
+	});
+	const message = screen.getByRole('alert');
+
+	userEvent.type(screen.getByRole('textbox', { name: /name/i }), '');
+	expect(message).toHaveTextContent(/Name is required/i);
+
+	userEvent.type(screen.getByRole('textbox', { name: /name/i }), 'Tim Deschryver');
+	waitFor(() => expect(message).not.toBeVisible());
+
+	userEvent.selectOptions(
+		screen.getByRole('combobox', {
+			name: /country/i,
+		}),
+		screen.getByRole('option', { name: /Belgium/i }),
+	);
+
+	userEvent.click(
+		screen.getByRole('checkbox', {
+			name: /conditions/i,
+		}),
+	);
+
+	userEvent.click(
+		screen.getByRole('button', {
+			name: /Submit/i,
+		}),
+	);
+
+	expect(submitEmitter.emit).toHaveBeenCalledWith({
+		name: 'Tim Deschryver',
+		country: 'Belgium',
+	});
+});
+```
+
 ## Conclusion
 
 As you can see, you can do everything with template-driven forms.
@@ -1967,3 +2031,7 @@ Speaking from our experience, we ended up with less code to maintain after we mi
 My opinion is that template-driven forms, the easy and also the complex ones, are also easier to write and to understand.
 This is certainly true when the person is new to Angular Forms.
 And don't worry, you will still "be reactive" as the template itself is reactive by nature.
+
+All the examples used in this article can be found on [GitHub](https://github.com/timdeschryver/angular-forms-guide).
+
+> Didn't find what you're looking for? Feel free to reach out to me on [Twitter](https://twitter.com/tim_deschryver)
