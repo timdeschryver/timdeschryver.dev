@@ -1,4 +1,4 @@
-## 1/3 Create the validator
+## Create the validator
 
 Create the validator and import the directive where needed.
 
@@ -25,7 +25,50 @@ export class ValidatorDirective implements Validator {
 export class ValidatorModule {}
 ```
 
-## 2/3 Use the validator
+### Validator with revalidation
+
+```ts:validator.ts
+import { Directive, Input } from '@angular/core';
+import { AbstractControl, ValidationErrors, NG_VALIDATORS, Validator } from '@angular/forms';
+
+@Directive({
+	selector: '[validator]',
+	providers: [{ provide: NG_VALIDATORS, useExisting: ValidatorDirective, multi: true }],
+})
+export class ValidatorDirective implements Validator {
+	private _value: any;
+	private _onChange?: () => void;
+
+	@Input() validator:
+			| (control: AbstractControl) => ValidationErrors | null
+			| ((value: unknown) => (control: AbstractControl) => ValidationErrors | null);
+
+	@Input()
+	get value() {
+		return this._value;
+	}
+	set value(value: number) {
+		this._value = value;
+		if (this._onChange) {
+			this._onChange();
+		}
+	}
+
+	validate(control: AbstractControl): ValidationErrors | null {
+		if (this.value !== undefined) {
+			return this.validator(this.value)(control);
+		}
+
+		return this.validator(control);
+	}
+
+	registerOnValidatorChange?(fn: () => void): void {
+		this._onChange = fn;
+	}
+}
+```
+
+## Use the validator
 
 Use the validator directive as `[validator]="myValidator"`, where `myValidator` returns the validation errors.
 
@@ -114,7 +157,7 @@ export class AppComponent {
 }
 ```
 
-## 3/3 Extract the validator
+## Extract the validator
 
 Extract the validator to outside the component to make it easier to maintain.
 

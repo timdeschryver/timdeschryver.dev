@@ -28,15 +28,15 @@ import { Directive, Input } from '@angular/core';
 import { AbstractControl, ValidationErrors, NG_VALIDATORS, Validator } from '@angular/forms';
 
 @Directive({
-    selector: '[validator]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: ValidatorDirective, multi: true }]
+	selector: '[validator]',
+	providers: [{ provide: NG_VALIDATORS, useExisting: ValidatorDirective, multi: true }],
 })
 export class ValidatorDirective implements Validator {
-    @Input() validator: (control: AbstractControl) => ValidationErrors | null;
+	@Input() validator: (control: AbstractControl) => ValidationErrors | null;
 
-    validate(control: AbstractControl): ValidationErrors | null {
-        return this.validator(control);
-    }
+	validate(control: AbstractControl): ValidationErrors | null {
+		return this.validator(control);
+	}
 }
 ```
 
@@ -44,7 +44,7 @@ With the `ValidatorDirective` we can now validate a form while defining inline v
 For example, to validate a single `ngModel`, we create the validator in the component.
 The validator (`scoreValidator`) receives the control and returns the validation errors, just like the `validate` method from the `Validator` interface.
 
-```ts
+```ts:component.ts
 @Component()
 export class Component {
 	scoreValidator = (control: AbstractControl): ValidationErrors | null => {
@@ -63,13 +63,13 @@ export class Component {
 
 To use the inline validator in the template, you assign the `validator` attribute (this is the selector from the `ValidatorDirective` directive) to the validate method (`scoreValidator`) .
 
-```html
+```html:component.html
 <input type="number" name="score" ngModel [validator]="scoreValidator" />
 ```
 
 Instead of having to write all the validators manually, you can also invoke the built-in Angular validators, or invoke your custom validators.
 
-```ts
+```ts:component.ts
 @Component()
 export class Component {
 	scoreValidator = (control: AbstractControl): ValidationErrors | null => {
@@ -89,13 +89,13 @@ This keeps the component small and simple, and makes the validation logic easier
 
 To validate a `ngModelGroup` you can reuse the same validator directive.
 
-```html
+```html:component.html
 <div ngModelGroup="person" [validator]="personValidator">
 	<!-- imagine multiple form fields here -->
 </div>
 ```
 
-```ts
+```ts:component.ts
 @Component()
 export class Component {
 	personValidator = (control: AbstractControl): ValidationErrors | null => {
@@ -108,14 +108,86 @@ Note that I'm using the arrow syntax while declaring these validators.
 I do this to scope the method to the component class, instead of the directive class.
 This allows me to use other class properties within the validator method.
 
+## Revalidating the validator
+
+To make the validator react to another form value, we can use the `registerOnValidatorChange` method to revalidate the control. Each time a new value is set (via the `value` input), the control is revalidated.
+You can read more about this technique in my [Template-Driven Forms guide](/blog/a-practical-guide-to-angular-template-driven-forms#revalidate-custom-validators).
+
+```ts{9-10,14,16-25,28-30,35-37}:validator.directive.ts
+import { Directive, Input } from '@angular/core';
+import { AbstractControl, ValidationErrors, NG_VALIDATORS, Validator } from '@angular/forms';
+
+@Directive({
+	selector: '[validator]',
+	providers: [{ provide: NG_VALIDATORS, useExisting: ValidatorDirective, multi: true }],
+})
+export class ValidatorDirective implements Validator {
+	private _value: any;
+	private _onChange?: () => void;
+
+	@Input() validator:
+			| (control: AbstractControl) => ValidationErrors | null
+			| ((value: unknown) => (control: AbstractControl) => ValidationErrors | null);
+
+	@Input()
+	get value() {
+		return this._value;
+	}
+	set value(value: number) {
+		this._value = value;
+		if (this._onChange) {
+			this._onChange();
+		}
+	}
+
+	validate(control: AbstractControl): ValidationErrors | null {
+		if (this.value !== undefined) {
+			return this.validator(this.value)(control);
+		}
+
+		return this.validator(control);
+	}
+
+	registerOnValidatorChange?(fn: () => void): void {
+		this._onChange = fn;
+	}
+}
+```
+
+To use the revalidation functionality, you assign the `value` of the validator to a value that affects the validator.
+In the example below, the value of the password is passed to the password confirmation validator.
+
+```html{7,8}:component.html
+<input type="password"
+	name="password"
+	[(ngModel)]="model.password"/>
+<input type="password"
+	name="password-confirmation"
+	[(ngModel)]="model.passwordConfirmation"
+	[value]="model.password"
+	[validator]="passwordConfirmationValidator"/>
+```
+
+```ts{3-10}:component.ts
+@Component()
+export class Component {
+	passwordConfirmationValidator = (password: string) => (control: AbstractControl): ValidationErrors | null => {
+		if(password === control.value) {
+			return null;
+		}
+		return {
+			passwordConfirmation: true
+		}
+	};
+}
+```
+
 ## Conclusion
 
 We can eliminate some of the "boilerplate" 🙊 by creating one generic validator directive that accepts a callback to validate a form model.
 This allows us to create inline validators within components. While this can be quick and easy for simple validations, I prefer to extract the complex validators into their own layer.
 
 When the validation logic lives on its own (and not in a directive or in the component), it also doesn't bind the business rules to an Angular-specific layer.
-
-The only downside to using the generic validator directive is that you can't [revalidate the validator](/blog/a-practical-guide-to-angular-template-driven-forms#revalidate-custom-validators).
 
 ### Demo
 
