@@ -255,3 +255,9 @@ it('consists of unique messages', () => {
 ```
 
 When you do this and the view is still on the slow end, you can still resort to the Angular optimization techniques that were mentioned earlier. From my experience, for the applications that I create, this "fix" is usually sufficient, but it's always good to know that you have an extra pair of tricks in your bag.
+
+### Key Takeaways
+
+- Complex logic doesn't belong in the template nor in the component
+- Use `ngFor` and `ngIf` only as terminal operations (from a precomputed dataset)
+- Abstract the selection logic using selectors if you're using NgRx

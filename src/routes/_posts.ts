@@ -55,6 +55,8 @@ export function readPosts(): {
 		published: boolean;
 		canonical: string;
 		edit: string;
+		outgoingLinks: { slug: string; title: string }[];
+		incomingLinks: { slug: string; title: string }[];
 	};
 }[] {
 	console.log('\x1b[35m[posts] generate\x1b[0m');
@@ -65,7 +67,7 @@ export function readPosts(): {
 		return dirs;
 	}, {} as { [directory: string]: { file: string; path: string }[] });
 
-	return Object.values(directories)
+	const postsSorted = Object.values(directories)
 		.map((files) => {
 			const postPath = files.find((f) => f.file === 'index.md').path;
 			const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
@@ -126,10 +128,36 @@ export function readPosts(): {
 					banner,
 					canonical,
 					edit,
+					outgoingLinks: [],
+					incomingLinks: [],
 				},
 			};
 		})
 		.sort(sortByDate);
+
+	for (const post of postsSorted) {
+		const incomingLinks = new Set([
+			...postsSorted
+				.filter((p) => p.metadata.outgoingSlugs.includes(post.metadata.slug))
+				.map((p) => ({
+					slug: p.metadata.slug,
+					title: p.metadata.title,
+				})),
+		]);
+
+		const outgoingLinks = new Set([
+			...postsSorted
+				.filter((p) => post.metadata.outgoingSlugs.includes(p.metadata.slug))
+				.map((p) => ({
+					slug: p.metadata.slug,
+					title: p.metadata.title,
+				})),
+		]);
+
+		post.metadata.incomingLinks.push(...incomingLinks);
+		post.metadata.outgoingLinks.push(...outgoingLinks);
+	}
+	return postsSorted;
 }
 
 export function readSnippets(): {
@@ -196,13 +224,13 @@ function parseFileToHtmlAndMeta(
 		},
 		createHeadingParts = () => [],
 	}: any,
-): any {
+): { html: string; metadata: any & { outgoingSlugs: string[] }; assetsSrc: string } {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
+	metadata.outgoingSlugs = [] as string[];
 	const assetsSrc = path.dirname(file);
 	const renderer = new marked.Renderer();
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
-
 	renderer.link = (href, title, text) => {
 		// TODO: twitter links
 		// if (tweetRegexp.test(href)) {
@@ -214,9 +242,17 @@ function parseFileToHtmlAndMeta(
 
 		const href_attr = `href="${href}"`;
 		const title_attr = title ? `title="${title}"` : '';
-		const prefetch_attr = href.startsWith('/') ? `prefetch="true"` : '';
-		const rel_attr = href.startsWith('/') || href.startsWith('#') ? `` : 'rel="external"';
+		const internal = href.startsWith('/');
+		const prefetch_attr = internal ? `prefetch="true"` : '';
+		const rel_attr = internal || href.startsWith('#') ? `` : 'rel="external"';
 		const attributes = [href_attr, title_attr, prefetch_attr, rel_attr].filter(Boolean).join(' ');
+
+		if (internal) {
+			const outgoingSlug = href.split('/').pop();
+			if (metadata.slug !== outgoingSlug) {
+				metadata.outgoingSlugs.push(outgoingSlug);
+			}
+		}
 
 		return `<a ${attributes}>${text}</a>`;
 	};
@@ -336,7 +372,7 @@ export function* traverseFolder(
 	}
 }
 
-function extractFrontmatter(markdown) {
+function extractFrontmatter(markdown): { content: string; metadata: any } {
 	const match = /---\r?\n([\s\S]+?)\r?\n---/.exec(markdown);
 	const frontMatter = match ? match[1] : '';
 	const content = match ? markdown.slice(match[0].length) : markdown;

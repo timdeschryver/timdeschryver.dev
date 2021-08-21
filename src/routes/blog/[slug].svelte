@@ -169,6 +169,28 @@
 	{@html post.html}
 {/if}
 
+{#if post.metadata.incomingLinks.length}
+	<h5>Incoming links</h5>
+	<ul>
+		{#each post.metadata.incomingLinks as link}
+			<li>
+				<a href={`/blog/${link.slug}`} prefetch="true">{link.title}</a>
+			</li>
+		{/each}
+	</ul>
+{/if}
+
+{#if post.metadata.outgoingLinks.length}
+	<h5>Outgoing links</h5>
+	<ul>
+		{#each post.metadata.outgoingLinks as link}
+			<li>
+				<a href={`/blog/${link.slug}`} prefetch="true">{link.title}</a>
+			</li>
+		{/each}
+	</ul>
+{/if}
+
 <hr />
 
 <Support />
