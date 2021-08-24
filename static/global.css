@@ -79,9 +79,11 @@
 }
 
 button:focus,
-a:focus {
-	outline: 2px solid var(--accent-color);
-	outline-offset: 0.25em;
+button:active,
+a:focus,
+a:active {
+	outline: 2px solid var(--accent-color) !important;
+	outline-offset: 0.25em !important;
 }
 
 :focus:not(:focus-visible) {
@@ -183,13 +185,20 @@ a {
 	position: relative;
 }
 
-p > a,
-li > a {
+[data-page='blog'] li > a:hover {
+	transform: scale(1.05);
+	transition: transform 200ms;
+}
+
+[data-page^='blog/'] p > a,
+[data-page^='blog/'] li > a {
 	border-bottom: 3px solid var(--accent-color);
 }
 
-p > a {
-	background-color: var(--accent-color-01);
+[data-page^='blog/'] p > a:hover,
+[data-page^='blog/'] li > a:hover {
+	background: var(--accent-color-01);
+	transition: background 200ms;
 }
 
 a:hover,

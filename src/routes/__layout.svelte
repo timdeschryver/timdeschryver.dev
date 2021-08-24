@@ -59,7 +59,7 @@
 	<Settings />
 </div>
 
-<main>
+<main data-page={segment}>
 	<slot />
 </main>
 
