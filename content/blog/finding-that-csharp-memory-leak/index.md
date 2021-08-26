@@ -28,11 +28,11 @@ The second day, this happened again and it was worse, the API with the memory le
 
 I think that you must be able to reproduce a problem first to solve it. This gives you some insights into the problem, and you exactly know where and when that problem occurs.
 
-Since this was a first-timer for me, I followed the Microsoft Docs (which were well written and was exactly what I was looking for) [Debug a memory leak in .NET Core
-](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/debug-memory-leak).
+Since this was a first-timer for me, I followed the Microsoft Docs (which were well written and was exactly what I was looking for) [Debug a memory leak in .NET Core](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/debug-memory-leak).
+
 In this tutorial you use the dotnet commands, [dotnet trace](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-trace), [dotnet counters](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-counters), and [dotnet dump](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-dump) to find and troubleshoot process.
 
-While being impressed with these tools, I wasn't able to reproduce the memory leak locally despite my effort to mimick the traffic to the API with [JMeter](https://jmeter.apache.org/).
+While being impressed with these tools, I wasn't able to reproduce the memory leak locally despite my effort to mimick the traffic towards the API with [Artillery](https://artillery.io/).
 
 ### Analysing a dump file
 
@@ -64,4 +64,10 @@ To get a better understanding at how I should intepret the data I read through [
 - The fastest way to look into a memory leak is to create a dump file of the process in production. There's no need to try to reproduce the problem because you can access all the data you need. When the cause is found, you can fix it locally and verify the fix locally.
 - Monitor your system. When you're working in a .NET environment this usually means looking at the metrics in [Application Insights](https://dev.applicationinsights.io/). You can even create alerts to be notified when there are abnormalities.
 
-> When our memory leak problem was solved, I saw that [Scott Hanselman] wrote two articles about the diagnosing and visualizing traces a couple of days ago. I can recommend reading his articles to see more examples, [Cross-platform diagnostic tools for .NET Core](https://www.hanselman.com/blog/CrossPlatformDiagnosticToolsForNETCore.aspx) and [dotnet-trace for .NET Core tracing in PerfView, SpeedScope, Chromium Event Trace Profiling, Flame graphs and more!](https://www.hanselman.com/blog/dotnettraceForNETCoreTracingInPerfViewSpeedScopeChromiumEventTraceProfilingFlameGraphsAndMore.aspx).
+### More resources
+
+A list of resources about this topic, that I find useful and wished I had found earlier:
+
+- [Diagnosing memory leaks in .NET apps](https://www.youtube.com/watch?v=SHGeE_PFA4s) and [Diagnosing thread pool exhaustion issues in .NET Core apps](https://www.youtube.com/watch?v=isK8Cel3HP0)
+  by Mike Rousos on the [dotNET YouTube channel](https://www.youtube.com/channel/UCvtT19MZW8dq5Wwfu6B0oxw)
+- [Cross-platform diagnostic tools for .NET Core](https://www.hanselman.com/blog/CrossPlatformDiagnosticToolsForNETCore.aspx) and [dotnet-trace for .NET Core tracing in PerfView, SpeedScope, Chromium Event Trace Profiling, Flame graphs and more!](https://www.hanselman.com/blog/dotnettraceForNETCoreTracingInPerfViewSpeedScopeChromiumEventTraceProfilingFlameGraphsAndMore.aspx) by [Scott Hanselman](https://twitter.com/shanselman)
