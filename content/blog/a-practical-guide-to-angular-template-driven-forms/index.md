@@ -536,11 +536,15 @@ This makes it feel like you're using the Web platform, which is always pleasant.
 
 ### Built-in validators
 
-The Angular `FormsModule` comes with a set of directives that implement the [native HTML form validation attributes](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#using_built-in_form_validation), except for the `min` and `max` validators. Recently, a [Pull Request](https://github.com/angular/angular/pull/39063) was merged, so I assume that these missing validators will be available in one of the future releases.
+The Angular `FormsModule` comes with a set of directives that implement the [native HTML form validation attributes](https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation#using_built-in_form_validation).
+
+> The `min` and `max` validators to validate numeric inputs were implemented in Angular v12.0.0, the next releases also contained small bugfixes and enhancements.
+
+except for the `min` and `max` validators. Recently, a [Pull Request](https://github.com/angular/angular/pull/39063) was merged, so I assume that these missing validators will be available in one of the future releases.
 
 ```html
 <input required />
-<input minlength="3" minlength="10" />
+<input minlength="3" maxlength="10" />
 <input pattern="/@/" />
 ```
 
