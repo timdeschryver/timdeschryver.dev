@@ -1362,8 +1362,10 @@ To implement this feature, we have options.
 
 The first one is to add a new condition to the [Error Component](#error-component) and check if the form has been submitted by using the `submitted` property on the form. Besides this, to add the red border color to invalid controls, a `submitted` class should also be added to the form. That's why having a `.ng-submitted` class would be useful, sadly this is not (yet?) the case.
 
+> Angular v12.1 adds the `.ng-submitted` class to the form element automatically when the form is submitted.
+
 The second option is to touch all form controls when a user submits the form.
-This is simply done by invoking the [`markAllAsTouched` method](https://angular.io/api/forms/AbstractControl#markallastouched) of the form.
+To touch a form programmatically, invoke the [`markAllAsTouched` method](https://angular.io/api/forms/AbstractControl#markallastouched) on a control, or on a form (group) to mark all controls of that form as touched.
 
 ### Errors Example
 

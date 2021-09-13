@@ -160,6 +160,10 @@ I expected the LINQ examples to be faster, but I was still surprised by the marg
 
 To play with the solutions yourselves, here's a [link to the GitHub repository](https://github.com/timdeschryver/csharp-benchmarks) with the examples included.
 
+Thanks to a [community contribution](https://github.com/timdeschryver/csharp-benchmarks/commit/e4026d705863472e9708f16c2f44cae24bffd69e), these benchmarks are also created with [BenchmarkDotNet](https://github.com/dotnet/BenchmarkDotNet) and gives us the following results:
+
+![Benchmark of the different implementations](./images/benchmark.png)
+
 ## Conclusion
 
 The reason why the numbers ramp up is that at its worst-case scenario, it has to traverse through the whole list until the predicate finds a match.
