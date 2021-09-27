@@ -196,6 +196,8 @@ Because I like the implementation, and it still remains readable I shamelessly c
 
 With the `Dataflow` variant, I was able to cut another 3 minutes off of the time to process the whole collection.
 
+> Update: .NET 6 introduces a new [Parallel.ForEachAsync](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallel.foreachasync?view=net-6.0) method, meaning that you don't need to write your own implementation of the async variant.
+
 ```cs
 await itemsFromSystemA
     .ParallelForEachAsync(
@@ -207,6 +209,7 @@ await itemsFromSystemA
         Convert.ToInt32(Math.Ceiling((Environment.ProcessorCount * 0.75) * 2.0))
     );
 
+// TODO: can be removed in .NET 6 because it's built-in https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallel.foreachasync?view=net-6.0
 public static class AsyncExtensions
 {
     public static Task ParallelForEachAsync<T>(this IEnumerable<T> source, Func<T, Task> body, int maxDop = DataflowBlockOptions.Unbounded, TaskScheduler scheduler = null)
