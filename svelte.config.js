@@ -8,7 +8,7 @@ export default {
 	preprocess: sveltePreprocess(),
 	kit: {
 		prerender: {
-			pages: ['*', '/sitemap.xml', '/blog/rss.xml']
+			entries: ['*', '/sitemap.xml', '/blog/rss.xml'],
 		},
 
 		// By default, `npm run build` will create a standard Node app.
@@ -17,6 +17,6 @@ export default {
 		adapter: vercel(),
 
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
-	}
+		target: '#svelte',
+	},
 };
