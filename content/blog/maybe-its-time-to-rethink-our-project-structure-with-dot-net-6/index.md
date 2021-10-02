@@ -191,9 +191,9 @@ The bare minimum to create a module is a class that has two methods, one to conf
 This has the benefit that it's clear what the module needs, which can be useful to write tests and makes it easier to remove unnecessary code.
 
 ```cs{3-10,12-21}:OrdersModule.cs
-public class OrdersModule
+public static class OrdersModule
 {
-    public IServiceCollection RegisterOrdersModule(IServiceCollection services)
+    public static IServiceCollection RegisterOrdersModule(this IServiceCollection services)
     {
         services.AddSingleton(new OrderConfig());
         services.AddScoped<IOrdersRepository, OrdersRepository>();
@@ -202,7 +202,7 @@ public class OrdersModule
         return services;
     }
 
-    public IEndpointRouteBuilder MapOrdersEndpoints(IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapOrdersEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("/orders", () => {
             ...
@@ -228,7 +228,10 @@ app.Run();
 ```
 
 This keeps the `Program.cs` file clean and simple, and it also has **a clear separation between the modules and their own needs**.
-The configuration of the technical parts (e.g. logging, authentication, middleware, swagger, ...) of the application are also found in the `Program.cs` file because these go across all modules.
+
+The configuration of the global and technical parts (e.g. logging, authentication, middleware, swagger, ...) of the application are also found in the `Program.cs` file because these go across all modules.
+
+> To take a look at how you can configure your popular libraries, take a look at [Minimal APIs at a glance](https://gist.github.com/davidfowl/ff1addd02d239d2d26f4648a06158727) by [David Fowler](https://twitter.com/davidfowl) and [MinimalApiPlayground](https://github.com/DamianEdwards/MinimalApiPlayground) by [Damian Edwards](https://twitter.com/damianedwards)
 
 To add more modules we have to manually repeat this step, but with a little bit of abstraction, it can be automated.
 
