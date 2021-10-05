@@ -1,3 +1,5 @@
+> Update: You can now compose your workflow by reusing composite actions, [GitHub Actions: Reduce duplication with action composition](https://github.blog/changelog/2021-08-25-github-actions-reduce-duplication-with-action-composition/)
+
 ```yml
 name: ci
 

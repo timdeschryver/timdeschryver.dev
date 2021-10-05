@@ -1,8 +1,8 @@
-@import './fonts/system/font-face.css';
-
 :root {
-	--text-font: 'system';
-	--head-font: 'system';
+	--text-font: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica,
+		ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+	--head-font: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica,
+		ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 
 	--hue: 47;
 	--base-saturation: 100%;
@@ -119,16 +119,7 @@ h2,
 h3,
 h4 {
 	font-family: var(--head-font);
-	letter-spacing: 0.033em;
 	line-height: 1.2;
-}
-
-h1 {
-	letter-spacing: 0.3rem;
-}
-
-h2 {
-	letter-spacing: 0.2rem;
 }
 
 h1 {

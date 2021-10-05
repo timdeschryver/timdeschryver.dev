@@ -256,7 +256,7 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		width: 125px;
+		width: 130px;
 	}
 	.side-actions * {
 		padding: 4px;

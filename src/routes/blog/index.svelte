@@ -125,7 +125,9 @@
 	h2 {
 		margin-top: 0;
 		font-size: 1rem;
+		font-weight: 300;
 	}
+
 	li {
 		padding: 0.5em 0;
 		border-bottom: 2px solid transparent;
