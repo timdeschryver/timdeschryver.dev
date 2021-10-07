@@ -256,7 +256,7 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		width: 130px;
+		width: 160px;
 	}
 	.side-actions * {
 		padding: 4px;
@@ -270,14 +270,12 @@
 		width: 100%;
 		cursor: pointer;
 	}
-
-	@media (max-width: 1300px) {
+	@media (max-width: 1450px) {
 		.side-actions {
-			width: 110px;
+			width: 130px;
 		}
 	}
-
-	@media screen and (max-width: 1150px) {
+	@media (max-width: 1380px) {
 		.side-actions {
 			display: none;
 		}

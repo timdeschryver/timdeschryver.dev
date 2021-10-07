@@ -13,9 +13,9 @@ builder.Services.AddTransient<ICustomersRepository, CustomersRepository>();
 var app = builder.Build();
 app.MapPut("customers/block/{customerId}", async (string customerId, BlockCustomer blockCustomer, ICustomersRepository customersRepository) =>
 {
-    var customer = await _customersRepository.Get(command.CustomerId, cancellationToken);
+    var customer = await _customersRepository.Get(command.CustomerId);
     customer.Block(command.Reason);
-    await _customersRepository.Save(customer, cancellationToken);
+    await _customersRepository.Save(customer);
     return Results.Ok();
 });
 ```
@@ -47,9 +47,9 @@ public static class BlockCustomer
 {
     public static async Task<IResult> (string customerId, BlockCustomer blockCustomer, ICustomersRepository customersRepository)
     {
-        var customer = await _customersRepository.Get(command.CustomerId, cancellationToken);
+        var customer = await _customersRepository.Get(command.CustomerId);
         customer.Block(command.Reason);
-        await _customersRepository.Save(customer, cancellationToken);
+        await _customersRepository.Save(customer);
         return Results.Ok();
     }
 }

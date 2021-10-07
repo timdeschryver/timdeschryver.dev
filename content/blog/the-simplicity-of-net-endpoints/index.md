@@ -32,7 +32,7 @@ WebApplication
 ```
 
 In traditional MVC ASP.NET API applications, you'll find controllers that include one or more routes.
-Because of this, a controller file can quickly become cluttered and often requires multiple constructor arguments. In production code, this isn't something that we have to think of because the dependency framework of your choice takes care of this. But still, a constructor that takes a lot of arguments is a bad practice and might be a problem in the future (e.g. when you need to move things around), if it isn't already causing troubles (e.g. in test setups).
+Because of this, the controller quickly becomes bloated and it often requires multiple constructor arguments. In production code, this isn't something that we have to think of because the dependency framework of your choice takes care of this. But still, a constructor that takes a lot of arguments is a bad practice and might be a problem in the future (e.g. when you need to move things around), if it isn't already causing troubles (e.g. in test setups).
 
 To give an example, we start with the following controller.
 In this case, we're keeping the example lightweight and only add one dependency to the customers' repository.
@@ -62,18 +62,19 @@ public class CustomersController : ControllerBase
     {
         var customer = await _customersRepository.GetCustomer(customerId);
         customer.Block(command.Reason);
-        await _customersRepository.Save(customer, cancellationToken);
+        await _customersRepository.Save(customer);
         return Ok();
     }
 }
 ```
 
-This is still pretty straightforward, but things can get complicated real fast with this approach.
+This is still pretty straightforward, but things can get messy fast with this approach.
 
 That's one of the reasons why I think that a lot of teams have shifted towards using the [Mediator pattern](https://en.wikipedia.org/wiki/Mediator_pattern), more specific towards the [MediatR](https://github.com/jbogard/MediatR) package.
 
 Using MediatR results in a low coupling between the routes of a controller and the implementation of the request, thus the request handlers can evolve independently from each other.
-All incoming requests are mapped to MediatR requests, often suffixed with `Query` or `Command`, and is then sent to the mediator pipeline.
+
+An incoming requests gets mapped in the controller to a MediatR request, often suffixed with `Query` or `Command`, and is then sent to the mediator pipeline.
 
 The result is that the controller:
 
@@ -111,7 +112,7 @@ public class CustomersController : ControllerBase
 ```
 
 To give you the full picture, the associate handler of the `BlockCustomerCommand` request looks like this.
-It's simply a copy-paste of the route's code to the `Handle` method of a request handler.
+It's simply a copy-paste of the route's code to the `Handle` method of the request handler.
 
 ```cs:Commands/BlockCustomerCommandHandler.cs
 public class BlockCustomerCommandHandler : IRequestHandler<BlockCustomerCommand>
@@ -147,14 +148,14 @@ builder.Services.AddTransient<ICustomersRepository, CustomersRepository>();
 var app = builder.Build();
 app.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId, [FromBody] BlockCustomer blockCustomer, [FromServices] ICustomersRepository customersRepository) =>
 {
-    var customer = await _customersRepository.Get(command.CustomerId, cancellationToken);
+    var customer = await _customersRepository.Get(command.CustomerId);
     customer.Block(command.Reason);
-    await _customersRepository.Save(customer, cancellationToken);
+    await _customersRepository.Save(customer);
     return Results.Ok();
 });
 ```
 
-We can also emit the attribute tags, so the shorthand version of the above snippet becomes:
+We can also emit the attribute tags, s the shorthand version of the above snippet becomes:
 
 ```cs{5-11}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
@@ -163,17 +164,17 @@ builder.Services.AddTransient<ICustomersRepository, CustomersRepository>();
 var app = builder.Build();
 app.MapPut("customers/block/{customerId}", async (string customerId, BlockCustomer blockCustomer, ICustomersRepository customersRepository) =>
 {
-    var customer = await _customersRepository.Get(command.CustomerId, cancellationToken);
+    var customer = await _customersRepository.Get(command.CustomerId);
     customer.Block(command.Reason);
-    await _customersRepository.Save(customer, cancellationToken);
+    await _customersRepository.Save(customer);
     return Results.Ok();
 });
 ```
 
-This is similar to what we had with MVC controllers, except that the DI is handled by the endpoint itself.
+This is similar to what we already had with MVC controllers, except that the dependency injection is handled by the endpoint itself.
 
 By following the `IModule` convention, we can easily refactor this code and move the handler to its own file, a la MediatR.
-Doing this gives us the following result.
+Doing this gives us the following result:
 
 ```cs{9-14}:Modules/Customers/CustomersModule.cs
 public class CustomersModule : IModule
@@ -200,9 +201,9 @@ public static class BlockCustomer
 {
     public static async Task<IResult> (string customerId, BlockCustomer blockCustomer, ICustomersRepository customersRepository)
     {
-        var customer = await _customersRepository.Get(command.CustomerId, cancellationToken);
+        var customer = await _customersRepository.Get(command.CustomerId);
         customer.Block(command.Reason);
-        await _customersRepository.Save(customer, cancellationToken);
+        await _customersRepository.Save(customer);
         return Results.Ok();
     }
 }
