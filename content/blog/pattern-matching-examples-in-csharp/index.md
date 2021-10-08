@@ -96,15 +96,15 @@ Furthermore, a **`when` statement can be added to the pattern to add an extra gu
 The `when` statement can be used to match a non-constant value against a condition, for example, to invoke a method on the matched variable. Besides matching the object that is being matched, it's also possible to include other objects in the `when` statement.
 
 ```cs{6}
-var greetWithName = false;
+var greetWithName = true;
 var output = "Mrs. Kim" switch
 {
     _ when greetWithName == false => $"Hi",
     "Tim" => "Hi Tim!",
     var str when str.StartsWith("Mrs.") || str.StartsWith("Mr.") => $"Greetings {str}",
-    var str => $"Hello ${str}",
+    var str => $"Hello {str}",
 };
-// output: Mrs. Kim
+// output: Greetings Mrs. Kim
 ```
 
 ### Relational Patterns
@@ -289,8 +289,8 @@ var output = ("", "Tim") switch
 var contactInfo = new ContactInfo("Sarah", "Peeters", "0123456789");
 var output = contactInfo switch
 {
-    { TelephoneNumber: not null } or { TelephoneNumber: not "" } => $"{contactInfo.FirstName} {contactInfo.LastName} ({contactInfo.TelephoneNumber})",
-    _ => $"${contactInfo.FirstName} ${contactInfo.LastName}"
+    { TelephoneNumber: not null } and { TelephoneNumber: not "" } info => $"{info.FirstName} {info.LastName} ({info.TelephoneNumber})",
+    _ => $"{contactInfo.FirstName} {contactInfo.LastName}"
 };
 // output: Sarah Peeters (0123456789)
 ```
