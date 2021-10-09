@@ -90,7 +90,7 @@
 			const heading = headings.find((h) => h.offsetTop <= scrollY);
 			if (lastHeading !== heading) {
 				lastHeading = heading;
-				window.history.pushState(null, null, heading ? `#${heading?.id}` : ' ');
+				window.history.replaceState(window.history.state, '', heading ? `#${heading?.id}` : ' ');
 			}
 		}
 	}
