@@ -30,13 +30,9 @@
 	let tldrToggle;
 	let scrollY;
 
-	let headings: HTMLElement[] = [];
 	let pres: HTMLElement[] = [];
 
 	onMount(() => {
-		headings = window.history.pushState
-			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
-			: [];
 		pres = [...(document.querySelectorAll('pre') as any)];
 
 		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
@@ -71,6 +67,7 @@
 
 	$: if (tldrToggle !== undefined) {
 		let params = new URLSearchParams(window.location.search);
+
 		if (tldrToggle) {
 			params.set('tldr', '1');
 			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
@@ -87,10 +84,18 @@
 	let lastHeading;
 	$: {
 		if (typeof window !== 'undefined') {
-			const heading = headings.find((h) => h.offsetTop <= scrollY);
-			if (lastHeading !== heading) {
-				lastHeading = heading;
-				window.history.replaceState(window.history.state, '', heading ? `#${heading?.id}` : ' ');
+			if (tldrToggle === false) {
+				const headings = window.history.pushState
+					? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
+					: [];
+				const heading = headings.find((h) => h.offsetTop <= scrollY);
+				if (lastHeading !== heading) {
+					lastHeading = heading;
+					window.history.replaceState(window.history.state, '', heading ? `#${heading?.id}` : ' ');
+				}
+			} else if (tldrToggle === true) {
+				lastHeading = null;
+				window.history.replaceState(window.history.state, '', ' ');
 			}
 		}
 	}
@@ -167,28 +172,28 @@
 	{@html post.tldr}
 {:else}
 	{@html post.html}
-{/if}
 
-{#if post.metadata.incomingLinks.length}
-	<h5>Incoming links</h5>
-	<ul>
-		{#each post.metadata.incomingLinks as link}
-			<li>
-				<a href={`/blog/${link.slug}`} prefetch="true">{link.title}</a>
-			</li>
-		{/each}
-	</ul>
-{/if}
+	{#if post.metadata.incomingLinks.length}
+		<h5>Incoming links</h5>
+		<ul>
+			{#each post.metadata.incomingLinks as link}
+				<li>
+					<a href={`/blog/${link.slug}`} prefetch="true">{link.title}</a>
+				</li>
+			{/each}
+		</ul>
+	{/if}
 
-{#if post.metadata.outgoingLinks.length}
-	<h5>Outgoing links</h5>
-	<ul>
-		{#each post.metadata.outgoingLinks as link}
-			<li>
-				<a href={`/blog/${link.slug}`} prefetch="true">{link.title}</a>
-			</li>
-		{/each}
-	</ul>
+	{#if post.metadata.outgoingLinks.length}
+		<h5>Outgoing links</h5>
+		<ul>
+			{#each post.metadata.outgoingLinks as link}
+				<li>
+					<a href={`/blog/${link.slug}`} prefetch="true">{link.title}</a>
+				</li>
+			{/each}
+		</ul>
+	{/if}
 {/if}
 
 <hr />

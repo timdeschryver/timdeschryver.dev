@@ -241,7 +241,7 @@ To automate the process to register a new module, we'll first have to introduce 
 This interface is then being used to look up all of the modules that implement the interface within the application.
 Once all of the modules are discovered, the modules are automatically registered.
 
-```cs
+```cs:IModule.cs
 public interface IModule
 {
     IServiceCollection RegisterModule(IServiceCollection builder);

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import url from 'url';
 import { execSync } from 'child_process';
 import { createHash } from 'crypto';
 import marked from 'marked/lib/marked.js';
@@ -248,8 +249,8 @@ function parseFileToHtmlAndMeta(
 		const attributes = [href_attr, title_attr, prefetch_attr, rel_attr].filter(Boolean).join(' ');
 
 		if (internal) {
-			const outgoingSlug = href.split('/').pop();
-			if (metadata.slug !== outgoingSlug) {
+			const outgoingSlug = url.parse(href, false).pathname.split('/').pop();
+			if (metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}
 		}

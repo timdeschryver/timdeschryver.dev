@@ -1,8 +1,10 @@
 :root {
-	--text-font: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica,
-		ubuntu, roboto, noto, segoe ui, arial, sans-serif;
-	--head-font: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica,
-		ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+	--text-font: -ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
+	--head-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
 
 	--hue: 47;
 	--base-saturation: 100%;

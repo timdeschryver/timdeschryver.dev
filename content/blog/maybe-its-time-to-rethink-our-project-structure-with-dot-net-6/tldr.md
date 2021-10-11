@@ -32,6 +32,8 @@ WebApplication
 │               PaymentService.cs
 ```
 
+## Manually registering modules
+
 ```cs:Program.cs
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.RegisterOrdersModule();
@@ -71,4 +73,95 @@ public static class GetOrder
         return Results.Ok(order);
     }
 }
+```
+
+## Automatic module registration
+
+```cs:Modules/IModule.cs
+public interface IModule
+{
+    IServiceCollection RegisterModule(IServiceCollection builder);
+    IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints);
+}
+
+public static class ModuleExtensions
+{
+    // this could also be added into the DI container
+    static readonly List<IModule> registeredModules = new List<IModule>();
+
+    public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder)
+    {
+        var modules = DiscoverModules();
+        foreach (var module in modules)
+        {
+            module.RegisterModule(builder.Services);
+            registeredModules.Add(module);
+        }
+
+        return builder;
+    }
+
+    public static WebApplication MapEndpoints(this WebApplication app)
+    {
+        foreach (var module in registeredModules)
+        {
+            module.MapEndpoints(app);
+        }
+        return app;
+    }
+
+    private static IEnumerable<IModule> DiscoverModules()
+    {
+        return typeof(IModule).Assembly
+            .GetTypes()
+            .Where(p => p.IsClass && p.IsAssignableTo(typeof(IModule)))
+            .Select(Activator.CreateInstance)
+            .Cast<IModule>();
+    }
+}
+```
+
+```cs:Modules/Orders/OrdersModule.cs
+public class OrdersModule: IModule
+{
+    public IServiceCollection RegisterModules(IServiceCollection services)
+    {
+        services.AddSingleton(new OrderConfig());
+        services.AddScoped<IOrdersRepository, OrdersRepository>();
+        services.AddScoped<ICustomersRepository, CustomersRepository>();
+        services.AddScoped<IPayment, PaymentService>();
+        return services;
+    }
+
+    public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapGet("/orders", () => {
+            ...
+        });
+        endpoints.MapPost("/orders", () => {
+            ...
+        });
+        return endpoints;
+    }
+}
+```
+
+```cs:Modules/Orders/Endpoints/GetOrder.cs
+public static class GetOrder
+{
+    public static async Task<IResult> Handle(int orderId, IOrdersRepository ordersRepository)
+    {
+        var order = await ordersRepository.Get(orderId);
+        return Results.Ok(order);
+    }
+}
+```
+
+```cs:Program.cs
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.RegisterModules();
+
+var app = builder.Build();
+app.MapEndpoints();
+app.Run();
 ```
