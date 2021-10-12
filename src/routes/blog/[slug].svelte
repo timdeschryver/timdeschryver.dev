@@ -20,8 +20,7 @@
 </script>
 
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import { page } from '$app/stores';
+	import { onDestroy, onMount, afterUpdate } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 
@@ -47,10 +46,6 @@
 				.join(''),
 		);
 
-		tldrToggle =
-			$page.query.get('tldr') !== null ||
-			new URLSearchParams(window.location.search).get('tldr') !== null;
-
 		if (!window.location.hash) {
 			requestAnimationFrame(() => {
 				window.scrollTo({ top: document.querySelector('header').clientHeight });
@@ -63,6 +58,17 @@
 			document.documentElement.style.setProperty('--hue', '47');
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
 		}
+	});
+
+	let headings = null;
+	afterUpdate(() => {
+		tldrToggle = new URLSearchParams(window.location.search).get('tldr') !== null;
+
+		headings = tldrToggle
+			? null
+			: headings || window.history.pushState
+			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
+			: [];
 	});
 
 	$: if (tldrToggle !== undefined) {
@@ -84,10 +90,7 @@
 	let lastHeading;
 	$: {
 		if (typeof window !== 'undefined') {
-			if (tldrToggle === false) {
-				const headings = window.history.pushState
-					? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
-					: [];
+			if (tldrToggle === false && headings) {
 				const heading = headings.find((h) => h.offsetTop <= scrollY);
 				if (lastHeading !== heading) {
 					lastHeading = heading;
