@@ -27,7 +27,7 @@ const customer = { customerId: newid(), name: 'Sarah' } as Customer;
 // or a variant with angle brackets
 const customer = <Customer>{ customerId: newid(), name: 'Sarah' };
 
-// even better, via a factary method
+// even better, via a factory method
 function createCustomer(name: string) {
 	return { customerId: newid(), names } as Customer;
 }
@@ -44,7 +44,7 @@ The simple fix is to ditch the type assertions and to replace them with type ann
 // inline
 const customer: Customer = { customerId: newid(), name: 'Sarah' };
 
-// even better, via a factary method
+// even better, via a factory method
 function createCustomer(name: string): Customer {
 	return { customerId: newid(), names };
 }
