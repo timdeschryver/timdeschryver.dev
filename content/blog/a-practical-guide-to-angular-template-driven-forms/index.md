@@ -36,6 +36,8 @@ The first circumstance was returning to a complex form after a couple of months 
 
 The second circumstance was that [Ward Bell](https://twitter.com/wardbell) was advocating for template-driven forms on a [Forms Episode](https://www.spreaker.com/user/ng-conf/e047-forms-series-episode-2-template-dri) of the [The Angular Show](https://twitter.com/AngularShow) podcast.
 
+> Watch Ward's talk at ng-conf [Prefer Template-Driven Forms](https://www.youtube.com/watch?v=L7rGogdfe2Q)
+
 Based on Ward's experience, the examples that were talked about on the podcast (alongside a [StackBlitz demo](https://stackblitz.com/edit/angular-kkatri)), and my findings while I was attempting to build a layer on top of the Angular Forms API, I'm now exploring and discovering the benefits of the template-driven way.
 
 In this post, I'd like to share my experience with some practical examples.
