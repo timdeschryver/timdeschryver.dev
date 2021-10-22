@@ -45,7 +45,7 @@ And the extracted handler:
 ```cs:Modules/Customers/Endpoints/BlockCustomer.cs
 public static class BlockCustomer
 {
-    public static async Task<IResult> (string customerId, BlockCustomer blockCustomer, ICustomersRepository customersRepository)
+    public static async Task<IResult> Handler(string customerId, BlockCustomer blockCustomer, ICustomersRepository customersRepository)
     {
         var customer = await _customersRepository.Get(command.CustomerId);
         customer.Block(command.Reason);
