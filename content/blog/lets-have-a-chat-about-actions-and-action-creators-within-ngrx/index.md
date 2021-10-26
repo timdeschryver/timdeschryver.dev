@@ -18,6 +18,16 @@ In order to update to the store state we have to send messages from the applicat
 
 ![](./images/action-flow.png)
 
+## Update 2019–04–05
+
+NgRx introduces Action Creators in version 7.4.0, allowing us to create a typed action by using `createAction`.
+
+```ts
+export const orderFood = createAction('[Order Page] ORDER FOOD', props<{ dish: string }>());
+```
+
+To create the action creator, we define the action’s type as the first parameter and use the second parameter to define additional action properties. We don’t need to define an action’s enum as this is accessible via the type property, for example `orderFood.type`. For more info about this change see [Alex Okrushko's](https://twitter.com/AlexOkrushko) post [NgRx: Action creators redesigned](https://blog.angularindepth.com/ngrx-action-creators-redesigned-d396960e46da).
+
 ## Actions
 
 An action is a Plain Old JavaScript Object (POJO), it defines its intention with the `type` property and it has an optional payload. In fact you can define the shape of the action yourself, the only enforcement is that it must have a `type` property and its value must be a string. Other than that the structure of the action can be shaped to your needs, although, I would encourage you to use a `payload` property to add extra data to the action.
@@ -35,21 +45,8 @@ An example of an action with and without payload looks as follows:
 }
 ```
 
-> Update 2019–04–05: Action Creators NgRx introduced Action Creators in version 7.4.0, allowing us to create a typed action by using createAction.
->
-> ```ts
-> export const orderFood = createAction(
->   '[Order Page] ORDER FOOD',
->   props<{ dish: string }>(),
-> )
-> ```
-
-````
-
-> To create the action creator, we define the action’s type as the first parameter and use the second parameter to define additional action properties. We don’t need to define an action’s enum as this is accessible via the type property, for example `orderFood.type`. For more info about this change see [Alex Okrushko's](https://twitter.com/AlexOkrushko) post [NgRx: Action creators redesigned](https://blog.angularindepth.com/ngrx-action-creators-redesigned-d396960e46da).
-
 In a typical NgRx application you will probably see these action types defined as `enums`. Doing this has the benefit to typecheck the action types, this is done because a typo is always one keystroke away and can be the cause of frustration for several minutes.
-The refactored version of the actions above would be:
+The refactored version of the actions above becomes:
 
 ```ts
 const enum OrderActionTypes {
@@ -62,7 +59,7 @@ const enum OrderActionTypes {
   type: OrderActionTypes.ORDER_FOOD,
   payload: { dish: 'spaghetti carbonara' }
 }
-````
+```
 
 > SIDE NOTE: Instead of using an ActionTypes `enum` it’s also a possibility to use constants to define the actions, as in `const ORDER_FOOD = ‘[Order Page] ORDER FOOD’`. The behavior will be the same, so feel free to use your preferred way.
 
@@ -70,9 +67,9 @@ Now that we know what an action is, we have to send it to the store. To do this 
 
 ```ts
 this.store.dispatch({
-  type: OrderActionTypes.ORDER_FOOD,
-  payload: { dish: 'spaghetti carbonara' },
-})
+	type: OrderActionTypes.ORDER_FOOD,
+	payload: { dish: 'spaghetti carbonara' },
+});
 ```
 
 Dispatching an action like this may seem OK at first sight but has the downside that you have to type out the action every time. You have to define the type, you have to import the `ActionType` enum, and you have to define the payload. Speaking of the payload, you have to remember the structure of the payload and if it changes in the future you’ll have to modify it throughout your whole codebase.
@@ -89,12 +86,12 @@ The class has a `readonly` type property and via its constructor it gets the pay
 
 ```ts
 class OrderFood implements Action {
-  readonly type = OrderActionTypes.ORDER_FOOD
-  readonly payload: { dish: string }
+	readonly type = OrderActionTypes.ORDER_FOOD;
+	readonly payload: { dish: string };
 
-  constructor(dish: string) {
-    this.payload = { dish }
-  }
+	constructor(dish: string) {
+		this.payload = { dish };
+	}
 }
 ```
 
@@ -102,8 +99,8 @@ If we just create the action object from the constructor’s input, we can short
 
 ```ts
 class OrderFood implements Action {
-  readonly type = OrderActionTypes.ORDER_FOOD
-  constructor(readonly payload: { dish: string }) {}
+	readonly type = OrderActionTypes.ORDER_FOOD;
+	constructor(readonly payload: { dish: string }) {}
 }
 ```
 
@@ -111,7 +108,9 @@ Notice that the payload is set as a readonly property in the constructor.
 
 In order to dispatch the action we have to create a new instance of the class:
 
+```ts
 this.store.dispatch(new OrderFood({ dish: 'spaghetti carbonara' }));
+```
 
 ### Creating an action via a factory function
 
@@ -119,15 +118,15 @@ The function returns the action object based on the function’s input and sets 
 
 ```ts
 const orderFood = ({ dish }: { dish: string }) => ({
-  type: OrderActionTypes.ORDER_FOOD,
-  payload: { dish },
-})
+	type: OrderActionTypes.ORDER_FOOD,
+	payload: { dish },
+});
 ```
 
 To dispatch the action we call the function:
 
 ```ts
-this.store.dispatch(orderFood({ dish: 'spaghetti carbonara' }))
+this.store.dispatch(orderFood({ dish: 'spaghetti carbonara' }));
 ```
 
 Personally, while this may not be the de facto way, this is my preferred way. Because using a factory function prevents common or easily made mistakes, especially if you’re new to NgRx or Redux in general.
@@ -144,33 +143,33 @@ Unlike reducers, an action creator doesn’t need to be pure. The inside of an a
 
 ```ts
 const orderFood = ({ dish = '', timestamp = Date.now() } = {}) => ({
-  type: OrderActionTypes.ORDER_FOOD,
-  payload: { dish, timestamp },
-})
+	type: OrderActionTypes.ORDER_FOOD,
+	payload: { dish, timestamp },
+});
 ```
 
 Which is used in the application as follows:
 
 ```ts
-orderFood({ dish: 'spaghetti carbonara' })
+orderFood({ dish: 'spaghetti carbonara' });
 ```
 
 And in the tests where you need more control, you can override these values:
 
 ```ts
-orderFood({ dish: 'spaghetti carbonara', timestamp: 47 })
+orderFood({ dish: 'spaghetti carbonara', timestamp: 47 });
 ```
 
 Inside action creators you can make **calculations on the input** instead of just returning the action object.
 
 ```ts
 const orderFood = ({ dish = '', extraProp = 1 } = {}) => ({
-  type: OrderActionTypes.ORDER_FOOD,
-  payload: {
-    dish,
-    extraProp: difficultCalculation(extraProp),
-  },
-})
+	type: OrderActionTypes.ORDER_FOOD,
+	payload: {
+		dish,
+		extraProp: difficultCalculation(extraProp),
+	},
+});
 ```
 
 An action creator helps you and your team to **remember the data which is needed to create an action** via its input. This input can be transformed into the payload property of the action.
@@ -179,15 +178,15 @@ Creating the “right” payload structure has the advantage of tightening up yo
 
 ```ts
 function reducer(state, action) {
-  switch (action.type) {
-    case OrderActionTypes.ORDER_FOOD:
-    case OrderActionTypes.PREPARE_FOOD:
-    case OrderActionTypes.SERVE_FOOD:
-      return { ...state, ...action.payload }
+	switch (action.type) {
+		case OrderActionTypes.ORDER_FOOD:
+		case OrderActionTypes.PREPARE_FOOD:
+		case OrderActionTypes.SERVE_FOOD:
+			return { ...state, ...action.payload };
 
-    default:
-      return state
-  }
+		default:
+			return state;
+	}
 }
 ```
 
@@ -195,19 +194,19 @@ In comparison to:
 
 ```ts
 function reducer(state, action) {
-  switch (action.type) {
-    case OrderActionTypes.ORDER_FOOD:
-      return { ...state, ...action.payload }
+	switch (action.type) {
+		case OrderActionTypes.ORDER_FOOD:
+			return { ...state, ...action.payload };
 
-    case OrderActionTypes.PREPARE_FOOD:
-      return { ...state, ...action.payload }
+		case OrderActionTypes.PREPARE_FOOD:
+			return { ...state, ...action.payload };
 
-    case OrderActionTypes.SERVE_FOOD:
-      return { ...state, ...action.payload }
+		case OrderActionTypes.SERVE_FOOD:
+			return { ...state, ...action.payload };
 
-    default:
-      return state
-  }
+		default:
+			return state;
+	}
 }
 ```
 
@@ -215,17 +214,17 @@ You only need to **write the action creator unit test(s) once**, in contrast to 
 
 ```ts
 it('should create an ORDER_FOOD action', () => {
-  const actual = orderFood({ dish: 'spaghetti carbonara' })
-  const expected = jasmine.objectContaining({
-    type: OrderActionTypes.ORDER_FOOD,
-    payload: jasmine.objectContaining({
-      dish: 'spaghetti carbonara',
-    }),
-  })
+	const actual = orderFood({ dish: 'spaghetti carbonara' });
+	const expected = jasmine.objectContaining({
+		type: OrderActionTypes.ORDER_FOOD,
+		payload: jasmine.objectContaining({
+			dish: 'spaghetti carbonara',
+		}),
+	});
 
-  expect(actual).toEqual(expected)
-  expect(actual.payload.timestamp).toBeTruthy()
-})
+	expect(actual).toEqual(expected);
+	expect(actual.payload.timestamp).toBeTruthy();
+});
 ```
 
 ## Conclusion

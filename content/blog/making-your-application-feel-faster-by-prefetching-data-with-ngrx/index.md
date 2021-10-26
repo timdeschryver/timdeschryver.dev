@@ -206,7 +206,7 @@ export class HeroesEffects {
 
 As you might have noticed in the examples above, the hero details are fetched every single time, even when the details are already persisted in the global Store.
 This isn't always ideal.
-We can tweak the Effect so that we only fetch the hero details that aren't stored in the Store, as discussed in ["Start using Effects for this"](https://timdeschryver.dev/blog/start-using-ngrx-effects-for-this).
+We can tweak the Effect so that we only fetch the hero details that aren't stored in the Store, as discussed in [Start using Effects for this](/blog/start-using-ngrx-effects-for-this).
 
 ```ts{6-11}:heroes.effects.ts
 @Injectable()
@@ -214,11 +214,15 @@ export class HeroesEffects {
   detail$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(heroDetailLoaded, heroDetailHovered),
-      concatMap((action) =>
-        of(action).pipe(
-          withLatestFrom(this.store.select(selectHeroDetail(action.id))),
-        ),
-      ),
+      // Pre NgRx v11
+      // concatMap((action) =>
+      //   of(action).pipe(
+      //     withLatestFrom(this.store.select(selectHeroDetail(action.id))),
+      //   ),
+      // ),
+
+      // concatLatestFrom is an operator from NgRx v11 and above
+      concatLatestFrom((action) => this.store.select(selectHeroDetail(action.id))),
       filter(([_action, detail]) => Boolean(detail) === false),
       mergeMap(([{ id: heroId }]) =>
         this.heroesService

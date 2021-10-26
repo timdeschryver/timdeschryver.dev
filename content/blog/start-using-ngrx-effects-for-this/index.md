@@ -38,22 +38,22 @@ export class CustomersEffects {
 		this.actions.pipe(
 			// filter out the actions, except for `[Customers Page] Opened`
 			ofType(CustomerPageActions.opened),
-			switchMap(() =>
+			exhaustMap(() =>
 				// call the service
 				this.customersService.getCustomers().pipe(
 					// return a Success action when the HTTP request was successfull (`[Customers Api] Load Sucess`)
 					map((customers) => CustomerApiActions.loadCustomersSuccess(customers)),
 					// return a Failed action when something went wrong during the HTTP request (`[Customers Api] Load Failed`)
-					catchError((error) => of(CustomerApiActions.loadCustomersFailed(error)))
-				)
-			)
+					catchError((error) => of(CustomerApiActions.loadCustomersFailed(error))),
+				),
+			),
 		);
 	});
 
 	constructor(
 		// inject Actions from @ngrx/effects
 		private actions: Actions,
-		private customersService: CustomersService
+		private customersService: CustomersService,
 	) {}
 }
 ```
@@ -99,7 +99,7 @@ online = createEffect(() => {
 	return merge(
 		of(navigator.onLine),
 		fromEvent(window, 'online').pipe(mapTo(true)),
-		fromEvent(window, 'offline').pipe(mapTo(false))
+		fromEvent(window, 'offline').pipe(mapTo(false)),
 	).pipe(map((online) => (online ? DeviceActions.online() : DeviceActions.offline())));
 });
 ```
@@ -143,7 +143,7 @@ openDialog = createEffect(() => {
 				return LoginDialogActions.closed();
 			}
 			return LoginDialogActions.loggedIn(result);
-		})
+		}),
 	);
 });
 ```
@@ -161,12 +161,12 @@ reminder = createEffect(
 			ofType(ReminderActions.reminder),
 			map(({ payload }) => {
 				this.snackBar.openFromComponent(ReminderComponent, {
-					data: payload
+					data: payload,
 				});
-			})
+			}),
 		);
 	},
-	{ dispatch: false }
+	{ dispatch: false },
 );
 ```
 
@@ -251,10 +251,10 @@ trackEvents = createEffect(
 		return this.actions.pipe(
 			tap(({ type, payload }) => {
 				appInsights.trackEvent(type, payload);
-			})
+			}),
 		);
 	},
-	{ dispatch: false }
+	{ dispatch: false },
 );
 ```
 

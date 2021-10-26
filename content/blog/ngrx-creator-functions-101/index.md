@@ -80,22 +80,22 @@ export const removeFromCart = createAction(
 - without a payload
 
 ```ts
-createAction('[Articles Page] Page loaded')
+createAction('[Articles Page] Page loaded');
 ```
 
 - with a `props` payload
 
 ```ts
-createAction('[Articles Page] Search', props<{ query: string }>())
+createAction('[Articles Page] Search', props<{ query: string }>());
 ```
 
 - with a function
 
 ```ts
 createAction('[Articles Page] Search', (query: string) => ({
-  query,
-  timestamp: Date.now(),
-}))
+	query,
+	timestamp: Date.now(),
+}));
 ```
 
 Internally, the [`Object.defineProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) method is used to create the `type` property on the action creator.
@@ -382,7 +382,7 @@ export class ArticleEffect {
 
 With the added `ActionCreator` the `ofType` operator is smart enough to infer the action's type.
 
-```ts{6}:article.effects.ts
+```ts{5}:article.effects.ts
 @Injectable()
 export class ArticleEffect {
   @Effect()
@@ -431,7 +431,7 @@ This what the `createEffect` function solves. It adds a check at compile time to
 
 Instead of using the `@Effect` decorator, wrap the Effect's logic inside a `createEffect` function.
 
-```ts{6}:article.effects.ts
+```ts{5}:article.effects.ts
 @Injectable()
 export class ArticleEffect {
   loadArticles = createEffect(() => {
