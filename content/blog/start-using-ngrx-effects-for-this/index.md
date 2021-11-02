@@ -258,6 +258,106 @@ trackEvents = createEffect(
 );
 ```
 
+## Listen to router
+
+Listen to router changes with the `@ngrx/router-store` selectors and dispatch an action with the new route data.
+An alternative would be to injected the `ActivatedRouterData` into the component and to dispatch an action on init. But this leaves us with duplicated logic to parse the route data.
+
+```ts:calendar.effects.ts
+@Injectable()
+export class CalendarEffects {
+	navigate$ = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(calendarActions.enter),
+			concatMap(() => {
+				return combineLatest([
+					this.store.select(selectRouteCustomerIds),
+					this.store.select(selectRoutedDate),
+				]).pipe(
+					filter(([customerIds, date]) => customerIds?.length > 0 && Boolean(date)),
+					map(([customerIds, date]) => calendarEffectsActions.navigated({ customerIds, date })),
+					takeUntil(this.actions$.pipe(ofType(calendarActions.leave))),
+				);
+			}),
+		);
+	});
+}
+```
+
+```ts:routing.selectors.ts
+import { getSelectors } from '@ngrx/router-store'
+
+const routerSelectors = getSelectors()
+
+export const selectRoutedCustomerIds = createSelector(
+	routerSelectors.selectQueryParam('customerId'),
+	(customerId) => {
+		if (Array.isArray(customerId)) {
+			return customerId.map((id) => parseInt(id, 10));
+		}
+
+		if (typeof customerId === 'string') {
+			return [parseInt(customerId, 10)];
+		}
+
+		return [];
+	},
+);
+
+export const selectRoutedDate = routerSelectors.selectQueryParam('date');
+```
+
+## Change the windows title
+
+Add data to the route data and update the window title after navigation.
+
+```ts:routing.effects.ts
+@Injectable()
+export class RoutingEffects {
+	title$ = createEffect(
+		() => {
+			return this.router.events.pipe(
+				filter((evt) => evt instanceof NavigationEnd),
+				tap(() => {
+					let route = this.route;
+					let title = route.snapshot.data.title;
+
+					while (route.firstChild) {
+						route = route.firstChild;
+						if ('title' in route.snapshot.data) {
+							title = route.snapshot.data.title;
+						}
+					}
+
+					if (title) {
+						this.titleService.setTitle(route.snapshot.data.title);
+					}
+				}),
+			);
+		},
+		{ dispatch: false },
+	);
+
+	constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) {}
+}
+```
+
+```ts:route-data.ts
+export const routes: Routes = [
+  {
+    path: 'about',
+    component: AboutComponent,
+    data: { title: 'About' },
+  },
+  {
+    path: '',
+    component: HomeComponent,
+    data: { title: 'Home' },
+  },
+]
+
+```
+
 ## Navigate based on actions
 
 By injecting the Angular router into the Effects class it’s possible to redirect the user based on certain actions. In the example below, we redirect the user to the homepage when the user logs out.
