@@ -120,6 +120,6 @@
 	}
 
 	li + li {
-		margin-top: var(--spacing);
+		margin-top: var(--spacing-large);
 	}
 </style>
