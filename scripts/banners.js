@@ -8,11 +8,9 @@ const content = './content/blog';
 (async () => {
 	const generateBanners = [];
 	const posts = fs.readdirSync(content);
-
 	for (const post of posts) {
 		const bannerPath = path.join(content, post, 'images', 'banner.jpg');
 		const bannerExists = fs.existsSync(bannerPath);
-
 		if (!bannerExists) {
 			generateBanners.push({ post, bannerPath });
 		}
@@ -48,10 +46,12 @@ const content = './content/blog';
 						first = false;
 					}
 
-					await page.$eval('main > header .published-at', (el) => {
+					await page.$eval('header', (el) => {
 						el.style.display = 'none';
 					});
-
+					await page.$eval('.published-at', (el) => {
+						el.style.display = 'none';
+					});
 					await page.$eval('.details', (el) => {
 						el.style['justify-content'] = 'space-around';
 						el.style['font-size'] = '1.2rem';
