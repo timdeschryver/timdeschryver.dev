@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" href="/favicons/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<meta name="theme-color" content="#f8c400" />
@@ -18,139 +18,9 @@
 		<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
-		<link rel="icon" type="image/ico" href="/favicon.ico" />
+		<link rel="icon" type="image/ico" href="/favicons/favicon.ico" />
 
 		<title>Tim Deschryver</title>
-
-		<script>
-			window.addEventListener('set-css-variable', (evt) => {
-				let { key, value } = evt.detail;
-				document.documentElement.style.setProperty(key, hexToHSL(value));
-				localStorage.setItem(key, value);
-
-				if (key === '--background-color') {
-					window.dispatchEvent(
-						new CustomEvent('set-data-attribute', {
-							detail: {
-								key: 'schema',
-								value: isLight(value) ? 'light' : 'dark',
-							},
-						}),
-					);
-				}
-			});
-
-			window.addEventListener('set-data-attribute', (evt) => {
-				let { key, value } = evt.detail;
-				document.documentElement.dataset[key] = value;
-				localStorage.setItem(key, value);
-			});
-
-			let darkSchema =
-				window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-			let cssVariables = {
-				'--background-color': darkSchema ? '#1E2226' : 'hsl(300, 11%, 96%)',
-			};
-			let dataAttributes = {
-				schema: darkSchema ? 'dark' : 'light',
-				theme: darkSchema ? 'rose-pine-dark' : 'rose-pine-dawn',
-			};
-
-			for (let i = 0; i < localStorage.length; i++) {
-				let key = localStorage.key(i);
-				let value = localStorage.getItem(key);
-				if (key === 'theme' && value === 'custom') {
-					value = 'rose-pine-moon';
-					localStorage.setItem(key, value);
-				}
-
-				if (cssVariables[key]) {
-					cssVariables[key] = value;
-					continue;
-				}
-				if (dataAttributes[key]) {
-					dataAttributes[key] = value;
-					continue;
-				}
-			}
-
-			Object.keys(cssVariables)
-				.map(
-					(key) =>
-						new CustomEvent('set-css-variable', {
-							detail: {
-								key,
-								value: cssVariables[key],
-							},
-						}),
-				)
-				.forEach(window.dispatchEvent);
-
-			Object.keys(dataAttributes)
-				.map(
-					(key) =>
-						new CustomEvent('set-data-attribute', {
-							detail: {
-								key,
-								value: dataAttributes[key],
-							},
-						}),
-				)
-				.forEach(window.dispatchEvent);
-
-			function hexToHSL(H) {
-				// Convert hex to RGB first
-				let r = 0,
-					g = 0,
-					b = 0;
-				if (H.length == 4) {
-					r = '0x' + H[1] + H[1];
-					g = '0x' + H[2] + H[2];
-					b = '0x' + H[3] + H[3];
-				} else if (H.length == 7) {
-					r = '0x' + H[1] + H[2];
-					g = '0x' + H[3] + H[4];
-					b = '0x' + H[5] + H[6];
-				}
-				// Then to HSL
-				r /= 255;
-				g /= 255;
-				b /= 255;
-				let cmin = Math.min(r, g, b),
-					cmax = Math.max(r, g, b),
-					delta = cmax - cmin,
-					h = 0,
-					s = 0,
-					l = 0;
-
-				if (delta == 0) h = 0;
-				else if (cmax == r) h = ((g - b) / delta) % 6;
-				else if (cmax == g) h = (b - r) / delta + 2;
-				else h = (r - g) / delta + 4;
-
-				h = Math.round(h * 60);
-
-				if (h < 0) h += 360;
-
-				l = (cmax + cmin) / 2;
-				s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-				s = +(s * 100).toFixed(1);
-				l = +(l * 100).toFixed(1);
-
-				return `hsl(${h}, ${s}%, ${l}%)`;
-			}
-
-			function isLight(color) {
-				var c = color.substring(1); // strip #
-				var rgb = parseInt(c, 16); // convert rrggbb to decimal
-				var r = (rgb >> 16) & 0xff; // extract red
-				var g = (rgb >> 8) & 0xff; // extract green
-				var b = (rgb >> 0) & 0xff; // extract blue
-
-				var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-				return luma > 128;
-			}
-		</script>
 		<script async src="https://www.googletagmanager.com/gtag/js"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];

@@ -91,80 +91,35 @@
 </div>
 
 <ul>
-	{#each filteredPosts as post, i}
-		<li style="--i: {i}">
-			<a sveltekit:prefetch href={`/blog/${post.slug}`} hidden={typeof query !== 'string'}>
-				<h2>{post.title}</h2>
-				<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
-			</a>
+	{#each filteredPosts as post}
+		<li>
+			<h2>
+				<a sveltekit:prefetch href={`/blog/${post.slug}`}>
+					{post.title}
+				</a>
+				<time datetime={humanDate(post.date)}>[{humanDate(post.date)}]</time>
+			</h2>
+			<p>{post.description}</p>
+			<p>
+				<a sveltekit:prefetch href={`/blog/${post.slug}`}>Read more</a>
+				{#if post.tldr}
+					| <a sveltekit:prefetch href={`/blog/${post.slug}?tldr=true`}>Read TLDR</a>
+				{/if}
+			</p>
 		</li>
 	{:else}Sorry, no posts matched your criteria...{/each}
 </ul>
 
 <style>
-	time {
-		position: absolute;
-		left: -15em;
-		top: 2px;
-		font-size: 0.5rem;
-		opacity: 0.7;
-		letter-spacing: 0.1em;
-		line-height: 2.2;
-	}
-
-	@media screen and (max-width: 1150px) {
-		time {
-			display: none;
-		}
-	}
-	a {
-		display: block;
-		background: none;
-		border: none;
-	}
-	h2 {
-		margin-top: 0;
-		font-size: 1rem;
-		font-weight: 300;
-	}
-
-	li {
-		padding: 0.5em 0;
-		border-bottom: 2px solid transparent;
-		border-right: 3px solid transparent;
-		animation: slide-top 0.3s both;
-		animation-delay: calc(var(--i) * 0.03s);
-	}
-	@keyframes slide-top {
-		from {
-			transform: translateY(-50%);
-			opacity: 0;
-		}
-	}
-	li:first-child {
-		margin-top: 0;
-	}
-	li::before {
-		background: none;
-	}
-	input {
-		border: 1px solid;
-	}
-	button {
-		background-color: transparent;
-		border: none;
-		padding: 0.2em 0.5em;
-		margin: 0.3em 0.6em 0.3em 0;
-		opacity: 0.8;
-		border-radius: 2px;
-		transition: opacity 300ms;
-		cursor: pointer;
-		font-size: 0.65rem;
-		border: 1px solid transparent;
-	}
-
 	button.active {
 		border-color: currentColor;
-		opacity: 1;
+	}
+
+	p {
+		margin-top: var(--spacing-small);
+	}
+
+	li + li {
+		margin-top: var(--spacing);
 	}
 </style>

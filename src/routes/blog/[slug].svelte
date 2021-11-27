@@ -48,7 +48,7 @@
 
 		if (!window.location.hash) {
 			requestAnimationFrame(() => {
-				window.scrollTo({ top: document.querySelector('header').clientHeight });
+				window.scrollTo({ top: document.querySelector('header').clientHeight + 25 });
 			});
 		}
 	});
@@ -146,12 +146,13 @@
 	<div class="details">
 		<div class="published-at">
 			{#if post.metadata.modified !== post.metadata.date}
-				<span>Modified</span>
-				<time datetime={humanDate(post.metadata.modified)}>{humanDate(post.metadata.modified)}</time
+				<time datetime={humanDate(post.metadata.modified)}>
+					Modified {humanDate(post.metadata.modified)}</time
 				>
 			{:else}
-				<span>Published</span>
-				<time datetime={humanDate(post.metadata.date)}>{humanDate(post.metadata.date)}</time>
+				<time datetime={humanDate(post.metadata.date)}
+					>Published {humanDate(post.metadata.date)}</time
+				>
 			{/if}
 		</div>
 		<a class="author" href="https://timdeschryver.dev/twitter">@tim_deschryver</a>
@@ -230,32 +231,11 @@
 </div>
 
 <style>
-	.article-action {
-		color: var(--accent-color);
-		background: none;
-		margin: 0;
-		cursor: pointer;
-		text-decoration: none;
-		text-transform: uppercase;
-		font-size: 0.75rem;
-		line-height: 2.5;
-		border: none;
-		font-weight: 900;
-		white-space: nowrap;
-	}
-	.article-action:not(:last-child) {
-		margin-right: 17px;
-	}
-	.article-actions {
-		text-align: center;
-	}
-
 	.tldr {
 		background: none;
 		border: none;
 		text-align: center;
 		font-weight: 900;
-		font-size: 1rem;
 	}
 
 	.side-actions {
@@ -264,14 +244,12 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		width: 160px;
+		width: 120px;
 	}
 	.side-actions * {
 		padding: 4px;
-		font-size: 0.8rem;
 		display: block;
 		text-align: center;
-		line-height: 2;
 		border: 1px solid;
 		color: inherit;
 		background: none;
@@ -308,17 +286,26 @@
 		display: flex;
 		justify-content: space-between;
 		margin: 0;
-		font-size: 1rem;
+		font-size: 1.5rem;
 		width: 100%;
 	}
 
 	@media screen and (max-width: 1150px) {
 		.details {
-			font-size: 0.8rem;
+			font-size: 1rem;
 		}
 	}
 
 	.author {
+		margin-top: 0;
+	}
+
+	.article-actions {
+		display: flex;
+		justify-content: space-evenly;
+	}
+
+	.article-actions a {
 		margin-top: 0;
 	}
 </style>
