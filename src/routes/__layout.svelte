@@ -1,9 +1,31 @@
 <script lang="ts">
-	import { afterUpdate } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import { page } from '$app/stores';
 	import { variables } from '$lib/variables';
 
 	$: segment = $page.path.substring(1);
+	let support;
+	let y;
+
+	onMount(() => {
+		if (typeof kofiWidgetOverlay !== 'undefined') {
+			kofiWidgetOverlay.draw('timdeschryver', {
+				type: 'floating-chat',
+				'floating-chat.donateButton.text': '',
+				...(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+					? {
+							'floating-chat.donateButton.background-color': '#fff',
+							'floating-chat.donateButton.text-color': '#111',
+					  }
+					: {
+							'floating-chat.donateButton.background-color': '#111',
+							'floating-chat.donateButton.text-color': '#eee',
+					  }),
+			});
+			support = document.querySelector('[id*=kofi-widget-overlay]');
+		}
+	});
+
 	afterUpdate(() => {
 		if (typeof gtag === 'function' && variables) {
 			gtag('config', variables.gtag_id, {
@@ -11,6 +33,14 @@
 			});
 		}
 	});
+
+	$: if (support) {
+		if (segment.startsWith('blog/') && y > 1000) {
+			support.style.display = 'block';
+		} else {
+			support.style.display = 'none';
+		}
+	}
 </script>
 
 <header>
@@ -24,6 +54,13 @@
 		<a href="https://tinyletter.com/timdeschryver" rel="external">Newsletter</a>
 	</nav>
 </header>
+
+<svelte:head>
+	<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js">
+	</script>
+</svelte:head>
+
+<svelte:window bind:scrollY={y} />
 
 <main data-page={segment}>
 	<slot />

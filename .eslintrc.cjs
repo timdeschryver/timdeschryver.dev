@@ -13,6 +13,7 @@ module.exports = {
 	},
 	globals: {
 		gtag: true,
+		kofiWidgetOverlay: true,
 	},
 	parserOptions: {
 		sourceType: 'module',

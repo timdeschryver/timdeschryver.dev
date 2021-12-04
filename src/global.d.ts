@@ -3,6 +3,9 @@
 /// <reference types="vite/client" />
 
 declare let gtag: (...args) => void;
+declare let kofiWidgetOverlay: {
+	draw: (name: string, config: Record<string, string>) => void;
+};
 
 interface ImportMetaEnv {
 	VITE_PUBLIC_BASE_PATH: string;
