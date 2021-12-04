@@ -14,6 +14,7 @@
 	:root {
 		--background-color: #fff;
 		--text-color: #111;
+		--text-color-light: rgba(0, 0, 0, 0.7);
 	}
 }
 
@@ -21,6 +22,7 @@
 	:root {
 		--background-color: #111;
 		--text-color: #eee;
+		--text-color-light: rgba(255, 255, 255, 0.7);
 	}
 }
 
@@ -67,8 +69,23 @@ a {
 	text-underline-offset: 0.2em;
 }
 
+p {
+	font-size: 1.3rem;
+	line-height: 2;
+}
+
+@media (max-width: 480px) {
+	p {
+		font-size: 1rem;
+	}
+}
+
 ul {
 	list-style-type: none;
+}
+
+ol {
+	list-style-position: inside;
 }
 
 li + li,
@@ -107,6 +124,7 @@ button {
 	padding: 0.2em 0.5em;
 	margin: 0.3em 0.6em 0.3em 0;
 	cursor: pointer;
+	font-size: inherit;
 }
 
 button:focus,

@@ -99,24 +99,35 @@
 				</a>
 				<time datetime={humanDate(post.date)}>[{humanDate(post.date)}]</time>
 			</h2>
-			<p>{post.description}</p>
-			<p>
+			<div>{post.description}</div>
+			<div>
 				<a sveltekit:prefetch href={`/blog/${post.slug}`}>Read more</a>
 				{#if post.tldr}
 					| <a sveltekit:prefetch href={`/blog/${post.slug}?tldr=true`}>Read TLDR</a>
 				{/if}
-			</p>
+			</div>
 		</li>
 	{:else}Sorry, no posts matched your criteria...{/each}
 </ul>
 
 <style>
-	button.active {
-		border-color: currentColor;
+	button {
+		color: var(--text-color-light);
+		transition: color 0.2s ease;
 	}
 
-	p {
+	button:hover {
+		color: var(--text-color);
+	}
+
+	button.active {
+		border-color: currentColor;
+		color: var(--text-color);
+	}
+
+	li div {
 		margin-top: var(--spacing-small);
+		color: var(--text-color-light);
 	}
 
 	li + li {

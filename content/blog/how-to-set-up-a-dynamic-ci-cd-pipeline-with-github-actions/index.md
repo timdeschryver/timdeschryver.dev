@@ -13,7 +13,7 @@ When Github released [GitHub Actions](https://docs.github.com/en/actions) I move
 
 Now, after a big year, I noticed that several workflows of projects that I'm working on have conditionally configured some steps in their workflow. I'm not sure, but I think that this wasn't always the case... or I completely missed that this was a possibility in the documentation when I initially set up my workflow pipelines.
 
-> Update: You can now compose your workflow by reusing composite actions, [GitHub Actions: Reduce duplication with action composition](https://github.blog/changelog/2021-08-25-github-actions-reduce-duplication-with-action-composition/)
+> Update: You can now compose your workflow by reusing composite actions, [GitHub Actions: Reduce duplication with action composition](https://github.blog/changelog/2021-08-25-github-actions-reduce-duplication-with-action-composition/) and [GitHub Actions: reusable workflows is generally available](https://github.blog/2021-11-29-github-actions-reusable-workflows-is-generally-available/)
 
 So why do I think that this important?
 Because having a single workflow avoids duplication and thus makes it easier to make a change to the workflow, for example, to use a new version of Node.js, or to add an additional step.
