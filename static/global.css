@@ -189,7 +189,8 @@ iframe {
 }
 
 blockquote {
-	border-left: 2px solid currentColor;
+	border: 1px dashed currentColor;
+	border-left: 3px solid currentColor;
 	padding-left: 2em;
 }
 

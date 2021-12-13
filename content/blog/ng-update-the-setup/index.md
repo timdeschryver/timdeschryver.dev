@@ -1,149 +1,191 @@
 ---
 title: ng update: the setup
 slug: ng-update-the-setup
-description: Let your library automatically update with ng update
+description: Within 5 minutes you can automagically have your library upgraded when a user runs the ng update command.
 author: Tim Deschryver
 date: 2018-05-21T14:00:16.553Z
-tags: Angular
+tags: Angular, Angular CLI
 banner: ./images/banner.jpg
-bannerCredit: Photo by [Victor Lozano](https://unsplash.com/@prozpris) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
-With the Angular 6 release, already a couple weeks ago, the CLI package `@angular/cli` also received an update (also version 6). You will probably already have heard of it or even used it, but this update of the CLI introduced a new command `ng update`. In short this updates your application and its dependencies by taking a look if any of the dependencies in your `package.json` has a new version available. For more details about Angular 6 release you can take a look at the resources at the bottom of this post.
+In this post, we take a look at how you can configure your library to automatically be upgraded when a user runs the `ng update` command.
 
-If you want to automatically let the CLI update your own library when a user runs `ng update` you’ll have to plug into the `ng-update` hook. As an example we’re going to use [frontal](https://github.com/timdeschryver/frontal)_— a selectbox/dropdown component based on_ [_downshift_](https://github.com/paypal/downshift) - which is currently on version 1.0.0 and after running `ng update` we want to have version 2.0.0 beta installed. There are also some popular packages where you can take a peek: [RxJs](https://github.com/ReactiveX/rxjs), [angular/material2](https://github.com/angular/material2) and recently the [NgRx packages](https://github.com/ngrx/platform).
+The basic setup requires you to make two small changes:
+
+1. add 3 lines to the `package.json` file
+1. create an empty JSON file
+
+By taking 5 minutes to do this, you hook into the `ng-update` command and your library can be discovered and upgraded when a user runs `ng update`. This makes sure that your users are using the latest version of your library, keeping everybody happy.
+
+This setup can then further be extended to also include automatic code migrations, for example, to modify code to fix breaking changes.
+
+To see a configured version, take a look at the [Angular Testing Library](https://github.com/testing-library/angular-testing-library/tree/main/projects/testing-library), or to [NgRx](https://github.com/ngrx/platform/tree/master/modules/store), which also includes code migrations.
 
 Enough of the what, let’s take a look at the how!
 
-## Schematics
+## Create the migrations.json file
 
-The first step is to setup the schematics by creating a [`migrations.json`](https://github.com/timdeschryver/frontal/blob/master/migrations/migration.json) file, the name isn’t set in stone so you can name it everything you want (RxJS named theirs [`collection.json`](https://github.com/ReactiveX/rxjs/blob/master/migrations/collection.json)).
+The first step is to create a new JSON file.
+Its name doesn't really matter, but an unwritten convention is to use `migrations.json`.
+As a best practice, you should also isolate the migrations from the source code, that's why I prefer to create the file in the `schematics/migrations` directory.
+Inside of the file, simply add an empty `schematics` entry.
 
-```json
+```json{3}:schematics/migrations/migration.json
 {
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {}
+}
+```
+
+## Update your package.json
+
+In the `package.json` file you're going to create a new `ng-update` entry that includes a `migrations` property. The Angular CLI looks for this property during the update process, and by pointing to the `migrations.json` file, the CLI knows how to run your migration(s).
+
+```json{3-5}:package.json
+{
+  "name": "your-awesome-library-here",
+  "ng-update": {
+    "migrations": "./schematics/migrations/migration.json"
+  },
+  "dependencies": {}
+}
+```
+
+This is sufficient to plug your library into the `ng-update` command.
+
+## Add the migration schematic to the output (dist) folder
+
+By default, these migrations aren't included in your output (dist) folder.
+For it to be included, you need to add a post-build script to copy the migration file to the output folder.
+Make sure that the path inside of the `package.json` file matches the migration file that is added to the output folder.
+
+## Add automatic code migrations (optional)
+
+So far, only the version of your library is upgraded when the `ng update` command is run.
+The new version of the library is installed, and the version is updated in the `package.json` file.
+
+To also run some code during this upgrade path, you can add code migrations to the `migrations.json` file.
+
+A code migration section consists of a `version`, a `factory`, and a `description`.
+
+```json{4-8}:schematics/migrations/migration.json
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "frontal-migration-01": {
-      "description": "Upgrade to version 2",
-      "version": "1.0.0",
+    "migration-v2": {
+      "description": "Update to version 2",
+      "version": "2.0.0",
       "factory": "./2_0_0/index"
     }
   }
 }
 ```
 
-In the `schematics` value there is a property for each migration, the property name itself isn’t used (I think) but must be unique. The important part here are the `version` and the `factory` values. `version` is used to match the current installed version to run the update against, in the example the update is going to run when version 1.0.0 (or lower) is installed. `factory` is used to point to a factory function where all the magic happens, in the example it will call the default function inside `./2_0_0/index`. It’s also possible to specify a function, with the following syntax `"factory": "./update-6_0_0/index#rxjsV6MigrationSchematic"`.
+The `version` decides the migration that has to be run.
+In the example above, the migration is run when the user is on a lower version than v2, and wants to upgrade to v2 or higher.
 
-## Update function
+When the Angular CLI detects that a migration needs to be run, it will run the factory, which is a function that returns a schematic, a [Rule](https://github.com/angular/angular-cli/blob/fb3b1fe32b6ccb67e99b496a9cedeec5d5a27ce3/packages/angular_devkit/schematics/src/engine/interface.ts#L234-L237).
+In the example above, the schematic function is the default export in the `./2_0_0/index.ts` file.
 
-This is the function which is called during `ng update`. In the [implementation](https://github.com/timdeschryver/frontal/blob/master/migrations/2_0_0/index.ts) below, the dependency version will be updated in the `package.json`. Note that it’s also possible to do more than just upgrading the version number, for instance if we take a look at [angular/material2](https://github.com/angular/material2/blob/master/src/lib/schematics/update/update.ts#L36) it also runs some linter rules.
+Besides this syntax, you can also see a variant of the factory function that exports a named function.
+The migration file then looks like the following snippet, notice the name of the function `runV2Migration` after file name.
 
-```ts
-import {
-  Rule,
-  SchematicContext,
-  Tree,
-  SchematicsException,
-} from '@angular-devkit/schematics'
-
-export default function(): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    const pkgPath = '/package.json'
-    const buffer = tree.read(pkgPath)
-    if (buffer == null) {
-      throw new SchematicsException('Could not read package.json')
+```json{4-8}:schematics/migrations/migration.json
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "migration-v2": {
+      "description": "Update to version 2",
+      "version": "2.0.0",
+      "factory": "./index#runV2Migration"
     }
-    const content = buffer.toString()
-    const pkg = JSON.parse(content)
+  }
+}
+```
+
+## Define the migration rule (optional)
+
+This is the function that is called while the `ng update` command is executing.
+Within this function, you have access to the users' projects files.
+
+The implementation of this function usually involves using the Abstract Syntax Tree (AST) to crawl for the nodes (code blocks) that need to be updated.
+
+> I like to use [https://astexplorer.net/](https://astexplorer.net/) to visualize and interact with the AST.
+
+Because this is can become long and complex, the example below uses a simpler example and migrates the `package.json` file of the user to clean up a deprecated dependency to `ngrx-store-freeze`.
+
+The code below reads and parses the `package.json` file, removes the dependency, and overwrites the current file with the updated version.
+
+```ts:schematics/migrations/2_0_0/index.ts
+import { Rule, SchematicContext, Tree, SchematicsException } from '@angular-devkit/schematics';
+
+export default function (): Rule {
+  return (tree: Tree, context: SchematicContext) => {
+    const pkgPath = '/package.json';
+    const buffer = tree.read(pkgPath);
+    if (buffer === null) {
+      throw new SchematicsException('Could not read package.json');
+    }
+    const content = buffer.toString();
+    const pkg = JSON.parse(content);
 
     if (pkg === null || typeof pkg !== 'object' || Array.isArray(pkg)) {
-      throw new SchematicsException('Error reading package.json')
+      throw new SchematicsException('Error reading package.json');
     }
 
-    if (!pkg.dependencies) {
-      pkg.dependencies = {}
-    }
+    const dependencyCategories = ['dependencies', 'devDependencies'];
 
-    if (pkg.dependencies['frontal']) {
-      pkg.dependencies['frontal'] = `2.0.0-beta.1`
-      tree.overwrite(pkgPath, JSON.stringify(pkg, null, 2))
-    }
+    dependencyCategories.forEach((category) => {
+      if (pkg[category] && pkg[category]['ngrx-store-freeze']) {
+        delete pkg[category]['ngrx-store-freeze'];
+      }
+    });
 
-    return tree
-  }
+    tree.overwrite(pkgPath, JSON.stringify(pkg, null, 2));
+    return tree;
+  };
 }
 ```
 
-> Wouldn’t it be 🍌 🍌 🍌 if all libraries would automatically fix (breaking) changes during this step, or at least let you know which steps you have to make in order to have a successful update?
+## How to test the migration
 
-## Package.json
+Testing an application is important, and testing a migration is not an exception.
+To test the migration, there are some useful functions available that can be imported from the `angular-devkit/schematics/testing` module.
 
-Last, an `ng-update` entry must be added to the [`package.json`](https://github.com/timdeschryver/frontal/blob/master/src/package.json). This is necessary to let the angular CLI know where to look for the migrations.
+The test, you prepare the workspace, then you run the migration, and lastly, you can verify that the result of the migration is correct.
 
-```json
-"ng-update": {
-  "migrations": "./migrations/migration.json"
-}
-```
-
-## Testing
-
-It is possible to [test](https://github.com/timdeschryver/frontal/blob/master/__tests__/migrations/2_0_0.ts) the factory function by creating a `UnitTestTree`, having a dependency to the library with the old version number. Next the migration is is run with `runSchematic`, expecting that the version number has been changed to the correct version.
+In the example below, a `package.json` file is created with a dependency to `ngrx-store-freeze`.
+After running the migration, the `package.json` file is read to check if the `ngrx-store-freeze` dependency is removed.
 
 ```ts
-import { Tree } from '@angular-devkit/schematics'
-import {
-  SchematicTestRunner,
-  UnitTestTree,
-} from '@angular-devkit/schematics/testing'
-import * as path from 'path'
+import { Tree } from '@angular-devkit/schematics';
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
+import * as path from 'path';
 
-const packagePath = '/package.json'
-const collectionPath = path.join(__dirname, '../../migrations/migration.json')
+const packagePath = '/package.json';
+const collectionPath = 'migrations/migration.json';
 
-function setup() {
-  const tree = Tree.empty() as UnitTestTree
-  tree.create(
-    packagePath,
-    `{
-        "dependencies": {
-          "frontal": "1.0.0"
-        }
-      }`,
-  )
+test(`removes the ngrx-store-freeze package`, () => {
+	const tree = new UnitTestTree(new EmptyTree());
+	tree.create(packagePath, JSON.stringify({ dependencies: { 'ngrx-store-freeze': '1.0.0' } }));
 
-  return {
-    tree,
-    runner: new SchematicTestRunner('schematics', collectionPath),
-  }
-}
+	const schematicRunner = new SchematicTestRunner('migrations', collectionPath);
+	// migration-v2 is the name of the migration, which is defined in the migration.json file
+	await schematicRunner.runSchematicAsync('migration-v2', {}, tree).toPromise();
 
-test(`installs version 2.0.0`, () => {
-  const { runner, tree } = setup()
-  const updatedTree = runner.runSchematic('frontal-migration-01', {}, tree)
-  const pkg = JSON.parse(updatedTree.readContent(packagePath))
-  expect(pkg.dependencies['frontal']).toBe(`2.0.0-beta.1`)
-})
+	const actual = tree.readContent(packagePath);
+	expect(JSON.parse(actual)).toEqual({ dependencies: {} });
+});
 ```
 
-To test the `ng update` command locally before publishing to `npm` you can use [`verdaccio`](https://github.com/verdaccio/verdaccio), _a lightweight private npm proxy registry._ There is a resource at the bottom, which addresses this point in detail*.*
+## Conclusion
 
-## Result
+With just a few lines of configuration, you can add your project to the `ng-update` command.
+This has the advantage that your users stay up-to-date with the latest version of your library.
 
-As result we can see that a new version is available after running `ng update`. I’m using the `next` flag to also include `next` tags because version 2 hasn’t been released yet.
+If you want, you can optionally include migrations that modify the users' code.
+This is useful because you can fix breaking changes.
+A win-win for the maintainers and the users.
 
-![](./images/ng-update.png)
-
-we run ng update frontal — next and see that a new version is available
-
-After running the update command we can see the version number is changed in the `package.json` and we can start using the version in our project 🎉.
-
-![](./images/updated.png)
-
-the version number is updated to the new version after `ng update frontal — next` has ran
-
-## More resources
-
-- [Version 6 of Angular Now Available](https://blog.angular.io/version-6-of-angular-now-available-cc56b0efa7a4)
-- [Seamlessly Updating your Angular Libraries with the CLI, Schematics and ng update](http://www.softwarearchitekt.at/post/2018/04/17/seamlessly-updating-your-angular-libraries-with-ng-update.aspx)
-- [angular/devkit](https://github.com/angular/devkit/blob/master/docs/specifications/update.md)
+For me, this is one of the main reasons why I like the Angular ecosystem.

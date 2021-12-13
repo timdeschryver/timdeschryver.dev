@@ -133,4 +133,8 @@
 	li + li {
 		margin-top: var(--spacing-large);
 	}
+
+	time {
+		color: var(--text-color-light);
+	}
 </style>

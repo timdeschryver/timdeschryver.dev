@@ -10,6 +10,7 @@
 
 <section>
 	<p>Hi, I'm Tim!</p>
+
 	<p>
 		A software engineer from Belgium who enjoys to <strong><a href="/blog">blog</a></strong> about
 		my experiences with the aim to help others and my future self, primarily on
@@ -17,6 +18,7 @@
 		and
 		<strong>.NET</strong>.
 	</p>
+
 	<p>
 		Lifelong learner and <strong
 			><a href="https://github.com/timdeschryver" rel="external">open-source enthusiast</a></strong
@@ -25,6 +27,7 @@
 			>Angular Testing Library</a
 		>.
 	</p>
+
 	<p>
 		Recognized by Microsoft as a <strong
 			><a
@@ -33,8 +36,14 @@
 			></strong
 		>.
 	</p>
+
 	<p>
 		Also a hobby <strong>runner</strong>.
+	</p>
+
+	<p>
+		Find me on <a href="https://timdeschryver.dev/github" rel="external">GitHub</a> or
+		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>
 	</p>
 </section>
 

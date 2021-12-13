@@ -18,7 +18,7 @@
 							'floating-chat.donateButton.text-color': '#111',
 					  }
 					: {
-							'floating-chat.donateButton.background-color': '#111',
+							'floating-chat.donateButton.background-color': '#fff',
 							'floating-chat.donateButton.text-color': '#eee',
 					  }),
 			});
