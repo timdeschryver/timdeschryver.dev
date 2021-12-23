@@ -155,7 +155,7 @@ app.MapPut("customers/block/{customerId}", async ([FromRoute] string customerId,
 });
 ```
 
-We can also emit the attribute tags, s the shorthand version of the above snippet becomes:
+We can also emit the attribute tags, the shorthand version of the above snippet becomes:
 
 ```cs{5-11}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
