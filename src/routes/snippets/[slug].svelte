@@ -1,10 +1,10 @@
 <script context="module" lang="ts">
 	export const prerender = true;
 
-	export async function load({ page, fetch }) {
+	export async function load({ params, fetch }) {
 		const result = await fetch(`/snippets.json`);
 		const { snippets } = await result.json();
-		const snippet = snippets.find((s) => s.metadata.slug === page.params.slug);
+		const snippet = snippets.find((s) => s.metadata.slug === params.slug);
 		return {
 			props: {
 				snippets,
