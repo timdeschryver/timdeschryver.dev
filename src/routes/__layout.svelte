@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import { variables } from '$lib/variables';
 
-	$: segment = $page.path.substring(1);
+	$: segment = $page.url.pathname.substring(1);
 	let support;
 	let y;
 

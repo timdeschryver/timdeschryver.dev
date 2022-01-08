@@ -28,7 +28,7 @@
 	onMount(() => {
 		params = new URLSearchParams(window.location.search);
 		// fallback, in the vercel build `query` seems to be undefined
-		query = $page.query.get('q') || params.get('q') || '';
+		query = $page.url.searchParams.get('q') || params.get('q') || '';
 	});
 
 	$: if (params) {

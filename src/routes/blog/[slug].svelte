@@ -2,14 +2,14 @@
 	export const prerender = true;
 
 	export async function load({
-		page,
+		params,
 		fetch,
 	}): Promise<{
 		props: {
 			post: any;
 		};
 	}> {
-		const result = await fetch(`/blog/${page.params.slug}.json`);
+		const result = await fetch(`/blog/${params.slug}.json`);
 		const { post } = await result.json();
 		return {
 			props: {

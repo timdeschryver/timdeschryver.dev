@@ -3,7 +3,7 @@ import path from 'path';
 import url from 'url';
 import { execSync } from 'child_process';
 import { createHash } from 'crypto';
-import marked from 'marked/lib/marked.js';
+import { marked } from 'marked';
 import highlightCode from 'gatsby-remark-prismjs/highlight-code.js';
 import 'prismjs/components/prism-bash.js';
 import 'prismjs/components/prism-typescript.js';
