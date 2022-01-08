@@ -1,10 +1,7 @@
 <script context="module" lang="ts">
 	export const prerender = true;
 
-	export async function load({
-		params,
-		fetch,
-	}): Promise<{
+	export async function load({ params, fetch }): Promise<{
 		props: {
 			post: any;
 		};
@@ -23,6 +20,7 @@
 	import { onDestroy, onMount, afterUpdate } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
+	import Head from '$lib/Head.svelte';
 
 	export let post;
 
@@ -111,9 +109,9 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{post.metadata.title} - Tim Deschryver</title>
+<Head title="{post.metadata.title} - Tim Deschryver" details={false} />
 
+<svelte:head>
 	<link rel="canonical" href={post.metadata.canonical} />
 
 	<meta name="author" content={post.metadata.author} />

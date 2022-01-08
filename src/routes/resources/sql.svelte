@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import Head from '$lib/Head.svelte';
 	let resources = [
 		{
 			title: 'Useful scripts',
@@ -13,8 +14,7 @@
 					category: 'Script',
 				},
 				{
-					link:
-						'https://www.sqlshack.com/how-to-identify-and-monitor-unused-indexes-in-sql-server/',
+					link: 'https://www.sqlshack.com/how-to-identify-and-monitor-unused-indexes-in-sql-server/',
 					description: 'Finding unused indexes',
 					category: 'Script',
 				},
@@ -34,8 +34,7 @@
 					category: 'Performance Optimization',
 				},
 				{
-					link:
-						'https://sqlperformance.com/2017/02/sql-performance/follow-up-1-leading-wildcard-seeks',
+					link: 'https://sqlperformance.com/2017/02/sql-performance/follow-up-1-leading-wildcard-seeks',
 					description: 'Solving wildcard queries by using fragments part 2',
 					category: 'Performance Optimization',
 				},
@@ -44,12 +43,11 @@
 	];
 </script>
 
-<svelte:head>
-	<title>Resouces: SQL - Tim Deschryver</title>
+<Head title="SQL - Tim Deschryver" details={false} />
 
+<svelte:head>
 	<meta name="title" content="Resouces: SQL" />
 	<meta name="description" content="SQL Resources that I use as a reference" />
-	<meta name="keywords" content="SQL, Resources" />
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="SQL Resources" />

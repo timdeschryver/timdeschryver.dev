@@ -6,8 +6,8 @@
 		const { snippets } = await result.json();
 		return {
 			props: {
-				snippets
-			}
+				snippets,
+			},
 		};
 	}
 </script>
@@ -18,6 +18,6 @@
 	export let snippets;
 </script>
 
-<Head title="Snippets - Tim Deschryver" />
+<Head title="Snippets - Tim Deschryver" details={true} />
 
 <Snippets {snippets} />

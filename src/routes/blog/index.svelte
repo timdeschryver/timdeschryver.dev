@@ -25,6 +25,12 @@
 	let query;
 	let params;
 
+	let meta = {
+		canonical: 'https://timdeschryver.dev/blog',
+		title: "Tim's Blog",
+		description: `${metadata.length} notes, mainly about Angular and .NET`,
+	};
+
 	onMount(() => {
 		params = new URLSearchParams(window.location.search);
 		// fallback, in the vercel build `query` seems to be undefined
@@ -71,7 +77,22 @@
 	}
 </script>
 
-<Head title="Blog - Tim Deschryver" />
+<Head title="Blog - Tim Deschryver" details={false} />
+
+<svelte:head>
+	<link rel="canonical" href={meta.canonical} />
+
+	<meta name="title" content={meta.title} />
+	<meta name="description" content={meta.description} />
+
+	<meta name="twitter:title" content={meta.title} />
+	<meta name="twitter:description" content={meta.description} />
+
+	<meta name="og:url" content={meta.canonical} />
+	<meta name="og:title" content={meta.title} />
+	<meta name="og:description" content={meta.description} />
+	<meta name="og:type" content="website" />
+</svelte:head>
 
 <div />
 

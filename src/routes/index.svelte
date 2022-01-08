@@ -6,7 +6,7 @@
 	import Head from '$lib/Head.svelte';
 </script>
 
-<Head title="Tim Deschryver" />
+<Head title="Tim Deschryver" details={true} />
 
 <section>
 	<p>Hi, I'm Tim!</p>

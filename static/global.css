@@ -151,10 +151,9 @@ a:active {
 	grid-column: 2;
 }
 
-/* #svelte > * > p,
-#svelte > * > blockquote {
-	overflow: auto;
-} */
+main > h1 {
+	margin-top: var(--spacing);
+}
 
 main > h2,
 main > h3 {
