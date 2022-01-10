@@ -10,6 +10,7 @@
 		"prebuild": "rimraf .svelte-kit && rimraf .vercel_build_output && npm run copy:content",
 		"build": "svelte-kit build",
 		"preview": "svelte-kit preview",
+		"test": "playwright test",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
@@ -25,6 +26,7 @@
 		"prepare": "husky install"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.17.1",
 		"@squoosh/lib": "^0.4.0",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "next",
@@ -32,6 +34,7 @@
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.9.0",
 		"@typescript-eslint/parser": "^5.9.0",
+		"axe-playwright": "^1.1.9",
 		"copyfiles": "^2.4.1",
 		"dotenv-extended": "^2.9.0",
 		"esbuild": "^0.14.10",
