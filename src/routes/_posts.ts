@@ -13,6 +13,7 @@ import 'prismjs/components/prism-graphql.js';
 import 'prismjs/components/prism-yaml.js';
 import 'prismjs/components/prism-diff.js';
 import 'prismjs/components/prism-csharp.js';
+import 'prismjs/components/prism-powershell.js';
 import 'prismjs/components/prism-sql.js';
 
 import { ISODate } from '$lib/formatters';
@@ -35,6 +36,7 @@ const langs = {
 	cs: 'csharp',
 	sql: 'sql',
 	svelte: 'svelte',
+	ps: 'powershell',
 };
 
 export const posts = readPosts();
