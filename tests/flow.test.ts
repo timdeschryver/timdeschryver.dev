@@ -31,7 +31,7 @@ test('test', async ({ page }) => {
 	]);
 
 	// Click text=Testing an NgRx project
-	await Promise.all([page.waitForNavigation(), page.click('text=Testingx an NgRx project')]);
+	await Promise.all([page.waitForNavigation(), page.click('text=Testing an NgRx project')]);
 
 	// Click text=Actions
 	await Promise.all([page.waitForNavigation(), page.click('text=Actions')]);
