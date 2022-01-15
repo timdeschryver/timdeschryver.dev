@@ -19,8 +19,8 @@ jobs:
 
       - name: Install
         run: |
-        npm ci
-        npx playwright install-deps
+          npm ci
+          npx playwright install-deps
 
       - name: Build
         run: npm run build
