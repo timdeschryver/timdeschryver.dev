@@ -221,13 +221,8 @@ th {
 }
 
 thead {
-	background: currentColor;
 	word-break: break-word;
 	font-weight: 900;
-}
-
-tbody tr:nth-child(even) {
-	background: currentColor;
 }
 
 [hidden] {

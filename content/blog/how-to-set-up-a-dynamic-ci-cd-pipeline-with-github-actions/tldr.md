@@ -1,4 +1,6 @@
-> Update: You can now compose your workflow by reusing composite actions, [GitHub Actions: Reduce duplication with action composition](https://github.blog/changelog/2021-08-25-github-actions-reduce-duplication-with-action-composition/)
+> Update 2021-08-25: You can now compose your workflow by reusing composite actions, [GitHub Actions: Reduce duplication with action composition](https://github.blog/changelog/2021-08-25-github-actions-reduce-duplication-with-action-composition/)
+
+> Update 2021-04-19: [GitHub Actions: Limit workflow run or job concurrency](https://github.blog/changelog/2021-04-19-github-actions-limit-workflow-run-or-job-concurrency)
 
 ```yml
 name: ci
@@ -8,6 +10,10 @@ on:
     branches:
       - 'main'
   pull_request: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_test_release:
@@ -19,16 +25,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: use Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: install
         run: npm install
+
       - name: build
         run: npm run build
+
       - name: test
         run: npm run test
+
       - name: Release
         if: github.ref == 'refs/heads/main' && github.repository == 'REPO_OWNER/REPO_NAME'
         run: npx semantic-release

@@ -174,7 +174,7 @@ I compare the Windows Terminal as the default Command Prompt on steroids that ha
 Via the settings of the Windows Terminal, I set the default font and the default profile, which uses PowershellCore.
 I've also added a few shortcuts to open (ctrl+t) and close (ctrl+w) tabs.
 
-I've set the font to a font family from [Nerd Fonts](https://www.nerdfonts.com/) to display the beautiful icons that are used with Oh My Posh. This font, or an alternative one, can be downloaded from the Nerd Fonts [download page](https://www.nerdfonts.com/font-downloads).
+I've set the font to a font family from [Nerd Fonts](https://www.nerdfonts.com/) to display the beautiful icons (glyphs) that are used with Oh My Posh. Go to the [download page](https://www.nerdfonts.com/font-downloads) to find your preferred Nerd Font.
 
 ```json:windows-terminal-settings.json
 {
@@ -611,7 +611,7 @@ For the completion, here's my entire `settings.json` file.
 
 ```json:settings.json
 {
-    "editor.fontFamily": "Cascadia Code",
+    "editor.fontFamily": "Cascadia Code, Dank Monk",
     "editor.fontSize": 18,
     "editor.lineHeight": 2,
     "editor.fontLigatures": true,
@@ -623,7 +623,22 @@ For the completion, here's my entire `settings.json` file.
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "files.defaultLanguage": "markdown",
     "terminal.integrated.fontFamily": "CaskaydiaCove NF",
-    "workbench.list.smoothScrolling": true
+    "workbench.list.smoothScrolling": true,
+    "javascript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.parameterNames.enabled": "all",
+    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "scm.defaultViewMode": "tree",
+    // https://github.com/angular-eslint/angular-eslint#linting-html-files-and-inline-templates-with-the-vscode-extension-for-eslint
+    "eslint.options": {
+        "extensions": [".ts", ".html"]
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "html"
+    ],
 }
 ```
 
