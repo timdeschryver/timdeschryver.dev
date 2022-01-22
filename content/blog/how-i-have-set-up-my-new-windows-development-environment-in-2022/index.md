@@ -47,8 +47,9 @@ winget install GitHub.cli
 
 # Development Enviroment
 winget install Microsoft.dotnet
-winget install OpenJS.NodeJS
 winget install Yarn.Yarn
+# Not needed because I use fnm (see the next section for more info)
+# winget install OpenJS.NodeJS
 
 # IDE
 winget install Microsoft.VisualStudio.2022.Enterprise-Preview
@@ -68,20 +69,42 @@ winget install 7zip.7zip
 
 The above script installs the majority, but there are a few programs that need to be installed manually because they aren't available on `winget`.
 
-- [NVM for Windows](https://github.com/coreybutler/nvm-windows/releases), easily switch between different Node.JS versions with a single command
-- [Gpg4win](https://www.gpg4win.org/download.html), to sign git commits
+- [fnm](https://github.com/Schniz/fnm), fast and simple Node.js version manager
+- [Gpg4win](https://www.gpg4win.org/download.html), sign git commits to make them "verified"
 
-## Multiple Node.JS versions with `NVM`
+## Different Node.JS versions with `fnm`
 
-I use `nvm` because I need to work within multiple Node.JS versions.
-Via its CLI, I can install (`nvm install`) the required versions and easily switch (`nvm use`) between these versions.
+I use `fnm` because I need to work within multiple Node.JS versions.
+With the `fnm` CLI I'm able to easily install Node.JS version and cycle between them, depending on the project's configuration.
 
-```bash
-nvm install 14
-nvm use 14.18.2
+The best part is that `fnm` automatically uses the correct version.
+The only requirement is that a `.node-version` or `.nvm` file exists in the root directory.
+
+```txt:.node-version
+14.16
 ```
 
-Make sure to start the command prompt with administrator privileges enabled when you're getting errors while executing the `install` or `use` command.
+When the specified Node.JS version isn't installed, `fnm` prompts a install command.
+
+```bash
+cd my-awesome-project
+> Can't find an installed Node version matching v14.16.x.
+> Do you want to install it? answer [y/n]: y
+> Installing Node v14.16.1 (x64)
+> Using Node v14.16.1
+cd ../second-great-project
+> Using Node v16.13.2
+```
+
+Other helpful commands are `install`, `use`, `default`, and `current`:
+
+```bash
+fnm install 16
+fnm default 16
+fnm use 16
+fnm current
+> v16.13.2
+```
 
 ## dotNET Tools
 
