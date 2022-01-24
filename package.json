@@ -6,6 +6,7 @@
 	"license": "MIT",
 	"type": "module",
 	"scripts": {
+		"predev": "npm run copy:content",
 		"dev": "svelte-kit dev",
 		"prebuild": "rimraf .svelte-kit && rimraf .vercel_build_output && npm run copy:content",
 		"build": "svelte-kit build",

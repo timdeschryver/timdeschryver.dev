@@ -607,6 +607,7 @@ Because I'm using the Insiders version of Visual Studio Code, I'm using `code-in
 code-insiders --install-extension dbaeumer.vscode-eslint --force
 code-insiders --install-extension esbenp.prettier-vscode --force
 code-insiders --install-extension formulahendry.auto-rename-tag --force
+code-insiders --install-extension aaron-bond.better-comments --force
 
 # Git
 code-insiders --install-extension github.vscode-pull-request-github --force

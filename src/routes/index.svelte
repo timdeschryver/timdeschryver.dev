@@ -9,7 +9,7 @@
 <Head title="Tim Deschryver" details={true} />
 
 <section>
-	<p>Hi, I'm Tim!</p>
+	<h1>Hi, I'm Tim 👋</h1>
 
 	<p>
 		A software engineer from Belgium who enjoys to <strong><a href="/blog">blog</a></strong> about

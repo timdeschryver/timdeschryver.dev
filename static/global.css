@@ -168,7 +168,7 @@ main > h3 {
 #svelte > main > .wide {
 	grid-column: 1 / 4;
 	width: 100%;
-	max-width: 90ch;
+	max-width: 95ch;
 	justify-self: center;
 }
 
