@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('all pages are accessible ', async ({ page, request }) => {
+	test.slow();
 	const sitemap = await request.get(`/sitemap.xml`);
 	expect(sitemap.ok()).toBeTruthy();
 
