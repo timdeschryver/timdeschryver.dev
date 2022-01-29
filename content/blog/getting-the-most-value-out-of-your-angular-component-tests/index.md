@@ -10,9 +10,9 @@ published: true
 ---
 
 I frequently hear that it's hard to know what to test of an Angular component.
-This complaint is often mentioned together by saying that it takes up a lot of time to write and maintain these tests that in the end provide little value. In the end, the team will wonder if the tests are worth it.
+This complaint is often mentioned together by saying that it takes up a lot of time to write and maintain these tests that provide little tp no value. In the end, the team wonders if the tests are worth it.
 I've been here before, and there are two outcomes when you reach this point.
-You either end up with almost no tests, or you will end up with a lot of extra tests.
+You either have almost no tests, or the opposite, the codebase is bloated with a lot of tests that slow you down.
 Both options aren't great.
 
 In this blog post, I want to share how I think that we can get the most value out of a test.
@@ -160,7 +160,7 @@ These events are representations of real JavaScript events that are sent to the 
 
 The test also includes the usage of a new method, `waitForElementToBeRemoved`.
 `waitForElementToBeRemoved` must only be used when an element is asynchronously removed from the document.
-When the element is immediately removed, you don't have to wait until it's removed, so you can just use the `queryBy` query and assert that the element does not exist in the document. The difference between the `queryBy` and `getBy` queries is that `getBy` will throw an error if the DOM element does not exist, while `queryBy` will return `undefined` if the element does not exist.
+When the element is immediately removed, you don't have to wait until it's removed, so you can just use the `queryBy` query and assert that the element does not exist in the document. The difference between the `queryBy` and `getBy` queries is that `getBy` throws an error if the DOM element does not exist, while `queryBy` returns `undefined` if the element does not exist.
 
 The test also demonstrates how the `findBy` queries can be used.
 These queries can be compared to the`queryBy` queries, but they're asynchronous.
@@ -170,7 +170,7 @@ We can use them to wait until an element is added to the document.
 
 The test remains easy to read after these changes, so let's continue with the next step.
 
-Let's say that for performance reasons the component internal search behavior had to be tweaked, and a delay has been added to the search. In the worst-case scenario, when the delay is high, the existing test will most likely fail due to a timeout. But even if the delay was low enough to not cause a timeout, the test will take a longer time to execute.
+Let's say that for performance reasons the component internal search behavior had to be tweaked, and a delay has been added to the search. In the worst-case scenario, when the delay is high, the existing test will most likely fail due to a timeout. But even if the delay was low enough to not cause a timeout, the test takes longer to run.
 
 As a remedy, we have to introduce fake timers into the test to make time go by faster.
 It's a bit more advanced, but it's certainly a good tool to have in your toolbox.
@@ -216,7 +216,9 @@ it('renders the table', async () => {
         'Entity 2'
     );
 
-    jest.advanceTimersByTime(DEBOUNCE_TIME);
+    // jest.advanceTimersByTime(DEBOUNCE_TIME);
+    // better, this test will succeed if the debounce time is increased
+    jest.runOnlyPendingTimers();
 
     await waitForElementToBeRemoved(
         () => screen.queryByRole('cell', { name: /Entity 1/i })
@@ -229,9 +231,9 @@ it('renders the table', async () => {
 
 In the last addition to the component, we're adding two buttons.
 One button to create a new entity, and the second button to edit an existing entity.
-Both actions result that a modal will be opened.
+Both actions result that a modal is opened.
 Because we're testing the entities component we don't care about the modal's implementation, that's why the modal is mocked in the test case.
-The modal will be tested separately.
+The modal is tested separately.
 
 The test below asserts that the modal service is invoked when a user clicks on these buttons.
 
@@ -424,10 +426,10 @@ Because the tests are written from the user's perspective, they are much more re
 From my experience, while following this practice the tests are more robust to future changes.
 A test is fragile when you test the internal implementation of the component, e.g. how and when (lifecycle) methods are invoked.
 
-Complete test overhauls happen less frequently because this would mean that the UI of the component would've changed drastically. These changes will also be visible for an end-user.
+Complete test overhauls happen less frequently because this would mean that the UI of the component would've changed drastically. These changes are also visible for an end-user.
 At that point, it's probably better to write a new component and to write a new test, instead of trying to modify the existing component and test cases.
 
-The only reason that you would have to change a test after a refactor, is when the component is broken up into multiple components. In this case, you will have to add all the new components/modules/services to the input of the affected tests, but the rest of the test remains the same (if the refactor was successful, otherwise, can it even called a refactor?).
+The only reason that you would have to change a test after a refactor, is when the component is broken up into multiple components. In this case, you have to add all the new components/modules/services to the input of the affected tests, but the rest of the test remains the same (if the refactor was successful, otherwise, can it even called a refactor?).
 
 > 💡 TIP: If you're following [Single Component Angular Modules](https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do), it easier to see when changes have an impact on your tests.
 

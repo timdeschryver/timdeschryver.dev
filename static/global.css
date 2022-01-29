@@ -173,7 +173,7 @@ main > h3 {
 }
 
 #svelte > main > iframe {
-	max-width: 100%;
+	max-width: 95%;
 }
 
 figure > figcaption {

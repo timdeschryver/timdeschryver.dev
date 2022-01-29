@@ -1134,6 +1134,7 @@ When an error isn't configured, a default validation message is returned.
 
 ```ts:validate-pipe.ts
 import { Pipe, PipeTransform, Inject } from '@angular/core'
+import { ValidationErrors } from '@angular/forms'
 import { ValidationMessages, VALIDATION_MESSAGES } from './validation-message'
 
 @Pipe({ name: 'validate' })
@@ -1190,7 +1191,7 @@ To render the validation message, the `validate` pipe is used (created in [Valid
 
 ```ts{7-13}:control-error.component.ts
 import { Component, Input } from '@angular/core'
-import { AbstractControl, NgForm } from '@angular/forms'
+import { AbstractControl } from '@angular/forms'
 
 @Component({
   selector: 'app-control-error',
@@ -1295,14 +1296,14 @@ import {
   ContentChild,
   ElementRef,
 } from '@angular/core'
-import { NgModel, NgModelGroup } from '@angular/forms'
+import { NgControl, NgModelGroup } from '@angular/forms'
 import { ControlErrorComponent } from './control-error.component'
 
 @Directive({
   selector: '[formField]',
 })
 export class FormFieldDirective implements AfterViewInit {
-  @ContentChild(NgModel) ngModelChild?: NgModel
+  @ContentChild(NgControl) ngModelChild?: NgControl
   @ContentChild(NgModelGroup) ngModelGroupChild?: NgModelGroup
 
   constructor(
