@@ -24,7 +24,7 @@
 		"banners": "node ./scripts/banners.js",
 		"pre-commit": "npm run banners && git add ./content/**/banner.jpg && lint-staged",
 		"optimize:image": "node ./scripts/optimize-image.js",
-		"prepare": "husky install"
+		"prepare": "git config core.hookspath .githooks"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.17.1",
@@ -43,7 +43,6 @@
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.3.0",
 		"gatsby-remark-prismjs": "^6.4.0",
-		"husky": "^7.0.4",
 		"lint-staged": "^12.1.7",
 		"marked": "^4.0.9",
 		"node-fetch": "^3.1.0",
