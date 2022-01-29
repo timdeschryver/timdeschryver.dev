@@ -17,7 +17,7 @@
 		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --write --plugin-search-dir=. .",
 		"copy:content": "npm run copy:blog && npm run copy:snippets",
-		"copy:blog": "copyfiles \"content/blog/**\" static --exclude=\"**/index.md\" --up=1",
+		"copy:blog": "copyfiles \"content/blog/**\" static --exclude=\"**/*.md\" --up=1",
 		"copy:snippets": "copyfiles \"content/snippets/**\" static  --exclude=\"**/*.md\" --up=1",
 		"g": "node ./scripts/generate",
 		"p": "node ./scripts/devto",

@@ -180,7 +180,7 @@
 		<ul>
 			{#each post.metadata.incomingLinks as link}
 				<li>
-					<a href={`/blog/${link.slug}`} sveltekit:prefetch>{link.title}</a>
+					<a href={`/blog/${link.slug}`}>{link.title}</a>
 				</li>
 			{/each}
 		</ul>
@@ -191,7 +191,7 @@
 		<ul>
 			{#each post.metadata.outgoingLinks as link}
 				<li>
-					<a href={`/blog/${link.slug}`} sveltekit:prefetch>{link.title}</a>
+					<a href={`/blog/${link.slug}`}>{link.title}</a>
 				</li>
 			{/each}
 		</ul>

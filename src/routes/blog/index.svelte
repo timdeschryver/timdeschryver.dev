@@ -115,16 +115,16 @@
 	{#each filteredPosts as post}
 		<li>
 			<h2>
-				<a sveltekit:prefetch href={`/blog/${post.slug}`}>
+				<a href={`/blog/${post.slug}`}>
 					{post.title}
 				</a>
 				<time datetime={humanDate(post.date)}>[{humanDate(post.date)}]</time>
 			</h2>
 			<div>{post.description}</div>
 			<div>
-				<a sveltekit:prefetch href={`/blog/${post.slug}`}>Read more</a>
+				<a href={`/blog/${post.slug}`}>Read more</a>
 				{#if post.tldr}
-					| <a sveltekit:prefetch href={`/blog/${post.slug}?tldr=true`}>Read TLDR</a>
+					| <a href={`/blog/${post.slug}?tldr=true`}>Read TLDR</a>
 				{/if}
 			</div>
 		</li>
