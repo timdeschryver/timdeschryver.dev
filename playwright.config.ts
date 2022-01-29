@@ -4,6 +4,9 @@ const config: PlaywrightTestConfig = {
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 1,
 	timeout: 60_000,
+	outputDir: './test-results',
+	testDir: './tests',
+	reporter: 'html',
 	use: {
 		trace: 'on-first-retry',
 	},

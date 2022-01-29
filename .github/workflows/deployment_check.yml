@@ -30,7 +30,14 @@ jobs:
       - name: 🎭 Install Playwright
         run: npx playwright install --with-deps
         
-      - name: 🧪 Run Playwright tests
+      - name: 🧪 Run Playwright tests against ${{ github.event.deployment_status.target_url }}
         run: npm run test
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+
+      - name: 📦 Upload Results Artifact
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-test-results
+          path: test-results/

@@ -3,12 +3,12 @@
         {
 			"route": "/posts",
 			"redirect": "/blog",
-			"statusCode": 308
+			"statusCode": 301
 		},
         {
-			"route": "/posts/(.*)",
-			"redirect": "/blog/$1",
-			"statusCode": 308
+			"route": "/posts/*",
+			"redirect": "/blog",
+			"statusCode": 301
 		},
 		{
 			"route": "/newsletter",
@@ -31,7 +31,7 @@
 			"statusCode": 302
 		},
         {
-            "route": "*.{png,jpg,gif,css,js}",
+            "route": "/*.{png,jpg,gif,css,js}",
             "headers": {
               "Cache-Control": "public, max-age=300, immutable"
             }
