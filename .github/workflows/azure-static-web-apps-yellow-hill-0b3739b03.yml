@@ -9,16 +9,25 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build_and_deploy_job:
+  build_and_deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    name: 🚀 Build and Deploy Job
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    timeout-minutes: 10
+    outputs:
+      preview_url: ${{ steps.builddeploy.outputs.static_web_app_url }}
     steps:
-      - uses: actions/checkout@v2
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Build And Deploy
+
+      - name: ⚒️ Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -33,6 +42,38 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           VITE_PUBLIC_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
+
+  test:
+    needs: build_and_deploy
+    name: 👀 Sanity check ${{ needs.build_and_deploy.outputs.preview_url }}
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v2
+
+      - name: 🔢 Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: 🔎 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright
+        run: npx playwright install --with-deps
+        
+      - name: 🧪 Run Playwright Tests
+        run: npm run test
+        env:
+          PLAYWRIGHT_TEST_BASE_URL: ${{ needs.build_and_deploy.outputs.preview_url }}
+
+      - name: 📦 Upload Test Results Artifact
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-test-results
+          path: playwright-report
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
