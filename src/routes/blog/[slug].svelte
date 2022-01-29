@@ -1,14 +1,11 @@
 <script context="module" lang="ts">
 	export const prerender = true;
 
-	export async function load({ params, fetch }): Promise<{
-		props: {
-			post: any;
-		};
-	}> {
+	export async function load({ params, fetch }) {
 		const result = await fetch(`/blog/${params.slug}.json`);
 		const { post } = await result.json();
 		return {
+			maxage: 300,
 			props: {
 				post,
 			},

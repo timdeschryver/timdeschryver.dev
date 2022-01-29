@@ -25,7 +25,7 @@ export function get() {
 	return {
 		body: { metadata, tags },
 		headers: {
-			'Cache-Control': `max-age=0, s-max-age=${600}`, // 10 minutes
+			'Cache-Control': `max-age=300`
 		},
 	};
 }

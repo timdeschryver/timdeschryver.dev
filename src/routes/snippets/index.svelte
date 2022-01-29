@@ -5,6 +5,7 @@
 		const result = await fetch(`/snippets.json`);
 		const { snippets } = await result.json();
 		return {
+			maxage: 300,
 			props: {
 				snippets,
 			},
