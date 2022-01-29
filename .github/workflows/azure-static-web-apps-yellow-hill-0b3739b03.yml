@@ -15,14 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - name: 🛎️ Checkout
-        uses: actions/checkout@v2
-
-      - name: 🔢 Use Node.js 16
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
         with:
-          node-version: 16
-
+          submodules: true
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1

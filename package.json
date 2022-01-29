@@ -8,7 +8,7 @@
 	"scripts": {
 		"predev": "npm run copy:content",
 		"dev": "svelte-kit dev",
-		"prebuild": "rimraf .svelte-kit && rimraf .vercel_build_output && npm run copy:content",
+		"prebuild": "rimraf .svelte-kit && rimraf build && rimraf .vercel_build_output && npm run copy:content",
 		"build": "svelte-kit build",
 		"preview": "svelte-kit preview",
 		"test": "playwright test",
