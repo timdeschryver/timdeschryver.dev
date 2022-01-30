@@ -43,9 +43,9 @@ jobs:
         env:
           VITE_PUBLIC_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
 
-  test:
+  smoke_test:
     needs: build_and_deploy
-    name: 👀 Sanity check ${{ needs.build_and_deploy.outputs.preview_url }}
+    name: ☁️ Smoke test ${{ needs.build_and_deploy.outputs.preview_url }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
