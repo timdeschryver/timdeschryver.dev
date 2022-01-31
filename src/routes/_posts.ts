@@ -246,9 +246,8 @@ function parseFileToHtmlAndMeta(
 		const href_attr = `href="${href}"`;
 		const title_attr = title ? `title="${title}"` : '';
 		const internal = href.startsWith('/');
-		const prefetch_attr = internal ? `prefetch="true"` : '';
 		const rel_attr = internal || href.startsWith('#') ? `` : 'rel="external"';
-		const attributes = [href_attr, title_attr, prefetch_attr, rel_attr].filter(Boolean).join(' ');
+		const attributes = [href_attr, title_attr, rel_attr].filter(Boolean).join(' ');
 
 		if (internal) {
 			const outgoingSlug = url.parse(href, false).pathname.split('/').pop();
