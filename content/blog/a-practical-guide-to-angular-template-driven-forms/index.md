@@ -1096,8 +1096,7 @@ export class ValidatorModule {}
 ```
 
 For the custom validators, I provide the message template in the same module wherein the validator is declared.
-
-> Because I follow the [SCAM](https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do) principles, coined by [Lars Gyrup Brink Nielsen](https://twitter.com/LayZeeDK), this only doesn't look clean but it's also easy to use.
+To know the benefits of this practice see [Single Component Angular Modules and Component Tests go hand in hand](/blog/single-component-angular-modules-and-component-tests-go-hand-in-hand).
 
 ```ts{8-16}
 import { VALIDATION_MESSAGES } from './validation-message'
