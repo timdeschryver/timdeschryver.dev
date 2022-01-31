@@ -430,8 +430,7 @@ Complete test overhauls happen less frequently because this would mean that the 
 At that point, it's probably better to write a new component and to write a new test, instead of trying to modify the existing component and test cases.
 
 The only reason that you would have to change a test after a refactor, is when the component is broken up into multiple components. In this case, you have to add all the new components/modules/services to the input of the affected tests, but the rest of the test remains the same (if the refactor was successful, otherwise, can it even called a refactor?).
-
-> 💡 TIP: If you're following [Single Component Angular Modules](https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do), it easier to see when changes have an impact on your tests.
+Even these changes can be obsolete if you're using the Single Component Angular Modules (SCAMs) pattern. For a detailed look and the benefits, read [Single Component Angular Modules and Component Tests go hand in hand](/blog/single-component-angular-modules-and-component-tests-go-hand-in-hand).
 
 You might have also noticed that I'm writing multiple arrange/act/assert blocks in a single test.
 This is a habit that I've picked up from [Kent C. Dodds](https://twitter.com/kentcdodds), for more details I refer you to his blog post ["Write fewer, longer tests"](https://kentcdodds.com/blog/write-fewer-longer-tests).
