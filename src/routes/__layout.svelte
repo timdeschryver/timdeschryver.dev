@@ -46,8 +46,8 @@
 <header>
 	<h2><a href="/">Tim Deschryver</a></h2>
 	<nav>
-		<a href="/blog" sveltekit:prefetch class:active={segment.startsWith('blog')}>Blog</a>
-		<a href="/snippets" sveltekit:prefetch class:active={segment.startsWith('snippets')}>
+		<a href="/blog" class:active={segment.startsWith('blog')}>Blog</a>
+		<a href="/snippets" class:active={segment.startsWith('snippets')}>
 			Snippets
 		</a>
 		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>

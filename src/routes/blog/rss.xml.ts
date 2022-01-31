@@ -63,7 +63,7 @@ function generate(allPosts: ReturnType<typeof posts>) {
 		<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:webfeeds="http://webfeeds.org/rss/1.0" version="2.0">
 		<channel>
 		<title><![CDATA[ Tim Deschryver ]]></title>
-		<webfeeds:accentColor>F8C400</webfeeds:accentColor>
+		<webfeeds:accentColor>#F8C400</webfeeds:accentColor>
 		<webfeeds:analytics id="${import.meta.env.VITE_PUBLIC_GA_TRACKING_ID}" engine="GoogleAnalytics"/>
 		<description><![CDATA[ Blog by Tim Deschryver ]]></description>
 		${link}

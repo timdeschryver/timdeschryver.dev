@@ -1,0 +1,14 @@
+name: Smoke Test Deployed Environment
+
+on:
+  deployment_status:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke_test:
+    uses: ./.github/workflows/smoke-test.yml
+    with:
+      url: ${{ github.event.deployment_status.target_url }}

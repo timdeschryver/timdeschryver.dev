@@ -6,6 +6,7 @@
 		const { snippets } = await result.json();
 		const snippet = snippets.find((s) => s.metadata.slug === params.slug);
 		return {
+			maxage: 300,
 			props: {
 				snippets,
 				snippet,

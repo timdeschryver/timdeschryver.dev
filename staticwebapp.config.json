@@ -1,0 +1,40 @@
+{
+	"routes": [
+        {
+			"route": "/posts",
+			"redirect": "/blog",
+			"statusCode": 301
+		},
+        {
+			"route": "/posts/*",
+			"redirect": "/blog",
+			"statusCode": 301
+		},
+		{
+			"route": "/newsletter",
+			"redirect": "https://tinyletter.com/timdeschryver",
+			"statusCode": 302
+		},
+        {
+			"route": "/twitter",
+			"redirect": "https://twitter.com/tim_deschryver",
+			"statusCode": 302
+		},
+        {
+			"route": "/github",
+			"redirect": "http://github.com/timdeschryver",
+			"statusCode": 302
+		},
+        {
+			"route": "/support",
+			"redirect": "https://www.paypal.com/donate?hosted_button_id=59M5TFPQJS8SQ",
+			"statusCode": 302
+		},
+        {
+            "route": "/*.{png,jpg,gif,css,js}",
+            "headers": {
+              "Cache-Control": "public, max-age=300, immutable"
+            }
+        }
+	]
+}

@@ -8,8 +8,7 @@ node_modules
 .env.local
 *.log
 
-test-results
-
-# these are just copied
 static/blog
 static/snippets
+test-results/
+playwright-report/

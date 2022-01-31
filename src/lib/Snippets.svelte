@@ -3,7 +3,7 @@
 </script>
 
 {#each snippets as snippet, index}
-	<a style="display:none; visibility: hidden" hidden sveltekit:prefetch href={snippet.metadata.url}
+	<a style="display:none; visibility: hidden" hidden href={snippet.metadata.url}
 		>{snippet.metadata.url}</a
 	>
 	{@html snippet.html}

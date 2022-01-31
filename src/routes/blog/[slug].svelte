@@ -1,14 +1,11 @@
 <script context="module" lang="ts">
 	export const prerender = true;
 
-	export async function load({ params, fetch }): Promise<{
-		props: {
-			post: any;
-		};
-	}> {
+	export async function load({ params, fetch }) {
 		const result = await fetch(`/blog/${params.slug}.json`);
 		const { post } = await result.json();
 		return {
+			maxage: 300,
 			props: {
 				post,
 			},
@@ -180,7 +177,7 @@
 		<ul>
 			{#each post.metadata.incomingLinks as link}
 				<li>
-					<a href={`/blog/${link.slug}`} sveltekit:prefetch>{link.title}</a>
+					<a href={`/blog/${link.slug}`}>{link.title}</a>
 				</li>
 			{/each}
 		</ul>
@@ -191,7 +188,7 @@
 		<ul>
 			{#each post.metadata.outgoingLinks as link}
 				<li>
-					<a href={`/blog/${link.slug}`} sveltekit:prefetch>{link.title}</a>
+					<a href={`/blog/${link.slug}`}>{link.title}</a>
 				</li>
 			{/each}
 		</ul>

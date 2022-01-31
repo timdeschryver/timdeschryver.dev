@@ -11,3 +11,7 @@ interface ImportMetaEnv {
 	VITE_PUBLIC_BASE_PATH: string;
 	VITE_PUBLIC_GA_TRACKING_ID: string;
 }
+
+interface ImportMeta {
+	readonly env: ImportMetaEnv;
+}

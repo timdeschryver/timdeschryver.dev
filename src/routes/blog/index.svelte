@@ -5,6 +5,7 @@
 		const result = await fetch(`/blog.json`);
 		const { metadata, tags } = await result.json();
 		return {
+			maxage: 300,
 			props: {
 				metadata,
 				tags,
@@ -115,16 +116,16 @@
 	{#each filteredPosts as post}
 		<li>
 			<h2>
-				<a sveltekit:prefetch href={`/blog/${post.slug}`}>
+				<a href={`/blog/${post.slug}`} sveltekit:prefetch>
 					{post.title}
 				</a>
 				<time datetime={humanDate(post.date)}>[{humanDate(post.date)}]</time>
 			</h2>
 			<div>{post.description}</div>
 			<div>
-				<a sveltekit:prefetch href={`/blog/${post.slug}`}>Read more</a>
+				<a href={`/blog/${post.slug}`} sveltekit:prefetch>Read more</a>
 				{#if post.tldr}
-					| <a sveltekit:prefetch href={`/blog/${post.slug}?tldr=true`}>Read TLDR</a>
+					| <a href={`/blog/${post.slug}?tldr=true`} sveltekit:prefetch>Read TLDR</a>
 				{/if}
 			</div>
 		</li>
