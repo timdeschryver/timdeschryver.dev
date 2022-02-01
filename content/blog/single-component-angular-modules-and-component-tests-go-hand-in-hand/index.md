@@ -157,8 +157,11 @@ it('renders the MyAwesomeComponent component', async () => {
 
 ## Conclusion
 
-By using SCAMs you don't need to keep the test setup up-to-date because each change to the component's production code is reflected in the test.
+While SCAMs have multiple positive features, the benefits that they give to Angular component tests is my favorite characteristic of a SCAM.  
+From my experience, it's been an absolute joy to work with and I'm feeling more productive than before.
 
-With this practice, your tests become resilient to internal changes.
+By organizing your Angular building blocks into SCAMs you don't need to figure out which dependencies are required to keep the test setup up-to-date. With SCAMs each change to the component's production code is directly reflected in the test.
+
+If you follow this practice, your tests become resilient to internal changes and you can give your full focus to the new features.
 
 Happy testing!
