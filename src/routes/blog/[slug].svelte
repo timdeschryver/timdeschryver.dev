@@ -4,6 +4,11 @@
 	export async function load({ params, fetch }) {
 		const result = await fetch(`/blog/${params.slug}.json`);
 		const { post } = await result.json();
+		if (!post) {
+			return {
+				status: 404,
+			};
+		}
 		return {
 			maxage: 300,
 			props: {
