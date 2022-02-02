@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { variables } from '$lib/variables';
+	import { afterNavigate } from '$app/navigation';
 
 	$: segment = $page.url.pathname.substring(1);
 	let support;
@@ -24,13 +25,19 @@
 			});
 			support = document.querySelector('[id*=kofi-widget-overlay]');
 		}
+		
+		if (variables && typeof gtag === 'function') {
+			gtag('config', variables.gtag_id);
+		}
 	});
 
-	afterUpdate(() => {
-		if (typeof gtag === 'function' && variables) {
-			gtag('config', variables.gtag_id, {
-				page_path: window.location.pathname,
-			});
+	afterNavigate(({to}) => {
+		if (variables && typeof gtag === 'function') {
+			gtag('event', 'page_view', {
+				page_title: document.title,
+				page_location: location.href,
+				page_path: to.pathname
+			})
 		}
 	});
 
