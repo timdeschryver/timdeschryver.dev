@@ -200,8 +200,6 @@
 	{/if}
 {/if}
 
-<hr />
-
 <Support />
 
 <div class="article-actions">
@@ -307,5 +305,10 @@
 
 	.article-actions a {
 		margin-top: 0;
+	}
+
+	:global(main[data-page*='blog/'] ul) {
+		font-size: var(--font-size);
+		line-height: var(--line-height);
 	}
 </style>

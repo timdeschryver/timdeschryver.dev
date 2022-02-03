@@ -157,22 +157,22 @@ The distinct advantages of both are well-explained in ["When To Use Parallel.For
 
 The main differences that I will remember are:
 
-##### The degree of parallelism
+#### The degree of parallelism
 
 - with `Parallel` you set the maximum degree, which means that it's impacted based on the available resources
 - with `PLINQ` you set the degree, meaning that that's the actual number of threads that are used
 
-##### The order of execution
+#### The order of execution
 
 - the order in which the tasks are invoked within a `Parallel` iteration is random. In other words, use `Parallel` to execute independent tasks
 - if the order is important, use `PLINQ` because the order is preserved
 
-##### Using the result
+#### Using the result
 
 - `Parallel` doesn't return a result. The output of `Parallel` is [`ParallelLoopResult`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallelloopresult?view=netcore-3.1), which contains the completion information of the collection (for example if all tasks are completed) but nothing more.
 - when you need a return value of the processed stream use `PLINQ`. Because the tasks do run concurrently, we need a way to merge the results of all the tasks to one result object. To specify how the result of each task must be merged back to the output result, use the [merge options](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/merge-options-in-plinq).
 
-##### Break early to stop processing
+#### Break early to stop processing
 
 - `Parallel` provides a way to exit early with [`ParallelLoopState.Stop()`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallelloopstate.stop) and [`ParallelLoopState.Break()`](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.parallelloopstate.break?view=netcore-3.1). Both prevent more iterations from starting but have the difference that `Stop`, stops the loop immediately while `Break` still runs previous iterations.
 - to stop a `PLINQ` iteration, a [CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken) is used but this doesn't guarantee that the following iterations are not started.

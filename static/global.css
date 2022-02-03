@@ -5,6 +5,8 @@
 	--head-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
 		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
 		'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-size: 1.3rem;
+	--line-height: 2;
 	--spacing: 1.5em;
 	--spacing-small: 0.5em;
 	--spacing-large: 3em;
@@ -70,8 +72,8 @@ a {
 }
 
 p {
-	font-size: 1.3rem;
-	line-height: 2;
+	font-size: var(--font-size);
+	line-height: var(--line-height);
 }
 
 @media (max-width: 480px) {
@@ -158,6 +160,30 @@ main > h1 {
 main > h2,
 main > h3 {
 	text-transform: uppercase;
+}
+h5 {
+	text-align: center;
+	position: relative;
+}
+h5:before {
+	content: '';
+	display: block;
+	width: 35%;
+	height: 1px;
+	background: currentColor;
+	left: 0;
+	top: 50%;
+	position: absolute;
+}
+h5:after {
+	content: '';
+	display: block;
+	width: 35%;
+	height: 1px;
+	background: currentColor;
+	right: 0;
+	top: 50%;
+	position: absolute;
 }
 
 #svelte > main > pre,

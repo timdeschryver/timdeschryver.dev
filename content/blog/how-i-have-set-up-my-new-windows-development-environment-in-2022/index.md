@@ -606,8 +606,12 @@ Because I'm using the Insiders version of Visual Studio Code, I'm using `code-in
 # Formatting and Rules
 code-insiders --install-extension dbaeumer.vscode-eslint --force
 code-insiders --install-extension esbenp.prettier-vscode --force
-code-insiders --install-extension formulahendry.auto-rename-tag --force
 code-insiders --install-extension aaron-bond.better-comments --force
+
+# HTML and CSS
+code-insiders --install-extension formulahendry.auto-rename-tag --force
+code-insiders --install-extension naumovs.color-highlight --force
+code-insiders --install-extension anteprimorac.html-end-tag-labels --force
 
 # Git
 code-insiders --install-extension github.vscode-pull-request-github --force
@@ -619,6 +623,9 @@ code-insiders --install-extension angular.ng-template --force
 # .NET
 code-insiders --install-extension ms-dotnettools.csharp --force
 code-insiders --install-extension visualstudioexptteam.vscodeintellicode --force
+
+# Test Runners
+code-insiders --install-extension ms-playwright.playwright --force
 
 # Markdown
 code-insiders --install-extension yzhang.markdown-all-in-one --force
@@ -646,12 +653,19 @@ For the completion, here's my entire `settings.json` file.
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "files.defaultLanguage": "markdown",
+    "files.associations": {
+        "*.mdx": "markdown"
+    },
     "terminal.integrated.fontFamily": "CaskaydiaCove NF",
     "workbench.list.smoothScrolling": true,
+    "workbench.editor.wrapTabs": true,
     "javascript.inlayHints.parameterNames.enabled": "all",
     "typescript.inlayHints.parameterNames.enabled": "all",
     "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
     "scm.defaultViewMode": "tree",
+    "search.exclude": {
+        "package-lock.json": true
+    },
     // https://github.com/angular-eslint/angular-eslint#linting-html-files-and-inline-templates-with-the-vscode-extension-for-eslint
     "eslint.options": {
         "extensions": [".ts", ".html"]
