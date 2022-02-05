@@ -100,8 +100,7 @@ export function readPosts(): {
 				  })
 				: { html: null };
 
-			// disable in dev because this slows down 😪
-			const modified = import.meta.env.DEV ? '' : getLastModifiedDate(postPath);
+			const modified = getLastModifiedDate(postPath);
 			const published = metadata.published === 'true';
 			const tags = metadata.tags
 				.split(',')
@@ -243,14 +242,15 @@ function parseFileToHtmlAndMeta(
 		//   return `<div>${fetchResult.html}</div>`;
 		// }
 
-		const href_attr = `href="${href}"`;
+		const cleaned = href.replace('../', '/blog/').replace('/index.md', '');
+		const href_attr = `href="${cleaned}"`;
 		const title_attr = title ? `title="${title}"` : '';
-		const internal = href.startsWith('/');
-		const rel_attr = internal || href.startsWith('#') ? `` : 'rel="external"';
+		const internal = cleaned.startsWith('/');
+		const rel_attr = internal || cleaned.startsWith('#') ? `` : 'rel="external"';
 		const attributes = [href_attr, title_attr, rel_attr].filter(Boolean).join(' ');
 
 		if (internal) {
-			const outgoingSlug = url.parse(href, false).pathname.split('/').pop();
+			const outgoingSlug = url.parse(cleaned, false).pathname.split('/').pop();
 			if (metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}
@@ -410,6 +410,11 @@ function sortByDate(a, b) {
 }
 
 function getLastModifiedDate(filePath) {
+	// disable in dev because this slows down 😪
+	if (import.meta.env.DEV) {
+		return '';
+	}
+
 	const buffer = execSync(`git log -1 --pretty="format:%ci" ${filePath}`);
 
 	if (!buffer) {

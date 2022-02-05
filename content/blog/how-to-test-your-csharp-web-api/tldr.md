@@ -2,11 +2,23 @@ Integration tests give you more confidence in the code you write because (almost
 
 ## Creating a WebApplicationFactory
 
-The `WebApplicationFactory` is used to create an in-memory instance of your C# Api.
-For simple projects this step can be skipped, for the more complex projects, this allows you to configure the API.
-[Microsoft docs](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-5.0#customize-webapplicationfactory).
+The `WebApplicationFactory` is used to create an in-memory instance of your C# Api application.
+Create your own implementation to override the configuration of the application.
+This is useful to change appsettings, provide mock implementations, and to add an integration test authentication schema.
 
-```cs
+**The `WebApplicationFactory` allows you to alter the internals of the application, intervene with the pipeline of a request, or to replace objects in the Dependency Injection (DI) container.**
+
+```cs:ApiWebApplicationFactory.cs
+using System.Security.Claims;
+using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
 public class ApiWebApplicationFactory : WebApplicationFactory<Api.Startup>
 {
     public IConfiguration Configuration { get; private set; }
@@ -15,30 +27,61 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Api.Startup>
     {
         builder.ConfigureAppConfiguration(config =>
         {
-            // Override config
-            // Can be useful to change connectionstrings
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile("integrationsettings.json")
                 .Build();
+
             config.AddConfiguration(Configuration);
         });
 
-        // Shared test setup
         builder.ConfigureTestServices(services =>
         {
+            services
+                .AddAuthentication("IntegrationTest")
+                .AddScheme<AuthenticationSchemeOptions, IntegrationTestAuthenticationHandler>(
+                    "IntegrationTest",
+                    options => { }
+                );
             services.AddTransient<IWeatherForecastConfigService, WeatherForecastConfigStub>();
         });
+    }
+}
+
+internal class IntegrationTestAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+{
+    public IntegrationTestAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
+      ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+      : base(options, logger, encoder, clock)
+    {
+    }
+
+    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    {
+        var claims = new[] {
+            new Claim(ClaimTypes.Name, "IntegrationTest User"),
+            new Claim(ClaimTypes.NameIdentifier, "IntegrationTest User"),
+            new Claim("a-custom-claim", "squirrel 🐿️"),
+        };
+        var identity = new ClaimsIdentity(claims, "IntegrationTest");
+        var principal = new ClaimsPrincipal(identity);
+        var ticket = new AuthenticationTicket(principal, "IntegrationTest");
+        var result = AuthenticateResult.Success(ticket);
+        return Task.FromResult(result);
     }
 }
 ```
 
 ## Creating an xUnit Class Fixture
 
-Create the in-memory instance once for all the tests in a single class with `IClassFixture`.
-This makes the execution of multiple tests faster.  
-[xUnit docs](https://xunit.net/docs/shared-context#class-fixture).
+Create the in-memory instance once for all the tests in a single class with [`IClassFixture` from xUnit](https://xunit.net/docs/shared-context#class-fixture).
+This reduces the noise within the test cases.
 
-```cs
+**Think of the abstract `IntegrationTest` class as a tool to make it easier to interact with the application.**
+
+You can also add a test category to exclude/include integration tests while using the `dotnet test` command.
+
+```cs:IntegrationTest.cs
+[Trait("Category", "Integration")]
 public abstract class IntegrationTest : IClassFixture<ApiWebApplicationFactory>
 {
     protected readonly ApiWebApplicationFactory _factory;
@@ -54,10 +97,10 @@ public abstract class IntegrationTest : IClassFixture<ApiWebApplicationFactory>
 
 ## Writing a Test
 
-The test class extends from `IntegrationTest`.
-Each test makes a request to the in-memory instance of the API and asserts the result.
+The test class extends from our `IntegrationTest` class.
+Each test makes a request to the in-memory instance of the application and asserts that the result is what it should be.
 
-```cs
+```cs:WeatherForecastControllerTests.cs
 public class WeatherForecastControllerTests : IntegrationTest
 {
     public WeatherForecastControllerTests(ApiWebApplicationFactory fixture)
@@ -68,35 +111,6 @@ public class WeatherForecastControllerTests : IntegrationTest
     {
         var forecast = await _client.GetFromJsonAsync<WeatherForecast[]>("/weatherforecast");
         forecast.Should().HaveCount(7);
-    }
-}
-```
-
-## Writing a one-off Test
-
-Create a new instance of the API by invoking `WithWebHostBuilder`.
-This is useful for single tests that need a specific configuration.
-
-```cs
-public class WeatherForecastControllerTests : IntegrationTest
-{
-    public WeatherForecastControllerTests(ApiWebApplicationFactory fixture)
-        : base(fixture) { }
-
-    [Fact]
-    public async Task GET_with_invalid_config_results_in_a_bad_request()
-    {
-        var client = _factory.WithWebHostBuilder(builder =>
-        {
-            builder.ConfigureServices(services =>
-            {
-                services.AddTransient<IWeatherForecastConfigService, InvalidWeatherForecastConfigStub>();
-            });
-        })
-        .CreateClient();
-
-        var response = await client.GetAsync("/weatherforecast");
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }
 ```
