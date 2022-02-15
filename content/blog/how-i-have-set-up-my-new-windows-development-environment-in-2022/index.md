@@ -471,6 +471,14 @@ function gfix {
     }
 }
 
+function gtest {
+    if($null -eq $args[1]) {
+        gco "test: $($args[0])"
+    }else {
+        gco "test($($args[0])): $($args[1])"
+    }
+}
+
 function gdocs {
     if($null -eq $args[1]) {
         gco "docs: $($args[0])"
@@ -487,7 +495,6 @@ function gstyle {
     }
 }
 
-
 function grefactor {
     if($null -eq $args[1]) {
         gco "refactor: $($args[0])"
@@ -495,7 +502,6 @@ function grefactor {
         gco "refactor($($args[0])): $($args[1])"
     }
 }
-
 
 function gperf {
     if($null -eq $args[1]) {
@@ -585,7 +591,7 @@ git config --global user.name "first last"
 git config --global user.email "name@example.com"
 git config --global push.default current
 git config --global pull.rebase true
-git config --global core.editor code-insiders
+git config --global core.editor code-insiders -w
 git config --global init.defaultBranch main
 # sign commits
 git config --global gpg.program "C:/Program Files (x86)/GnuPG/bin/gpg.exe"

@@ -6,6 +6,14 @@
 		{ "source": "/posts/(.*)", "destination": "/blog/$1" },
 		{ "source": "/posts", "destination": "/blog" },
 		{
+			"source": "/blog/be-proactive-when-you-join-an-existing-angular-project",
+			"destination": "/blog/be-proactive-when-you-join-an-angular-project"
+		},
+		{
+			"source": "/blog/be-proactive-when-you-join-an-existing-angular-project/images/banner.jpg",
+			"destination": "/blog/be-proactive-when-you-join-an-angular-project/images/banner.jpg"
+		},
+		{
 			"source": "/newsletter",
 			"destination": "https://tinyletter.com/timdeschryver"
 		},
