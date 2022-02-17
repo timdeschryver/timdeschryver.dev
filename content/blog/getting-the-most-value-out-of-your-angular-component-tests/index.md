@@ -10,7 +10,7 @@ published: true
 ---
 
 I frequently hear that it's hard to know what to test of an Angular component.
-This complaint is often mentioned together by saying that it takes up a lot of time to write and maintain these tests that provide little tp no value. In the end, the team wonders if the tests are worth it.
+This complaint is often mentioned together by saying that it takes up a lot of time to write and maintain these tests that provide little to no value. In the end, the team wonders if the tests are worth it.
 I've been here before, and there are two outcomes when you reach this point.
 You either have almost no tests, or the opposite, the codebase is bloated with a lot of tests that slow you down.
 Both options aren't great.
