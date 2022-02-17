@@ -23,7 +23,7 @@ published: true
 - [Conclusion](#conclusion)
 
 As developers, we're always using analogies to explain our work to non-developers.
-We do this to be to give an idea of what it's like without using too much of our technical jargon.
+We do this to give an idea of what it's like without using too much of our technical jargon.
 In this intro, I'm doing the same.
 
 Working on a project is a lot like gardening.
@@ -33,12 +33,12 @@ Because the garden keeps on growing it becomes harder and harder to give each ar
 Eventually, the garden slowly loses its beauty and so does your motivation.
 
 Starting a new project is a lot like the above-described garden.
-The project starts off with good intentions, but eventually some trade-offs need to be made along the way due to several factors. Doing your best with the current information, deadlines that had to be reached, members that leave the team, evolving technology, and the lack of experience are all reasons that decide the quality of the codebase. When it becomes worse it also has an impact on the future development, at its worst-case, it also lowers the team mood and team morale. Making a new change requires more energy than it used to be.
+The project starts off with good intentions, but eventually some trade-offs need to be made along the way due to several factors. Doing your best with the current information, deadlines that had to be reached, members that leave the team, evolving technology, and the lack of experience are all reasons that decide the quality of the codebase. When it becomes worse it also has an impact on the future development, at its worst-case, it also lowers the team mood and team morale. Making a new change requires more energy than it used to.
 
 When you join a team it usually takes a while to be brought up-to-speed and to start being or feeling productive.
 When you hear your team members complain about the current state of the codebase, that it got out of control, that it could need a polishment, or when you notice it yourself, there's a chance for you to make a positive impact by being proactive.
 
-Giving a codebase the required, but the long over-due focus is a win-win situation for you and the team.
+Giving a codebase the required, but long over-due focus is a win-win situation for you and the team.
 You get an introduction to the codebase, and the whole team wins because you improve the state of the application.
 Because, let's be honest, no one else wants to do it at this point in time.
 It's also a perfect opportunity to get to know your team members because what you're about to do is going to result in questions on both sides.
@@ -51,7 +51,7 @@ Let's start gardening!
 ### TypeScript
 
 This is probably the most impactful item on your to-do list, but also the most time-consuming.
-With strictness enabled it results that silly mistakes being caught at compile time, and thus you create a safer environment.
+With strictness enabled it results in silly mistakes being caught at compile time, and thus you create a safer environment.
 For example, it can detect an unsafe operation on an object that could possibly be `null`.
 
 To enable "strict mode" in your application, open the `tsconfig.json` file and set the `compilerOptions.strict` property to `true`.
@@ -261,7 +261,7 @@ npx ng update @angular/cli@12 @angular/cdk@12 @ngrx/store
 
 ## ESLint
 
-In the early years of Angular relied on TSLint to statically analyze your code to quickly find problems (also known as a linter) an Angular project.
+In the early years Angular relied on TSLint to statically analyze your code to quickly find problems (also known as a linter) in an Angular project.
 In 2019-2020, TSLint became deprecated and was ported over to ESLint as [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint).
 
 Because TSLint was included with the creation of a new Angular project, a lot of older Angular projects still depend on TSLint.
@@ -472,7 +472,7 @@ To register the git hook, add the [`prepare` lifecycle hook](https://docs.npmjs.
 
 The [lint-staged](https://github.com/okonet/lint-staged) is a library (yes, another one) that helps us to keep the application in better shape.
 It makes it easy to run commands to staged git files before these are committed.
-In other words, a touched filed is automatically formatted (important if someone's IDE doesn't run prettier) and is checked against ESLint and strictness violations. This makes sure that code is always formatted and prevents that there are no violations against strict compilers and ESLint rules.
+In other words, a touched filed is automatically formatted (important if someone's IDE doesn't run prettier) and is checked against ESLint and strictness violations. This makes sure that code is always formatted and ensures that there are no violations against strict compilers and ESLint rules.
 You could also always run the commands to the whole project, but this could take up some time, using lint-staged makes sure that almost no time is lost.
 
 To install lint-staged, run the following command.
