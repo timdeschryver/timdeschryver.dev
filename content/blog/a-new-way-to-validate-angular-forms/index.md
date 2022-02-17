@@ -11,17 +11,17 @@ published: true
 ---
 
 Over the past year, our team has created a lot of different forms for a form-heavy application.
-One of the difficulties we experiences was validating fields that are dependent on other fields of the form.
+One of the difficulties we experienced was validating fields that are dependent on other fields of the form.
 For example, conditional validation or validation where multiple fields are needed to validate a control.
 
 Now, when we look back at those forms, we notice that most of the forms are build differently.
-We're not the only ones that struggle with this. I asked the question of how to implement a conditional validation in Angular Forms on Twitter, and they were multiple answers on how to tackle this problem. [All of them were different but there was a consensus, it isn't always straightforward, nor is it easy](https://twitter.com/tim_deschryver/status/1360597421340979206).
+We're not the only ones that struggle with this. I asked the question of how to implement a conditional validation in Angular Forms on Twitter, and there were multiple answers on how to tackle this problem. [All of them were different but there was a consensus, it isn't always straightforward, nor is it easy](https://twitter.com/tim_deschryver/status/1360597421340979206).
 
 To streamline our forms and to make the validation easier I started a proof of concept to validate forms differently.
 
 ## Goals
 
-The goal is to come up with a solution for more complex forms, but also that it can be used for the simple forms.
+The goal is to come up with a solution for more complex forms, but it should be also used for simple forms.
 
 As a developer using this new validation API, I **don't want to write a lot of code** that introduces subtle bugs. Instead, I just want to **declare validation rules**.
 
@@ -44,7 +44,7 @@ The intention of this new validation layer is only to validate the form value an
 
 To build the validation layer, we use the `createValidator<T>()` wrapper and assign validation rules to the form properties. A validation rule consists of the details of why the validation has failed. The validation rule also contains a message for a user and can include these details in the message.
 
-To active the validator, it must be subscribed to, and the validator returns an Observable containing all of the messages.
+To activate the validator, it must be subscribed to, and the validator returns an Observable containing all of the messages.
 
 To see this in action, please have a look at the following examples.
 
@@ -84,7 +84,7 @@ this.form.get('strict')!.valueChanges.subscribe((strict) => {
 ```
 
 Doing this can quickly become bloated and hazardous for large forms when there's cohesion between different controls.
-In our case, we overruled a previously validator with a different one. It was after a couple of debugging sessions that we were able to reproduce this hidden bug.
+In our case, we overruled a previous validator with a different one. It was after a couple of debugging sessions that we were able to reproduce this hidden bug.
 With the `when` syntax, it becomes easier to see the coherence between (multiple) controls and (multiple) validators.
 
 ### Access to the form value
@@ -126,14 +126,14 @@ For example, you won't be able to use a number validation (e.g. `greaterThan`) f
 ### Main difference
 
 To make the above use cases possible, the whole form is validated on every change.
-This impact is negligible for synchronous validators because these are just methods that are invoked, thus should be fast and has a low impact on the performance.
+This impact is negligible for synchronous validators because these are just methods that are invoked, thus should be fast, with a low impact on the performance.
 This is a different story for asynchronous validators, where this behavior might have an impact.
 
 ## Impact
 
 As a developer, the `createValidator` wrapper intends to make it easier to write and read the validation logic of your Angular forms.
 Its minimal API (with the common supplied validation rules) should also allow a quick transition towards the `createValidator` wrapper.
-Refactoring existing forms will have a minimal impact because the status and the value of the form remain the same as before.
+Refactoring existing forms will have a minimal impact because the status and the value of the form remains the same as before.
 
 ## Final thoughts
 
