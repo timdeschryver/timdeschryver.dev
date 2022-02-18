@@ -177,9 +177,19 @@
 {:else}
 	{@html post.html}
 
+	{#if post.contributors.length}
+		<h5>A thank you to my contributors</h5>
+		{#each post.contributors as [login, name], i}
+			<a href={`https://github.com/${login}`} rel="external" class="mt-0">{name}</a>
+			{#if i + 1 !== post.contributors.length}
+				,
+			{/if}
+		{/each}
+	{/if}
+
 	{#if post.metadata.incomingLinks.length}
 		<h5>Incoming links</h5>
-		<ul>
+		<ul class="mt-0">
 			{#each post.metadata.incomingLinks as link}
 				<li>
 					<a href={`/blog/${link.slug}`}>{link.title}</a>
@@ -190,7 +200,7 @@
 
 	{#if post.metadata.outgoingLinks.length}
 		<h5>Outgoing links</h5>
-		<ul>
+		<ul class="mt-0">
 			{#each post.metadata.outgoingLinks as link}
 				<li>
 					<a href={`/blog/${link.slug}`}>{link.title}</a>
@@ -203,11 +213,11 @@
 <Support />
 
 <div class="article-actions">
-	<a class="article-action" target="_blank" rel="external" href="https://timdeschryver.dev/support">
+	<a class="mt-0" target="_blank" rel="external" href="https://timdeschryver.dev/support">
 		Support the blog
 	</a>
 	<a
-		class="article-action"
+		class="mt-0"
 		target="_blank"
 		rel="external"
 		href="https://twitter.com/intent/tweet?text={post.metadata.title}&via=tim_deschryver&url={post
@@ -216,16 +226,14 @@
 		Share on Twitter
 	</a>
 	<a
-		class="article-action"
+		class="mt-0"
 		href="https://twitter.com/search?q={post.metadata.canonical}"
 		target="_blank"
 		rel="external"
 	>
 		Discuss on Twitter
 	</a>
-	<a class="article-action" target="_blank" rel="external" href={post.metadata.edit}>
-		Edit on GitHub
-	</a>
+	<a class="mt-0" target="_blank" rel="external" href={post.metadata.edit}> Edit on GitHub </a>
 </div>
 
 <style>
@@ -253,6 +261,7 @@
 		background: none;
 		width: 100%;
 		cursor: pointer;
+		color: var(--text-color-light);
 	}
 	@media (max-width: 1450px) {
 		.side-actions {
@@ -294,17 +303,9 @@
 		}
 	}
 
-	.author {
-		margin-top: 0;
-	}
-
 	.article-actions {
 		display: flex;
 		justify-content: space-evenly;
-	}
-
-	.article-actions a {
-		margin-top: 0;
 	}
 
 	:global(main[data-page*='blog/'] ul) {
