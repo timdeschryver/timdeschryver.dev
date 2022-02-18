@@ -155,7 +155,7 @@
 				>
 			{/if}
 		</div>
-		<a class="author" href="https://timdeschryver.dev/twitter" rel="external">@tim_deschryver</a>
+		<a class="mt-0" href="https://timdeschryver.dev/twitter" rel="external">@tim_deschryver</a>
 	</div>
 </header>
 

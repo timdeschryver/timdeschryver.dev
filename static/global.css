@@ -156,6 +156,10 @@ a:active {
 	grid-column: 2;
 }
 
+h1 {
+	line-height: 1.2;
+}
+
 main > h1 {
 	margin-top: var(--spacing);
 }
