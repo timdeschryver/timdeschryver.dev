@@ -30,14 +30,15 @@ const content = './content/blog';
 				const page = await browser.newPage({
 					colorScheme: 'dark',
 				});
+
+				await page.setViewportSize({
+					width: 2048,
+					height: 2048,
+				});
+
 				let first = true;
 				for (const { post, bannerPath } of generateBanners) {
 					console.log(`[banner] Generating banner for ${post}`);
-
-					await page.setViewportSize({
-						width: 940,
-						height: post.length > 50 ? 700 : 570,
-					});
 
 					await page.goto(`http://localhost:3000/blog/${post}`);
 					if (first) {
@@ -54,7 +55,7 @@ const content = './content/blog';
 					});
 					await page.$eval('.details', (el) => {
 						el.style['justify-content'] = 'space-around';
-						el.style['font-size'] = '1.2rem';
+						el.style['font-size'] = '5rem';
 					});
 
 					await page.evaluate(() => {
@@ -68,7 +69,7 @@ const content = './content/blog';
 					});
 				}
 				await browser.close();
-				serve.kill();
+				serve.kill('SIGINT');
 				process.exit(0);
 			}
 		});

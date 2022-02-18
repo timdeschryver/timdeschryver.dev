@@ -39,29 +39,40 @@ const langs = {
 	ps: 'powershell',
 };
 
-export const posts = readPosts();
 export const snippets = readSnippets();
 
-export function readPosts(): {
-	html: string;
-	tldr: string;
-	metadata: {
-		title: string;
-		slug: string;
-		description: string;
-		author: string;
-		date: string;
-		modified: string;
-		tags: string[];
-		banner: string;
-		bannerCredit: string;
-		published: boolean;
-		canonical: string;
-		edit: string;
-		outgoingLinks: { slug: string; title: string }[];
-		incomingLinks: { slug: string; title: string }[];
-	};
-}[] {
+const posts:
+	| {
+			html: string;
+			tldr: string;
+			metadata: any;
+	  }[] = [];
+
+export async function readPosts(): Promise<
+	{
+		html: string;
+		tldr: string;
+		metadata: {
+			title: string;
+			slug: string;
+			description: string;
+			author: string;
+			date: string;
+			modified: string;
+			tags: string[];
+			banner: string;
+			bannerCredit: string;
+			published: boolean;
+			canonical: string;
+			edit: string;
+			outgoingLinks: { slug: string; title: string }[];
+			incomingLinks: { slug: string; title: string }[];
+		};
+	}[]
+> {
+	if (posts.length) {
+		return posts;
+	}
 	console.log('\x1b[35m[posts] generate\x1b[0m');
 
 	const folderContent = [...traverseFolder(blogPath, '.md')];
@@ -159,6 +170,8 @@ export function readPosts(): {
 		post.metadata.incomingLinks.push(...incomingLinks);
 		post.metadata.outgoingLinks.push(...outgoingLinks);
 	}
+
+	posts.push(...postsSorted);
 	return postsSorted;
 }
 
@@ -409,7 +422,7 @@ function sortByDate(a, b) {
 	return new Date(a.metadata.date) < new Date(b.metadata.date) ? 1 : -1;
 }
 
-function getLastModifiedDate(filePath) {
+function getLastModifiedDate(filePath: string) {
 	// disable in dev because this slows down 😪
 	if (import.meta.env.DEV) {
 		return '';

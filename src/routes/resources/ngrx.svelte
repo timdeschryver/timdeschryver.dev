@@ -157,13 +157,7 @@
 
 	<ul>
 		{#each resource.links as link}
-			<li><a href={link.link}>{link.category} {link.text}</a></li>
+			<li class="mt-0"><a href={link.link}>{link.category} {link.text}</a></li>
 		{/each}
 	</ul>
 {/each}
-
-<style>
-	li {
-		margin-top: 0;
-	}
-</style>

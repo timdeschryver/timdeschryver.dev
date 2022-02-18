@@ -25,19 +25,19 @@
 			});
 			support = document.querySelector('[id*=kofi-widget-overlay]');
 		}
-		
+
 		if (variables && typeof gtag === 'function') {
 			gtag('config', variables.gtag_id);
 		}
 	});
 
-	afterNavigate(({to}) => {
+	afterNavigate(({ to }) => {
 		if (variables && typeof gtag === 'function') {
 			gtag('event', 'page_view', {
 				page_title: document.title,
 				page_location: location.href,
-				page_path: to.pathname
-			})
+				page_path: to.pathname,
+			});
 		}
 	});
 
@@ -54,9 +54,7 @@
 	<h2><a href="/">Tim Deschryver</a></h2>
 	<nav>
 		<a href="/blog" class:active={segment.startsWith('blog')}>Blog</a>
-		<a href="/snippets" class:active={segment.startsWith('snippets')}>
-			Snippets
-		</a>
+		<a href="/snippets" class:active={segment.startsWith('snippets')}> Snippets </a>
 		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>
 		<a href="https://tinyletter.com/timdeschryver" rel="external">Newsletter</a>
 	</nav>

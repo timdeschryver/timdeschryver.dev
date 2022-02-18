@@ -1,7 +1,8 @@
 import { ISODate } from '$lib/formatters';
-import { posts } from './_posts';
+import { readPosts } from './_posts';
 
-export function get() {
+export async function get() {
+	const posts = await readPosts()
 	return {
 		body: generate(posts),
 		headers: {
@@ -10,8 +11,8 @@ export function get() {
 	};
 }
 
-function generate(allPosts: ReturnType<typeof posts>) {
-	const publishedPosts = allPosts.filter((post) => post.metadata.published);
+function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
+	const publishedPosts = posts.filter((post) => post.metadata.published);
 	const date = ISODate(new Date());
 	const nodes = [
 		{
