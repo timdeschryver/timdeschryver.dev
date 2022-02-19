@@ -245,15 +245,11 @@ function parseFileToHtmlAndMeta(
 	metadata.outgoingSlugs = [] as string[];
 	const assetsSrc = path.dirname(file);
 	const renderer = new marked.Renderer();
-	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
+	const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 	renderer.link = (href, title, text) => {
-		// TODO: twitter links
-		// if (tweetRegexp.test(href)) {
-		//   const fetchResult = require("sync-fetch")(
-		//     `https://publish.twitter.com/oembed?url=${href}&align=center`
-		//   ).json();
-		//   return `<div>${fetchResult.html}</div>`;
-		// }
+		if (text === href && tweetRegexp.test(href)) {
+			return `::${href}::`;
+		}
 
 		const cleaned = href.replace('../', '/blog/').replace('/index.md', '');
 		const href_attr = `href="${cleaned}"`;
