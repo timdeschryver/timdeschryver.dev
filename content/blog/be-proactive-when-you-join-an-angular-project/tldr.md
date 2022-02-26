@@ -28,3 +28,7 @@ Let [Playwright](https://playwright.dev/) generate a test for you while you're c
 
 When you discover that multiple libraries are used for the same purpose try to unify them into one.
 This makes it easier when a new developer joins the team.
+
+## Clean up unused exports
+
+Use [ts-prune](https://github.com/nadeesha/ts-prune) to detect and remove unused exports.

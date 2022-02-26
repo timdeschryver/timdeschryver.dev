@@ -20,6 +20,8 @@ published: true
 - [Unifying libraries](#unifying-libraries)
 - [Writing Tests](#writing-tests)
 - [Git hooks](#git-hooks)
+- [Detect and remove unused objects](#detect-and-remove-unused-objects)
+- [NX](#nx)
 - [Conclusion](#conclusion)
 
 As developers, we're always using analogies to explain our work to non-developers.
@@ -490,6 +492,26 @@ module.exports = {
   '*.{json,md,css}': ['prettier --write'],
 };
 ```
+
+## Detect and remove unused objects
+
+A project that's been under development has probably a few objects (interfaces, methods, ...) that aren't used anymore.
+This is poluting the codebase and causes confusion.
+
+You can detect these object with [ts-prune](https://github.com/nadeesha/ts-prune).
+When you run the command below, you get a list unused objects.
+
+```ts
+npx ts-prune
+```
+
+Take a look at the output and act accordingly by removing unused objects, resulting in a clean code base.
+
+## NX
+
+Instead of manually upgrading the project to use the latest versions of the above mentioned tools and libraries, take a look at [NX](https://nx.dev/).
+
+NX offers a rich eco-system and provides automatic upgrade paths.
 
 ## Conclusion
 

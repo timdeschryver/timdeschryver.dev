@@ -178,7 +178,7 @@
 	{@html post.html}
 
 	{#if post.contributors.length}
-		<h5>A thank you to my contributors</h5>
+		<h5>A warm thank you to the contributors</h5>
 		{#each post.contributors as [login, name], i}
 			<a href={`https://github.com/${login}`} rel="external" class="mt-0">{name}</a>
 			{#if i + 1 !== post.contributors.length}
@@ -250,8 +250,8 @@
 		margin: 0;
 		top: 20px;
 		left: 20px;
-		width: 120px;
 	}
+
 	.side-actions * {
 		padding: 4px;
 		display: block;
