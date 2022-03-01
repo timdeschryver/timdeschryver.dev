@@ -425,7 +425,7 @@ While this provides direct value, it also acts as a good foundation that can be 
 To write the end-to-end test, I'm currently using [Playwright](https://playwright.dev/).
 One of the key essentials is that it has a [test generator command](https://playwright.dev/docs/codegen) where you can just click through your application, and the generator writes the test case for you. It can just be that simple.
 
-In future blog posts, I probably go into more details about why I like and use Playwright and how to set it up in an Angular project.
+In [future blog posts](https://timdeschryver.dev/blog?q=playwright), I probably go into more details about why I like and use Playwright and how to set it up in an Angular project.
 
 ## Git hooks
 
