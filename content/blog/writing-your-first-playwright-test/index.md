@@ -345,15 +345,12 @@ This is because there are two projects defined in the configuration, one for chr
 ```bash
 npx playwright test
 
+Using config at C:\Users\timde\dev\project\playwright.config.ts
+
 Running 2 tests using 2 workers
 
-[WebServer]
-****************************************************************************************
-This is a simple server for use in testing or debugging Angular applications locally.
-It hasn't been reviewed for security issues.
-
-DON'T USE IT FOR PRODUCTION!
-****************************************************************************************
+[WebServer] - Generating browser application bundles...
+[WebServer] ✔ Browser application bundle generation complete.
 
   Slow test file: [chromium] › flow.spec.ts (18s)
   Slow test file: [firefox] › flow.spec.ts (16s)
