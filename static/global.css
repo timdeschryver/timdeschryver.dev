@@ -6,7 +6,7 @@
 		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
 		'Segoe UI Symbol', 'Noto Color Emoji';
 	--font-size: 1.2rem;
-	--line-height: 2;
+	--line-height: 1.5;
 	--spacing: 1.5em;
 	--spacing-small: 0.5em;
 	--spacing-large: 3em;
@@ -15,7 +15,7 @@
 @media (prefers-color-scheme: light) {
 	:root {
 		--background-color: #fff;
-		--text-color: #111;
+		--text-color: #333;
 		--text-color-light: rgba(0, 0, 0, 0.7);
 	}
 }
@@ -59,7 +59,7 @@ body {
 	font-family: var(--text-font);
 	background-color: var(--background-color);
 	color: var(--text-color);
-	font-size: 20px;
+	font-size: 17px;
 	line-height: var(--line-height);
 	padding-bottom: 1em;
 }
@@ -76,6 +76,7 @@ a {
 p {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
+	font-weight: 300;
 }
 
 @media (max-width: 480px) {
@@ -86,10 +87,12 @@ p {
 
 ul {
 	list-style-type: none;
+	font-weight: 300;
 }
 
 ol {
 	list-style-position: inside;
+	font-weight: 300;
 }
 
 li + li,

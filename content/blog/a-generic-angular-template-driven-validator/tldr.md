@@ -36,7 +36,7 @@ import { AbstractControl, ValidationErrors, NG_VALIDATORS, Validator } from '@an
 	providers: [{ provide: NG_VALIDATORS, useExisting: ValidatorDirective, multi: true }],
 })
 export class ValidatorDirective implements Validator {
-	private _value: any;
+	private _revalidator: any;
 	private _onChange?: () => void;
 
 	@Input() validator:
@@ -44,19 +44,19 @@ export class ValidatorDirective implements Validator {
 			| ((value: unknown) => (control: AbstractControl) => ValidationErrors | null);
 
 	@Input()
-	get value() {
-		return this._value;
+	get revalidator() {
+		return this._revalidator;
 	}
-	set value(value: number) {
-		this._value = value;
+	set revalidator(revalidator: number) {
+		this._revalidator = revalidator;
 		if (this._onChange) {
 			this._onChange();
 		}
 	}
 
 	validate(control: AbstractControl): ValidationErrors | null {
-		if (this.value !== undefined) {
-			return this.validator(this.value)(control);
+		if (this.revalidator !== undefined) {
+			return this.validator(this.revalidator)(control);
 		}
 
 		return this.validator(control);

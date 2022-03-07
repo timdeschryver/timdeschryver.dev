@@ -683,6 +683,10 @@ For the completion, here's my entire `settings.json` file.
         "typescriptreact",
         "html"
     ],
+    "explorer.experimental.fileNesting.enabled": true,
+    "explorer.experimental.fileNesting.patterns": {
+        "package.json": "package-lock.json, .npmrc, yarn.lock, .yarnrc, .editorconfig, .prettier*, .gitignore, .eslintrc.json, jest.*.js, .lintstagedrc*, .node-version, .eslintrc*, .gitattributes"
+    }
 }
 ```
 

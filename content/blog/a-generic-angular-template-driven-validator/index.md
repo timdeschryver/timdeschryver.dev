@@ -122,27 +122,27 @@ import { AbstractControl, ValidationErrors, NG_VALIDATORS, Validator } from '@an
 	providers: [{ provide: NG_VALIDATORS, useExisting: ValidatorDirective, multi: true }],
 })
 export class ValidatorDirective implements Validator {
-	private _value: any;
+	private _revalidator: any;
 	private _onChange?: () => void;
 
 	@Input() validator:
-			| (control: AbstractControl) => ValidationErrors | null
+			| ((control: AbstractControl) => ValidationErrors | null)
 			| ((value: unknown) => (control: AbstractControl) => ValidationErrors | null);
 
 	@Input()
-	get value() {
-		return this._value;
+	get revalidator() {
+		return this._revalidator;
 	}
-	set value(value: number) {
-		this._value = value;
+	set revalidator(revalidator: number) {
+		this._revalidator = revalidator;
 		if (this._onChange) {
 			this._onChange();
 		}
 	}
 
 	validate(control: AbstractControl): ValidationErrors | null {
-		if (this.value !== undefined) {
-			return this.validator(this.value)(control);
+		if (this.revalidator !== undefined) {
+			return this.validator(this.revalidator)(control);
 		}
 
 		return this.validator(control);
@@ -154,7 +154,7 @@ export class ValidatorDirective implements Validator {
 }
 ```
 
-To use the revalidation functionality, you assign the `value` of the validator to a value that affects the validator.
+To use the revalidation functionality, you assign the `revalidator` of the validator to a value that affects the validator.
 In the example below, the value of the password is passed to the password confirmation validator.
 
 ```html{7,8}:component.html
@@ -164,7 +164,7 @@ In the example below, the value of the password is passed to the password confir
 <input type="password"
 	name="password-confirmation"
 	[(ngModel)]="model.passwordConfirmation"
-	[value]="model.password"
+	[revalidator]="model.password"
 	[validator]="passwordConfirmationValidator"/>
 ```
 
@@ -184,7 +184,7 @@ export class Component {
 
 ## Conclusion
 
-We can eliminate some of the "boilerplate" 🙊 by creating one generic validator directive that accepts a callback to validate a form model.
+We can eliminate some of the "boilerplate" by creating one generic validator directive that accepts a callback to validate a form model.
 This allows us to create inline validators within components. While this can be quick and easy for simple validations, I prefer to extract the complex validators into their own layer.
 
 When the validation logic lives on its own (and not in a directive or in the component), it also doesn't bind the business rules to an Angular-specific layer.
