@@ -699,6 +699,8 @@ To enable the setting, use the `ctrl+alt+e` shortcut and tick the "Common Langua
 
 ![Enable "Common Language Runtime Exceptions"](./images/vs-exception-settings.png)
 
+For Visual Studio Code, check the breakpoint checkboxes in the "Run and Debug" sidebar.
+
 ## File Explorer Options
 
 As a software developer, seeing hidden files and more importantly, the file extension is a must. Via the "File Explorer Options" window these two options can be enabled.
@@ -711,6 +713,7 @@ To run an Angular application on HTTPS locally you can [create a self-signed cer
 
 - Edge: [edge://flags/#allow-insecure-localhost](edge://flags/#allow-insecure-localhost)
 - Chrome: [chrome://flags/#allow-insecure-localhost](chrome://flags/#allow-insecure-localhost)
+- Firefox: [about:config](about:config) and then search for "allowInsecureFromHTTPS"
 
 ![Enable invalid certifactes for localhost development](./images/allow-insecure-localhost.png)
 
