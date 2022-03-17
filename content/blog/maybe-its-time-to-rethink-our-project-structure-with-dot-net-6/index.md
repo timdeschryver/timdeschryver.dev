@@ -253,16 +253,16 @@ public static class ModuleExtensions
     // this could also be added into the DI container
     static readonly List<IModule> registeredModules = new List<IModule>();
 
-    public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder)
+    public static IServiceCollection RegisterModules(this IServiceCollection services)
     {
         var modules = DiscoverModules();
         foreach (var module in modules)
         {
-            module.RegisterModule(builder.Services);
+            module.RegisterModule(services);
             registeredModules.Add(module);
         }
 
-        return builder;
+        return services;
     }
 
     public static WebApplication MapEndpoints(this WebApplication app)
