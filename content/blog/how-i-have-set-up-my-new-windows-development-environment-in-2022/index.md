@@ -658,6 +658,8 @@ For the completion, here's my entire `settings.json` file.
     "editor.wordWrap": "on",
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.guides.bracketPairs": true,
+    "explorer.experimental.fileNesting.enabled": true,
     "files.defaultLanguage": "markdown",
     "files.associations": {
         "*.mdx": "markdown"
@@ -670,7 +672,8 @@ For the completion, here's my entire `settings.json` file.
     "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
     "scm.defaultViewMode": "tree",
     "search.exclude": {
-        "package-lock.json": true
+        "package-lock.json": true,
+        "yarn.lock": true,
     },
     // https://github.com/angular-eslint/angular-eslint#linting-html-files-and-inline-templates-with-the-vscode-extension-for-eslint
     "eslint.options": {
@@ -683,10 +686,6 @@ For the completion, here's my entire `settings.json` file.
         "typescriptreact",
         "html"
     ],
-    "explorer.experimental.fileNesting.enabled": true,
-    "explorer.experimental.fileNesting.patterns": {
-        "package.json": "package-lock.json, .npmrc, yarn.lock, .yarnrc, .editorconfig, .prettier*, .gitignore, .eslintrc.json, jest.*.js, .lintstagedrc*, .node-version, .eslintrc*, .gitattributes"
-    }
 }
 ```
 
