@@ -147,6 +147,10 @@
 		color: var(--text-color);
 	}
 
+	li {
+		list-style: none;
+	}
+
 	li div {
 		margin-top: var(--spacing-small);
 		color: var(--text-color-light);
