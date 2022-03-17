@@ -14,8 +14,8 @@
 
 @media (prefers-color-scheme: light) {
 	:root {
-		--background-color: #fff;
-		--text-color: #333;
+		--background-color: #fefefe;
+		--text-color: #1b1b1b;
 		--text-color-light: rgba(0, 0, 0, 0.7);
 	}
 
@@ -27,8 +27,8 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background-color: #111;
-		--text-color: #eee;
+		--background-color: #1b1b1b;
+		--text-color: #fefefe;
 		--text-color-light: rgba(255, 255, 255, 0.7);
 	}
 
@@ -96,7 +96,7 @@ p {
 }
 
 ul {
-	list-style-type: none;
+	list-style-position: inside;
 	font-weight: 300;
 }
 

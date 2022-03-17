@@ -14,7 +14,7 @@ const config: PlaywrightTestConfig = {
 		? {}
 		: {
 				webServer: {
-					command: 'npm run preview',
+					command: 'npm run build && npm run preview',
 					port: 3000,
 					reuseExistingServer: !process.env.CI,
 				},
