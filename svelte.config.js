@@ -9,6 +9,7 @@ export default {
 	kit: {
 		prerender: {
 			entries: ['*', '/sitemap.xml', '/blog/rss.xml'],
+			default: true,
 		},
 
 		// By default, `npm run build` will create a standard Node app.
