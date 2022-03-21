@@ -307,9 +307,4 @@
 		display: flex;
 		justify-content: space-evenly;
 	}
-
-	:global(main[data-page*='blog/'] ul) {
-		font-size: var(--font-size);
-		line-height: var(--line-height);
-	}
 </style>
