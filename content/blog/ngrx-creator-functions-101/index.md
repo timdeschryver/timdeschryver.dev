@@ -541,7 +541,7 @@ See the Pull Requests [ROOT_EFFECTS_INIT actions as ActionCreators - by Sam Lin]
 There's a schematic to convert all the `@Effect` decorators to the `createEffect` function, run the following command to run the schematic:
 
 ```bash
-// version 12 or erlier
+# version 12 or erlier
 ng generate @ngrx/schematics:create-effect-migration
 
 // version 13 or later
