@@ -544,7 +544,7 @@ There's a schematic to convert all the `@Effect` decorators to the `createEffect
 # version 12 or erlier
 ng generate @ngrx/schematics:create-effect-migration
 
-// version 13 or later
+# version 13 or later
 ng update @ngrx/effects --from 12 --to 13 --migrate-only
 ```
 
