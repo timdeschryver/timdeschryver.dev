@@ -600,6 +600,18 @@ git config --global commit.gpgsign true
 
 To sign commits I've followed the blogpost [A guide to securing git commits from tricking you on Windows](https://www.ankursheel.com/blog/securing-git-commits-windows) by [Ankur Sheel](https://twitter.com/ankur_sheel).
 
+### Work/OSS Git
+
+To set a different git value depending on the environment, use [includeIf](https://git-scm.com/docs/git-config#_includes) to override some variables.
+
+```bash
+[includeIf "gitdir:~/work/"]
+	path=~/work/.gitconfig
+
+[includeIf "gitdir:~/oss/"]
+	path=~/oss/.gitconfig
+```
+
 ## Visual Studio Code Plugins and Settings
 
 If you know me, you already know that I like to customize my Visual Studio Code setup.
