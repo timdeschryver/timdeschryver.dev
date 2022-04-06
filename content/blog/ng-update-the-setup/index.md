@@ -1,5 +1,5 @@
 ---
-title: ng update: the setup
+title: 'ng update: the setup'
 slug: ng-update-the-setup
 description: Within 5 minutes you can automagically have your library upgraded when a user runs the ng update command.
 author: Tim Deschryver

@@ -4,6 +4,7 @@ import url from 'url';
 import { execSync } from 'child_process';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
+import frontmatter from 'front-matter';
 import highlightCode from 'gatsby-remark-prismjs/highlight-code.js';
 import 'prismjs/components/prism-bash.js';
 import 'prismjs/components/prism-typescript.js';
@@ -67,6 +68,7 @@ export async function readPosts(): Promise<
 			edit: string;
 			outgoingLinks: { slug: string; title: string }[];
 			incomingLinks: { slug: string; title: string }[];
+			translations: { url: string; author: string; profile: string }[];
 		};
 	}[]
 > {
@@ -113,9 +115,7 @@ export async function readPosts(): Promise<
 
 			const modified = getLastModifiedDate(postPath);
 			const published = metadata.published === 'true';
-			const tags = metadata.tags
-				.split(',')
-				.map((p) => (p ? p.trim().charAt(0).toUpperCase() + p.trim().slice(1) : p));
+			const tags = metadata.tags;
 			const banner = path
 				.normalize(
 					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner),
@@ -213,7 +213,6 @@ export function readSnippets(): {
 					];
 				},
 			});
-			const tags = metadata.tags.split(',').map((p) => (p ? p.trim() : p));
 			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image}`;
 			const url = `/snippets/${metadata.slug}`;
 
@@ -222,7 +221,6 @@ export function readSnippets(): {
 				metadata: {
 					...metadata,
 					date: ISODate(metadata.date),
-					tags,
 					image,
 					url,
 				},
@@ -384,17 +382,19 @@ export function* traverseFolder(
 }
 
 function extractFrontmatter(markdown): { content: string; metadata: any } {
-	const match = /---\r?\n([\s\S]+?)\r?\n---/.exec(markdown);
-	const frontMatter = match ? match[1] : '';
-	const content = match ? markdown.slice(match[0].length) : markdown;
-
-	const metadata = frontMatter.split('\n').reduce((data, pair) => {
-		const colonIndex = pair.indexOf(':');
-		data[pair.slice(0, colonIndex).trim()] = pair.slice(colonIndex + 1).trim();
-		return data;
-	}, {});
-
-	return { metadata, content };
+	const result =
+		frontmatter<{ tags: string | string[]; translations?: Record<string, string> }>(markdown);
+	if (typeof result.attributes.tags === 'string') {
+		result.attributes.tags = result.attributes.tags
+			.split(',')
+			.map((a) => (a ? a.trim().charAt(0).toUpperCase() + a.trim().slice(1) : a));
+	}
+	if (Array.isArray(result.attributes.translations)) {
+		for (const translation of result.attributes.translations) {
+			translation.language = translation.language === 'es' ? 'Español' : translation.language;
+		}
+	}
+	return { metadata: result.attributes, content: result.body };
 }
 
 function slugify(string) {

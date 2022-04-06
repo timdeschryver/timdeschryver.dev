@@ -1,5 +1,5 @@
 ---
-title: Proof of concept: ngx-query-state
+title: 'Proof of concept: ngx-query-state'
 slug: proof-of-concept-ngx-query-state
 description: A hassle-free way to fetch data and render the current state of the HTTP request.
 author: Tim Deschryver

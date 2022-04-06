@@ -1,5 +1,5 @@
 ---
-title: Creating a new C# API: Validate incoming requests
+title: 'Creating a new C# API: Validate incoming requests'
 slug: creating-a-new-csharp-api-validate-incoming-requests
 description: Clean validation with MediatR, FluentValidation and the Problem Detail specification
 author: Tim Deschryver

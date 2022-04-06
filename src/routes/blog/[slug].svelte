@@ -164,7 +164,27 @@
 	{#if post.tldr}
 		<button on:click={tldrClicked}>{tldrToggle ? 'Full Version' : 'TLDR Version'}</button>
 	{/if}
+	{#if post.metadata.translations}
+		<div>Translations</div>
+		{#each post.metadata.translations as translation}
+			<a href={translation.url}>{translation.language}</a>
+		{/each}
+	{/if}
 </div>
+
+{#if post.metadata.translations}
+	<div class="translations">
+		Translations:&nbsp;
+		<ul>
+			{#each post.metadata.translations as translation}
+				<li>
+					<a href={translation.url}>{translation.language}</a> by
+					<a href={translation.profile}>{translation.author}</a>
+				</li>
+			{/each}
+		</ul>
+	</div>
+{/if}
 
 {#if post.tldr}
 	<button class="tldr" on:click={tldrClicked}>
@@ -242,6 +262,7 @@
 		border: none;
 		text-align: center;
 		font-weight: 900;
+		margin-top: var(--spacing);
 	}
 
 	.side-actions {
@@ -252,7 +273,12 @@
 		left: 20px;
 	}
 
-	.side-actions * {
+	.side-actions div {
+		border: none;
+		margin-top: var(--spacing);
+	}
+
+	.side-actions > * {
 		padding: 4px;
 		display: block;
 		text-align: center;
@@ -262,7 +288,10 @@
 		width: 100%;
 		cursor: pointer;
 		color: var(--text-color-light);
+		margin-top: 3px;
+		margin-bottom: 0;
 	}
+
 	@media (max-width: 1450px) {
 		.side-actions {
 			width: 130px;
@@ -306,5 +335,16 @@
 	.article-actions {
 		display: flex;
 		justify-content: space-evenly;
+	}
+
+	.translations {
+		display: flex;
+		justify-content: center;
+		font-weight: 900;
+	}
+
+	.translations ul {
+		list-style: none;
+		font-weight: inherit;
 	}
 </style>
