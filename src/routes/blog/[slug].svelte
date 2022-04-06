@@ -167,7 +167,7 @@
 	{#if post.metadata.translations}
 		<div>Translations</div>
 		{#each post.metadata.translations as translation}
-			<a href={translation.url}>{translation.language}</a>
+			<a href={translation.url} rel="external">{translation.language}</a>
 		{/each}
 	{/if}
 </div>
@@ -178,8 +178,8 @@
 		<ul>
 			{#each post.metadata.translations as translation}
 				<li>
-					<a href={translation.url}>{translation.language}</a> by
-					<a href={translation.profile}>{translation.author}</a>
+					<a href={translation.url} rel="external">{translation.language}</a> by
+					<a href={translation.profile} rel="external">{translation.author}</a>
 				</li>
 			{/each}
 		</ul>
