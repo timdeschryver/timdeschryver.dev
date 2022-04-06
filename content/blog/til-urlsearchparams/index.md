@@ -1,5 +1,5 @@
 ---
-title: TIL: URLSearchParams
+title: 'TIL: URLSearchParams'
 slug: til-urlsearchparams
 description: From my experience dealing with query strings was harder than it should be. But with URLSearchParams and URL it's actually pretty easy to do!
 author: Tim Deschryver
@@ -22,20 +22,20 @@ We have the URL [https://timdeschryver.dev/blog?q=Angular+NgRx](https://timdesch
 To create the `URLSearchParams` we need to access the query string, this is available on the `search` property of the `location`. With it, we can create a new instance of `URLSearchParams`.
 
 ```js
-console.log(location.search)
+console.log(location.search);
 // |> '?q=Angular+NgRx'
-const params = new URLSearchParams(location.search)
+const params = new URLSearchParams(location.search);
 ```
 
 While writing this blog post, I also discovered that the search params are available on `URL` instances and on anchor tags (`<a>`).
 
 ```js
-const url = new URL(location.search)
-const params = url.searchParams
+const url = new URL(location.search);
+const params = url.searchParams;
 
-const node = document.querySelector('#search')
-const url = new URL(node.href)
-const params = new URLSearchParams(node.search)
+const node = document.querySelector('#search');
+const url = new URL(node.href);
+const params = new URLSearchParams(node.search);
 ```
 
 So now that we have `params`, what can we do with it?
@@ -43,20 +43,20 @@ So now that we have `params`, what can we do with it?
 We can read a query parameter with the `get` method.
 
 ```js
-params.get('q')
+params.get('q');
 // |> 'Angular NgRx'
 ```
 
 We can set a query parameter with the `set` method.
 
 ```js
-params.set('q', 'Performance')
+params.set('q', 'Performance');
 ```
 
 We can delete a query parameter with the `delete` method.
 
 ```js
-params.delete('q')
+params.delete('q');
 ```
 
 So easy!
@@ -71,18 +71,14 @@ To modify the current location we can make use of the `history.replaceState` met
 The stringified version of params will concatenate all keys and values to one query string.
 
 ```js
-console.log(params.toString())
+console.log(params.toString());
 // |> q=Testing+Library
 ```
 
 Together with the current pathname, we can create a new URL.
 
 ```js
-window.history.replaceState(
-  window.history.state,
-  '',
-  `${location.pathname}?${params}`,
-)
+window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
 ```
 
 ## Example code
@@ -93,37 +89,33 @@ Using the svelte reactive statements it's simple to react to value changes and m
 ```js
 // instantiate with the query parameter
 // query is bound to an input element (<input bind:value={query} type="search"  />)
-let query = $page.query['q'] || ''
+let query = $page.query['q'] || '';
 
 // change the URL when the query is changed
 $: if (typeof window !== 'undefined') {
-  let params = new URLSearchParams(window.location.search)
+	let params = new URLSearchParams(window.location.search);
 
-  if (query) {
-    params.set('q', query)
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${location.pathname}?${params}`,
-    )
-  } else {
-    params.delete('q')
-    window.history.replaceState(window.history.state, '', location.pathname)
-  }
+	if (query) {
+		params.set('q', query);
+		window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
+	} else {
+		params.delete('q');
+		window.history.replaceState(window.history.state, '', location.pathname);
+	}
 }
 
 // filter posts based on the query
 $: if (query) {
-  filteredPosts = posts.filter(p => {
-    return queryParts.every(
-      q =>
-        p.metadata.tags.some(t => match(t, q)) ||
-        like(p.metadata.title, q) ||
-        like(p.metadata.description, q),
-    )
-  })
+	filteredPosts = posts.filter((p) => {
+		return queryParts.every(
+			(q) =>
+				p.metadata.tags.some((t) => match(t, q)) ||
+				like(p.metadata.title, q) ||
+				like(p.metadata.description, q),
+		);
+	});
 } else {
-  filteredPosts = posts
+	filteredPosts = posts;
 }
 ```
 
