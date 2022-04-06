@@ -8,7 +8,7 @@ tags: Angular
 banner: ./images/banner.jpg
 translations:
  - language: es
-   url: https://dev.to/danyparedes/usando-directivas-de-angular-para-extender-componentes-de-terceros-4eek…
+   url: https://dev.to/danyparedes/usando-directivas-de-angular-para-extender-componentes-de-terceros-4eek
    author: Dany Paredes
    profile: https://twitter.com/danywalls
 published: true
