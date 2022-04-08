@@ -7,6 +7,11 @@ date: 2019-10-03T13:00:00.000Z
 tags: Angular, Testing, testing-library, angular-testing-library
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Liudmyla Denysiuk](https://unsplash.com/@hedgehog90) on [Unsplash](https://unsplash.com)
+translations:
+ - language: es
+   url: https://dev.to/danyparedes/buenas-practicas-con-angular-testing-library-59lp
+   author: Dany Paredes
+   profile: https://twitter.com/danywalls
 published: true
 ---
 
