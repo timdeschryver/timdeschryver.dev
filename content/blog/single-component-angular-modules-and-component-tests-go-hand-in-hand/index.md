@@ -6,6 +6,11 @@ author: Tim Deschryver
 date: 2022-01-31
 tags: Angular, Testing, Angular Testing Library
 banner: ./images/banner.jpg
+translations:
+ - language: es
+   url: https://dev.to/danyparedes/test-tolerantes-al-cambio-en-angular-usando-scams-2e8g
+   author: Dany Paredes
+   profile: https://twitter.com/danywalls
 published: true
 ---
 
