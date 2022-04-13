@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-	export const prerender = true;
-
 	export async function load({ fetch }) {
 		const result = await fetch(`/blog.json`);
 		const { metadata, tags } = await result.json();

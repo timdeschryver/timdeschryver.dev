@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-	export const prerender = true;
-
 	export async function load({ params, fetch }) {
 		const result = await fetch(`/snippets.json`);
 		const { snippets } = await result.json();
