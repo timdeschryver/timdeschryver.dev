@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-	export const prerender = true;
-
 	export async function load({ params, fetch }) {
 		const result = await fetch(`/blog/${params.slug}.json`);
 		const { post } = await result.json();

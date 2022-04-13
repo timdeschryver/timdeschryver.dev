@@ -15,7 +15,7 @@
 @media (prefers-color-scheme: light) {
 	:root {
 		--background-color: #fefefe;
-		--background-color-transparant: rgba(0, 0, 0, 0.1);
+		--background-color-transparant: rgba(0, 0, 0, 0.05);
 		--text-color: #1b1b1b;
 		--text-color-light: rgba(0, 0, 0, 0.7);
 	}
@@ -29,7 +29,7 @@
 @media (prefers-color-scheme: dark) {
 	:root {
 		--background-color: #1b1b1b;
-		--background-color-transparant: rgba(255, 255, 255, 0.1);
+		--background-color-transparant: rgba(255, 255, 255, 0.05);
 		--text-color: #fefefe;
 		--text-color-light: rgba(255, 255, 255, 0.7);
 	}
