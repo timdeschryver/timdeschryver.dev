@@ -260,7 +260,7 @@ pre[class*='language-'] > .code-heading > a {
 	}
 
 	pre[class*='language-'] .line-highlight {
-		background: rgba(0, 0, 0, 0.1);
+		background: rgba(0, 0, 0, 0.05);
 	}
 }
 
