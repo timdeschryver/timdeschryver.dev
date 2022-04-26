@@ -6,6 +6,11 @@ author: Tim Deschryver
 date: 2021-07-06
 tags: angular, testing, testing-library
 banner: ./images/banner.jpg
+translations:
+ - language: es
+   url: https://dev.to/danyparedes/obteniendo-el-mayor-valor-nuestros-tests-en-angular-50od
+   author: Dany Paredes
+   profile: https://twitter.com/danywalls
 published: true
 ---
 
