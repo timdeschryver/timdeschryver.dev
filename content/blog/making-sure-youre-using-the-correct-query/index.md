@@ -97,7 +97,7 @@ Last week, [Stephan Meijer](https://twitter.com/meijer_s) created [testing-playg
 
 ![Testing playground suggesting to use another query](./images/testing-playground.png)
 
-Our use the browser extension for [Chrome](https://chrome.google.com/webstore/detail/testing-playground/hejbmebodbijjdhflfknehhcgaklhano) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/testing-playground/#:~:text=Testing%20Playground%20is%20an%20extension,while%20encouraging%20good%20testing%20practices.)
+You can also use the browser extension for [Chrome](https://chrome.google.com/webstore/detail/testing-playground/hejbmebodbijjdhflfknehhcgaklhano) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/testing-playground).
 
 
 #### Testing Library `configure` method
