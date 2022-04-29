@@ -7,6 +7,11 @@ date: 2020-06-01
 tags: Testing, testing-library, angular-testing-library, accessibility
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Keith Pittman](https://unsplash.com/@jeith) on [Unsplash](https://unsplash.com)
+translations:
+ - language: es
+   url: https://dev.to/danyparedes/usando-selectores-correctos-en-angular-testing-library-3p56
+   author: Dany Paredes
+   profile: https://twitter.com/danywalls
 published: true
 ---
 
@@ -92,7 +97,8 @@ Last week, [Stephan Meijer](https://twitter.com/meijer_s) created [testing-playg
 
 ![Testing playground suggesting to use another query](./images/testing-playground.png)
 
-A browser extension is also on [the roadmap](https://github.com/smeijer/testing-playground/issues/11)!
+You can also use the browser extension for [Chrome](https://chrome.google.com/webstore/detail/testing-playground/hejbmebodbijjdhflfknehhcgaklhano) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/testing-playground).
+
 
 #### Testing Library `configure` method
 
