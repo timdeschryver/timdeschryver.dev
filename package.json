@@ -29,6 +29,7 @@
 	"devDependencies": {
 		"@playwright/test": "~1.17.0",
 		"@squoosh/lib": "^0.4.0",
+		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "next",
 		"@sveltejs/adapter-vercel": "next",

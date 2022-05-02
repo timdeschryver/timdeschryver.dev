@@ -69,5 +69,5 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 		${urlNodes}
 		</urlset>`;
-	return xml;
+	return xml.trim();
 }
