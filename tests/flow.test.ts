@@ -6,20 +6,20 @@ test('flow test', async ({ page }) => {
 
 	// Click text=Blog
 	await page.click('text=Blog');
-	await expect(page).toHaveURL(`/blog/`);
+	await expect(page).toHaveURL(`/blog`);
 	// first time - posts need to be generated
 	await page.waitForSelector('[placeholder="Search"]');
 
 	// Click text=Angular
 	await page.click('text=Angular');
-	await expect(page).toHaveURL(`/blog/?q=Angular`);
+	await expect(page).toHaveURL(`/blog?q=Angular`);
 
 	// Click [placeholder="Search"]
 	await page.click('[placeholder="Search"]');
 
 	// Click text=Testing
 	await page.click('text=Testing');
-	await expect(page).toHaveURL(`/blog/?q=Angular+Testing`);
+	await expect(page).toHaveURL(`/blog?q=Angular+Testing`);
 
 	// Click [placeholder="Search"]
 	await page.click('[placeholder="Search"]');

@@ -3,7 +3,9 @@
 		const result = await fetch(`/blog.json`);
 		const { metadata, tags } = await result.json();
 		return {
-			maxage: 300,
+			cache: {
+				maxage: 300,
+			},
 			props: {
 				metadata,
 				tags,

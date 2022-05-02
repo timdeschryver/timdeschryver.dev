@@ -33,11 +33,13 @@ const langs = {
 	txt: 'textile',
 	graphql: 'graphql',
 	yml: 'yaml',
+	yaml: 'yaml',
 	diff: 'diff',
 	cs: 'csharp',
 	sql: 'sql',
 	svelte: 'svelte',
 	ps: 'powershell',
+	xml: 'html',
 };
 
 export const snippets = readSnippets();
@@ -114,7 +116,6 @@ export async function readPosts(): Promise<
 				: { html: null };
 
 			const modified = getLastModifiedDate(postPath);
-			const published = metadata.published === 'true';
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(
@@ -136,7 +137,6 @@ export async function readPosts(): Promise<
 					...metadata,
 					date: ISODate(metadata.date),
 					modified: ISODate(modified),
-					published,
 					tags,
 					banner,
 					canonical,
@@ -382,8 +382,9 @@ export function* traverseFolder(
 }
 
 function extractFrontmatter(markdown): { content: string; metadata: any } {
-	const result =
-		frontmatter<{ tags: string | string[]; translations?: Record<string, string> }>(markdown);
+	const result = frontmatter<{ tags: string | string[]; translations?: Record<string, string> }>(
+		markdown,
+	);
 	if (typeof result.attributes.tags === 'string') {
 		result.attributes.tags = result.attributes.tags
 			.split(',')
