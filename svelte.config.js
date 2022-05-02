@@ -1,5 +1,5 @@
 import sveltePreprocess from 'svelte-preprocess';
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-vercel';
 
 /** @type {import('@sveltejs/kit').Config} */
 export default {
@@ -9,6 +9,6 @@ export default {
 			entries: ['*', '/sitemap.xml', '/blog/rss.xml'],
 			default: true,
 		},
-		adapter: adapter(),
+		adapter: adapter({ edge: true }),
 	},
 };
