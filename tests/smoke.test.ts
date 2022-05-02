@@ -6,6 +6,7 @@ test('sitemap works and can navigate to random pages', async ({ page, request })
 
 	const sitemapXml = await sitemap.text();
 	const urls = [...sitemapXml.matchAll(/<loc>(.+?)<\/loc>/g)];
+	expect(urls.length).toBeGreaterThan(20);
 	for (const [_, url] of urls.sort(() => 0.5 - Math.random()).slice(0, 10)) {
 		const response = await page.goto(url.replace('https://timdeschryver.dev', ''));
 		expect(response.ok()).toBeTruthy();
