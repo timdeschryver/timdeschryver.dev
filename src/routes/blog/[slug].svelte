@@ -8,7 +8,9 @@
 			};
 		}
 		return {
-			maxage: 300,
+			cache: {
+				maxage: 300,
+			},
 			props: {
 				post,
 			},
