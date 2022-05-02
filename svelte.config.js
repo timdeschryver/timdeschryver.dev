@@ -5,7 +5,7 @@ import adapter from '@sveltejs/adapter-vercel';
 export default {
 	preprocess: sveltePreprocess(),
 	kit: {
-		adapter: adapter({ edge: true }),
+		adapter: adapter(),
 		prerender: {
 			entries: ['*', '/sitemap.xml', '/blog/rss.xml'],
 			default: true,
