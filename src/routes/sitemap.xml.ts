@@ -2,12 +2,12 @@ import { ISODate } from '$lib/formatters';
 import { readPosts } from './_posts';
 
 export async function get() {
-	const posts = await readPosts()
+	const posts = await readPosts();
 	return {
 		body: generate(posts),
 		headers: {
-			'Content-Type': 'application/xml'
-		}
+			'Content-Type': 'application/xml',
+		},
 	};
 }
 
@@ -19,32 +19,32 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}`,
 			priority: '1.0',
 			changefreq: 'daily',
-			date
+			date,
 		},
 		...publishedPosts.map((post) => ({
 			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog/${post.metadata.slug}`,
 			priority: '1.0',
 			changefreq: 'daily',
-			date: ISODate(post.metadata.modified)
+			date: ISODate(post.metadata.modified),
 		})),
 		{
 			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog`,
 			priority: '0.6',
 			changefreq: 'daily',
-			date
+			date,
 		},
 		{
 			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/snippets`,
 			priority: '0.4',
 			changefreq: 'weekly',
-			date
+			date,
 		},
 		{
 			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/resources/ngrx`,
 			priority: '0.2',
 			changefreq: 'monthly',
-			date
-		}
+			date,
+		},
 	];
 
 	const urlNodes = nodes

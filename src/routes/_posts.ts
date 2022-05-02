@@ -116,7 +116,6 @@ export async function readPosts(): Promise<
 				: { html: null };
 
 			const modified = getLastModifiedDate(postPath);
-			const published = metadata.published === 'true';
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(
@@ -138,7 +137,6 @@ export async function readPosts(): Promise<
 					...metadata,
 					date: ISODate(metadata.date),
 					modified: ISODate(modified),
-					published,
 					tags,
 					banner,
 					canonical,
