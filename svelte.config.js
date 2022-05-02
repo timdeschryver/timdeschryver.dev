@@ -5,7 +5,6 @@ import adapter from '@sveltejs/adapter-static';
 export default {
 	preprocess: sveltePreprocess(),
 	kit: {
-		trailingSlash: 'always',
 		prerender: {
 			entries: ['*', '/sitemap.xml', '/blog/rss.xml'],
 			default: true,
