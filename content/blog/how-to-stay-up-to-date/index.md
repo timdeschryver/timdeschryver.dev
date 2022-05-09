@@ -25,6 +25,9 @@ Now, you receive a notification in your GitHub inbox when a new release is publi
 
 ![My inbox filtered on the Angular repository, containing the most recent releases.](./images/github-notifications.png)
 
+While you're at it, you can also check the "Discussions" checkbox.
+This could be interesting if repositories use discussions to discuss new features.
+
 ### GitHub "For you" feed
 
 The new "For you" feed (which is currently in beta) is useful to see what's going on.
