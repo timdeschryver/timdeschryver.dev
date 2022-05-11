@@ -19,21 +19,31 @@ At least, we thought so.
 In retrospect, we now know that we had created a false sense of security.
 We had created a safety net with a lot of holes, which defeats the purpose of having a safety net.
 
-To give a simple example, a lot of our code to create a new instance of a type looked like this.
+To give a simple example, let's first take a quick look at the `Customer` interface.
 
 ```ts
-// inline
-const customer = { customerId: newid(), name: 'Sarah' } as Customer;
-// or a variant with angle brackets
-const customer = <Customer>{ customerId: newid(), name: 'Sarah' };
-
-// even better, via a factory method
-function createCustomer(name: string) {
-	return { customerId: newid(), names } as Customer;
+inferface Customer {
+	customerId: string;
+	name: string;
 }
 ```
 
-The code has two problems concerning the correctness of these objects when the respective type is changed:
+Now, let's see how we used type assertions to create a new customer instance.
+
+```ts
+// inline creation with type assertion
+const customer = { customerId: newid(), name: 'Sarah' } as Customer;
+
+// or a variant with angle brackets
+const customer = <Customer>{ customerId: newid(), name: 'Sarah' };
+
+// with a factory method
+function createCustomer(name: string) {
+	return { customerId: newid(), name } as Customer;
+}
+```
+
+This code has two problems concerning the correctness of these objects when the respective type is changed:
 
 - new properties that are required aren't caught;
 - existing properties that are removed aren't flagged;
@@ -41,16 +51,25 @@ The code has two problems concerning the correctness of these objects when the r
 The simple fix is to ditch the type assertions and to replace them with type annotations and return types.
 
 ```ts
-// inline
+// inline creation with using a type annotation
 const customer: Customer = { customerId: newid(), name: 'Sarah' };
 
-// even better, via a factory method
+// with a return type on the factory method
 function createCustomer(name: string): Customer {
-	return { customerId: newid(), names };
+	return { customerId: newid(), name };
 }
 ```
 
 With the updated snippet, we now get correct and helpful compile errors when the type is modified.
+
+```ts
+// no compile errors
+const customerBad = { customerId: newid() } as Customer;
+
+// with compile errors
+const customerGood: Customer = { customerId: newid() };
+      ~~~~~~~~~~~~ Property 'name' is missing in type '{ customerId: string; }' but required in type 'Customer'
+```
 
 To enforce this practice, you can enable the ESLint rule [Enforces consistent usage of type assertions (consistent-type-assertions)](https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-assertions.md).
 
