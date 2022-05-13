@@ -1022,7 +1022,7 @@ A naive implementation might look like this.
 Notice that the messages are hidden until the control is touched by the user, and of course only when the control invalid.
 
 ```html
-<input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
+<input type="text" name="name" [(ngModel)]="name" required minlength="4" />
 <div *ngIf="name.invalid && name.touched">
 	<div *ngIf="name.errors.required">Name is required.</div>
 	<div *ngIf="name.errors.minlength">
@@ -1170,7 +1170,7 @@ This change ensures that the same validation messages are used throughout the wh
 Because the validation messages are centralized it's also easy to change a message at a later time.
 
 ```html{3}
-<input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
+<input type="text" name="name" [(ngModel)]="name" required minlength="4" />
 <div *ngIf="name.invalid && name.touched">
   {{ name.errors | validate }}
 </div>
@@ -1220,7 +1220,7 @@ After the second refactor, the snippet now uses the `ControlErrorComponent` comp
 The abstracted `ControlErrorComponent` component has the benefit that there is a uniform design and behavior, leading to a better user experience. From a technical perspective, we're protected against future design changes because we'll have to change the design only once.
 
 ```html{2,4}
-<input type="text" name="name" ngModel required minlength="4" #name="ngModel" />
+<input type="text" name="name" [(ngModel)]="name" required minlength="4" />
 <app-control-error [control]="name.control">
   {{ name.errors | validate }}
 </app-control-error>
