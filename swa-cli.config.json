@@ -3,7 +3,7 @@
 	"configurations": {
 		"timdeschryver.dev": {
 			"appLocation": ".",
-			"outputLocation": "public",
+			"outputLocation": "build",
 			"appBuildCommand": "npm run build",
 			"run": "npm run dev",
 			"appDevserverUrl": "http://localhost:3000",
