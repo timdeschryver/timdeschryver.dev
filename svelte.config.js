@@ -6,6 +6,7 @@ export default {
 	preprocess: sveltePreprocess(),
 	kit: {
 		adapter: adapter(),
+		outDir: 'public',
 		prerender: {
 			entries: ['*', '/sitemap.xml', '/blog/rss.xml'],
 			default: true,
