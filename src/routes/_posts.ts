@@ -249,15 +249,15 @@ function parseFileToHtmlAndMeta(
 			return `::${href}::`;
 		}
 
-		const cleaned = href.replace('../', '/blog/').replace('/index.md', '');
-		const href_attr = `href="${cleaned}"`;
+		const link = href.replace('../', '/blog/').replace('/index.md', '');
+		const href_attr = `href="${appendCreatorId(link)}"`;
 		const title_attr = title ? `title="${title}"` : '';
-		const internal = cleaned.startsWith('/');
-		const rel_attr = internal || cleaned.startsWith('#') ? `` : 'rel="external"';
+		const internal = link.startsWith('/');
+		const rel_attr = internal || link.startsWith('#') ? `` : 'rel="external"';
 		const attributes = [href_attr, title_attr, rel_attr].filter(Boolean).join(' ');
 
 		if (internal) {
-			const outgoingSlug = url.parse(cleaned, false).pathname.split('/').pop();
+			const outgoingSlug = url.parse(link, false).pathname.split('/').pop();
 			if (metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}
@@ -432,4 +432,34 @@ function getLastModifiedDate(filePath: string) {
 	}
 
 	return buffer.toString().trim();
+}
+
+function appendCreatorId(link: string) {
+	const creatorId = 'DT-MVP-5004452';
+	const allowedSites = [
+		`social.technet.microsoft.com`,
+		`azure.microsoft.com`,
+		`techcommunity.microsoft.com`,
+		`social.msdn.microsoft.com`,
+		`devblogs.microsoft.com`,
+		`developer.microsoft.com`,
+		`channel9.msdn.com`,
+		`gallery.technet.microsoft.com`,
+		`cloudblogs.microsoft.com`,
+		`technet.microsoft.com`,
+		`msdn.microsoft.com`,
+		`blogs.msdn.microsoft.com`,
+		`blogs.technet.microsoft.com`,
+		`microsoft.com/handsonlabs`,
+	];
+
+	try {
+		const u = new URL(link);
+		if (allowedSites.includes(u.hostname)) {
+			u.searchParams.append('WT.mc_id', creatorId);
+		}
+		return u.toString();
+	} catch {
+		return link;
+	}
 }
