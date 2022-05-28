@@ -5,6 +5,9 @@
 	"version": "0.0.1",
 	"license": "MIT",
 	"type": "module",
+	"engines": {
+		"node": "^16.0.0"
+	},
 	"scripts": {
 		"predev": "npm run copy:content",
 		"dev": "svelte-kit dev",
@@ -27,6 +30,7 @@
 		"prepare": "git config core.hookspath .githooks"
 	},
 	"devDependencies": {
+		"@azure/static-web-apps-cli": "^1.0.1",
 		"@playwright/test": "~1.17.0",
 		"@squoosh/lib": "^0.4.0",
 		"@sveltejs/adapter-auto": "next",

@@ -1,0 +1,14 @@
+{
+	"$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+	"configurations": {
+		"timdeschryver.dev": {
+			"appLocation": ".",
+			"outputLocation": "build",
+			"appBuildCommand": "npm run build",
+			"run": "npm run dev",
+			"appDevserverUrl": "http://localhost:3000",
+			"appName": "timdeschryver.dev",
+			"resourceGroupName": "timdeschryver.dev-rg"
+		}
+	}
+}
