@@ -38,6 +38,7 @@
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content={snippet.metadata.image} />
+	<meta name="twitter:image:alt" content={snippet.metadata.title} />
 	<meta name="twitter:title" content="Tim Deschryver's Snippets" />
 	<meta name="twitter:description" content={snippet.metadata.title} />
 	<meta name="twitter:label1" content="Snippet by" />

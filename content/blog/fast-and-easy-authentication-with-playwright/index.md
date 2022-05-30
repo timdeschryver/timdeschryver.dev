@@ -4,7 +4,7 @@ slug: fast-and-easy-authentication-with-playwright
 description: Using the global setup feature from Playwright to authenticate a test user and reuse its authentication state throughout your test suite.
 author: Tim Deschryver
 date: 2022-03-14
-tags: playwright, testing
+tags: Playwright, testing
 banner: ./images/banner.jpg
 published: true
 ---

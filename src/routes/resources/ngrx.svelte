@@ -137,6 +137,7 @@
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content={`https://timdeschryver.dev/images/ngrx.png`} />
+	<meta name="twitter:image:alt" content="The NgRx Logo" />
 	<meta name="twitter:title" content="NgRx Resources" />
 	<meta name="twitter:description" content="NgRx Resources I share a lot" />
 	<meta name="og:url" content={`https://timdeschryver.dev/resources/ngrx`} />

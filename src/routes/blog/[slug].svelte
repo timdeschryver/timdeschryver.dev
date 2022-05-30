@@ -26,6 +26,21 @@
 
 	export let post;
 
+	const logos = post.metadata.tags
+		.map((tag) => {
+			switch (tag.toLowerCase()) {
+				case '.net':
+					return { src: 'dotnet.svg', alt: 'The .NET logo' };
+				case 'angular':
+					return { src: 'angular.svg', alt: 'The Angular logo' };
+				case 'playwright':
+					return { src: 'playwright.svg', alt: 'The Playwright logo' };
+				default:
+					return null;
+			}
+		})
+		.filter(Boolean);
+
 	let tldrToggle;
 	let scrollY;
 
@@ -125,6 +140,7 @@
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content={post.metadata.banner} />
+	<meta name="twitter:image:alt" content={post.metadata.title} />
 	<meta name="twitter:title" content={post.metadata.title} />
 	<meta name="twitter:description" content={post.metadata.description} />
 	<meta name="twitter:label1" content="Written by" />
@@ -155,6 +171,14 @@
 				>
 			{/if}
 		</div>
+
+		{#if logos.length}
+			<div class="logos">
+				{#each logos as logo}
+					<img class="mt-0" src="/images/{logo.src}" alt={logo.alt} height="48px" />
+				{/each}
+			</div>
+		{/if}
 		<a class="mt-0" href="https://timdeschryver.dev/twitter" rel="external">@tim_deschryver</a>
 	</div>
 </header>
@@ -324,6 +348,16 @@
 		margin: 0;
 		font-size: 1.5rem;
 		width: 100%;
+	}
+
+	.details > * {
+		margin-top: 0;
+	}
+
+	.logos {
+		display: flex;
+		gap: 0.6em;
+		display: none;
 	}
 
 	@media screen and (max-width: 1150px) {

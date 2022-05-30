@@ -33,7 +33,7 @@ const content = './content/blog';
 
 				await page.setViewportSize({
 					width: 2048,
-					height: 2048,
+					height: 2048 / 2,
 				});
 
 				let first = true;
@@ -53,6 +53,13 @@ const content = './content/blog';
 					await page.$eval('.published-at', (el) => {
 						el.style.display = 'none';
 					});
+					await page.$eval('.logos', (el) => {
+						el.style.display = 'flex';
+						el.querySelectorAll('img').forEach((logo) => {
+							logo.height = '128';
+						});
+					});
+
 					await page.$eval('.details', (el) => {
 						el.style['justify-content'] = 'space-around';
 						el.style['font-size'] = '5rem';
