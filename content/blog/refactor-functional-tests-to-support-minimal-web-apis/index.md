@@ -4,7 +4,7 @@ slug: refactor-functional-tests-to-support-minimal-web-apis
 description: Some small changes that are needed to create application instances in Functional Tests for Minimal Web APIs
 author: Tim Deschryver
 date: 2021-10-11
-tags: dotnet, csharp, testing, minimal api
+tags: .NET, csharp, testing, minimal api
 banner: ./images/banner.jpg
 published: true
 ---

@@ -4,7 +4,7 @@ slug: directorypackagesprops-a-solution-to-unify-your-nuget-package-versions
 description: The Consolidate view is dead, long live `Directory.Packages.props`. Use the `Directory.Packages.props` file to define your NuGet package versions in a single file.
 author: Tim Deschryver
 date: 2022-04-18
-tags: .NET, C#, NuGet
+tags: .NET, csharp, NuGet
 banner: ./images/banner.jpg
 published: true
 ---

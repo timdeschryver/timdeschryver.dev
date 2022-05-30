@@ -4,7 +4,7 @@ slug: process-your-list-in-parallel-to-make-it-faster-in-dotnet
 description: Lessons learned while refactoring a process to make a migration from one system to another system faster
 author: Tim Deschryver
 date: 2020-11-02
-tags: dotnet, C#, performance
+tags: .NET, csharp, performance
 banner: ./images/banner.jpg
 bannerCredit: Photo by [David Pisnoy](https://unsplash.com/@davidpisnoy) on [Unsplash](https://unsplash.com)
 published: true

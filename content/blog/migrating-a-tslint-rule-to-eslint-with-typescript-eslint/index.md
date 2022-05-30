@@ -4,7 +4,7 @@ slug: migrating-a-tslint-rule-to-eslint-with-typescript-eslint
 description: The most important pointers you need to know before migrating your TSLint rules to ESLint rules.
 author: Tim Deschryver
 date: 2020-04-06
-tags: Linters, Developer Experience, Tooling
+tags: Linters, DeveloperExperience, Tooling
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Daniela Cuevas](https://unsplash.com/@danielacuevas) on [Unsplash](https://unsplash.com)
 published: true
@@ -170,13 +170,13 @@ To include a fix for a rule violation, you can provide a fixer to the report met
 
 ```ts
 context.report({
-  node,
-  messageId: 'actionHygiene',
-  data: {
-    actionType: value,
-  },
-  fix: fixer => fixer.replaceTextRange(node.range, '[Source] Event'),
-})
+	node,
+	messageId: 'actionHygiene',
+	data: {
+		actionType: value,
+	},
+	fix: (fixer) => fixer.replaceTextRange(node.range, '[Source] Event'),
+});
 ```
 
 All of the fixer methods are documented, see the [docs](https://eslint.org/docs/developer-guide/working-with-rules#applying-fixes) for more info.
@@ -197,41 +197,39 @@ With ESLint, the tests feel more comfortable with other tests that you've writte
 You will have to create a test runner, configure it, and then you will be able to run the rule with valid and invalid cases.
 
 ```ts
-import { resolve } from 'path'
-import { TSESLint } from '@typescript-eslint/experimental-utils'
+import { resolve } from 'path';
+import { TSESLint } from '@typescript-eslint/experimental-utils';
 
 const ruleTester = new TSESLint.RuleTester({
-  parser: resolve('./node_modules/@typescript-eslint/parser'),
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
-})
+	parser: resolve('./node_modules/@typescript-eslint/parser'),
+	parserOptions: {
+		ecmaVersion: 2018,
+		sourceType: 'module',
+	},
+});
 
 ruleTester.run(ruleName, rule, {
-  valid: [
-    `export const loadCustomer = createAction('[Customer Page] Load Customer')`,
-  ],
-  invalid: [
-    {
-      code: `export const loadCustomer = createAction('LOAD_CUSTOMER')`,
-      errors: [
-        // each property here is optional
-        // you can decide the level of your test
-        {
-          messageId,
-          line: 1,
-          column: 42,
-          endLine: 1,
-          endColumn: 57,
-          data: {
-            actionType: 'LOAD_CUSTOMER',
-          },
-        },
-      ],
-    },
-  ],
-})
+	valid: [`export const loadCustomer = createAction('[Customer Page] Load Customer')`],
+	invalid: [
+		{
+			code: `export const loadCustomer = createAction('LOAD_CUSTOMER')`,
+			errors: [
+				// each property here is optional
+				// you can decide the level of your test
+				{
+					messageId,
+					line: 1,
+					column: 42,
+					endLine: 1,
+					endColumn: 57,
+					data: {
+						actionType: 'LOAD_CUSTOMER',
+					},
+				},
+			],
+		},
+	],
+});
 ```
 
 > You can also create your own test runner, like angular-eslint did in [test-helper.ts](https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/tests/test-helper.ts) to be able to use squigglies in [test cases](https://github.com/angular-eslint/angular-eslint/blob/master/packages/eslint-plugin/tests/rules/no-input-rename.test.ts)

@@ -4,7 +4,7 @@ slug: using-playwright-test-shards-in-combination-with-a-job-matrix-to-improve-y
 description: Utilizing a matrix within your GitHub workflow to create a "test shard matrix" is a major improvement to your CI. This practice can cut the time in half (or better) to run your Playwright test suite.
 author: Tim Deschryver
 date: 2022-05-23
-tags: DevOps, CI/CD, Playwright, GitHub Actions
+tags: DevOps, CI/CD, Playwright, GitHub Actions, testing
 banner: ./images/banner.jpg
 published: true
 ---

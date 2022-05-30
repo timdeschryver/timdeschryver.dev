@@ -4,7 +4,7 @@ slug: pattern-matching-examples-in-csharp
 description: Some basic and more advanced examples of pattern matching in C#.
 author: Tim Deschryver
 date: 2021-09-13
-tags: dotnet, csharp, pattern-matching
+tags: .NET, csharp, pattern-matching
 banner: ./images/banner.jpg
 published: true
 ---

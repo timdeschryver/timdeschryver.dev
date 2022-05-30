@@ -4,7 +4,7 @@ slug: faster-sql-bulk-inserts-with-csharp
 description: Using SQL Bulk Copy to have a huge performance gain
 author: Tim Deschryver
 date: 2021-01-06
-tags: dotnet, sql, performance
+tags: .NET, sql, performance
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Priscilla Du Preez](https://unsplash.com/@priscilladupreez) on [Unsplash](https://unsplash.com)
 published: true

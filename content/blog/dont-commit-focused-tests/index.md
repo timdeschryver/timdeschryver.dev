@@ -4,7 +4,7 @@ slug: dont-commit-focused-tests
 description: Prevent an accidental commit by using a linter.
 author: Tim Deschryver
 date: 2020-05-10
-tags: Linters, Developer Experience, Tooling, Continuous Integration
+tags: Linters, DeveloperExperience, Tooling, ContinuousIntegration
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Steinar Engeland](https://unsplash.com/@steinart) on [Unsplash](https://unsplash.com)
 published: true
@@ -84,32 +84,30 @@ This will prevent a user from committing a focused test.
 For this method, you have to (1) create the hook, and (2) enable the hook with for example husky.
 
 ```js
-const { execSync } = require('child_process')
-const chalk = require('chalk')
+const { execSync } = require('child_process');
+const chalk = require('chalk');
 
 /** Map of forbidden words and their match regex */
 const words = {
-  fit: '\\s*fit\\(',
-  fdescribe: '\\s*fdescribe\\(',
-  debugger: '(debugger);?',
-}
-let status = 0
+	fit: '\\s*fit\\(',
+	fdescribe: '\\s*fdescribe\\(',
+	debugger: '(debugger);?',
+};
+let status = 0;
 for (let word of Object.keys(words)) {
-  const matchRegex = words[word]
-  const gitCommand = `git diff --staged -G"${matchRegex}" --name-only`
-  const badFiles = execSync(gitCommand).toString()
-  const filesAsArray = badFiles.split('\n')
-  const tsFileRegex = /\.ts$/
-  const onlyTsFiles = filesAsArray.filter(file => tsFileRegex.test(file.trim()))
-  if (onlyTsFiles.length) {
-    status = 1
-    console.log(
-      chalk.bgRed.black.bold(`The following files contains '${word}' in them:`),
-    )
-    console.log(chalk.bgRed.black(onlyTsFiles.join('\n')))
-  }
+	const matchRegex = words[word];
+	const gitCommand = `git diff --staged -G"${matchRegex}" --name-only`;
+	const badFiles = execSync(gitCommand).toString();
+	const filesAsArray = badFiles.split('\n');
+	const tsFileRegex = /\.ts$/;
+	const onlyTsFiles = filesAsArray.filter((file) => tsFileRegex.test(file.trim()));
+	if (onlyTsFiles.length) {
+		status = 1;
+		console.log(chalk.bgRed.black.bold(`The following files contains '${word}' in them:`));
+		console.log(chalk.bgRed.black(onlyTsFiles.join('\n')));
+	}
 }
-process.exit(status)
+process.exit(status);
 ```
 
 ```json

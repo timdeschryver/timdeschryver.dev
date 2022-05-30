@@ -4,7 +4,7 @@ slug: using-the-net-cli-to-restore-packages-from-a-private-nuget-feed
 description: 'A fix for "Response status code does not indicate success: 401 (Unauthorized)"'
 author: Tim Deschryver
 date: 2021-07-25
-tags: dotnet, cli, NuGet
+tags: .NET, cli, NuGet
 banner: ./images/banner.jpg
 published: true
 ---

@@ -4,7 +4,7 @@ slug: finding-that-csharp-memory-leak
 description: Tracking the cause of my first memory leak written in C# (that I know of)
 author: Tim Deschryver
 date: 2020-09-21
-tags: C#, performance, debug, dotnet
+tags: csharp, performance, debug, .NET
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Dai Yoshinaga](https://unsplash.com/@daipdaip) on [Unsplash](https://unsplash.com)
 published: true

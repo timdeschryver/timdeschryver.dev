@@ -4,7 +4,7 @@ slug: why-i-stopped-worrying-about-test-setups-by-using-autofixture
 description: A model is always changing, but that shouldn't be the concern of your tests
 author: Tim Deschryver
 date: 2021-06-21
-tags: dotnet, testing, architecture
+tags: .NET, testing, architecture
 banner: ./images/banner.jpg
 published: true
 ---

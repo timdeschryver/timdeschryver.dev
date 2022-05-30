@@ -4,7 +4,7 @@ slug: prevent-a-net-api-from-adding-cache-headers-to-unsuccessful-requests
 description: Implementing custom cache middleware to prevent non-200 responses from being cached by a client
 author: Tim Deschryver
 date: 2021-07-19
-tags: dotnet, csharp, api
+tags: .NET, csharp, api
 banner: ./images/banner.jpg
 published: true
 ---

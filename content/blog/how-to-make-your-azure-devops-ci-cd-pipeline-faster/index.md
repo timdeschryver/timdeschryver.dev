@@ -4,7 +4,7 @@ slug: how-to-make-your-azure-devops-ci-cd-pipeline-faster
 description: Make your CI/CD pipeline smarter and only build (and release) what's modified to optimize a run
 author: Tim Deschryver
 date: 2020-10-12
-tags: DevOps, CI/CD, Developer Experience, Azure
+tags: DevOps, CI/CD, DeveloperExperience, Azure
 banner: ./images/banner.jpg
 bannerCredit: Photo by [Per Lööv(https://unsplash.com/@perloov) on [Unsplash](https://unsplash.com)
 published: true

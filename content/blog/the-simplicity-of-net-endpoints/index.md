@@ -4,7 +4,7 @@ slug: the-simplicity-of-net-endpoints
 description: Keepings it simple with ASP.NET Endpoints and its dependency system
 author: Tim Deschryver
 date: 2021-10-05
-tags: dotnet, csharp, architecture
+tags: .NET, csharp, architecture
 banner: ./images/banner.jpg
 published: true
 ---

@@ -1,7 +1,7 @@
 import { readPosts } from '../_posts';
 
 export async function get() {
-	const posts = await readPosts()
+	const posts = await readPosts();
 	const metadata = posts.map((p) => ({
 		title: p.metadata.title,
 		tldr: Boolean(p.tldr),
@@ -14,6 +14,12 @@ export async function get() {
 		posts
 			.map((p) => p.metadata.tags)
 			.reduce((acc, tag) => [...acc, ...tag], [])
+			.filter(
+				(tag) =>
+					tag.toLowerCase() !== 'redux' &&
+					tag.toLowerCase() !== 'developerexperience' &&
+					tag.toLowerCase() !== 'csharp',
+			)
 			.reduce((acc, tag) => {
 				acc[tag] = (acc[tag] || 0) + 1;
 				return acc;
@@ -26,7 +32,7 @@ export async function get() {
 	return {
 		body: { metadata, tags },
 		headers: {
-			'Cache-Control': `max-age=300`
+			'Cache-Control': `max-age=300`,
 		},
 	};
 }

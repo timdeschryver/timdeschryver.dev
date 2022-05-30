@@ -4,7 +4,7 @@ slug: maybe-its-time-to-rethink-our-project-structure-with-dot-net-6
 description: Challenging the status quo with some thoughts on the new .NET Minimal Web API to keep code simple
 author: Tim Deschryver
 date: 2021-09-27
-tags: dotnet, architecture, csharp, minimal api
+tags: .NET, architecture, csharp, minimal api
 banner: ./images/banner.jpg
 published: true
 ---
