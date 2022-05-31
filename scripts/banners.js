@@ -54,15 +54,22 @@ const content = './content/blog';
 						el.style.display = 'none';
 					});
 					await page.$eval('.logos', (el) => {
-						el.style.display = 'flex';
-						el.querySelectorAll('img').forEach((logo) => {
-							logo.height = '128';
-						});
+						const logos = el.querySelectorAll('img');
+						if (logos.length) {
+							el.style.display = 'flex';
+							logos.forEach((logo) => {
+								logo.height = '128';
+							});
+						}
 					});
 
 					await page.$eval('.details', (el) => {
 						el.style['justify-content'] = 'space-around';
 						el.style['font-size'] = '5rem';
+					});
+
+					await page.$eval('body', (el) => {
+						el.style['overflow'] = 'hidden';
 					});
 
 					await page.evaluate(() => {

@@ -172,13 +172,12 @@
 			{/if}
 		</div>
 
-		{#if logos.length}
-			<div class="logos">
-				{#each logos as logo}
-					<img class="mt-0" src="/images/{logo.src}" alt={logo.alt} height="48px" />
-				{/each}
-			</div>
-		{/if}
+		<div class="logos">
+			{#each logos as logo}
+				<img class="mt-0" src="/images/{logo.src}" alt={logo.alt} height="48px" />
+			{/each}
+		</div>
+
 		<a class="mt-0" href="https://timdeschryver.dev/twitter" rel="external">@tim_deschryver</a>
 	</div>
 </header>
