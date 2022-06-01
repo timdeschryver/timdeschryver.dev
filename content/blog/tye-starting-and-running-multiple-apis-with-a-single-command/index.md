@@ -143,6 +143,31 @@ Navigate to `http://localhost:8000` to open the dashboard.
 
 ![The Tye dashboard displaying all running services.](./images/dashboard.jpg)
 
+## How to debug services
+
+Without using Tye, you probably started the API service manually by clicking on the `Start` button.
+Doing this automatically hooked the debugger to the spawned process.
+
+If you're using Tye, debugging is isn't automatically anymore.
+Instead, you have to attach your IDE to the spawned process when you want to start a debug session.
+
+## Bonus tip
+
+I like to be able to run my environment with a single command, no matter in which directory I'm currently in.
+Therefore, I've added a shortcut to my PowerShell profile.
+The profile executes the `tye` command and provides it the full path of the config.
+
+```bash
+tye run "C:\Users\timde\dev\project\tye.yaml" --watch
+```
+
+## Summary
+
+- [Tye](https://github.com/dotnet/tye) is installed as a global dotnet tool
+- The environment is configured with the `tye.yml` file
+- Run the environment with the `tye run --watch` command
+- To debug, attach your IDE to the spawned process
+
 And that's it!
 
 If you're hooked to Tye as I am, check out the [Tye documentation](https://github.com/dotnet/tye/tree/main/docs#-tye-documentation) for more information and different scenarios (with example configs).
