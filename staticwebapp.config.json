@@ -31,7 +31,13 @@
 			"statusCode": 302
 		},
 		{
-			"route": "/*.{png,jpg,gif,css,js}",
+			"route": "/*.{js,css}",
+			"headers": {
+				"Cache-Control": "public, max-age=300, immutable"
+			}
+		},
+		{
+			"route": "/*.{png,jpg,gif,webp}",
 			"headers": {
 				"Cache-Control": "public, max-age=86400, immutable"
 			}

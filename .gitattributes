@@ -13,6 +13,7 @@
 *.gif binary
 *.ico binary
 *.tiff binary
+*.webp binary
 
 # Fonts
 *.oft binary
