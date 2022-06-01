@@ -5,7 +5,7 @@ import dotEnv from 'dotenv-extended';
 
 const [slug] = process.argv.slice(2);
 dotEnv.load({
-	path: '.env.local'
+	path: '.env.local',
 });
 
 (async () => {
@@ -38,10 +38,19 @@ dotEnv.load({
 			tags: metadata.tags
 				.split(',')
 				.filter((_, i) => i < 4)
-				.map((t) => t.trim().replace(' ', '').toLowerCase()),
+				.map((t) => t.trim().replace(' ', '').toLowerCase())
+				.map((t) => {
+					switch (t.toLowerCase()) {
+						case '.net':
+							return 'dotnet';
+
+						default:
+							return t;
+					}
+				}),
 			cover_image: metadata.banner,
 			canonical_url: url,
-			published: true
+			published: true,
 		};
 
 		const devToMarkdown = `---
@@ -71,8 +80,8 @@ Follow me on Twitter at [@tim_deschryver](https://timdeschryver.dev/twitter) | S
 				published: true,
 				tags: devToMeta.tags,
 				main_image: devToMeta.cover_image,
-				canonical_url: url
-			}
+				canonical_url: url,
+			},
 		};
 
 		const result = await postArticle(article);
@@ -102,7 +111,7 @@ async function postArticle(article) {
 		body: JSON.stringify(article),
 		headers: {
 			'Content-Type': 'application/json',
-			'api-key': process.env.DEVTO_TOKEN
-		}
+			'api-key': process.env.DEVTO_TOKEN,
+		},
 	}).then((res) => res.json());
 }
