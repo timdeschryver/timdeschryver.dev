@@ -122,7 +122,8 @@ export async function readPosts(): Promise<
 					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner),
 				)
 				.replace(/\\/g, '/')
-				.replace('/', '//');
+				.replace('/', '//')
+				.replace(/\.(png|jpg|jpeg)$/, '.webp');
 
 			const canonical = path
 				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug))
@@ -274,7 +275,8 @@ function parseFileToHtmlAndMeta(
 					.join(assetsSrc, href)
 					.split(path.sep)
 					.filter((_, index, { length }) => index >= length - 4)
-					.join('/');
+					.join('/')
+					.replace(/\.(png|jpg|jpeg|gif)$/, '.webp');
 
 		return `
 			<figure>
