@@ -202,7 +202,12 @@ export function readSnippets(): {
 						: {},
 				createHeadingParts: (metadata) => {
 					return [
-						metadata.image ? `<a href="/${metadata.image}" download>Download</a>` : '',
+						metadata.image
+							? `<a href="/${metadata.image.replace(
+									/\.(png|jpg|jpeg|gif)$/,
+									'.webp',
+							  )}" download>Download</a>`
+							: '',
 						metadata.image
 							? `<a
 				target="_blank"
@@ -214,7 +219,10 @@ export function readSnippets(): {
 					];
 				},
 			});
-			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image}`;
+			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image.replace(
+				/\.(png|jpg|jpeg|gif)$/,
+				'.webp',
+			)}`;
 			const url = `/snippets/${metadata.slug}`;
 
 			return {
