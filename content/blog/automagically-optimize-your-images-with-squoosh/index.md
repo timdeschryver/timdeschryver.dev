@@ -23,7 +23,7 @@ I'm assuming you're already using [lint-staged](https://github.com/okonet/lint-s
 ```json{3}:package.json
 {
 	"lint-staged": {
-		"*.{jpg,jpeg,png,gif}": ["node ./scripts/optimize-image.js", "git add"]
+		"*.{jpg,jpeg,png}": ["node ./scripts/optimize-image.js", "git add"]
 	}
 }
 ```
@@ -44,12 +44,14 @@ const [img] = process.argv.slice(2);
 
 const image = imagePool.ingestImage(img);
 await image.encode({
-	mozjpeg: {}
+	webp: {}
 });
-const { binary } = await image.encodedWith.mozjpeg;
+const { binary } = await image.encodedWith.webp;
 await writeFileSync(img, binary);
 await imagePool.close();
 ```
+
+Notice that I'm squooshing the image to the [WebP format](https://developers.google.com/speed/webp).
 
 And that's it, with some configuration and just a couple lines of code, all of the images on my blog will be optimized.
 

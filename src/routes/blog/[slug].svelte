@@ -35,6 +35,8 @@
 					return { src: 'angular.svg', alt: 'The Angular logo' };
 				case 'playwright':
 					return { src: 'playwright.svg', alt: 'The Playwright logo' };
+				case 'ngrx':
+					return { src: 'ngrx.svg', alt: 'The NgRx logo' };
 				default:
 					return null;
 			}
