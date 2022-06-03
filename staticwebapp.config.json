@@ -11,6 +11,11 @@
 			"statusCode": 301
 		},
 		{
+			"route": "/blog/be-proactive-when-you-join-an-existing-angular-project",
+			"redirect": "/blog/be-proactive-when-you-join-an-angular-project",
+			"statusCode": 301
+		},
+		{
 			"route": "/newsletter",
 			"redirect": "https://tinyletter.com/timdeschryver",
 			"statusCode": 302
