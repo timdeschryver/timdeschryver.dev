@@ -39,7 +39,7 @@
 
 	<p>
 		Find me on <a href="https://timdeschryver.dev/github" rel="external">GitHub</a> or
-		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>
+		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>.
 	</p>
 </section>
 

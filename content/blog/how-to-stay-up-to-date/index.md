@@ -111,6 +111,7 @@ I listen to the following technical podcasts:
 - [.NET Rocks](https://www.dotnetrocks.com/)
 - [Front End Happy Hour](https://www.frontendhappyhour.com/)
 - [The Hanselminutes Podcast](https://www.hanselminutes.com/)
+- [The Unhandled Exception](https://unhandledexceptionpodcast.com/)
 - [WebRush](https://webrush.io/)
 
 ## Conclusion
