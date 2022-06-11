@@ -223,13 +223,14 @@
 	{@html post.html}
 
 	{#if post.contributors.length}
-		<h5>A warm thank you to the contributors</h5>
-		{#each post.contributors as [login, name], i}
-			<a href={`https://github.com/${login}`} rel="external" class="mt-0">{name}</a>
-			{#if i + 1 !== post.contributors.length}
-				,
-			{/if}
-		{/each}
+		<h5>A warm thank you to the contributors of this blog post</h5>
+		<ul class="mt-0">
+			{#each post.contributors as [login, name]}
+				<li>
+					<a href={`https://github.com/${login}`} rel="external">{name}</a>
+				</li>
+			{/each}
+		</ul>
 	{/if}
 
 	{#if post.metadata.incomingLinks.length}
@@ -308,7 +309,6 @@
 		display: block;
 		text-align: center;
 		border: 1px solid;
-		color: inherit;
 		background: none;
 		width: 100%;
 		cursor: pointer;
@@ -322,6 +322,7 @@
 			width: 130px;
 		}
 	}
+
 	@media (max-width: 1380px) {
 		.side-actions {
 			display: none;

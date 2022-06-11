@@ -95,9 +95,7 @@
 	<meta name="og:type" content="website" />
 </svelte:head>
 
-<div />
-
-<div>
+<div class="mt-normal">
 	<input
 		type="search"
 		bind:value={query}

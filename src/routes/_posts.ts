@@ -18,6 +18,7 @@ import 'prismjs/components/prism-powershell.js';
 import 'prismjs/components/prism-sql.js';
 
 import { ISODate } from '$lib/formatters';
+import { variables } from '$lib/variables';
 
 const blogPath = 'content/blog';
 const snippetsPath = 'content/snippets';
@@ -445,7 +446,6 @@ function getLastModifiedDate(filePath: string) {
 }
 
 function appendCreatorId(link: string) {
-	const creatorId = 'DT-MVP-5004452';
 	const allowedSites = [
 		`social.technet.microsoft.com`,
 		`azure.microsoft.com`,
@@ -466,7 +466,7 @@ function appendCreatorId(link: string) {
 	try {
 		const u = new URL(link);
 		if (allowedSites.includes(u.hostname)) {
-			u.searchParams.append('WT.mc_id', creatorId);
+			u.searchParams.append('WT.mc_id', variables.creator_id);
 		}
 		return u.toString();
 	} catch {

@@ -37,6 +37,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           VITE_PUBLIC_GA_TRACKING_ID: ${{ secrets.GTAG }}
+          VITE_PUBLIC_HASH: ${{ github.sha }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

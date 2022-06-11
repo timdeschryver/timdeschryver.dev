@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { variables } from '$lib/variables';
 	import { afterNavigate } from '$app/navigation';
+	import { variables } from '$lib/variables';
+	import Host from '$lib/Host.svelte';
 
 	$: segment = $page.url.pathname.substring(1);
 	let support;
@@ -67,9 +68,15 @@
 
 <svelte:window bind:scrollY={y} />
 
-<main data-page={segment}>
+<main>
 	<slot />
 </main>
+
+{#if segment}
+	<footer>
+		<Host />
+	</footer>
+{/if}
 
 <style>
 	header > h2 > a {
@@ -82,5 +89,15 @@
 
 	nav a {
 		margin-right: 0.5em;
+	}
+
+	footer {
+		position: static;
+		bottom: 0;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		color: var(--text-color-light);
+		font-size: 0.9rem;
 	}
 </style>
