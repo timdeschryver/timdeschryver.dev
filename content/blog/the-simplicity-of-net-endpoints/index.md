@@ -61,7 +61,7 @@ public class CustomersController : ControllerBase
     public async Task<IActionResult> BlockCustomer(string customerId, BlockCustomer blockCustomer)
     {
         var customer = await _customersRepository.GetCustomer(customerId);
-        customer.Block(command.Reason);
+        customer.Block(blockCustomer.Reason);
         await _customersRepository.Save(customer);
         return Ok();
     }
