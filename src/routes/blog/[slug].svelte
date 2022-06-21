@@ -37,6 +37,8 @@
 					return { src: 'playwright.svg', alt: 'The Playwright logo' };
 				case 'ngrx':
 					return { src: 'ngrx.svg', alt: 'The NgRx logo' };
+				case 'azure':
+					return { src: 'azure.svg', alt: 'The Azure logo' };
 				default:
 					return null;
 			}

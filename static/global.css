@@ -1,187 +1,189 @@
 :root {
-    --text-font: -ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
-    --head-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-size: 1.2rem;
-    --line-height: 1.5;
-    --spacing: 1.5em;
-    --spacing-small: 0.5em;
-    --spacing-large: 3em;
+	--text-font: -ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
+	--head-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-size: 1.2rem;
+	--line-height: 1.5;
+	--spacing: 1.5em;
+	--spacing-small: 0.5em;
+	--spacing-large: 3em;
 }
 
 @media (prefers-color-scheme: light) {
-    :root {
-        --background-color: hsla(0, 0%, 100%, 0.9);
-        --background-color-transparant: hsla(0, 0%, 0%, 0.05);
-        --text-color: hsla(0, 0%, 0%, 0.95);
-        --text-color-light: hsla(0, 0%, 0%, 0.7);
-    }
+	:root {
+		--background-color: hsla(0, 0%, 100%, 0.9);
+		--background-color-transparant: hsla(0, 0%, 0%, 0.05);
+		--text-color: hsla(0, 0%, 0%, 0.95);
+		--text-color-light: hsla(0, 0%, 0%, 0.7);
+	}
 
-    strong,
-    b {
-        color: hsla(0, 0%, 0%, 1);
-    }
+	strong,
+	b {
+		color: hsla(0, 0%, 0%, 1);
+	}
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --background-color: hsla(0, 0%, 0%, 0.9);
-        --background-color-transparant: hsla(0, 0%, 100%, 0.05);
-        --text-color: hsla(0, 0%, 100%, 0.9);
-        --text-color-light: hsla(0, 0%, 100%, 0.7);
-    }
+	:root {
+		--background-color: hsla(0, 0%, 0%, 0.9);
+		--background-color-transparant: hsla(0, 0%, 100%, 0.05);
+		--text-color: hsla(0, 0%, 100%, 0.9);
+		--text-color-light: hsla(0, 0%, 100%, 0.7);
+	}
 
-    strong,
-    b {
-        color: hsla(0, 0%, 100%, 1);
-    }
+	strong,
+	b {
+		color: hsla(0, 0%, 100%, 1);
+	}
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    font-family: inherit;
-    color: inherit;
+	margin: 0;
+	padding: 0;
+	font-family: inherit;
+	color: inherit;
 }
 
 * + * {
-    margin-top: var(--spacing);
+	margin-top: var(--spacing);
 }
 
 main {
-    margin-top: 0;
+	margin-top: 0;
 }
 
 *,
 *:before,
 *:after {
-    box-sizing: inherit;
+	box-sizing: inherit;
 }
 
 html {
-    height: 100%;
-    box-sizing: border-box;
-    -webkit-text-size-adjust: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	-webkit-text-size-adjust: 100%;
 }
 
 body {
-    font-family: var(--text-font);
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-size: 17px;
-    line-height: var(--line-height);
-    padding-bottom: 1em;
+	font-family: var(--text-font);
+	background-color: var(--background-color);
+	color: var(--text-color);
+	font-size: 17px;
+	line-height: var(--line-height);
+	padding-bottom: 1em;
 }
 
 a {
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
-    font-size: inherit;
-    line-height: inherit;
+	text-decoration-line: underline;
+	text-decoration-style: solid;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+	font-size: inherit;
+	line-height: inherit;
 }
 
 p {
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    font-weight: 300;
+	font-size: var(--font-size);
+	line-height: var(--line-height);
+	font-weight: 300;
 }
 
 @media (max-width: 480px) {
-    p {
-        font-size: 1rem;
-    }
+	p {
+		font-size: 1rem;
+	}
 }
 
 ul {
-    list-style-position: inside;
-    font-weight: 300;
+	font-size: var(--font-size);
+	line-height: var(--line-height);
+	list-style-position: inside;
+	font-weight: 300;
 }
 
 ol {
-    list-style-position: inside;
-    font-weight: 300;
+	list-style-position: inside;
+	font-weight: 300;
 }
 
 li + li,
 li > a + ul {
-    margin-top: var(--spacing-small);
+	margin-top: var(--spacing-small);
 }
 
 ul ul {
-    padding-left: 1.11em;
+	padding-left: 1.11em;
 }
 
 input {
-    border: 1px solid;
-    padding: 0.4em;
-    margin: 0 0 0.5em 0;
-    border-radius: 2px;
-    display: block;
-    width: 100%;
-    font-size: inherit;
-    color: #111;
+	border: 1px solid;
+	padding: 0.4em;
+	margin: 0 0 0.5em 0;
+	border-radius: 2px;
+	display: block;
+	width: 100%;
+	font-size: inherit;
+	color: #111;
 }
 
 label {
-    font-size: inherit;
+	font-size: inherit;
 }
 
 img {
-    width: 100%;
+	width: 100%;
 }
 
 button {
-    background: none;
-    outline: none;
-    border: 1px solid transparent;
-    border-radius: 2px;
-    padding: 0.2em 0.5em;
-    margin: 0.3em 0.6em 0.3em 0;
-    cursor: pointer;
-    font-size: inherit;
-    line-height: inherit;
+	background: none;
+	outline: none;
+	border: 1px solid transparent;
+	border-radius: 2px;
+	padding: 0.2em 0.5em;
+	margin: 0.3em 0.6em 0.3em 0;
+	cursor: pointer;
+	font-size: inherit;
+	line-height: inherit;
 }
 
 button:focus,
 button:active,
 a:focus,
 a:active {
-    outline: 2px solid currentColor;
-    outline-offset: 0.25em !important;
+	outline: 2px solid currentColor;
+	outline-offset: 0.25em !important;
 }
 
 :focus:not(:focus-visible) {
-    outline: none;
+	outline: none;
 }
 
 #svelte > *:not(footer, script) {
-    display: grid;
-    grid-template-columns:
+	display: grid;
+	grid-template-columns:
 		minmax(1.2rem, 1fr)
 		minmax(auto, 80ch)
 		minmax(1.2rem, 1fr);
 }
 
 #svelte > * > * {
-    grid-column: 2;
+	grid-column: 2;
 }
 
 h1 {
-    line-height: 1.2;
+	line-height: 1.2;
 }
 
 main > h1 {
-    margin-top: var(--spacing);
+	margin-top: var(--spacing);
 }
 
 main > h2,
 main > h3 {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 #svelte > main > pre,
@@ -190,79 +192,79 @@ main > h3 {
 #svelte > main > table,
 #svelte > main > blockquote,
 #svelte > main > .wide {
-    grid-column: 1 / 4;
-    width: 100%;
-    max-width: 95ch;
-    justify-self: center;
+	grid-column: 1 / 4;
+	width: 100%;
+	max-width: 95ch;
+	justify-self: center;
 }
 
 #svelte > main > iframe {
-    max-width: 95%;
+	max-width: 95%;
 }
 
 figure > figcaption {
-    margin-top: 0;
-    opacity: 0.7;
-    font-size: 0.7rem;
-    text-align: center;
+	margin-top: 0;
+	opacity: 0.7;
+	font-size: 0.7rem;
+	text-align: center;
 }
 
 iframe {
-    height: 800px;
+	height: 800px;
 }
 
 blockquote {
-    border-left: 3px solid currentColor;
-    padding-left: 2em;
-    background: var(--background-color-transparant);
-    padding: 1em 2em;
+	border-left: 3px solid currentColor;
+	padding-left: 2em;
+	background: var(--background-color-transparant);
+	padding: 1em 2em;
 }
 
 small,
 time {
-    font-size: 80%;
+	font-size: 80%;
 }
 
 table {
-    border-collapse: collapse;
-    text-align: left;
-    table-layout: fixed;
-    font-variant-numeric: tabular-nums;
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+	border-collapse: collapse;
+	text-align: left;
+	table-layout: fixed;
+	font-variant-numeric: tabular-nums;
+	display: block;
+	overflow-x: auto;
+	white-space: nowrap;
 }
 
 table,
 td,
 th {
-    border: 1px solid;
+	border: 1px solid;
 }
 
 td,
 th {
-    padding: 4px 7px;
-    width: 100%;
+	padding: 4px 7px;
+	width: 100%;
 }
 
 thead {
-    word-break: break-word;
-    font-weight: 900;
+	word-break: break-word;
+	font-weight: 900;
 }
 
 [hidden] {
-    display: none !important;
-    visibility: hidden;
+	display: none !important;
+	visibility: hidden;
 }
 
 .mt-0 {
-    margin-top: 0;
+	margin-top: 0;
 }
 
 .mt-normal {
-    margin-top: var(--spacing);
+	margin-top: var(--spacing);
 }
 
 [id*='kofi-widget-overlay'] {
-    margin-top: 0;
+	margin-top: 0;
 }
