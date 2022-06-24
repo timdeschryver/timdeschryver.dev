@@ -26,7 +26,7 @@
 		"p": "node ./scripts/devto",
 		"banners": "node ./scripts/banners.js",
 		"pre-commit": "npm run banners && git add ./content/**/banner.jpg && lint-staged",
-		"optimize:image": "node ./scripts/optimize-image.js",
+		"optimize:image": "node ./scripts/optimize-image-cli.js",
 		"prepare": "git config core.hookspath .githooks"
 	},
 	"devDependencies": {
