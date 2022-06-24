@@ -24,6 +24,7 @@ export async function get(req) {
 		console.log(err);
 	}
 
+	console.log(await getContributors(post.metadata.slug));
 	return {
 		body: {
 			post: {
@@ -51,7 +52,10 @@ async function getContributors(slug: string) {
 			return [
 				...new Map(
 					commits
-						.filter((commit) => !['timdeschryver', 'web-flow'].includes(commit.author.login))
+						.filter(
+							(commit) =>
+								!['timdeschryver', 'web-flow', 'dependabot[bot]'].includes(commit.author.login),
+						)
 						.map((commit) => {
 							return [commit.author.login, commit.commit.author.name];
 						}),
