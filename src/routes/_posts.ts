@@ -447,6 +447,7 @@ function getLastModifiedDate(filePath: string) {
 
 function appendCreatorId(link: string) {
 	const allowedSites = [
+		`docs.microsoft.com`,
 		`social.technet.microsoft.com`,
 		`azure.microsoft.com`,
 		`techcommunity.microsoft.com`,
