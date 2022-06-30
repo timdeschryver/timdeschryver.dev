@@ -18,9 +18,8 @@ for (const filepath of getChangedFiles()) {
 }
 
 function getChangedFiles() {
-	const buffer = execSync(`git diff --name-only --staged`);
-	if (!buffer) {
-		return null;
-	}
-	return buffer.toString().trim().split('\n');
+	const staged = execSync(`git diff --name-only --staged`)?.toString() ?? '';
+	const unstaged = execSync(`git diff --name-only`)?.toString() ?? '';
+
+	return staged.concat(unstaged).trim().split('\n');
 }

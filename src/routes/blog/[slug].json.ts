@@ -24,7 +24,6 @@ export async function get(req) {
 		console.log(err);
 	}
 
-	console.log(await getContributors(post.metadata.slug));
 	return {
 		body: {
 			post: {
