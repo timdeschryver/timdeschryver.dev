@@ -129,176 +129,102 @@ I've set the font to a font family from [Nerd Fonts](https://www.nerdfonts.com/)
 
 ```json:windows-terminal-settings.json
 {
-    "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": [
-        {
-            "command": {
-                "action": "copy",
-                "singleLine": false
-            },
-            "keys": "ctrl+c"
-        },
-        {
-            "command": "paste",
-            "keys": "ctrl+v"
-        },
-        {
-            "command": {
-                "action": "newTab"
-            },
-            "keys": "ctrl+t"
-        },
-        {
-            "command": "find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": {
-                "action": "splitPane",
-                "split": "auto",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+d"
-        },
-        {
-            "command": {
-                "action": "closeTab"
-            },
-            "keys": "ctrl+w"
-        }
-    ],
-    "copyFormatting": "none",
-    "copyOnSelect": false,
-    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-    "profiles": {
-        "defaults": {
-            "font": {
-                "face": "CaskaydiaCove Nerd Font Mono"
-            }
-        },
-        "list": [
-            {
-                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-                "hidden": false,
-                "name": "PowerShell",
-                "source": "Windows.Terminal.PowershellCore"
-            },
-            {
-                "commandline": "powershell.exe",
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "hidden": true,
-                "name": "Windows PowerShell"
-            },
-            {
-                "commandline": "cmd.exe",
-                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-                "hidden": true,
-                "name": "Command Prompt"
-            },
-            {
-                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-                "hidden": true,
-                "name": "Azure Cloud Shell",
-                "source": "Windows.Terminal.Azure"
-            },
-            {
-                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-                "hidden": false,
-                "name": "Git Bash",
-                "source": "Git"
-            }
-        ]
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions": [
+    {
+      "command": {
+        "action": "copy",
+        "singleLine": false
+      },
+      "keys": "ctrl+c"
     },
-    "schemes": []
+    {
+      "command": "paste",
+      "keys": "ctrl+v"
+    },
+    {
+      "command": {
+        "action": "newTab"
+      },
+      "keys": "ctrl+t"
+    },
+    {
+      "command": "find",
+      "keys": "ctrl+shift+f"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "auto",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+d"
+    },
+    {
+      "command": {
+        "action": "closeTab"
+      },
+      "keys": "ctrl+w"
+    }
+  ],
+  "copyFormatting": "none",
+  "copyOnSelect": false,
+  "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+  "profiles": {
+    "defaults": {
+      "colorScheme": "Horizon",
+      "font": {
+        "face": "CaskaydiaCove Nerd Font Mono",
+        "size": 13
+      },
+      "opacity": 80,
+      "startingDirectory": "%USERPROFILE%/dev"
+    },
+    "list": [
+      {
+        "elevate": true,
+        "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+        "hidden": false,
+        "name": "PowerShell",
+        "source": "Windows.Terminal.PowershellCore"
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "name": "Horizon",
+      "black": "#0a0a0d",
+      "red": "#E95678",
+      "green": "#29D398",
+      "yellow": "#FAB795",
+      "blue": "#26BBD9",
+      "purple": "#EE64AC",
+      "cyan": "#59E1E3",
+      "white": "#e5e5e5",
+      "brightBlack": "#848484",
+      "brightRed": "#EC6A88",
+      "brightGreen": "#3FDAA4",
+      "brightYellow": "#FBC3A7",
+      "brightBlue": "#3FC4DE",
+      "brightPurple": "#F075B5",
+      "brightCyan": "#6BE4E6",
+      "brightWhite": "#e5e5e5",
+      "background": "#1c1e26",
+      "foreground": "#bdc0c2"
+    }
+  ],
+  "theme": "system",
+  "useAcrylicInTabRow": true
 }
 ```
 
 To make the terminal cozy and pretty, I'm using [Oh My Posh](https://ohmyposh.dev/).
-Oh My Posh also allows me to add key information to my prompt, making it more useful than the normal prompt. For example, my modified Oh My Posh theme (based on the Pure theme) shows the git status, the .NET, and Angular versions. Spoiler, Oh My Posh can do a lot more! For some inspiration, take a look at the [default themes](https://ohmyposh.dev/docs/themes).
+Oh My Posh also allows me to add key information to my prompt, making it more useful than the normal prompt. For example, a Oh My Posh theme can show the git status, the .NET version, the Angular version, and [much more](https://ohmyposh.dev/docs/segments/git).
 
-```json:ohmyposh-theme.omp.json
-{
-    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-    "console_title": true,
-    "console_title_style": "template",
-    "console_title_template": "{{if .Root}}(Admin){{end}} {{.Path}}",
-    "blocks": [
-        {
-            "type": "prompt",
-            "alignment": "left",
-            "newline": false,
-            "segments": [
-                {
-                    "type": "path",
-                    "style": "plain",
-                    "foreground": "#f8c400",
-                    "properties": {
-                        "prefix": "",
-                        "style": "full"
-                    }
-                }
-            ]
-        },
-        {
-            "type": "prompt",
-            "alignment": "left",
-            "segments": [
-                {
-                    "type": "git",
-                    "style": "plain",
-                    "foreground": "#ffe893",
-                    "properties": {
-                        "prefix": "",
-                        "fetch_stash_count": true,
-                        "fetch_status": true,
-                        "fetch_upstream_icon": true,
-                        "branch_icon": "",
-                        "github_icon": "",
-                        "branch_ahead_icon": "<#88C0D0>\u21e1 </>",
-                        "branch_behind_icon": "<#88C0D0>\u21e3 </>",
-                        "local_working_icon": "<#FFAFD7>\u002a</>",
-                        "template": "{{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uF044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uF046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uF692 {{ .StashCount }}{{ end }}"
-                    }
-                }
-            ]
-        },
-        {
-            "type": "prompt",
-            "alignment": "left",
-            "segments": [
-                {
-                    "type": "dotnet",
-                    "style": "plain",
-                    "foreground": "#512bd4",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "properties": {
-                        "display_version": true,
-                        "prefix": "  "
-                    }
-                },
-                {
-                    "type": "angular",
-                    "style": "plain",
-                    "foreground": "#dd0031",
-                    "properties": {
-                        "display_version": true,
-                        "prefix": " \uE753 "
-                    }
-                },
-                {
-                    "type": "exit",
-                    "style": "diamond",
-                    "foreground": "red",
-                    "properties": {
-                        "always_enabled": false
-                    }
-                }
-            ]
-        }
-    ]
-}
-```
+For some inspiration, take a look at the [default themes](https://ohmyposh.dev/docs/themes).
+You can even create your own custom theme for your own likings.
+But for me, I like to change things, so every time that I open a new tab, I'm using a different theme that's randomly chosen.
 
 To also render the icons Visual Studio Code, set the terminal's font of Visual Studio Code (via `terminal.integrated.fontFamily`) to the same font from the Windows Terminal config. By doing this, you'll get the same experience no matter where you are.
 
@@ -325,11 +251,26 @@ My profile, which can be found below, creates a couple of functions and aliases 
 - register shortcuts so I don't have to type the whole command
 
 ```ps:Microsoft.PowerShell_profile.ps1
-# For the first time install Terminal-Icons with
+# The first time the Terminal-Icons module needs to be installed:
 # Install-Module -Name Terminal-Icons -Repository PSGallery
 Import-Module Terminal-Icons
 
-oh-my-posh --init --shell pwsh --config ~/ohmyposh-theme.omp.json | Invoke-Expression
+# Startup
+
+function changeTheme {
+    $Themes = "C:\Users\timde\AppData\Local\Programs\oh-my-posh\themes\"
+    $Theme = $args[0]
+    if($null -eq $Theme) {
+        $Theme = Get-ChildItem $Themes -name | Select-Object -index $(Random $((Get-ChildItem $Themes).Count))
+    }
+    Write-Output "Using $Theme"
+    oh-my-posh init pwsh --config "$Themes\$Theme" | Invoke-Expression
+}
+
+# Always use a random theme
+changeTheme
+
+fnm env --use-on-cd | Out-String | Invoke-Expression
 
 # History
 
@@ -341,7 +282,17 @@ Set-PSReadLineOption -EditMode Windows
 
 Set-Alias -Name code -Value code-insiders
 
-# Directory Alias
+function .. {
+    cd ..
+}
+
+function .... {
+    cd ../../
+}
+
+function ...... {
+    cd ../../../
+}
 
 function oss {
     cd "~/dev/oss/$args"
@@ -508,7 +459,7 @@ Set-PSReadLineKeyHandler -Key Ctrl+Shift+s `
     }
 ```
 
-![Shows a history of npm run commands when I type "npm run", I can also browse through this list](./images/terminal-history.png)
+![A history of npm run commands when I type "npm run", I can also browse through this list](./images/terminal-history.png)
 
 ## Git Defaults
 
