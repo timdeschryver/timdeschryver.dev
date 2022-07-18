@@ -221,7 +221,7 @@ export function readSnippets(): {
 				},
 			});
 			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image.replace(
-				/\.(png|jpg|jpeg|gif)$/,
+				/\.(png|jpg|jpeg)$/,
 				'.webp',
 			)}`;
 			const url = `/snippets/${metadata.slug}`;
@@ -285,7 +285,7 @@ function parseFileToHtmlAndMeta(
 					.split(path.sep)
 					.filter((_, index, { length }) => index >= length - 4)
 					.join('/')
-					.replace(/\.(png|jpg|jpeg|gif)$/, '.webp');
+					.replace(/\.(png|jpg|jpeg)$/, '.webp');
 
 		return `
 			<figure>
