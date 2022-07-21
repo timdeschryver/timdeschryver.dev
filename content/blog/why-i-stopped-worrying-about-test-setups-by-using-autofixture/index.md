@@ -23,8 +23,6 @@ The existing tests also receive less attention.
 
 Because of the current state of the project, a failing test only receives attention when it's failing. With every addition, things are getting worse.
 
-Because of the current state of the project, a failing test only receives attention when it's failing. With every addition, things are getting worse.
-
 At some point, arranging a test might even be the trickiest part of the test.
 Worse, when the requirements change, we might lose the confidence the tests were giving us previously because they're not kept up to date.  
 The team is forced to change the application's code and the test code in one single go. When this point is reached, it's usually too late and the team wonders when things were starting to go downhill.
@@ -52,7 +50,7 @@ Since this is just the beginning, creating a fixture is easy and thus is the cus
 
 ```cs{4}:CustomerTests.cs
 [Fact]
-public void Should_create_a_customer()
+public void Creates_a_customer_when_valid()
 {
     var customer = new Customer(Guid.NewGuid(), "Sarah", "Dubois");
 
@@ -75,10 +73,10 @@ Yikes.
 
 ```cs{4-5}:CustomerTests.cs
 [Fact]
-public void Should_create_a_customer()
+public void Creates_a_customer_when_valid()
 {
     var address = new Address(Guid.NewGuid(), "Place Georges-Pompidou 3", "75004 Paris");
-    var customer = new Customer(Guid.NewGuid(), "Sarah", "Dubois");
+    var customer = new Customer(Guid.NewGuid(), "Sarah", "Dubois", address);
 
     // act: create customer
     // assert: verify customer has been created
@@ -91,7 +89,7 @@ For example, by using a factory method or by using the builder pattern to create
 
 ```cs{4-7}:CustomerTests.cs
 [Fact]
-public void Should_create_a_customer()
+public void Creates_a_customer_when_valid()
 {
     // With a factory method
     var customer = CustomerHelpers.CreateCustomer();
@@ -138,7 +136,7 @@ Next, you can use the `Create` method to create an instance of a generic, in our
 
 ```cs{4-5}:CustomerTests.cs
 [Fact]
-public void Should_create_a_customer()
+public void Creates_a_customer_when_valid()
 {
     var fixture = new Fixture();
     var customer = fixture.Create<Customer>();
@@ -186,7 +184,7 @@ To completely remove the arrange part of the test, we can install the package [A
 ```cs{2-3}:CustomerTests.cs
 [Theory]
 [AutoData]
-public void Should_create_a_customer(Customer customer)
+public void Creates_a_customer_when_valid(Customer customer)
 {
     // act: create customer
     // assert: verify customer is created
@@ -206,7 +204,7 @@ For those cases where it's needed, you can simply overwrite the generated object
 
 ```cs{4}:CustomerTests.cs
 [Theory, AutoData]
-public void Should_create_a_customer(Customer customer)
+public void Creates_a_customer_when_valid(Customer customer)
 {
     customer.Orders = new List<Order>();
 
@@ -273,7 +271,7 @@ Finally, this attribute can be used in the tests to create new customers that ha
 ```cs{2-3}:CustomerTests.cs
 [Theory]
 [NoOrdersData]
-public void Should_create_a_customer(Customer customer)
+public void Creates_a_customer_when_valid(Customer customer)
 {
     // customer.Orders is now an empty collection
 
@@ -333,7 +331,7 @@ Some tests need multiple generated instances, therefore, a parametrized test can
 ```cs{3}:CustomerTests.cs
 [Theory]
 [AutoData]
-public void Should_create_a_customer(Customer customer1, Customer customer2, SomethingElse something)
+public void Creates_a_customer_when_valid(Customer customer1, Customer customer2, SomethingElse something)
 {
 }
 ```

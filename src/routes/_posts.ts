@@ -442,6 +442,7 @@ function getLastModifiedDate(filePath: string) {
 		return null;
 	}
 
+	console.log('[DEBUG getLastModifiedDate]', filePath, buffer.toString().trim());
 	return buffer.toString().trim();
 }
 
