@@ -1,7 +1,7 @@
 import { ISODate } from '$lib/formatters';
 import { readPosts } from './_posts';
 
-export async function get() {
+export async function GET() {
 	const posts = await readPosts();
 	return {
 		body: generate(posts),

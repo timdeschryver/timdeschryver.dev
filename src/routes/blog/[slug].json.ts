@@ -2,7 +2,7 @@ import { readPosts } from '../_posts';
 import fetch from 'node-fetch';
 import { ISODate } from '../../lib/formatters';
 
-export async function get(req) {
+export async function GET(req) {
 	const posts = await readPosts();
 	const post = posts.find((p) => p.metadata.slug === req.params.slug);
 

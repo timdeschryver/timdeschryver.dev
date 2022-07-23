@@ -1,14 +1,13 @@
 import { UTCDate } from '$lib/formatters';
 import { readPosts } from '../_posts';
 
-
-export async function get() {
+export async function GET() {
 	const posts = await readPosts();
 	return {
 		body: generate(posts),
 		headers: {
-			'Content-Type': 'application/xml'
-		}
+			'Content-Type': 'application/xml',
+		},
 	};
 }
 
@@ -32,7 +31,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 				.replace(/&/g, '&amp;')
 				.replace(/</g, '&lt;')
 				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
+				.replace(/"/g, '&quot;'),
 		};
 	});
 
