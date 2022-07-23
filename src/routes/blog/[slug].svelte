@@ -201,7 +201,8 @@
 
 {#if post.metadata.translations}
 	<div class="translations">
-		Translations:&nbsp;
+		<hr />
+		<p>This article is also available in:</p>
 		<ul>
 			{#each post.metadata.translations as translation}
 				<li>
@@ -210,6 +211,7 @@
 				</li>
 			{/each}
 		</ul>
+		<hr />
 	</div>
 {/if}
 
@@ -375,14 +377,8 @@
 		justify-content: space-evenly;
 	}
 
-	.translations {
-		display: flex;
-		justify-content: center;
-		font-weight: 900;
-	}
-
 	.translations ul {
 		list-style: none;
-		font-weight: inherit;
+		margin-top: var(--spacing-small);
 	}
 </style>
