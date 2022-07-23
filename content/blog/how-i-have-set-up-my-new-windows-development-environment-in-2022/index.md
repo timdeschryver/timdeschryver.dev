@@ -262,9 +262,11 @@ function changeTheme {
     $Theme = $args[0]
     if($null -eq $Theme) {
         $Theme = Get-ChildItem $Themes -name | Select-Object -index $(Random $((Get-ChildItem $Themes).Count))
+    } else {
+        $Theme = $Theme + ".omp.json"
     }
     Write-Output "Using $Theme"
-    oh-my-posh init pwsh --config "$Themes\$Theme" | Invoke-Expression
+    oh-my-posh init pwsh --config "$Themes$Theme" | Invoke-Expression
 }
 
 # Always use a random theme

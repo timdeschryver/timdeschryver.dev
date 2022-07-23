@@ -28,7 +28,7 @@
 		"pre-commit": "npm run banners && git add ./content/**/banner.jpg && lint-staged",
 		"optimize:image": "node ./scripts/optimize-image-cli.js",
 		"optimize:images": "node ./scripts/optimize-images.js",
-		"prepare": "git config core.hookspath .githooks"
+		"prepare": "git config core.hookspath .githooks && svelte-kit sync"
 	},
 	"devDependencies": {
 		"@azure/static-web-apps-cli": "^1.0.1",

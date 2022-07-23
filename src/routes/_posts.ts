@@ -431,6 +431,10 @@ function sortByDate(a, b) {
 }
 
 function getLastModifiedDate(filePath: string) {
+	// SWA doesn't have git history?
+	// us retrieved via the GitHub API for now
+	return '';
+
 	// disable in dev because this slows down 😪
 	if (import.meta.env.DEV) {
 		return '';
@@ -442,7 +446,6 @@ function getLastModifiedDate(filePath: string) {
 		return null;
 	}
 
-	console.log('[DEBUG getLastModifiedDate]', filePath, buffer.toString().trim());
 	return buffer.toString().trim();
 }
 
