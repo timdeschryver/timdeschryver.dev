@@ -1,6 +1,6 @@
 import { readPosts } from '../_posts';
 
-export async function get() {
+export async function GET() {
 	const posts = await readPosts();
 	const metadata = posts.map((p) => ({
 		title: p.metadata.title,

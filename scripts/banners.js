@@ -18,7 +18,7 @@ const content = './content/blog';
 
 	if (generateBanners.length) {
 		execSync('npm run build', { stdio: 'inherit' });
-		const serve = exec('npm run preview');
+		const serve = exec('npm run preview -- --port=3000');
 
 		serve.stderr.on('data', (data) => {
 			console.error(data.toString());
