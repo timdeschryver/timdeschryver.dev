@@ -331,6 +331,11 @@ function gdev {
     gs 'develop'
 }
 
+function grb {
+    git fetch
+    git rebase origin/$args
+}
+
 function gco {
     git add .
     git commit -m $args
