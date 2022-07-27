@@ -25,9 +25,8 @@ const content = './content/blog';
 		});
 
 		serve.stdout.on('data', async (data) => {
-			console.log('[banner] Preview server started');
-			console.log(data.toString());
-			if (data.toString().includes('Local:')) {
+			console.log('[banner] ', data.toString());
+			if (data.toString().includes('Local')) {
 				console.log('[banner] Starting to generate banners');
 				const browser = await chromium.launch({ headless: true });
 				const page = await browser.newPage({

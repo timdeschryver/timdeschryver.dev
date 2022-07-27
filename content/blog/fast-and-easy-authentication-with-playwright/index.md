@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 published: true
 ---
 
-I've [already said](https://timdeschryver.dev/blog?q=playwright) that Playwright offers a smooth experience to write end-to-end tests. In this post, we're taking a look at how we can authenticate a test user and reuse its authentication state.
+I've [already said](/blog?q=playwright) that Playwright offers a smooth experience to write end-to-end tests. In this post, we're taking a look at how we can authenticate a test user and reuse its authentication state.
 
 With Playwright, the authentication process can become a part of the test flow because a Playwright runs on different domains during a single test case. It doesn't feel abnormal because the authentication code looks the same as the rest of the test. Yet, including the authentication process within the test flow has a major drawback.
 
