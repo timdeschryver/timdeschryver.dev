@@ -41,6 +41,7 @@ jobs:
         env:
           VITE_PUBLIC_GA_TRACKING_ID: ${{ secrets.GTAG }}
           VITE_PUBLIC_HASH: ${{ github.sha }}
+          VITE_PUBLIC_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   smoke_test_job:
     name: ☁️ Smoke test ${{ github.event.deployment_status.target_url }}
