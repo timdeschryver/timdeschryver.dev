@@ -366,6 +366,17 @@ To open last HTML report run:
 And ta-daaa, here's your first playwright test.
 Nice and simple!
 
+## Visual Studio Code Extension
+
+After this post was written, Microsoft also released an official [extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). With this plugin you can access the most important commands via the command palette.
+One of these is installing Playwright within your project, and to start a new codegen session.
+I find this an easier alternative to the npm commands that we've covered in this blog post.
+
+![The commands that are available via the command palette.](./images/vscode.png)
+
+Besides the commands, the extension also provides a test explorer, and test buttons to run and debug your tests inline.
+This experience makes it easier to run your tests, and to onboard new team members.
+
 ## Conclusion
 
 Integrating playwright in your project is straightforward with the `npm init playwright` command.
