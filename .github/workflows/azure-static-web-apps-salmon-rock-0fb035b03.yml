@@ -21,9 +21,10 @@ jobs:
     outputs:
       swa_url: ${{ steps.swa.outputs.static_web_app_url }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          submodules: true
+            fetch-depth: 0
+
       - name: Build And Deploy
         id: swa
         uses: Azure/static-web-apps-deploy@v1
