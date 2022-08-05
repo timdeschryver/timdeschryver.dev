@@ -6,7 +6,6 @@ author: Tim Deschryver
 date: 2021-01-22
 tags: .NET, csharp, architecture, api
 banner: ./images/banner.jpg
-bannerCredit: Photo by [Davies Designs Studio](https://unsplash.com/@davies_designs) on [Unsplash](https://unsplash.com)
 published: true
 ---
 
@@ -19,31 +18,41 @@ This is what [Eric Evans](https://twitter.com/ericevans0) calls a supple design 
 
 A good design focuses on the core of the application, the domain.
 
-Sadly, it's easy to clutter the domain with responsibilities (meaning more code) that don't belong in this layer.
+Sadly, it's easy to clutter the domain with responsibilities that don't belong here.
 With each addition, it becomes harder to read and understand the core domain.
-Equally bad is that each addition makes it harder to move things around in the future.
 
-Therefore, it's important to guard the domain layer against application logic.
-One of the culprits is the validation of incoming requests.
-To prevent that this logic percolates into the domain level, we want to validate the request before it reaches the domain level.
+Therefore, it's important to _guard that application logic drops into the domain layer_.
+One of the culprits of this, is the validation of incoming requests.
+In this blog post, we'll learn how to validate the incoming request before it reaches the domain level.
+With the result that the domain layer remains a layer that's focused on the core domain.
 
-In this blog post, we'll learn how to extract the validation out of the domain layer.
-Before we start, this blog post assumes that the API uses the [command pattern](https://martinfowler.com/bliki/DecoratedCommand.html) to translate incoming requests to commands or queries. All the snippets throughout this blog post are all using the [MediatR](https://github.com/jbogard/MediatR/wiki) package, another popular alternative is [Brighter](https://www.goparamore.io/new-page-1).
+This blog post assumes that the API uses the [command pattern](https://martinfowler.com/bliki/DecoratedCommand.html) to translate incoming requests to commands or queries. All the snippets throughout this blog post are using the [MediatR](https://github.com/jbogard/MediatR/wiki) package.
 
-The [command pattern](https://martinfowler.com/bliki/DecoratedCommand.html) has the benefit to decouple the core domain logic from the API layer (we don't want thick controllers).
-Most of the libraries that implement the [command pattern](https://martinfowler.com/bliki/DecoratedCommand.html), also expose a middleware pipeline that can be hooked into. This is useful because it offers a solution and a centralized location to add application logic that needs to be executed with each dispatched command.
+The [command pattern](https://martinfowler.com/bliki/DecoratedCommand.html) has the benefit that it can decouple the core logic from the API layer (we also don't want thick and messy controllers).
+Most of the packages that implement the [command pattern](https://martinfowler.com/bliki/DecoratedCommand.html), expose a middleware pipeline that can be hooked into.
+This pipeline is useful because it offers a solution and a centralized location to add common application logic that needs to be executed for each command.
 
 ### A MediatR Request
 
-With the new `record` type, [introduced in C# 9](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#record-types), defining a request becomes a one-liner.
+Before we start validating the incoming request, let's first cover the basics of a MediatR request.
 
-The additional benefit is that an instance is immutable and side-effect free, this makes the command predictable and reliable.
+A request is created by creating a POCO that implements the `MediatR.IRequest` interface.
+
+> With the new `record` type, [introduced in C# 9](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#record-types), defining a request becomes a one-liner. The additional benefit is that the record instance is immutable and side-effect free, making the command predictable and reliable.
+
+In the example below a `AddProductToCartCommand` is defined.
+I use the `Command` suffix to indicate that the request is a command, meaning it will try to execute an operation.
+Another suffix you'll see in our application is `Query`, which indicates that data will be queried.
 
 ```cs:CustomersCartCommand.cs
 record AddProductToCartCommand(Guid CartId, string Sku, int Amount) : MediatR.IRequest;
 ```
 
-To dispatch the above command, an incoming request is mapped to a command in the controller.
+Such a request just holds data, and is bound to a specific handler.
+The handler contains the logic to execute the request (command or query).
+
+To dispatch the above command, the incoming HTTP request is mapped to a command in the controller.
+Then, the command is dispatched to the MediatR pipeline using the `IMediator` instance.
 
 ```cs{10-15}:CustomersCartController.cs
 [ApiController]
@@ -66,22 +75,20 @@ public class CustomerCartsController : ControllerBase
 
 ### MediatR Validator Behavior
 
-Instead of validating the `AddProductToCartCommand` command in the controller or worse in the domain that processes this command, we'll make use of the MediatR pipeline.
+We don't want to validate a command (`AddProductToCartCommand` in the example) in the controller, nor in the domain.
+Instead, we want to validate it in the pipeline with a pipeline behavior.
+By using a pipeline behavior it's possible to execute logic before and/or after a command is handled by its handler.
+With behaviors, we can centralize common-validation logic and enforce a standard.
 
-By using a pipeline behavior, it's possible to execute some logic before or after the command is handled by its handler.
-In this case, provides a centralized location where the command is validated before it reaches the handler (the domain).
-When the command reaches its handler, we don't have to worry anymore if the command is valid.
-It also enforces a standardized resolution on how invalid commands are dealt with.
+In our case, we want to validate the command before it reaches its handler.
+When the command is found valid, then the handler is executed. Otherwise, when it's invalid, it will short-circuit and we'll resolve the invalid request later in this blog post.
 
+This way we don't have to worry anymore if the command is valid when it reaches the handler.
 While this seems like a trivial change, it declutters every handler in the domain layer.
-
-Ideally, we only want to deal with business logic when we're working on the domain.
-Removing the validation logic frees up the mind so we can only focus on the business logic without having to read and write the orchestration code.
-Because the validation logic is centralized it makes sure that all commands are validated and not a single command slips through the cracks.
 
 In the snippet below, we create a new pipeline behavior `ValidatorPipelineBehavior` to validate the commands.
 When a command is sent, the `ValidatorPipelineBehavior` handler receives the command before it reaches the command handler. The `ValidatorPipelineBehavior` validates if that command is valid by invoking the validators corresponding to that type.
-Only if the request is valid, the request is allowed to pass to the next handler.
+The request is only allowed to pass to the next handler when the request is valid.
 If not, an `InputValidationException` exception is thrown.
 
 We'll look at how we create our validators in [Validation with FluentValidation](#validation-with-fluentvalidation).
@@ -122,18 +129,24 @@ public class ValidatorPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<
 
 ### Validation with FluentValidation
 
-To validate the request, I like to use the [FluentValidation](https://fluentvalidation.net/) library.
-With FluentValidation, "rules" are defined per "`IRequest`" record by implementing the `AbstractValidator` abstract class.
+The behavior we created in the previous section is using the [FluentValidation](https://fluentvalidation.net/) package.
+With FluentValidation, we create "rules" for a specific class.
+This is done in a separate class that implements the `AbstractValidator<T>` abstract class.
 
 The reasons why I like to use FluentValidation are:
 
 - there's a separation between the validation rules from the models
 - easy to write and read
-- besides the many built-in validators, you can create your own (reusable) custom rules
-- it's extensible
+- it's extensible, besides the many built-in validators, you can create your own (reusable) custom rules
+
+The validator should contain rules, defined by the `RuleFor` method, that simply validate the shape of the request.
+I find that adding complex business logic here is an antipattern, and that those cases should remain in the domain.
+
+In our case, we create a validator for each command.
+Just like the one below, where we create a validator, `AddProductToCartCommandValidator`, for the `AddProductToCartCommand` command. The validator just verifies that all fields have a value.
 
 ```cs:AddProductToCartCommandValidator.cs
-public class AddProductToCartCommandValidator : FluentValidation.AbstractValidator<AddProductToCartCommandCommand>
+public class AddProductToCartCommandValidator : FluentValidation.AbstractValidator<AddProductToCartCommand>
 {
     public AddProductToCartCommandValidator()
     {
@@ -149,9 +162,9 @@ public class AddProductToCartCommandValidator : FluentValidation.AbstractValidat
 }
 ```
 
-### Registering MediatR and FluentValidation
+### Registering MediatR and FluentValidation into the application
 
-Now that we have our validation pipeline behavior and we've also created a validator, we can register them to the DI container.
+Now that we have our validation pipeline behavior, and we've also created a validator, we can register them to the DI container.
 
 ```cs{5-14}:Program.cs
 public void ConfigureServices(IServiceCollection services)
@@ -175,19 +188,21 @@ public void ConfigureServices(IServiceCollection services)
 
 Everything is now ready to make the first request.
 When we try it out and send an invalid request, we receive an Internal Server Error (500) response.
-This is good, but this doesn't reflect a good experience for the consumers. I'm sure we can do better.
+This is good, but this doesn't reflect a good experience for the consumers, and I'm sure we can do better.
+No, we must do better.
 
-To create a better experience for the consumers, either the user (interface), a colleague-developer (or yourself), or even a 3rd party, an enhanced result will make it clear why a request fails. This practice makes the integration with your API easier, better, and probably also faster.
+To create a better experience for the consumers, users, developers, or even a 3rd party, an enhanced result will make it clear why a request fails. This practice makes the integration with your API easier, better, and also faster.
 
-I had to integrate with 3rd party services that didn't keep this in mind.
-This lead to many frustrations on my end and I was happy when the integration was finally over.
-I'm sure that the implementation would have been faster, and the end result could have been better when there was given more thought to the response of the failed request. Sadly, most of the integrations with services provide a subpar experience.
+I'm putting an emphasis on this because I recently had to integrate with a service that didn't keep this in mind.
+This lead to many frustrations on my end, and I was happy when the integration was finally over, even when I knew that it wasn't perfect.
+I'm sure that the implementation would have been faster, and that the end result would have been better if there was given more thought to the response of a failed request.
 
-Because of this experience, I try my best to help my future-self and another developer by providing a better response. Even better, a standardized response, also known as [Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807).
+Because of this experience, I try my best to help my future-self and other developers by providing a better response. Luckily, I don't have to think of one because there's a standardized response for bad requests.
+This is also known as [Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807).
 
-The .NET framework already provides a class that implements the specifications of a problem detail, [ProblemDetails](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails?view=aspnetcore-5.0).
-In fact, a .NET API returns a problem detail response for some invalid requests.
-For example, when an invalid parameter is used in a route (the word `one` instead of number 1), .NET returns the following response.
+The .NET framework provides a class that implements the specifications of a problem detail, [ProblemDetails](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails).
+In fact, a .NET API already returns a problem detail response for some invalid requests.
+For example, the following response is returned when an invalid parameter is used in a route parameter (e.g a string instead of an int).
 
 ```json:result.json
 {
@@ -201,9 +216,9 @@ For example, when an invalid parameter is used in a route (the word `one` instea
 }
 ```
 
-### Mapping responses (exceptions) to Problem Details
+### Mapping responses to Problem Details
 
-To implement our problem details, we can overwrite the response with either the [exceptions middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-5.0#exception-handler-lambda), or with an [exception filter](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-5.0#exception-filters).
+To implement our problem details, in our case the `InputValidationException` exception, we can overwrite the response with either the [exception middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling#exception-handler-lambda), or with an [exception filter](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling#exception-filters).
 
 In the snippet below, we're using the middleware to retrieve the details of an exception when one is raised in the application.
 Based on these exception details, the problem detail object is build up.
@@ -269,7 +284,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ```
 
 With the exception handler in place, the following response is returned when the pipeline behavior detects an invalid command.
-For example, when the `AddProductToCartCommand` command (see the [MediatR Command](#a-mediatr-request)) is send with a negative amount.
+For example, when the `AddProductToCartCommand` command is sent with a negative amount.
 
 ```json:result.json
 {
@@ -285,36 +300,16 @@ For example, when the `AddProductToCartCommand` command (see the [MediatR Comman
 }
 ```
 
-Instead of creating a custom exception handler and mapping the exception to problem details, it's also possible to use the [Hellang.Middleware.ProblemDetails](https://www.nuget.org/packages/Hellang.Middleware.ProblemDetails/) package. The `Hellang.Middleware.ProblemDetails` package makes it easy to map exceptions to problem details, with almost no code.
+> Instead of creating a custom exception handler and mapping the exception to problem details, it's also possible to use the [Hellang.Middleware.ProblemDetails](https://www.nuget.org/packages/Hellang.Middleware.ProblemDetails/) package. The `Hellang.Middleware.ProblemDetails` package makes it easy to map exceptions to problem details, with almost no code.
 
 ### Consistent Problem Details
 
 There's one last problem.
-The above snippets expect that a MediatR request is created by the application, in the controller's methods.
-An API endpoint that contains the command in the body will automatically be validated by the [.NET Model Validator](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-5.0). When the endpoint receives an invalid command, the request isn't handled by our pipeline and exception handling. This means that the default .NET response will be returned, and not our problem details.
+The above snippets expect that a MediatR request is created within the controller.
+But an API endpoint that contains a body is automatically be validated by the [.NET Model Validator](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation).
+When the endpoint receives an invalid body a default response is returned before it's caught by our pipeline. This means that our problem details implementation won't be used to return a consistent response.
 
-For example, the `AddProductToCart` endpoint directly receives an `AddProductToCartCommand` command and just sends that command to the MediatR pipeline.
-
-```cs{10-15}:CustomersCartController.cs
-[ApiController]
-[Route("[controller]")]
-public class CustomerCartsController : ControllerBase
-{
-    private readonly IMediator _mediator;
-
-    public CustomerCartsController(IMediator mediator)
-        => _mediator = mediator;
-
-    [HttpPost]
-    public async Task<IActionResult> AddProductToCart(AddProductToCartCommand command)
-    {
-        await _mediator.Send(command);
-        return Ok();
-    }
-}
-```
-
-I didn't expect this at first and it took me a while to figure out why this happens and how to make sure the response objects stay consistent. As a possible fix, we can suppress this default behavior so the invalid request will be handled by our pipeline.
+I didn't expect this at first, and it took me a while to figure out why this happens and how to make sure the response objects stay consistent. As a possible fix, we can suppress this default behavior so the invalid request will be handled by our pipeline.
 
 ```cs{16-18}:Program.cs
 public void ConfigureServices(IServiceCollection services)
@@ -338,10 +333,11 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-But this has a drawback. By suppressing the invalid model filter, invalid primitive types aren't caught any more.
+But this has a drawback.
+By suppressing the invalid model filter, invalid primitive types aren't caught anymore.
 For an endpoint that expects a number but receives a string, the expected primitive type (in this case the number) is assigned to the default value (0 in this case). Turning off the invalid model filter may lead to unexpected bugs due to this. Previously, this action would lead to a bad request (400).
 
-That's why I prefer to throw the `InputValidationException` exception when the endpoint receives a bad input.
+That's why I prefer to reuse the `InputValidationException` exception when the endpoint receives a bad input implementing a `InvalidModelStateResponseFactory`.
 
 ```cs{16-21}:Program.cs
 public void ConfigureServices(IServiceCollection services)
@@ -370,11 +366,11 @@ public void ConfigureServices(IServiceCollection services)
 
 ### Conclusion
 
-In this post, we've seen how to centralize the validation logic before a command reaches the domain layer by using a MediatR pipeline behavior. This has the benefit that all of the commands are validated, and when a command reaches its handler (the domain) it will be valid. In other words, the domain will remain clean and simple.
+In this post, we've seen how to centralize the validation logic before a command reaches the domain layer by using a MediatR pipeline behavior. This has the benefit that all the commands are validated, and handlers only receive valid commands. Resulting that the domain remains clean and simple.
 
-Because there's a clear separation, the developer only has to focus on the task that's in plain sight.
-During the development, you'll also notice that unit tests are more focused and easier to write.
+Because there's a clear separation, we only has to focus on the task that's in plain sight.
+Another advantage that you'll notice during the development process, is that unit tests are more focused and easier to write.
 In the future, it's also easier to replace the validation layer, if needed.
 
 We've also learned that there's a standardized response to specify errors with [Problem Details](https://tools.ietf.org/html/rfc7807).
-By following the specification we don't have to reinvent the wheel and we create a better experience for the APIs consumer.
+By following the Problem Details specification we don't have to reinvent the wheel, and we create a better experience for the consumers of our API.

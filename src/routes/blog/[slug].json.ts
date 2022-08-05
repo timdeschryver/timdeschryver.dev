@@ -33,7 +33,7 @@ export async function GET(req) {
 				...post,
 				metadata: {
 					...post.metadata,
-					modified: recentCommit?.date ?? post.metadata.modified,
+					modified: recentCommit?.date ?? post.metadata.date,
 				},
 				contributors: [
 					...new Map(

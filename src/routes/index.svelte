@@ -19,9 +19,7 @@
 		Lifelong learner and <strong
 			><a href="https://github.com/timdeschryver" rel="external">open-source enthusiast</a></strong
 		>, mainly working on <a href="https://ngrx.io/" rel="external">NgRx</a> and
-		<a href="https://testing-library.com/docs/angular-testing-library/" rel="external"
-			>Angular Testing Library</a
-		>.
+		<a href="https://testing-library.com/angular" rel="external">Angular Testing Library</a>.
 	</p>
 
 	<p>
