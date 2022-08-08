@@ -3,6 +3,7 @@
 	"extends": ["config:base"],
 	"timezone": "Europe/Brussels",
 	"schedule": ["before 3am on Monday"],
+	"groupName": "all",
 	"npm": {
 		"stabilityDays": 3
 	}

@@ -1,6 +1,5 @@
 import { readPosts } from '../_posts';
 import fetch from 'node-fetch';
-import { ISODate } from '../../lib/formatters';
 
 export async function GET(req) {
 	const posts = await readPosts();
@@ -26,15 +25,10 @@ export async function GET(req) {
 	}
 
 	const commits = await getCommits(post.metadata.slug);
-	const [recentCommit] = commits;
 	return {
 		body: {
 			post: {
 				...post,
-				metadata: {
-					...post.metadata,
-					modified: recentCommit?.date ?? post.metadata.date,
-				},
 				contributors: [
 					...new Map(
 						commits
@@ -72,7 +66,6 @@ async function getCommits(slug: string) {
 				return {
 					login: commit.author?.login ?? (commit.commit.author.login || commit.commit.author.name),
 					name: commit.commit.author.name,
-					date: ISODate(commit.commit.author.date),
 				};
 			});
 		})

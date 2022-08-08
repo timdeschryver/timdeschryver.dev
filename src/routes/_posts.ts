@@ -437,7 +437,6 @@ function getLastModifiedDate(filePath: string) {
 	}
 
 	const buffer = execSync(`git log -1 --pretty="format:%ci" ${filePath}`);
-	console.log(`[git ${filePath}]: ${buffer.toString().trim()}`);
 	if (!buffer) {
 		return null;
 	}
