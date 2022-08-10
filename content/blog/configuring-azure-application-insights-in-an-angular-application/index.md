@@ -133,7 +133,7 @@ export class Insights {
 
 ## Initialize the `Insights` service
 
-The `Insights` service must be initialized before it can start logging views and exceptions. You can do that by injecting it in the `InsightsModule` module.
+The `Insights` service must be initialized before it can start logging views and exceptions. You can do that by injecting the service in the `InsightsModule` module. This way when the `InsightsModule` is loaded, the `Insights` service is also initialized.
 
 ```ts{15}:insights.module.ts
 import { ErrorHandler, NgModule } from '@angular/core';
