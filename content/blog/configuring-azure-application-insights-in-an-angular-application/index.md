@@ -9,7 +9,7 @@ banner: ./images/banner.jpg
 published: true
 ---
 
-Because you're already here, I'm assuming that you're already familiar [Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/application-insights), and that you're looking at how you can configure it within an Angular application. So I'm not going to waste any time, and we're diving right in.
+Because you're already here, I'm assuming that you're already familiar with [Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview), and that you're looking at how you can configure it within an Angular application. So I'm not going to waste any time, and we're diving right in.
 
 ## Installing Application Insights libraries
 
@@ -21,7 +21,7 @@ npm i @microsoft/applicationinsights-angularplugin-js @microsoft/applicationinsi
 
 ## Configure Application Insights with the Angular plugin
 
-Next, we define a `Insights` service that acts as an abstraction layer around the building blocks that both libraries provide. This service consumes the Application Insights JavaScript API to initialize an `ApplicationInsights` instance that is configured with the Application Insights key. To hook into the Angular route lifecycle, which is required to send accurate page view data to Application Insights, the `AngularPlugin` is added to the extensions.
+Next, we define an `Insights` service that acts as an abstraction layer around the building blocks that both libraries provide. This service consumes the Application Insights JavaScript API to initialize an `ApplicationInsights` instance that is configured with the Application Insights Instrumentation Key. To hook into the Angular route lifecycle, which is required to send accurate page view data to Application Insights, the `AngularPlugin` is added to the extensions.
 
 Notice that I'm not using the environment to set the instrumentation key, instead, I prefer to use a configuration file to [only build my application once](/blog/angular-build-once-deploy-to-multiple-environments) and deploy the same build to multiple environments.
 
@@ -33,7 +33,7 @@ import { Router } from '@angular/router';
 import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class Insights {
     private angularPlugin = new AngularPlugin();
     private appInsights = new ApplicationInsights({
@@ -48,12 +48,17 @@ export class Insights {
         },
     });
 
-    // expose methods that can be used in components and services
-    trackEvent = this.appInsights.trackEvent;
-    trackTrace = this.appInsights.trackTrace;
-
     constructor(private router: Router, private appConfig: AppConfig) {
         this.appInsights.loadAppInsights();
+    }
+
+    // expose methods that can be used in components and services
+    trackEvent(name: string): void {
+        this.appInsights.trackEvent({ name });
+    }
+
+    trackTrace(message: string): void {
+        this.appInsights.trackTrace({ message });
     }
 }
 ```
@@ -95,7 +100,7 @@ import { Router } from '@angular/router';
 import { AngularPlugin } from '@microsoft/applicationinsights-angularplugin-js';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class Insights {
     private angularPlugin = new AngularPlugin();
     private appInsights = new ApplicationInsights({
@@ -111,13 +116,41 @@ export class Insights {
         },
     });
 
-    // expose methods that can be used in components and services
-    trackEvent = this.appInsights.trackEvent;
-    trackTrace = this.appInsights.trackTrace;
-
     constructor(private router: Router, private appConfig: AppConfig) {
         this.appInsights.loadAppInsights();
     }
+
+    // expose methods that can be used in components and services
+    trackEvent(name: string): void {
+        this.appInsights.trackEvent({ name });
+    }
+
+    trackTrace(message: string): void {
+        this.appInsights.trackTrace({ message });
+    }
+}
+```
+
+## Initialize the `Insights` service
+
+The `Insights` service must be initialized before it can start logging views and exceptions. You can do that by injecting it in the `InsightsModule` module.
+
+```ts{15}:insights.module.ts
+import { ErrorHandler, NgModule } from '@angular/core';
+import { ApplicationinsightsAngularpluginErrorService } from '@microsoft/applicationinsights-angularplugin-js';
+import { Insights } from './insights.service';
+
+@NgModule({
+  providers: [
+    Insights,
+    {
+      provide: ErrorHandler,
+      useClass: ApplicationinsightsAngularpluginErrorService,
+    },
+  ],
+})
+export class InsightsModule {
+    constructor(private insights: Insights) {}
 }
 ```
 
@@ -211,7 +244,7 @@ export class AppComponent {
     constructor(private insights: Insights) {}
 
     buttonClicked() {
-        this.insights.trackTrace({ message: 'Button is clicked' });
+        this.insights.trackTrace('Button is clicked');
     }
 }
 ```
