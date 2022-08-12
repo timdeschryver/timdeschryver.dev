@@ -7,6 +7,7 @@ import { marked } from 'marked';
 import frontmatter from 'front-matter';
 import highlightCode from 'gatsby-remark-prismjs/highlight-code.js';
 import 'prismjs/components/prism-bash.js';
+import 'prismjs/components/prism-markdown.js';
 import 'prismjs/components/prism-typescript.js';
 import 'prismjs/components/prism-json.js';
 import 'prismjs/components/prism-textile.js';
@@ -41,6 +42,7 @@ const langs = {
 	svelte: 'svelte',
 	ps: 'powershell',
 	xml: 'html',
+	md: 'markdown',
 };
 
 export const snippets = readSnippets();
