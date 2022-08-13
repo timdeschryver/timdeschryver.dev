@@ -19,7 +19,6 @@
 	import { onMount } from 'svelte';
 	import Snippets from '$lib/Snippets.svelte';
 
-	export let snippets;
 	export let snippet;
 
 	onMount(() => {
@@ -50,4 +49,4 @@
 	<meta name="og:image" content={snippet.metadata.image} />
 </svelte:head>
 
-<Snippets {snippets} />
+<Snippets snippets={[snippet]} />

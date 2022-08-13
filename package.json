@@ -9,9 +9,8 @@
 		"node": "^16.0.0"
 	},
 	"scripts": {
-		"predev": "npm run copy:content",
 		"dev": "vite dev",
-		"prebuild": "rimraf build && npm run copy:content",
+		"prebuild": "rimraf build",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
@@ -19,9 +18,6 @@
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"copy:content": "npm run copy:blog && npm run copy:snippets",
-		"copy:blog": "copyfiles \"content/blog/**\" static --exclude=\"**/*.md\" --up=1",
-		"copy:snippets": "copyfiles \"content/snippets/**\" static  --exclude=\"**/*.md\" --up=1",
 		"g": "node ./scripts/generate",
 		"p": "node ./scripts/devto",
 		"banners": "node ./scripts/banners.js",
@@ -64,6 +60,7 @@
 		"svelte-preprocess": "4.10.7",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4",
-		"vite": "3.0.2"
+		"vite": "3.0.2",
+		"vite-plugin-restart": "^0.2.0"
 	}
 }
