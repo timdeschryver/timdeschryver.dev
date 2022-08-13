@@ -19,7 +19,7 @@ const slugify = (string) => {
 
 function createPost(title) {
 	let slug = slugify(title);
-	let path = `./content/blog/${slug}`;
+	let path = `./blog/${slug}`;
 
 	mkdirSync(path);
 	mkdirSync(`${path}/images`);
@@ -32,10 +32,8 @@ description:
 author: Tim Deschryver
 date: ${new Date().toISOString().split('T')[0]}
 tags: 
-banner: ./images/banner.jpg
-published: true
 ---
-`
+`,
 	);
 }
 

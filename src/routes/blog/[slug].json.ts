@@ -51,7 +51,7 @@ export async function GET(req) {
 
 async function getCommits(slug: string) {
 	return fetch(
-		`https://api.github.com/repos/timdeschryver/timdeschryver.dev/commits?path=content/blog/${slug}/index.md`,
+		`https://api.github.com/repos/timdeschryver/timdeschryver.dev/commits?path=blog/${slug}/index.md`,
 		{
 			headers: {
 				Authorization: `Bearer: ${import.meta.env.VITE_PUBLIC_GITHUB_TOKEN}`,

@@ -11,12 +11,12 @@ dotEnv.load({
 (async () => {
 	try {
 		const url = `https://timdeschryver.dev/blog/${slug}`;
-		const file = readFileSync(join('./content/blog', slug, 'index.md'), 'utf-8')
+		const file = readFileSync(join('./blog', slug, 'index.md'), 'utf-8')
 			.replace(/\.\/images\//g, `${url}/images/`)
 			.replace(/\(\/blog\//g, `(https://timdeschryver.dev/blog/`);
 		const { metadata, content } = extractFrontmatter(file);
 
-		const hasTLDR = existsSync(join('./content/blog', slug, 'tldr.md'));
+		const hasTLDR = existsSync(join('./blog', slug, 'tldr.md'));
 		const tldr = hasTLDR ? `[Read the TLDR version on timdeschryver.dev](${url}?tldr=true)` : '';
 
 		const devToContent = content

@@ -7,10 +7,15 @@ const config = {
 		sveltekit(),
 		// @ts-ignore - Doesn't look like `vite-plugin-restart` exports correctly.
 		VitePluginRestart.default({
-			restart: ['./content/**'],
+			restart: ['./blog/**', './snippets/**'],
 		}),
 	],
-	assetsInclude: ['./content/**'],
+	assetsInclude: ['blog', 'snippets'],
+	server: {
+		fs: {
+			allow: ['blog', 'snippets'],
+		},
+	},
 };
 
 export default config;

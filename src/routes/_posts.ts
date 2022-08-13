@@ -21,8 +21,8 @@ import 'prismjs/components/prism-sql.js';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
-const blogPath = 'content/blog';
-const snippetsPath = 'content/snippets';
+const blogPath = 'blog';
+const snippetsPath = 'snippets';
 const langs = {
 	bash: 'bash',
 	sh: 'bash',
@@ -66,9 +66,6 @@ export async function readPosts(): Promise<
 			date: string;
 			modified: string;
 			tags: string[];
-			banner: string;
-			bannerCredit: string;
-			published: boolean;
 			canonical: string;
 			edit: string;
 			outgoingLinks: { slug: string; title: string }[];
@@ -122,18 +119,17 @@ export async function readPosts(): Promise<
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(
-					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner),
+					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, 'banner.wbp'),
 				)
 				.replace(/\\/g, '/')
-				.replace('/', '//')
-				.replace(/\.(png|jpg|jpeg)$/, '.webp');
+				.replace('/', '//');
 
 			const canonical = path
 				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
-			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/content/blog/${metadata.slug}/index.md`;
+			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${metadata.slug}/index.md`;
 			return {
 				html,
 				tldr,

@@ -3,7 +3,7 @@ import path from 'path';
 import { execSync, exec } from 'child_process';
 import { chromium } from 'playwright';
 
-const content = './content/blog';
+const content = './blog';
 
 (async () => {
 	const generateBanners = [];
