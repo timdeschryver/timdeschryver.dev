@@ -13,7 +13,7 @@ const config = {
 	assetsInclude: ['blog', 'snippets'],
 	server: {
 		fs: {
-			allow: ['blog', 'snippets'],
+			allow: ['..'],
 		},
 	},
 };

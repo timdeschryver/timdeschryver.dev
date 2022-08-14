@@ -180,7 +180,6 @@ export function readSnippets(): {
 	metadata: {
 		title: string;
 		slug: string;
-		author: string;
 		date: string;
 		tags: string[];
 		url: string;
@@ -213,10 +212,7 @@ export function readSnippets(): {
 					];
 				},
 			});
-			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image.replace(
-				/\.(png|jpg|jpeg)$/,
-				'.webp',
-			)}`;
+			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image}`;
 			const url = `/snippets/${metadata.slug}`;
 
 			return {
@@ -272,7 +268,7 @@ function parseFileToHtmlAndMeta(
 	renderer.image = (href, _title, text) => {
 		const src = href.startsWith('http')
 			? href
-			: '/' +
+			: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/` +
 			  path
 					.join(assetsSrc, href)
 					.split(path.sep)

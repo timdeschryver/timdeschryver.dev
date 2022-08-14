@@ -1,8 +1,7 @@
 ---
 title: Polling with a NgRx Effect
 slug: polling-with-a-ngrx-effect
-image: snippets/images/polling-with-a-ngrx-effect.png
-author: Tim Deschryver
+image: /images/polling-with-a-ngrx-effect.png
 date: 2020-05-25
 tags: ngrx, effects, angular
 ---
@@ -19,14 +18,14 @@ Create a NgRx Effect that retrieves the data via a service every x minutes, this
 
 ```ts
 refresh$ = createEffect(() => {
-  // every 10 minutes
-  return timer(0, 600000).pipe(
-    switchMap(() =>
-      this.customersService.get().pipe(
-        map((data) => refreshSuccess(data)),
-        catchError((response) => refreshFailed(response)),
-      ),
-    ),
-  )
-})
+	// every 10 minutes
+	return timer(0, 600000).pipe(
+		switchMap(() =>
+			this.customersService.get().pipe(
+				map((data) => refreshSuccess(data)),
+				catchError((response) => refreshFailed(response)),
+			),
+		),
+	);
+});
 ```

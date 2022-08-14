@@ -1,8 +1,7 @@
 ---
 title: Flush state with an NgRx meta-reducer
 slug: ngrx-flush-state
-image: snippets/images/ngrx-flush-state.png
-author: Tim Deschryver
+image: /images/ngrx-flush-state.png
 date: 20222-03-29
 tags: ngrx, effects, angular
 ---

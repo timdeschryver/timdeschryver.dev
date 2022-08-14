@@ -1,7 +1,7 @@
 ---
 title: Destructure an object to remove a property
 slug: destructure-an-object-to-remove-a-property
-image: snippets/images/destructure-an-object-to-remove-a-property.png
+image: /images/destructure-an-object-to-remove-a-property.png
 date: 2020-01-28
 tags: javascript
 ---
@@ -19,12 +19,12 @@ The `_` is used to prevent a linter giving the warning "variable is declared but
 
 ```ts
 const { password: _, ...user } = {
-  id: 47,
-  username: 'tim',
-  password: 'iliketrains',
-}
+	id: 47,
+	username: 'tim',
+	password: 'iliketrains',
+};
 
-console.log(user)
+console.log(user);
 // |> { id: 47, username: 'tim' }
 ```
 

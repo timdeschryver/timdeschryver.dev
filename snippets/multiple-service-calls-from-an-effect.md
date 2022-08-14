@@ -1,8 +1,7 @@
 ---
 title: Multiple service calls from an Effect
 slug: multiple-service-calls-from-an-effect
-image: snippets/images/multiple-service-calls-from-an-effect.png
-author: Tim Deschryver
+image: /images/multiple-service-calls-from-an-effect.png
 date: 2019-12-18
 tags: ngrx, effects, angular
 ---
@@ -19,20 +18,18 @@ Use the RxJS [merge](https://rxjs.dev/api/index/function/merge) operator to flat
 
 ```ts
 refresh$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(CustomerActions.refresh),
-    exhaustMap(({ customerIds }) =>
-      merge(
-        ...ids.map((id) =>
-          this.customersService.getCustomer(id).pipe(
-            map(CustomerActions.getCustomerSuccess),
-            catchError((err) =>
-              of(CustomerActions.getCustomerFailed(id, err.message)),
-            ),
-          ),
-        ),
-      ),
-    ),
-  ),
-)
+	this.actions$.pipe(
+		ofType(CustomerActions.refresh),
+		exhaustMap(({ customerIds }) =>
+			merge(
+				...ids.map((id) =>
+					this.customersService.getCustomer(id).pipe(
+						map(CustomerActions.getCustomerSuccess),
+						catchError((err) => of(CustomerActions.getCustomerFailed(id, err.message))),
+					),
+				),
+			),
+		),
+	),
+);
 ```

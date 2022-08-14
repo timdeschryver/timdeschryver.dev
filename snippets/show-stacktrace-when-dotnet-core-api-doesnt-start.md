@@ -1,8 +1,7 @@
 ---
 title: Show stacktrace when dotnet core API doesn't start
 slug: show-stacktrace-when-dotnet-core-api-doesnt-start
-image: snippets/images/show-stacktrace-when-dotnet-core-api-doesnt-start.png
-author: Tim Deschryver
+image: /images/show-stacktrace-when-dotnet-core-api-doesnt-start.png
 date: 2020-07-22
 tags: .NET, csharp, debug
 ---
