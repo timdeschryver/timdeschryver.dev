@@ -21,8 +21,8 @@ import 'prismjs/components/prism-sql.js';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
-const blogPath = 'content/blog';
-const snippetsPath = 'content/snippets';
+const blogPath = 'blog';
+const snippetsPath = 'snippets';
 const langs = {
 	bash: 'bash',
 	sh: 'bash',
@@ -66,9 +66,6 @@ export async function readPosts(): Promise<
 			date: string;
 			modified: string;
 			tags: string[];
-			banner: string;
-			bannerCredit: string;
-			published: boolean;
 			canonical: string;
 			edit: string;
 			outgoingLinks: { slug: string; title: string }[];
@@ -122,18 +119,17 @@ export async function readPosts(): Promise<
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(
-					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, metadata.banner),
+					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, 'banner.wbp'),
 				)
 				.replace(/\\/g, '/')
-				.replace('/', '//')
-				.replace(/\.(png|jpg|jpeg)$/, '.webp');
+				.replace('/', '//');
 
 			const canonical = path
 				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
-			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/content/blog/${metadata.slug}/index.md`;
+			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${metadata.slug}/index.md`;
 			return {
 				html,
 				tldr,
@@ -184,7 +180,6 @@ export function readSnippets(): {
 	metadata: {
 		title: string;
 		slug: string;
-		author: string;
 		date: string;
 		tags: string[];
 		url: string;
@@ -205,12 +200,7 @@ export function readSnippets(): {
 						: {},
 				createHeadingParts: (metadata) => {
 					return [
-						metadata.image
-							? `<a href="/${metadata.image.replace(
-									/\.(png|jpg|jpeg|gif)$/,
-									'.webp',
-							  )}" download>Download</a>`
-							: '',
+						metadata.image ? `<a href="/${metadata.image}" download>Download</a>` : '',
 						metadata.image
 							? `<a
 				target="_blank"
@@ -222,10 +212,7 @@ export function readSnippets(): {
 					];
 				},
 			});
-			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image.replace(
-				/\.(png|jpg|jpeg)$/,
-				'.webp',
-			)}`;
+			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image}`;
 			const url = `/snippets/${metadata.slug}`;
 
 			return {
@@ -281,7 +268,7 @@ function parseFileToHtmlAndMeta(
 	renderer.image = (href, _title, text) => {
 		const src = href.startsWith('http')
 			? href
-			: '/' +
+			: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/` +
 			  path
 					.join(assetsSrc, href)
 					.split(path.sep)

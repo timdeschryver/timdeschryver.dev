@@ -12,8 +12,7 @@ export async function GET() {
 }
 
 function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
-	const publishedPosts = posts.filter((post) => post.metadata.published);
-	const nodes = publishedPosts.map((post) => {
+	const nodes = posts.map((post) => {
 		const link = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog/${post.metadata.slug}`;
 		const tldr = post.tldr
 			? `<p><a href="${link}?tldr=true">Read the <strong>TLDR version</strong> on timdeschryver.dev</a></p>`
@@ -24,7 +23,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			link,
 			pubDate: UTCDate(post.metadata.date),
 			content: (
-				`<img class="webfeedsFeaturedVisual" src="${post.metadata.banner}" alt="${post.metadata.title}"/>` +
+				`<img class="webfeedsFeaturedVisual" src="${link}/images/banner.jpg" alt="${post.metadata.title}"/>` +
 				tldr +
 				post.html
 			)

@@ -12,7 +12,6 @@ export async function GET() {
 }
 
 function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
-	const publishedPosts = posts.filter((post) => post.metadata.published);
 	const date = ISODate(new Date());
 	const nodes = [
 		{
@@ -21,7 +20,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			changefreq: 'daily',
 			date,
 		},
-		...publishedPosts.map((post) => ({
+		...posts.map((post) => ({
 			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog/${post.metadata.slug}`,
 			priority: '1.0',
 			changefreq: 'daily',
