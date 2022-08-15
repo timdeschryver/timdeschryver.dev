@@ -41,8 +41,8 @@
 		"axe-playwright": "1.1.11",
 		"copyfiles": "2.4.1",
 		"dotenv-extended": "2.9.0",
-		"esbuild": "0.14.53",
-		"eslint": "8.20.0",
+		"esbuild": "0.15.3",
+		"eslint": "8.22.0",
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-svelte3": "4.0.0",
 		"front-matter": "4.0.2",
@@ -60,7 +60,7 @@
 		"svelte-preprocess": "4.10.7",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4",
-		"vite": "3.0.2",
+		"vite": "3.0.7",
 		"vite-plugin-restart": "^0.2.0"
 	}
 }
