@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"prebuild": "rimraf build",
+		"prebuild": "rimraf build && npm run copy:content",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
@@ -18,6 +18,9 @@
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --write --plugin-search-dir=. .",
+		"copy:content": "npm run copy:blog && npm run copy:snippets",
+		"copy:blog": "copyfiles \"blog/**\" static --exclude=\"**/*.md\"",
+		"copy:snippets": "copyfiles \"snippets/**\" static  --exclude=\"**/*.md\"",
 		"g": "node ./scripts/generate",
 		"p": "node ./scripts/devto",
 		"banners": "node ./scripts/banners.js",

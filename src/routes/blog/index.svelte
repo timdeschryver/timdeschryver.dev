@@ -117,8 +117,8 @@
 				<a href={`/blog/${post.slug}`} sveltekit:prefetch>
 					{post.title}
 				</a>
-				<time datetime={humanDate(post.date)}>[{humanDate(post.date)}]</time>
 			</h2>
+			<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 			<div>{post.description}</div>
 			<div>
 				<a href={`/blog/${post.slug}`} sveltekit:prefetch>Read more</a>
@@ -127,7 +127,8 @@
 				{/if}
 			</div>
 		</li>
-	{:else}Sorry, no posts matched your criteria...{/each}
+	{:else}Sorry, no posts matched your criteria...
+	{/each}
 </ul>
 
 <style>

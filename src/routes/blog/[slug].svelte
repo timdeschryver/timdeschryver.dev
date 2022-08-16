@@ -55,16 +55,6 @@
 
 		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
 
-		document.documentElement.style.setProperty(
-			'--hue',
-			window
-				.btoa(post.metadata.slug)
-				.split('')
-				.filter((l) => Number(l) >= 0)
-				.filter((_, i) => i <= 3)
-				.join(''),
-		);
-
 		if (!window.location.hash) {
 			requestAnimationFrame(() => {
 				window.scrollTo({ top: document.querySelector('header').clientHeight + 25 });
@@ -74,8 +64,8 @@
 
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
-			document.documentElement.style.setProperty('--hue', '47');
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
+			document.querySelectorAll('.twitter-tweet').forEach((el) => el.remove());
 		}
 	});
 

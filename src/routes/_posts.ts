@@ -119,7 +119,13 @@ export async function readPosts(): Promise<
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(
-					path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug, 'banner.wbp'),
+					path.join(
+						import.meta.env.VITE_PUBLIC_BASE_PATH,
+						'blog',
+						metadata.slug,
+						'images',
+						'banner.webp',
+					),
 				)
 				.replace(/\\/g, '/')
 				.replace('/', '//');
@@ -212,7 +218,7 @@ export function readSnippets(): {
 					];
 				},
 			});
-			const image = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/${metadata.image}`;
+			const image = `/${metadata.image}`;
 			const url = `/snippets/${metadata.slug}`;
 
 			return {
@@ -268,7 +274,7 @@ function parseFileToHtmlAndMeta(
 	renderer.image = (href, _title, text) => {
 		const src = href.startsWith('http')
 			? href
-			: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/` +
+			: `/` +
 			  path
 					.join(assetsSrc, href)
 					.split(path.sep)

@@ -12,7 +12,7 @@ export async function GET(req) {
 	}
 
 	try {
-		const tweetRegexp = /::https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+::/g;
+		const tweetRegexp = /::https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+(.*)::/g;
 		for (const tweet of post.html.match(tweetRegexp) || []) {
 			const resp = await fetch(
 				`https://publish.twitter.com/oembed?url=${tweet.replace(/::/g, '')}&align=center`,
