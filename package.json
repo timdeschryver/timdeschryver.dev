@@ -31,7 +31,7 @@
 	},
 	"devDependencies": {
 		"@azure/static-web-apps-cli": "1.0.2",
-		"@playwright/test": "1.24.0",
+		"@playwright/test": "^1.25.0",
 		"@squoosh/lib": "0.4.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "next",

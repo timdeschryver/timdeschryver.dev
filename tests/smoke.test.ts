@@ -1,18 +1,29 @@
 import { test, expect } from '@playwright/test';
 
 test('sitemap works and can navigate to random pages', async ({ page, request }) => {
-	const sitemap = await request.get(`/sitemap.xml`);
-	expect(sitemap.ok()).toBeTruthy();
+	const sitemapUrls = await test.step('get sitemap and parse urls', async () => {
+		const sitemap = await request.get(`/sitemap.xml`);
+		expect(sitemap.ok()).toBeTruthy();
 
-	const sitemapXml = await sitemap.text();
-	const urls = [...sitemapXml.matchAll(/<loc>(.+?)<\/loc>/g)];
-	expect(urls.length).toBeGreaterThan(20);
-	for (const [_, url] of urls.sort(() => 0.5 - Math.random()).slice(0, 10)) {
-		const response = await page.goto(url.replace('https://timdeschryver.dev', ''));
-		expect(response.ok()).toBeTruthy();
+		const sitemapXml = await sitemap.text();
+		const urls = [...sitemapXml.matchAll(/<loc>(.+?)<\/loc>/g)];
+		expect(urls.length).toBeGreaterThan(50);
+		return urls.map(([_, url]) => url.replace('https://timdeschryver.dev', '')).filter(Boolean);
+	});
 
-		// await injectAxe(page);
-		// await checkA11y(page);
+	const randomPosts = sitemapUrls.sort(() => 0.5 - Math.random()).slice(0, 10);
+	expect(randomPosts).toHaveLength(10);
+	for (const post of randomPosts) {
+		await test.step(`${post} loads`, async () => {
+			const response = await page.goto(post);
+			expect(response.ok()).toBeTruthy();
+
+			const banner = await page.goto(`${post}/images/banner.webp`);
+			expect(banner.ok()).toBeTruthy();
+
+			// await injectAxe(page);
+			// await checkA11y(page);
+		});
 	}
 });
 
