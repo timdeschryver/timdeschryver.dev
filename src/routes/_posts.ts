@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
-import { execSync } from 'child_process';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
 import frontmatter from 'front-matter';
@@ -62,7 +61,6 @@ export async function readPosts(): Promise<
 			description: string;
 			author: string;
 			date: string;
-			modified: string;
 			tags: string[];
 			canonical: string;
 			edit: string;
@@ -113,7 +111,6 @@ export async function readPosts(): Promise<
 				  })
 				: { html: null };
 
-			const modified = getLastModifiedDate(postPath);
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(
@@ -140,7 +137,6 @@ export async function readPosts(): Promise<
 				metadata: {
 					...metadata,
 					date: ISODate(metadata.date),
-					modified: ISODate(modified),
 					tags,
 					banner,
 					canonical,
@@ -179,7 +175,7 @@ export async function readPosts(): Promise<
 	return postsSorted;
 }
 
-const snippets: {
+let snippets: {
 	html: string;
 	metadata: {
 		title: string;
@@ -207,7 +203,7 @@ export function readSnippets(): {
 	console.log('\x1b[35m[snippets] generate\x1b[0m');
 
 	const folderContent = [...traverseFolder(snippetsPath, '.md')];
-	return folderContent
+	snippets = folderContent
 		.map(({ path }) => {
 			const { html, metadata } = parseFileToHtmlAndMeta(path, {
 				createAnchorAndFragment: (level, metadata) =>
@@ -245,6 +241,7 @@ export function readSnippets(): {
 			};
 		})
 		.sort(sortByDate);
+	return snippets;
 }
 
 function parseFileToHtmlAndMeta(
@@ -436,20 +433,6 @@ function slugify(string) {
 
 function sortByDate(a, b) {
 	return new Date(a.metadata.date) < new Date(b.metadata.date) ? 1 : -1;
-}
-
-function getLastModifiedDate(filePath: string) {
-	// disable in dev because this slows down 😪
-	if (import.meta.env.DEV) {
-		return '';
-	}
-
-	const buffer = execSync(`git log -1 --pretty="format:%ci" ${filePath}`);
-	if (!buffer) {
-		return null;
-	}
-
-	return buffer.toString().trim();
 }
 
 function appendCreatorId(link: string) {
