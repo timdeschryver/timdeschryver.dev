@@ -1,6 +1,7 @@
+import type { PageServerLoad } from './$types';
 import { readPosts } from '../_posts';
 
-export async function GET() {
+export async function load(): Promise<PageServerLoad> {
 	const posts = await readPosts();
 	const metadata = posts.map((p) => ({
 		title: p.metadata.title,
@@ -29,10 +30,5 @@ export async function GET() {
 		.slice(0, 15)
 		.map(([v]) => v);
 
-	return {
-		body: { metadata, tags },
-		headers: {
-			'Cache-Control': `max-age=300`,
-		},
-	};
+	return { metadata, tags };
 }

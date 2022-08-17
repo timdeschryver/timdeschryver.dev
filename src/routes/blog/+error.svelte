@@ -3,7 +3,7 @@
 </div>
 
 <style>
-    div {
-        margin-top: 2rem;
-    }
+	div {
+		margin-top: 2rem;
+	}
 </style>
