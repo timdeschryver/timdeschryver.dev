@@ -1,30 +1,12 @@
-<script context="module" lang="ts">
-	export async function load({ params, fetch }) {
-		const result = await fetch(`/blog/${params.slug}.json`);
-		const { post } = await result.json();
-		if (!post) {
-			return {
-				status: 404,
-			};
-		}
-		return {
-			cache: {
-				maxage: 300,
-			},
-			props: {
-				post,
-			},
-		};
-	}
-</script>
-
 <script lang="ts">
 	import { onDestroy, onMount, afterUpdate } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 
-	export let post;
+	/** @type {import('./$types').PageData} */
+	export let data;
+	const { post } = data;
 
 	const logos = post.metadata.tags
 		.map((tag) => {
@@ -65,7 +47,6 @@
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
-			document.querySelectorAll('.twitter-tweet').forEach((el) => el.remove());
 		}
 	});
 

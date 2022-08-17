@@ -45,8 +45,6 @@ const langs = {
 	md: 'markdown',
 };
 
-export const snippets = readSnippets();
-
 const posts:
 	| {
 			html: string;
@@ -181,6 +179,17 @@ export async function readPosts(): Promise<
 	return postsSorted;
 }
 
+const snippets: {
+	html: string;
+	metadata: {
+		title: string;
+		slug: string;
+		date: string;
+		tags: string[];
+		url: string;
+	};
+}[] = [];
+
 export function readSnippets(): {
 	html: string;
 	metadata: {
@@ -191,6 +200,10 @@ export function readSnippets(): {
 		url: string;
 	};
 }[] {
+	if (snippets.length) {
+		return snippets;
+	}
+
 	console.log('\x1b[35m[snippets] generate\x1b[0m');
 
 	const folderContent = [...traverseFolder(snippetsPath, '.md')];

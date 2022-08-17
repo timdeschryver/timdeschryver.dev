@@ -1,25 +1,10 @@
-<script context="module" lang="ts">
-	export async function load({ params, fetch }) {
-		const result = await fetch(`/snippets.json`);
-		const { snippets } = await result.json();
-		const snippet = snippets.find((s) => s.metadata.slug === params.slug);
-		return {
-			cache: {
-				maxage: 300,
-			},
-			props: {
-				snippets,
-				snippet,
-			},
-		};
-	}
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Snippets from '$lib/Snippets.svelte';
 
-	export let snippet;
+	/** @type {import('./$types').PageData} */
+	export let data;
+	const { snippet } = data;
 
 	onMount(() => {
 		document.getElementById(snippet.metadata.slug).scrollIntoView();

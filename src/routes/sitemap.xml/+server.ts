@@ -1,14 +1,13 @@
 import { ISODate } from '$lib/formatters';
-import { readPosts } from './_posts';
+import { readPosts } from '../_posts';
 
 export async function GET() {
 	const posts = await readPosts();
-	return {
-		body: generate(posts),
+	return new Response(generate(posts), {
 		headers: {
 			'Content-Type': 'application/xml',
 		},
-	};
+	});
 }
 
 function generate(posts: Awaited<ReturnType<typeof readPosts>>) {

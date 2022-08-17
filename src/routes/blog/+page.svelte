@@ -1,27 +1,12 @@
-<script context="module" lang="ts">
-	export async function load({ fetch }) {
-		const result = await fetch(`/blog.json`);
-		const { metadata, tags } = await result.json();
-		return {
-			cache: {
-				maxage: 300,
-			},
-			props: {
-				metadata,
-				tags,
-			},
-		};
-	}
-</script>
-
 <script lang="ts">
 	import Head from '$lib/Head.svelte';
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	export let metadata;
-	export let tags;
+	/** @type {import('./$types').PageData} */
+	export let data;
+	const { metadata, tags } = data;
 
 	let query;
 	let params;
