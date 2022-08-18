@@ -14,3 +14,4 @@ static/blog
 static/snippets
 test-results/
 playwright-report/
+contributors.json

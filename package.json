@@ -27,6 +27,7 @@
 		"pre-commit": "npm run banners && git add ./**/banner.jpg && lint-staged",
 		"optimize:image": "node ./scripts/optimize-image-cli.js",
 		"optimize:images": "node ./scripts/optimize-images.js",
+		"contributors": "node ./scripts/contributors.js",
 		"postinstall": "svelte-kit sync",
 		"prepare": "git config core.hookspath .githooks"
 	},
