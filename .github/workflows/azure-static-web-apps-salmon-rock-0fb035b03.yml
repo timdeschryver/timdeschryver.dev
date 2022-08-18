@@ -25,6 +25,15 @@ jobs:
         with:
             fetch-depth: 0
 
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Fetching Contributors
+        run: npm run contributors
+
       - name: Build And Deploy
         id: swa
         uses: Azure/static-web-apps-deploy@v1
