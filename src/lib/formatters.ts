@@ -2,7 +2,17 @@ export function humanDate(date: string | Date) {
 	return toDate(date).toLocaleDateString(undefined, {
 		year: 'numeric',
 		month: 'long',
-		day: '2-digit'
+		day: '2-digit',
+	});
+}
+
+export function humanDateTime(date: string | Date) {
+	return toDate(date).toLocaleDateString(undefined, {
+		year: 'numeric',
+		month: 'long',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
 	});
 }
 

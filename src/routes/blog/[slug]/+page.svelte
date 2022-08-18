@@ -12,6 +12,7 @@
 		.map((tag) => {
 			switch (tag.toLowerCase()) {
 				case '.net':
+				case 'dotnet':
 					return { src: 'dotnet.svg', alt: 'The .NET logo' };
 				case 'angular':
 					return { src: 'angular.svg', alt: 'The Angular logo' };
@@ -316,7 +317,7 @@
 		text-align: center;
 		margin: 0 auto;
 		padding: 0;
-		font-size: clamp(1rem, 4vw, 7rem);
+		font-size: clamp(1rem, 3vw, 6rem);
 	}
 
 	.details {
@@ -351,5 +352,50 @@
 	.translations ul {
 		list-style: none;
 		margin-top: var(--spacing-small);
+	}
+
+	:global(.tweet-preview) {
+		border: 1px solid var(--text-color-subtle);
+		border-radius: 0.3em;
+		padding: 1em 0.8em;
+	}
+
+	:global(.tweet-preview *) {
+		margin-top: 0;
+	}
+
+	:global(.tweet-preview > *:not(:first-child)) {
+		margin-top: 1em;
+	}
+
+	:global(.tweet-preview > .header) {
+		display: grid;
+		grid-template-columns: 48px 1fr;
+		align-items: center;
+		gap: 1em;
+	}
+
+	:global(.tweet-preview .author-profile) {
+		border-radius: 100%;
+	}
+
+	:global(.tweet-preview > .footer) {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	:global(.tweet-preview .tweet-url) {
+		text-decoration: none;
+		color: #1da1f2;
+		font-weight: 500;
+	}
+
+	:global(.tweet-preview .tweet-card) {
+		text-decoration: none;
+		color: var(--text-color-light);
+	}
+
+	:global(.tweet-preview video) {
+		margin-top: 0.5em;
 	}
 </style>

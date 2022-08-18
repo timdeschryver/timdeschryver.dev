@@ -48,7 +48,7 @@ dotEnv.load({
 							return t;
 					}
 				}),
-			cover_image: metadata.banner,
+			cover_image: url + '/images/banner.webp',
 			canonical_url: url,
 			published: true,
 		};
