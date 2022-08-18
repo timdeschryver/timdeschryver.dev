@@ -2,8 +2,11 @@ import { error } from '@sveltejs/kit';
 import { readPosts } from '../../_posts';
 import type { PageServerLoad } from './$types';
 import { execSync } from 'child_process';
-import { ISODate } from '../../../lib/formatters';
+import { humanDateTime, ISODate } from '$lib/formatters';
 import fs from 'fs';
+import { Client as TwitterClient } from 'twitter-api-sdk';
+
+const twitterClient = new TwitterClient(import.meta.env.VITE_PUBLIC_TWITTER_BEARER_TOKEN);
 
 export async function load({ params }): Promise<PageServerLoad> {
 	const posts = await readPosts();
@@ -17,12 +20,39 @@ export async function load({ params }): Promise<PageServerLoad> {
 	try {
 		const tweetRegexp = /::https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+(.*)::/g;
 
-		for (const tweet of post.html.match(tweetRegexp) || []) {
-			const resp = await fetch(
-				`https://publish.twitter.com/oembed?url=${tweet.replace(/::/g, '')}&align=center`,
-			);
-			const json = (await resp.json()) as { html: string };
-			html = html.replace(tweet, json.html);
+		const tweets = (post.html.match(tweetRegexp) || []).map((tweet) => {
+			const [tweetId] = tweet.replace(/::/g, '').split('/').reverse();
+			return [tweet, tweetId];
+		});
+
+		const tweetData = await fetchTweetsInternal(tweets.map(([, tweetId]) => tweetId));
+
+		for (const tweet of tweetData) {
+			const tweetHtml = `
+                <div class="tweet-preview">
+                    <div class="header">
+                        <img class="author-profile" src="${tweet.author.profile}" />
+                        <div class="author-about">
+                            <p><a class="tweet-url" href="${tweet.author.link}">${
+				tweet.author.name
+			}</a></p>
+                            <p class="author-username">@${tweet.author.username}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <p class="tweet">${tweet.tweet.text}</p>
+                    </div>
+
+                    <div class="footer">
+                        <p><a class="tweet-url" href="${tweet.tweet.link}">🔗 Go to tweet</a></p>
+                        <p class="tweet-date">${humanDateTime(tweet.tweet.date)}</p>
+                    </div>
+                </div>
+            `;
+
+			const [tweetToReplace] = tweets.find(([t]) => t.includes(tweet.tweet.id));
+			html = html.replace(tweetToReplace, tweetHtml);
 		}
 	} catch (err) {
 		console.error(err);
@@ -66,4 +96,98 @@ function getContributors(slug: string) {
 	}
 
 	return [];
+}
+
+async function fetchTweetsInternal(tweetIds: string[]) {
+	if (!tweetIds.length) {
+		return [];
+	}
+
+	const tweets = await twitterClient.tweets.findTweetsById({
+		ids: tweetIds,
+		'tweet.fields': ['public_metrics', 'created_at', 'author_id', 'attachments', 'entities'],
+		expansions: ['attachments.media_keys'],
+		'media.fields': [
+			'media_key',
+			'preview_image_url',
+			'type',
+			'url',
+			'alt_text',
+			'duration_ms',
+			'variants',
+		],
+	});
+	const authors = await twitterClient.users.findUsersById({
+		ids: tweets.data.map((t) => t.author_id),
+		'user.fields': ['name', 'username', 'url', 'profile_image_url'],
+	});
+
+	return tweets.data.map((tweet) => {
+		const author = authors.data.find((author) => tweet.author_id === author.id);
+		let text = tweet.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
+		for (const url of tweet.entities?.urls || []) {
+			if (url.media_key) {
+				const media = tweets.includes.media.find((m) => m.media_key === url.media_key) as any;
+				if (media?.type === 'animated_gif' || media?.type === 'video') {
+					text = text.replace(
+						url.url,
+						`
+                       <video poster="${media.preview_image_url}" controls>
+                            <source src="${media.variants[0].url}" type="video/mp4">
+                            <object data="${media.variants[0].url}"></object>
+                        </video>
+                    `,
+					);
+				}
+			} else if (url.images) {
+				text = text.replace(
+					url.url,
+					`<a class="tweet-url" href="${url.expanded_url}">${url.display_url}</a>`,
+				);
+				text += `<a href="${url.expanded_url}" class="tweet-card">
+                    <figure>
+                        <img src="${url.images[0].url}"></img>
+                        <figcaption>
+                            <div>${url.title}</div> 
+                            <small>${url.description}</small>
+                        </figcaption>
+                    </figure>
+                </a>`;
+			} else if (url.unwound_url) {
+				text = text.replace(url.url, url.expanded_url);
+			}
+		}
+
+		text = text.replace(/@[a-z0-9_]+/g, (matcher) => {
+			return `<a class="tweet-url" href="https://twitter.com/${matcher.substring(
+				1,
+			)}" rel="nofollow">${matcher}</a>`;
+		});
+
+		text = text.replace(/#[a-z0-9_]+/g, (matcher) => {
+			return `<a class="tweet-url" href="https://twitter.com/search?q=${matcher.substring(
+				1,
+			)}" rel="nofollow">${matcher}</a>`;
+		});
+
+		return {
+			tweet: {
+				text,
+				id: tweet.id,
+				likes: tweet.public_metrics.like_count,
+				retweets: tweet.public_metrics.like_count,
+				quotes: tweet.public_metrics.quote_count,
+				replies: tweet.public_metrics.reply_count,
+				date: tweet.created_at,
+				link: `https://twitter.com/${author.username}/status/${tweet.id}`,
+			},
+			author: {
+				name: author.name,
+				username: author.username,
+				profile: author.profile_image_url,
+				link: `https://twitter.com/${author.username}`,
+			},
+		};
+	});
 }

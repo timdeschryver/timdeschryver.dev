@@ -7,7 +7,9 @@ tags: dotnet, entity framework, sql
 ---
 
 Version 7 of Entity Framework includes some popular features that have been asked for, one of which is Bulk Operations.
-This feature came to my attention from a [tweet](https://twitter.com/julielerman/status/1557752882698526722?s=20&t=kpMNLX5X4K8MIv6LaynCcg) by [Julie Lerman](https://twitter.com/julielerman), and I had to try it out for myself.
+This feature came to my attention from a [tweet](https://twitter.com/julielerman/status/1557743067691569156) by [Julie Lerman](https://twitter.com/julielerman), and I had to try it out for myself.
+
+https://twitter.com/julielerman/status/1557743067691569156
 
 ## Why
 

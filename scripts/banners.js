@@ -60,14 +60,15 @@ const content = './blog';
 						if (logos.length) {
 							el.style.display = 'flex';
 							logos.forEach((logo) => {
-								logo.height = '128';
+								logo.height = 128;
 							});
 						}
 					});
 
 					await page.$eval('.details', (el) => {
 						el.style['justify-content'] = 'space-around';
-						el.style['font-size'] = '5rem';
+						el.style['align-items'] = 'center';
+						el.style['font-size'] = '2.5rem';
 					});
 
 					await page.$eval('body', (el) => {
