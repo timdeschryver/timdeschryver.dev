@@ -44,6 +44,7 @@
 		"@typescript-eslint/eslint-plugin": "5.30.7",
 		"@typescript-eslint/parser": "5.30.7",
 		"axe-playwright": "1.1.11",
+		"canvas-confetti": "^1.5.1",
 		"copyfiles": "2.4.1",
 		"dotenv-extended": "2.9.0",
 		"esbuild": "0.15.3",
