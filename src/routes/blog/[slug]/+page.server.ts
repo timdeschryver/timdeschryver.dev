@@ -3,10 +3,12 @@ import { readPosts } from '../../_posts';
 import type { PageServerLoad } from './$types';
 import { execSync } from 'child_process';
 import { humanDateTime, ISODate } from '$lib/formatters';
-import fs from 'fs';
+import * as fs from 'fs';
 import { Client as TwitterClient } from 'twitter-api-sdk';
 
-const twitterClient = new TwitterClient(import.meta.env.VITE_PUBLIC_TWITTER_BEARER_TOKEN);
+const twitterClient = new TwitterClient(
+	process.env.VITE_PUBLIC_TWITTER_BEARER_TOKEN.replace('Bearer:', '').trim(),
+);
 
 export async function load({ params }): Promise<PageServerLoad> {
 	const posts = await readPosts();

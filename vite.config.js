@@ -10,7 +10,6 @@ const config = {
 			restart: ['./blog/**', './snippets/**'],
 		}),
 	],
-	assetsInclude: ['blog', 'snippets'],
 	server: {
 		fs: {
 			allow: ['..'],
