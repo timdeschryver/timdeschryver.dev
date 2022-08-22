@@ -17,7 +17,12 @@
 		// Configure properties specific to VS Code.
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": ["dbaeumer.vscode-eslint", "svelte.svelte-vscode"]
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"svelte.svelte-vscode",
+				"esbenp.prettier-vscode",
+				"streetsidesoftware.code-spell-checker"
+			]
 		}
 	},
 
@@ -34,5 +39,20 @@
 		"git": "latest",
 		"github-cli": "latest",
 		"azure-cli": "latest"
+	},
+
+	"settings": {
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.formatOnSave": true
+		},
+		"[md]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.formatOnSave": true
+		},
+		"[json]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.formatOnSave": true
+		}
 	}
 }
