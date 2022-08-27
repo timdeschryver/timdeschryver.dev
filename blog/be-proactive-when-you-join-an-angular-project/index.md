@@ -15,6 +15,7 @@ tags: Angular
 - [Update Angular](#update-angular)
 - [ESLint](#eslint)
 - [Prettier](#prettier)
+  - [Prettier with ESLint](#prettier-with-eslint)
 - [Unifying libraries](#unifying-libraries)
 - [Writing Tests](#writing-tests)
 - [Git hooks](#git-hooks)
@@ -277,7 +278,7 @@ npx ng generate @angular-eslint/schematics:convert-tslint-to-eslint
 ```
 
 The script ports over the TSLint rules to ESLint rules and tries to find the ESLint equivalents to your installed TSLint plugins.
-While you're installing and configuring ESLint, I recommend you to also add the [RxJS ESLint plugin](https://github.com/cartant/eslint-plugin-rxjs) and if your project is using NgRx, there's also the [NgRx ESLint Plugin](https://github.com/timdeschryver/eslint-plugin-ngrx).
+While you're installing and configuring ESLint, I recommend you to also add the [RxJS ESLint plugin](https://github.com/cartant/eslint-plugin-rxjs) and if your project is using NgRx, there's also the [NgRx ESLint Plugin](https://ngrx.io/guide/eslint-plugin).
 
 Besides being useful (it can detect common mistakes), linters also includes fixers for some deprecations and best practices.
 
@@ -399,6 +400,22 @@ To format your whole codebase at once, run the following command.
 ```bash
 npx prettier . --write
 ```
+
+### Prettier with ESLint
+
+You can end up with conflicts because both ESLint and Prettier can change your code.
+One can override the other, resulting in a different output.
+In the worst case, one rule might conflict and report warning(s) while the code looks good for the other.
+
+To solve this, install the Prettier ESLint Plugin [`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier). Next, add the prettier plugin to the ESLint settings.
+
+```json:.eslintrc.json
+{
+  "extends": ["plugin:prettier/recommended"]
+}
+```
+
+For using the plugin correctly with the Angular ESLint Plugin, you can take a look at the [documentation](https://github.com/angular-eslint/angular-eslint#notes-for-eslint-plugin-prettier-users).
 
 ## Unifying libraries
 

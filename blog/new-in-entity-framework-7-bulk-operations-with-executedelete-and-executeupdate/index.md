@@ -234,7 +234,7 @@ WHERE [p].[PersonId] <= CAST(1000 AS bigint)
 
 ### Updating multiple values at once
 
-We can even update multiple properties at once by invoking `ExecuteUpdate` multiple times.
+We can even update multiple properties at once by invoking `SetProperty` multiple times.
 
 ```cs{5-9}
 using (var context = new NewInEFContext())
