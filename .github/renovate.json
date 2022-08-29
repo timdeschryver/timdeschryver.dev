@@ -4,6 +4,7 @@
 	"timezone": "Europe/Brussels",
 	"schedule": ["before 3am on Monday"],
 	"groupName": "all",
+	"prConcurrentLimit": 1,
 	"npm": {
 		"stabilityDays": 3
 	}

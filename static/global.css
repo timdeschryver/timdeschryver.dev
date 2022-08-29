@@ -135,7 +135,8 @@ label {
 	font-size: inherit;
 }
 
-img, video {
+img,
+video {
 	width: 100%;
 }
 
@@ -269,4 +270,15 @@ thead {
 
 [id*='kofi-widget-overlay'] {
 	margin-top: 0;
+}
+
+a[data-with-favicon]:before {
+	content: '';
+	display: inline-block;
+	vertical-align: text-bottom;
+	width: 1em;
+	height: 1em;
+	margin: 0 0.2em;
+	background-size: contain;
+	background-image: var(--favicon);
 }

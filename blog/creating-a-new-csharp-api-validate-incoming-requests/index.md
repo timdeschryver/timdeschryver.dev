@@ -198,6 +198,8 @@ I'm sure that the implementation would have been faster, and that the end result
 Because of this experience, I try my best to help my future-self and other developers by providing a better response. Luckily, I don't have to think of one because there's a standardized response for bad requests.
 This is also known as [Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807).
 
+> The next part of this blog post could be outdated if you're using .NET 7. For more info see [Problem Details responses everywhere with ASP.NET Core and .NET 7](https://www.strathweb.com/2022/08/problem-details-responses-everywhere-with-asp-net-core-and-net-7/) by [Filip W](https://twitter.com/filip_wojs).
+
 The .NET framework provides a class that implements the specifications of a problem detail, [ProblemDetails](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails).
 In fact, a .NET API already returns a problem detail response for some invalid requests.
 For example, the following response is returned when an invalid parameter is used in a route parameter (e.g a string instead of an int).

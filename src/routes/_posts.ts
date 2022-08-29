@@ -269,16 +269,27 @@ function parseFileToHtmlAndMeta(
 		const title_attr = title ? `title="${title}"` : '';
 		const internal = link.startsWith('/');
 		const rel_attr = internal || link.startsWith('#') ? `` : 'rel="external"';
-		const attributes = [href_attr, title_attr, rel_attr].filter(Boolean).join(' ');
+		const attributes = [href_attr, title_attr, rel_attr];
 
+		let style = '';
 		if (internal) {
 			const outgoingSlug = url.parse(link, false).pathname.split('/').pop();
 			if (metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}
+		} else {
+			try {
+				style = `style='--favicon: url(https://v1.indieweb-avatar.11ty.dev/${encodeURIComponent(
+					new URL(link).origin,
+				)})'`;
+				attributes.push('data-with-favicon');
+			} catch (err) {
+				// noop
+			}
 		}
 
-		return `<a ${attributes}>${text}</a>`;
+		const attributesString = attributes.filter(Boolean).join(' ');
+		return `<a ${attributesString} ${style}>${text}</a>`;
 	};
 
 	renderer.image = (href, _title, text) => {
