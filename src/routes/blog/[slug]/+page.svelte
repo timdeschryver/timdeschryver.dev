@@ -3,6 +3,7 @@
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
+	import Comments from '../../../lib/Comments.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -54,7 +55,6 @@
 	let headings = null;
 	afterUpdate(() => {
 		tldrToggle = new URLSearchParams(window.location.search).get('tldr') !== null;
-
 		headings = tldrToggle
 			? null
 			: headings || window.history.pushState
@@ -64,13 +64,12 @@
 
 	$: if (tldrToggle !== undefined) {
 		let params = new URLSearchParams(window.location.search);
-
 		if (tldrToggle) {
 			params.set('tldr', '1');
 			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
 		} else {
 			params.delete('tldr');
-			window.history.replaceState(window.history.state, '', `${location.pathname}`);
+			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
 		}
 	}
 
@@ -233,6 +232,8 @@
 {/if}
 
 <Support />
+
+<Comments />
 
 <div class="article-actions">
 	<a class="mt-0" target="_blank" rel="external" href="https://timdeschryver.dev/support">

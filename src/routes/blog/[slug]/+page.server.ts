@@ -5,10 +5,9 @@ import { execSync } from 'child_process';
 import { humanDateTime, ISODate } from '$lib/formatters';
 import * as fs from 'fs';
 import { Client as TwitterClient } from 'twitter-api-sdk';
+import { variables } from '../../../lib/variables';
 
-const twitterClient = new TwitterClient(
-	process.env.VITE_PUBLIC_TWITTER_BEARER_TOKEN.replace('Bearer:', '').trim(),
-);
+const twitterClient = new TwitterClient(variables.twitterBearerToken.replace('Bearer:', '').trim());
 
 export async function load({ params }): Promise<PageServerLoad> {
 	const posts = await readPosts();
@@ -47,7 +46,12 @@ export async function load({ params }): Promise<PageServerLoad> {
                     </div>
 
                     <div class="footer">
-                        <p><a class="tweet-url" href="${tweet.tweet.link}">🔗 Go to tweet</a></p>
+                        <p>
+						<a href="${
+							tweet.tweet.link
+						}" class="tweet-url" rel="external" data-with-favicon style="--favicon: url(https://v1.indieweb-avatar.11ty.dev/https%3A%2F%2Ftwitter.com)"><span style="vertical-align: middle;">Open tweet</span></a>
+						</p>
+						
                         <p class="tweet-date">${humanDateTime(tweet.tweet.date)}</p>
                     </div>
                 </div>

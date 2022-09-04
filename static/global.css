@@ -275,7 +275,7 @@ thead {
 a[data-with-favicon]:before {
 	content: '';
 	display: inline-block;
-	vertical-align: text-bottom;
+	vertical-align: middle;
 	width: 1em;
 	height: 1em;
 	margin: 0 0.2em;
