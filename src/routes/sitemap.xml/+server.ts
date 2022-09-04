@@ -1,4 +1,5 @@
 import { ISODate } from '$lib/formatters';
+import { variables } from '../../lib/variables';
 import { readPosts } from '../_posts';
 
 export async function GET() {
@@ -14,31 +15,31 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 	const date = ISODate(new Date());
 	const nodes = [
 		{
-			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}`,
+			loc: `${variables.basePath}`,
 			priority: '1.0',
 			changefreq: 'daily',
 			date,
 		},
 		...posts.map((post) => ({
-			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog/${post.metadata.slug}`,
+			loc: `${variables.basePath}/blog/${post.metadata.slug}`,
 			priority: '1.0',
 			changefreq: 'daily',
 			date: ISODate(post.metadata.modified),
 		})),
 		{
-			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog`,
+			loc: `${variables.basePath}/blog`,
 			priority: '0.6',
 			changefreq: 'daily',
 			date,
 		},
 		{
-			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/snippets`,
+			loc: `${variables.basePath}/snippets`,
 			priority: '0.4',
 			changefreq: 'weekly',
 			date,
 		},
 		{
-			loc: `${import.meta.env.VITE_PUBLIC_BASE_PATH}/resources/ngrx`,
+			loc: `${variables.basePath}/resources/ngrx`,
 			priority: '0.2',
 			changefreq: 'monthly',
 			date,

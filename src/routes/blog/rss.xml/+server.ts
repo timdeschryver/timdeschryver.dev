@@ -1,4 +1,5 @@
 import { UTCDate } from '$lib/formatters';
+import { variables } from '../../../lib/variables';
 import { readPosts } from '../../_posts';
 
 export async function GET() {
@@ -12,7 +13,7 @@ export async function GET() {
 
 function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 	const nodes = posts.map((post) => {
-		const link = `${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog/${post.metadata.slug}`;
+		const link = `${variables.basePath}/blog/${post.metadata.slug}`;
 		const tldr = post.tldr
 			? `<p><a href="${link}?tldr=true">Read the <strong>TLDR version</strong> on timdeschryver.dev</a></p>`
 			: `<p>Read <strong>${post.metadata.title}</strong> on <a href="${link}">timdeschryver.dev</a></p>`;
@@ -48,13 +49,11 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		})
 		.join('\n');
 
-	const link = `<link>${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog</link>`;
-	const atom = `<atom:link href="${
-		import.meta.env.VITE_PUBLIC_BASE_PATH
-	}/blog/rss.xml" rel="self" type="application/rss+xml"/>`;
-	const imageLink = `<link>${import.meta.env.VITE_PUBLIC_BASE_PATH}/blog</link>`;
+	const link = `<link>${variables.basePath}/blog</link>`;
+	const atom = `<atom:link href="${variables.basePath}/blog/rss.xml" rel="self" type="application/rss+xml"/>`;
+	const imageLink = `<link>${variables.basePath}/blog</link>`;
 	const image = `<image>
-	<url>${import.meta.env.VITE_PUBLIC_BASE_PATH}/favicons/favicon-32x32.png</url>
+	<url>${variables.basePath}/favicons/favicon-32x32.png</url>
 	<title>Tim Deschryver</title>
 	${imageLink}
 	</image>`;
@@ -63,7 +62,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		<channel>
 		<title><![CDATA[ Tim Deschryver ]]></title>
 		<webfeeds:accentColor>#F8C400</webfeeds:accentColor>
-		<webfeeds:analytics id="${import.meta.env.VITE_PUBLIC_GA_TRACKING_ID}" engine="GoogleAnalytics"/>
+		<webfeeds:analytics id="${variables.gtag_id}" engine="GoogleAnalytics"/>
 		<description><![CDATA[ Blog by Tim Deschryver ]]></description>
 		${link}
 		${atom}

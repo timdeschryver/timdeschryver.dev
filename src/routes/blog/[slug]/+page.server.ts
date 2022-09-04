@@ -5,10 +5,9 @@ import { execSync } from 'child_process';
 import { humanDateTime, ISODate } from '$lib/formatters';
 import * as fs from 'fs';
 import { Client as TwitterClient } from 'twitter-api-sdk';
+import { variables } from '../../../lib/variables';
 
-const twitterClient = new TwitterClient(
-	process.env.VITE_PUBLIC_TWITTER_BEARER_TOKEN.replace('Bearer:', '').trim(),
-);
+const twitterClient = new TwitterClient(variables.twitterBearerToken.replace('Bearer:', '').trim());
 
 export async function load({ params }): Promise<PageServerLoad> {
 	const posts = await readPosts();

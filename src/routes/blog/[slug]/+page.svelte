@@ -3,6 +3,7 @@
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
+	import Comments from '../../../lib/Comments.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -233,6 +234,8 @@
 {/if}
 
 <Support />
+
+<Comments />
 
 <div class="article-actions">
 	<a class="mt-0" target="_blank" rel="external" href="https://timdeschryver.dev/support">

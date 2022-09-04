@@ -113,20 +113,12 @@ export async function readPosts(): Promise<
 
 			const tags = metadata.tags;
 			const banner = path
-				.normalize(
-					path.join(
-						import.meta.env.VITE_PUBLIC_BASE_PATH,
-						'blog',
-						metadata.slug,
-						'images',
-						'banner.webp',
-					),
-				)
+				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.webp'))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
 			const canonical = path
-				.normalize(path.join(import.meta.env.VITE_PUBLIC_BASE_PATH, 'blog', metadata.slug))
+				.normalize(path.join(variables.basePath, 'blog', metadata.slug))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
@@ -220,9 +212,7 @@ export function readSnippets(): {
 							? `<a
 				target="_blank"
 				rel="external"
-				href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${
-									import.meta.env.VITE_PUBLIC_BASE_PATH
-							  }/snippets/${metadata.slug}">Share</a>`
+				href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${variables.basePath}/snippets/${metadata.slug}">Share</a>`
 							: '',
 					];
 				},
