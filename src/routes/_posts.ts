@@ -59,7 +59,6 @@ export async function readPosts(): Promise<
 			title: string;
 			slug: string;
 			description: string;
-			author: string;
 			date: string;
 			tags: string[];
 			canonical: string;

@@ -29,7 +29,6 @@ function createPost(title) {
 title: ${title}
 slug: ${slug}
 description: 
-author: Tim Deschryver
 date: ${new Date().toISOString().split('T')[0]}
 tags: 
 ---
