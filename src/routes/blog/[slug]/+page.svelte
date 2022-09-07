@@ -66,10 +66,14 @@
 		let params = new URLSearchParams(window.location.search);
 		if (tldrToggle) {
 			params.set('tldr', '1');
-			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
 		} else {
 			params.delete('tldr');
+		}
+
+		if(params.keys.length) {
 			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
+		}else{
+			window.history.replaceState(window.history.state, '', `${location.pathname}`);
 		}
 	}
 

@@ -125,7 +125,7 @@ After moving the shards in a matrix, the refactored workflow looks like this.
 ```yml{4-6,17-18}
 jobs:
   test:
-    name: 🧪 Test (${{ matrix.shard/${{ strategy.job-total }} }})
+    name: name: 🧪 Test (${{ matrix.shard }}/${{ strategy.job-total }})
     strategy:
       matrix:
         shard: [1, 2]

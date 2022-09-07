@@ -45,7 +45,7 @@ import { Customer } from './customer.model';
 
 describe(AppComponent.name, () => {
    it('renders the result of customers', async () => {
-     const customers: Customers[] = [
+     const customers: Customer[] = [
        {
          id: 1,
          name: 'Customer 1',
@@ -74,7 +74,7 @@ describe(AppComponent.name, () => {
          },
        ],
      });
-     
+
      expect(await screen.findByText(customers[0].name, { exact: false })).toBeTruthy();
      expect(await screen.findByText(customers[1].name, { exact: false })).toBeTruthy();
    });
@@ -106,7 +106,7 @@ import { Customer } from './customer.model';
 
 describe(AppComponent.name, () => {
    it('renders the result of customers', async () => {
-     const customers: Customers[] = [
+     const customers: Customer[] = [
        createCustomer(1),
        createCustomer(2)
      ];
