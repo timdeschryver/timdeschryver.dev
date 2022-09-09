@@ -38,7 +38,8 @@
 	"features": {
 		"git": "latest",
 		"github-cli": "latest",
-		"azure-cli": "latest"
+		"azure-cli": "latest",
+		"sshd": "latest"
 	},
 
 	"settings": {
