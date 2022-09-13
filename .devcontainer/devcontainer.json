@@ -21,7 +21,10 @@
 				"dbaeumer.vscode-eslint",
 				"svelte.svelte-vscode",
 				"esbenp.prettier-vscode",
-				"streetsidesoftware.code-spell-checker"
+				"streetsidesoftware.code-spell-checker",
+				"ms-playwright.playwright",
+				"GitHub.copilot-nightly",
+				"GitHub.copilot-labs"
 			]
 		}
 	},

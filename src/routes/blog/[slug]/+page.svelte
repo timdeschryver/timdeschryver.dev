@@ -70,9 +70,14 @@
 			params.delete('tldr');
 		}
 
-		if(params.keys.length) {
-			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
-		}else{
+		const paramsAsString = params.toString();
+		if (paramsAsString) {
+			window.history.replaceState(
+				window.history.state,
+				'',
+				`${location.pathname}?${paramsAsString}`,
+			);
+		} else {
 			window.history.replaceState(window.history.state, '', `${location.pathname}`);
 		}
 	}
@@ -84,15 +89,15 @@
 	let lastHeading;
 	$: {
 		if (typeof window !== 'undefined') {
-			if (tldrToggle === false && headings) {
+			if (tldrToggle === true && lastHeading) {
+				lastHeading = null;
+				window.history.replaceState(window.history.state, '', ' ');
+			} else if (tldrToggle === false && headings) {
 				const heading = headings.find((h) => h.offsetTop <= scrollY);
 				if (lastHeading !== heading) {
 					lastHeading = heading;
 					window.history.replaceState(window.history.state, '', heading ? `#${heading?.id}` : ' ');
 				}
-			} else if (tldrToggle === true) {
-				lastHeading = null;
-				window.history.replaceState(window.history.state, '', ' ');
 			}
 		}
 	}

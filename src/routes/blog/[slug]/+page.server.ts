@@ -30,31 +30,29 @@ export async function load({ params }): Promise<PageServerLoad> {
 
 		for (const tweet of tweetData) {
 			const tweetHtml = `
-                <div class="tweet-preview">
-                    <div class="header">
-                        <img class="author-profile" src="${tweet.author.profile}" />
-                        <div class="author-about">
-                            <p><a class="tweet-url" href="${tweet.author.link}">${
-				tweet.author.name
-			}</a></p>
-                            <p class="author-username">@${tweet.author.username}</p>
-                        </div>
-                    </div>
+				<div class="tweet-preview">
+					<div class="header">
+						<img class="author-profile" src="${tweet.author.profile}" />
+						<div class="author-about">
+							<p><a class="tweet-url" href="${tweet.author.link}">${tweet.author.name}</a></p>
+							<p class="author-username">@${tweet.author.username}</p>
+						</div>
+					</div>
 
-                    <div class="content">
-                        <p class="tweet">${tweet.tweet.text}</p>
-                    </div>
+					<div class="content">
+						<p class="tweet">${tweet.tweet.text}</p>
+					</div>
 
-                    <div class="footer">
-                        <p>
+					<div class="footer">
+						<p>
 						<a href="${
 							tweet.tweet.link
 						}" class="tweet-url" rel="external" data-with-favicon style="--favicon: url(https://v1.indieweb-avatar.11ty.dev/https%3A%2F%2Ftwitter.com)"><span style="vertical-align: middle;">Open tweet</span></a>
 						</p>
 						
-                        <p class="tweet-date">${humanDateTime(tweet.tweet.date)}</p>
-                    </div>
-                </div>
+						<p class="tweet-date">${humanDateTime(tweet.tweet.date)}</p>
+					</div>
+				</div>
             `;
 
 			const [tweetToReplace] = tweets.find(([t]) => t.includes(tweet.tweet.id));
@@ -139,11 +137,17 @@ async function fetchTweetsInternal(tweetIds: string[]) {
 					text = text.replace(
 						url.url,
 						`
-                       <video poster="${media.preview_image_url}" controls>
-                            <source src="${media.variants[0].url}" type="video/mp4">
-                            <object data="${media.variants[0].url}"></object>
-                        </video>
-                    `,
+						<video poster="${media.preview_image_url}" controls  style="margin-top: 0.2em">
+							<source src="${media.variants[0].url}" type="video/mp4">
+							<object data="${media.variants[0].url}"></object>
+						</video>
+					`,
+					);
+				} else if (media?.type === 'photo') {
+					text = text.replace(
+						url.url,
+						`<img src="${media.url}" style="margin-top: 1em"/>
+					`,
 					);
 				}
 			} else if (url.images) {
@@ -152,14 +156,14 @@ async function fetchTweetsInternal(tweetIds: string[]) {
 					`<a class="tweet-url" href="${url.expanded_url}">${url.display_url}</a>`,
 				);
 				text += `<a href="${url.expanded_url}" class="tweet-card">
-                    <figure>
-                        <img src="${url.images[0].url}"></img>
-                        <figcaption>
-                            <div>${url.title}</div> 
-                            <small>${url.description}</small>
-                        </figcaption>
-                    </figure>
-                </a>`;
+					<figure>
+						<img src="${url.images[0].url}"></img>
+						<figcaption>
+							<div>${url.title}</div> 
+							<small>${url.description}</small>
+						</figcaption>
+					</figure>
+				</a>`;
 			} else if (url.unwound_url) {
 				text = text.replace(url.url, url.expanded_url);
 			}
