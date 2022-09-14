@@ -2,6 +2,8 @@ import { ISODate } from '$lib/formatters';
 import { variables } from '../../lib/variables';
 import { readPosts } from '../_posts';
 
+export const prerender = true;
+
 export async function GET() {
 	const posts = await readPosts();
 	return new Response(generate(posts), {

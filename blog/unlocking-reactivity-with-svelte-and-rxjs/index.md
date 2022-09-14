@@ -189,7 +189,7 @@ function instance($$self, $$props, $$invalidate) {
 Because Svelte is a compiler, it can make our lives easier.
 By using the `$` again, and by prefixing the store variable in the HTML, we see that the store's value will be printed out after it has changed. This is magic! It means that we don't have to create a variable if we want to access the store's value.
 
-```html{14}:<a href="https://svelte.dev/repl/9650399966c648dabdb272c7589cd946?version=3.18.2">REPL</a>
+```html{15}:<a href="https://svelte.dev/repl/9650399966c648dabdb272c7589cd946?version=3.18.2">REPL</a>
 <script>
   import { writable } from 'svelte/store'
 
