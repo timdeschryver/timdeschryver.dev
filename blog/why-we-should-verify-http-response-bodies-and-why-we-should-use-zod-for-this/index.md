@@ -146,12 +146,12 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 /*
     type User = {
-        id?: number;
-        name?: string;
-        username?: string;
-        email?: string;
-        phone?: string;
-        website?: string;
+        id: number;
+        name: string;
+        username: string;
+        email: string;
+        phone: string;
+        website: string;
     }
 */
 ```

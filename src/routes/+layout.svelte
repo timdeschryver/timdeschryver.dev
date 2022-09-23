@@ -37,7 +37,7 @@
 			gtag('event', 'page_view', {
 				page_title: document.title,
 				page_location: location.href,
-				page_path: to.pathname,
+				page_path: to.url.pathname,
 			});
 		}
 	});

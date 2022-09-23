@@ -122,14 +122,14 @@ pre[class*='language-'] > .code-heading > a {
 	pre[class*='language-']::-moz-selection,
 	code[class*='language-'] ::-moz-selection,
 	pre[class*='language-'] ::-moz-selection {
-		background: #eee9e6;
+		background: rgba(167,158,230, 0.5);
 	}
 
 	code[class*='language-']::selection,
 	pre[class*='language-']::selection,
 	code[class*='language-'] ::selection,
 	pre[class*='language-'] ::selection {
-		background: #eee9e6;
+		background: rgba(167,158,230, 0.5);
 	}
 
 	/* Code (block & inline) */
