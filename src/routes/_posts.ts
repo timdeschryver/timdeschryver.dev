@@ -16,13 +16,23 @@ import 'prismjs/components/prism-diff.js';
 import 'prismjs/components/prism-csharp.js';
 import 'prismjs/components/prism-powershell.js';
 import 'prismjs/components/prism-sql.js';
+import iconBracketsPurple from '../../static/images/languages/brackets-purple.svg?raw';
+import iconCodePurple from '../../static/images/languages/code-purple.svg?raw';
+import iconShell from '../../static/images/languages/shell.svg?raw';
+import iconDatabase from '../../static/images/languages/database.svg?raw';
+import iconTypescript from '../../static/images/languages/ts.svg?raw';
+import iconText from '../../static/images/languages/text.svg?raw';
+import iconYaml from '../../static/images/languages/yaml.svg?raw';
+import iconCsharp from '../../static/images/languages/csharp.svg?raw';
+import iconSvelte from '../../static/images/languages/svelte.svg?raw';
+import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
 
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
 const blogPath = 'blog';
 const snippetsPath = 'snippets';
-const langs = {
+const langToPrism = {
 	bash: 'bash',
 	sh: 'bash',
 	html: 'markup',
@@ -42,6 +52,27 @@ const langs = {
 	ps: 'powershell',
 	xml: 'html',
 	md: 'markdown',
+};
+const langToIcon = {
+	bash: iconShell,
+	sh: iconShell,
+	html: iconCodePurple,
+	sv: iconCodePurple,
+	js: iconCodePurple,
+	ts: iconTypescript,
+	json: iconBracketsPurple,
+	css: iconCodePurple,
+	txt: iconText,
+	graphql: iconCodePurple,
+	yml: iconYaml,
+	yaml: iconYaml,
+	diff: iconText,
+	cs: iconCsharp,
+	sql: iconDatabase,
+	svelte: iconSvelte,
+	ps: iconShell,
+	xml: iconBracketsPurple,
+	md: iconMarkdown,
 };
 
 const posts:
@@ -204,17 +235,6 @@ export function readSnippets(): {
 								fragment: metadata.slug,
 						  }
 						: {},
-				createHeadingParts: (metadata) => {
-					return [
-						metadata.image ? `<a href="/${metadata.image}" download>Download</a>` : '',
-						metadata.image
-							? `<a
-				target="_blank"
-				rel="external"
-				href="https://twitter.com/intent/tweet?text=${metadata.title}&via=tim_deschryver&url=${variables.basePath}/snippets/${metadata.slug}">Share</a>`
-							: '',
-					];
-				},
 			});
 			const image = `/${metadata.image}`;
 			const url = `/snippets/${metadata.slug}`;
@@ -239,7 +259,6 @@ function parseFileToHtmlAndMeta(
 		createAnchorAndFragment = () => {
 			// noop
 		},
-		createHeadingParts = () => [],
 	}: any,
 ): { html: string; metadata: any & { outgoingSlugs: string[] }; assetsSrc: string } {
 	const markdown = fs.readFileSync(file, 'utf-8');
@@ -310,7 +329,7 @@ function parseFileToHtmlAndMeta(
 			lineIndex !== -1 || fileIndex !== -1
 				? lang.substring(0, Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1))).trim()
 				: lang;
-		const prismLanguage = langs[language];
+		const prismLanguage = langToPrism[language];
 		const file = fileIndex !== -1 ? lang.substr(lang.indexOf(':') + 1).trim() : '';
 
 		const lineNumberRegExp = /{([^}]+)}/g;
@@ -342,12 +361,12 @@ function parseFileToHtmlAndMeta(
 			.replace(/<span class="line-highlight"><\/span>/g, '<span class="line-highlight"> </span>');
 
 		const codeBlock = `<code>${highlighted}</code>`;
-		const headingParts = [
-			file ? `<span class="file">${file}</span>` : undefined,
-			...createHeadingParts(metadata),
-		].filter(Boolean);
+		const icon = langToIcon[language] || iconCodePurple;
+		const headingParts = [icon, file ? `<span class="file">${file}</span>` : undefined].filter(
+			Boolean,
+		);
 		const heading = headingParts.length
-			? `<div class="code-heading">${headingParts.join(' • ')}</div>`
+			? `<div class="code-heading">${headingParts.join(' ')}</div>`
 			: '';
 		return `<pre id="${id}" class='language-${prismLanguage}' aria-hidden="true" tabindex="-1">${heading}${codeBlock}</pre>`;
 	};

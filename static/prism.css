@@ -63,7 +63,7 @@ pre[class*='language-'] .line-highlight {
 pre[class*='language-'] > .code-heading {
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: flex-start;
 	padding: 0.2em 0.4em;
 	font-family: var(--text-font);
 	font-size: 0.85rem;
@@ -122,14 +122,14 @@ pre[class*='language-'] > .code-heading > a {
 	pre[class*='language-']::-moz-selection,
 	code[class*='language-'] ::-moz-selection,
 	pre[class*='language-'] ::-moz-selection {
-		background: rgba(167,158,230, 0.5);
+		background: rgba(167, 158, 230, 0.5);
 	}
 
 	code[class*='language-']::selection,
 	pre[class*='language-']::selection,
 	code[class*='language-'] ::selection,
 	pre[class*='language-'] ::selection {
-		background: rgba(167,158,230, 0.5);
+		background: rgba(167, 158, 230, 0.5);
 	}
 
 	/* Code (block & inline) */
