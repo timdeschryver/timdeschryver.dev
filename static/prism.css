@@ -92,6 +92,18 @@ pre[class*='language-'] > .code-heading > a {
 	font-size: initial;
 }
 
+@media (prefers-color-scheme: light) {
+	.code-heading {
+		background: rgba(0, 0, 0, 0.2);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.code-heading {
+		background: rgba(0, 0, 0, 0.8);
+	}
+}
+
 .token.important,
 .token.bold {
 	font-weight: 900;
