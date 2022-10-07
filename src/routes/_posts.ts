@@ -470,7 +470,7 @@ function appendCreatorId(link: string) {
 		`msdn.microsoft.com`,
 		`blogs.msdn.microsoft.com`,
 		`blogs.technet.microsoft.com`,
-		`microsoft.com/handsonlabs`,
+		'learn.microsoft.com',
 	];
 
 	try {
