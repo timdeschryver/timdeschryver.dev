@@ -1,9 +1,9 @@
 ---
 title: Polling with a NgRx Effect
 slug: polling-with-a-ngrx-effect
-image: /images/polling-with-a-ngrx-effect.png
+description: A snippet on how to poll a service by using a NgRx Effect.
 date: 2020-05-25
-tags: ngrx, effects, angular
+tags: ngrx, angular
 ---
 
 ## Polling with a NgRx Effect

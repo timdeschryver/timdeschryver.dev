@@ -31,7 +31,6 @@ import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
 const blogPath = 'blog';
-const snippetsPath = 'snippets';
 const langToPrism = {
 	bash: 'bash',
 	sh: 'bash',
@@ -195,62 +194,6 @@ export async function readPosts(): Promise<
 
 	posts.push(...postsSorted);
 	return postsSorted;
-}
-
-let snippets: {
-	html: string;
-	metadata: {
-		title: string;
-		slug: string;
-		date: string;
-		tags: string[];
-		url: string;
-	};
-}[] = [];
-
-export function readSnippets(): {
-	html: string;
-	metadata: {
-		title: string;
-		slug: string;
-		date: string;
-		tags: string[];
-		url: string;
-	};
-}[] {
-	if (snippets.length) {
-		return snippets;
-	}
-
-	console.log('\x1b[35m[snippets] generate\x1b[0m');
-
-	const folderContent = [...traverseFolder(snippetsPath, '.md')];
-	snippets = folderContent
-		.map(({ path }) => {
-			const { html, metadata } = parseFileToHtmlAndMeta(path, {
-				createAnchorAndFragment: (level, metadata) =>
-					level == 2
-						? {
-								anchor: `snippets/${metadata.slug}`,
-								fragment: metadata.slug,
-						  }
-						: {},
-			});
-			const image = `/${metadata.image}`;
-			const url = `/snippets/${metadata.slug}`;
-
-			return {
-				html,
-				metadata: {
-					...metadata,
-					date: ISODate(metadata.date),
-					image,
-					url,
-				},
-			};
-		})
-		.sort(sortByDate);
-	return snippets;
 }
 
 function parseFileToHtmlAndMeta(
@@ -423,7 +366,16 @@ function extractFrontmatter(markdown): { content: string; metadata: any } {
 	if (typeof result.attributes.tags === 'string') {
 		result.attributes.tags = result.attributes.tags
 			.split(',')
-			.map((a) => (a ? a.trim().charAt(0).toUpperCase() + a.trim().slice(1) : a));
+			.map((a) => (a ? a.trim().charAt(0).toUpperCase() + a.trim().slice(1) : a))
+			.map((a) => {
+				if (a.toLowerCase() === 'typescript') {
+					return 'TypeScript';
+				}
+				if (a.toLowerCase() === 'ngrx') {
+					return 'NgRx';
+				}
+				return a;
+			});
 	}
 	if (Array.isArray(result.attributes.translations)) {
 		for (const translation of result.attributes.translations) {

@@ -1,7 +1,7 @@
 ---
 title: Destructure an object to remove a property
 slug: destructure-an-object-to-remove-a-property
-image: /images/destructure-an-object-to-remove-a-property.png
+description: A snippet on use destructuring to remove a property from an object in an immutable way.
 date: 2020-01-28
 tags: javascript
 ---

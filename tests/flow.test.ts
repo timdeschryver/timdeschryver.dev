@@ -35,13 +35,4 @@ test('flow test', async ({ page }) => {
 
 	// Click text=Actions
 	await Promise.all([page.waitForNavigation(), page.click('text=Actions')]);
-
-	// Click text=Snippets
-	await Promise.all([page.waitForNavigation(), page.click('text=Snippets')]);
-
-	// Click text=Show stacktrace when dotnet core API doesn't start
-	await Promise.all([
-		page.waitForNavigation(),
-		page.click("text=Show stacktrace when dotnet core API doesn't start"),
-	]);
 });

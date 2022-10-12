@@ -44,11 +44,6 @@ test('blog works ', async ({ page }) => {
 	expect(response.ok()).toBeTruthy();
 });
 
-test('snippets works ', async ({ page }) => {
-	const response = await page.goto('/snippets');
-	expect(response.ok()).toBeTruthy();
-});
-
 test('resources works ', async ({ page }) => {
 	let response = await page.goto('/resources/ngrx');
 	expect(response.ok()).toBeTruthy();

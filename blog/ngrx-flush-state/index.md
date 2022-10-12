@@ -1,9 +1,9 @@
 ---
 title: Flush state with an NgRx meta-reducer
 slug: ngrx-flush-state
-image: /images/ngrx-flush-state.png
-date: 20222-03-29
-tags: ngrx, effects, angular
+description: A snippet on how to remove a specific slice within the NgRx state object.
+date: 2022-03-29
+tags: ngrx, angular
 ---
 
 ## Flush state with an NgRx meta-reducer

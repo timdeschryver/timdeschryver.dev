@@ -35,12 +35,6 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			date,
 		},
 		{
-			loc: `${variables.basePath}/snippets`,
-			priority: '0.4',
-			changefreq: 'weekly',
-			date,
-		},
-		{
 			loc: `${variables.basePath}/resources/ngrx`,
 			priority: '0.2',
 			changefreq: 'monthly',

@@ -1,7 +1,7 @@
 ---
 title: Reduce memory usage of .NET services on a single machine
 slug: reduce-memory-usage-of-net-services-on-a-single-machine
-image: /images/reduce-memory-usage-of-net-services-on-a-single-machine.png
+description: A snippet on how to configure your project to reduce its memory consumption when multiple services are hosted on one server.
 date: 2021-07-22
 tags: .net, infra
 ---

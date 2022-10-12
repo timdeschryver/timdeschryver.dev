@@ -1,9 +1,9 @@
 ---
 title: Multiple service calls from an Effect
 slug: multiple-service-calls-from-an-effect
-image: /images/multiple-service-calls-from-an-effect.png
+description: A snippet on how to invoke multiple service calls within a single NgRx Effect.
 date: 2019-12-18
-tags: ngrx, effects, angular
+tags: ngrx, angular
 ---
 
 ## Multiple service calls from an Effect

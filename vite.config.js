@@ -9,7 +9,7 @@ const config = {
 		svgLoader(),
 		// @ts-ignore - Doesn't look like `vite-plugin-restart` exports correctly.
 		VitePluginRestart.default({
-			restart: ['./blog/**', './snippets/**'],
+			restart: ['./blog/**'],
 		}),
 	],
 	server: {
