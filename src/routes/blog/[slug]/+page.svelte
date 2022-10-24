@@ -245,13 +245,13 @@
 <Comments />
 
 <div class="article-actions">
-	<a class="mt-0" target="_blank" rel="external" href="https://timdeschryver.dev/support">
+	<a class="mt-0" target="_blank" rel="noreferrer" href="https://timdeschryver.dev/support">
 		Support the blog
 	</a>
 	<a
 		class="mt-0"
 		target="_blank"
-		rel="external"
+		rel="noreferrer"
 		href="https://twitter.com/intent/tweet?text={post.metadata.title}&via=tim_deschryver&url={post
 			.metadata.canonical}"
 	>
@@ -261,11 +261,11 @@
 		class="mt-0"
 		href="https://twitter.com/search?q={post.metadata.canonical}"
 		target="_blank"
-		rel="external"
+		rel="noreferrer"
 	>
 		Discuss on Twitter
 	</a>
-	<a class="mt-0" target="_blank" rel="external" href={post.metadata.edit}> Edit on GitHub </a>
+	<a class="mt-0" target="_blank" rel="noreferrer" href={post.metadata.edit}> Edit on GitHub </a>
 </div>
 
 <style>

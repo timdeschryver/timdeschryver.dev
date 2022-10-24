@@ -4,7 +4,7 @@
 	you in advance.
 </p>
 <div>
-	<a href="https://ko-fi.com/W7W579HXS" target="_blank" rel="external" class="support mt-0"
+	<a href="https://ko-fi.com/W7W579HXS" target="_blank" rel="noreferrer" class="support mt-0"
 		><img
 			height="36"
 			style="border:0px;height:36px;"
@@ -14,7 +14,7 @@
 	>
 	<a
 		target="_blank"
-		rel="external"
+		rel="noreferrer"
 		href="https://www.paypal.com/donate?hosted_button_id=59M5TFPQJS8SQ"
 		class="support mt-0"
 	>
