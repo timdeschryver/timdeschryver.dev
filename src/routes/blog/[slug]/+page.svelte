@@ -4,7 +4,7 @@
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Comments from '../../../lib/Comments.svelte';
-	import {blogTitle} from "$lib/current-blog.store";
+	import { blogTitle } from '$lib/current-blog.store';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -39,7 +39,7 @@
 		pres = [...(document.querySelectorAll('pre') as any)];
 
 		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
-		blogTitle.set(post.metadata.title)
+		blogTitle.set(post.metadata.title);
 		if (!window.location.hash) {
 			requestAnimationFrame(() => {
 				window.scrollTo({ top: document.querySelector('header').clientHeight + 25 });
@@ -51,7 +51,7 @@
 		if (typeof document !== 'undefined') {
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
 		}
-		blogTitle.set('')
+		blogTitle.set('');
 	});
 
 	let headings = null;
@@ -220,7 +220,7 @@
 
 	{#if post.metadata.incomingLinks.length}
 		<h5>Incoming links</h5>
-		<ul class="mt-0">
+		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.incomingLinks as link}
 				<li>
 					<a href={`/blog/${link.slug}`}>{link.title}</a>
@@ -231,7 +231,7 @@
 
 	{#if post.metadata.outgoingLinks.length}
 		<h5>Outgoing links</h5>
-		<ul class="mt-0">
+		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.outgoingLinks as link}
 				<li>
 					<a href={`/blog/${link.slug}`}>{link.title}</a>
