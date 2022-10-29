@@ -4,6 +4,7 @@
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Comments from '../../../lib/Comments.svelte';
+	import { blog } from '$lib/current-blog.store';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -29,70 +30,43 @@
 		})
 		.filter(Boolean);
 
-	let tldrToggle;
 	let scrollY;
 
 	let pres: HTMLElement[] = [];
 
 	onMount(() => {
 		pres = [...(document.querySelectorAll('pre') as any)];
-
 		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
-
-		if (!window.location.hash) {
-			requestAnimationFrame(() => {
-				window.scrollTo({ top: document.querySelector('header').clientHeight + 25 });
-			});
-		}
 	});
 
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
 		}
+		blog.reset();
 	});
 
 	let headings = null;
 	afterUpdate(() => {
-		tldrToggle = new URLSearchParams(window.location.search).get('tldr') !== null;
-		headings = tldrToggle
+		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
+		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' :'single');
+		headings = hasTldr
 			? null
 			: headings || window.history.pushState
 			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
 			: [];
 	});
 
-	$: if (tldrToggle !== undefined) {
-		let params = new URLSearchParams(window.location.search);
-		if (tldrToggle) {
-			params.set('tldr', '1');
-		} else {
-			params.delete('tldr');
-		}
 
-		const paramsAsString = params.toString();
-		if (paramsAsString) {
-			window.history.replaceState(
-				window.history.state,
-				'',
-				`${location.pathname}?${paramsAsString}`,
-			);
-		} else {
-			window.history.replaceState(window.history.state, '', `${location.pathname}`);
-		}
-	}
 
-	function tldrClicked() {
-		tldrToggle = !tldrToggle;
-	}
 
-	let lastHeading;
+	let lastHeading = null;
 	$: {
 		if (typeof window !== 'undefined') {
-			if (tldrToggle === true && lastHeading) {
+			if ($blog?.state === 'tldr' && lastHeading) {
 				lastHeading = null;
 				window.history.replaceState(window.history.state, '', ' ');
-			} else if (tldrToggle === false && headings) {
+			} else if ($blog?.state !== 'tldr' && headings) {
 				const heading = headings.find((h) => h.offsetTop <= scrollY);
 				if (lastHeading !== heading) {
 					lastHeading = heading;
@@ -167,10 +141,6 @@
 </header>
 
 <div class="side-actions" hidden={(scrollY || 0) < 1000}>
-	<a href="/blog">All posts</a>
-	{#if post.tldr}
-		<button on:click={tldrClicked}>{tldrToggle ? 'Full Version' : 'TLDR Version'}</button>
-	{/if}
 	{#if post.metadata.translations}
 		<div>Translations</div>
 		{#each post.metadata.translations as translation}
@@ -182,7 +152,7 @@
 {#if post.metadata.translations}
 	<div class="translations">
 		<hr />
-		<p>This article is also available in:</p>
+		<p>This post is also available in:</p>
 		<ul>
 			{#each post.metadata.translations as translation}
 				<li>
@@ -196,12 +166,12 @@
 {/if}
 
 {#if post.tldr}
-	<button class="tldr" on:click={tldrClicked}>
-		👀 {tldrToggle ? 'I want to read the blog post' : 'Just show me the code already'}</button
+	<button class="tldr" on:click={blog.toggleTldr}>
+		👀 {$blog?.state === 'tldr' ? 'I want to read the blog post' : 'Just show me the code already'}</button
 	>
 {/if}
 
-{#if tldrToggle && post.tldr}
+{#if $blog?.state === 'tldr' && post.tldr}
 	{@html post.tldr}
 {:else}
 	{@html post.html}
@@ -219,7 +189,7 @@
 
 	{#if post.metadata.incomingLinks.length}
 		<h5>Incoming links</h5>
-		<ul class="mt-0">
+		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.incomingLinks as link}
 				<li>
 					<a href={`/blog/${link.slug}`}>{link.title}</a>
@@ -230,7 +200,7 @@
 
 	{#if post.metadata.outgoingLinks.length}
 		<h5>Outgoing links</h5>
-		<ul class="mt-0">
+		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.outgoingLinks as link}
 				<li>
 					<a href={`/blog/${link.slug}`}>{link.title}</a>
@@ -280,7 +250,7 @@
 	.side-actions {
 		display: block;
 		position: fixed;
-		margin: 0;
+		margin-top: var(--header-height);
 		top: 20px;
 		left: 20px;
 	}
@@ -362,50 +332,5 @@
 	.translations ul {
 		list-style: none;
 		margin-top: var(--spacing-small);
-	}
-
-	:global(.tweet-preview) {
-		border: 1px solid var(--text-color-subtle);
-		border-radius: 0.3em;
-		padding: 1em 0.8em;
-	}
-
-	:global(.tweet-preview *) {
-		margin-top: 0;
-	}
-
-	:global(.tweet-preview > *:not(:first-child)) {
-		margin-top: 1em;
-	}
-
-	:global(.tweet-preview > .header) {
-		display: grid;
-		grid-template-columns: 48px 1fr;
-		align-items: center;
-		gap: 1em;
-	}
-
-	:global(.tweet-preview .author-profile) {
-		border-radius: 100%;
-	}
-
-	:global(.tweet-preview > .footer) {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	:global(.tweet-preview .tweet-url) {
-		text-decoration: none;
-		color: #1da1f2;
-		font-weight: 500;
-	}
-
-	:global(.tweet-preview .tweet-card) {
-		text-decoration: none;
-		color: var(--text-color-light);
-	}
-
-	:global(.tweet-preview video) {
-		margin-top: 0.5em;
 	}
 </style>

@@ -4,18 +4,6 @@ import url from 'url';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
 import frontmatter from 'front-matter';
-import highlightCode from 'gatsby-remark-prismjs/highlight-code.js';
-import 'prismjs/components/prism-bash.js';
-import 'prismjs/components/prism-markdown.js';
-import 'prismjs/components/prism-typescript.js';
-import 'prismjs/components/prism-json.js';
-import 'prismjs/components/prism-textile.js';
-import 'prismjs/components/prism-graphql.js';
-import 'prismjs/components/prism-yaml.js';
-import 'prismjs/components/prism-diff.js';
-import 'prismjs/components/prism-csharp.js';
-import 'prismjs/components/prism-powershell.js';
-import 'prismjs/components/prism-sql.js';
 import iconBracketsPurple from '../../static/images/languages/brackets-purple.svg?raw';
 import iconCodePurple from '../../static/images/languages/code-purple.svg?raw';
 import iconShell from '../../static/images/languages/shell.svg?raw';
@@ -26,32 +14,25 @@ import iconYaml from '../../static/images/languages/yaml.svg?raw';
 import iconCsharp from '../../static/images/languages/csharp.svg?raw';
 import iconSvelte from '../../static/images/languages/svelte.svg?raw';
 import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
-
+import * as shiki from 'shiki';
+import type { IThemedToken } from 'shiki';
+// @ts-ignore
+import pallete from 'shiki/themes/rose-pine.json';
+// @ts-ignore
+import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
+fs.writeFileSync(
+	'static/dark.theme.css',
+	createStyle('@media (prefers-color-scheme: dark)', pallete),
+);
+fs.writeFileSync(
+	'static/light.theme.css',
+	createStyle('@media (prefers-color-scheme: light)', palleteDawn),
+);
+
 const blogPath = 'blog';
-const langToPrism = {
-	bash: 'bash',
-	sh: 'bash',
-	html: 'markup',
-	sv: 'markup',
-	js: 'javascript',
-	ts: 'typescript',
-	json: 'json',
-	css: 'css',
-	txt: 'textile',
-	graphql: 'graphql',
-	yml: 'yaml',
-	yaml: 'yaml',
-	diff: 'diff',
-	cs: 'csharp',
-	sql: 'sql',
-	svelte: 'svelte',
-	ps: 'powershell',
-	xml: 'html',
-	md: 'markdown',
-};
 const langToIcon = {
 	bash: iconShell,
 	sh: iconShell,
@@ -103,6 +84,9 @@ export async function readPosts(): Promise<
 		return posts;
 	}
 	console.log('\x1b[35m[posts] generate\x1b[0m');
+	const highlighter = await shiki.getHighlighter({
+		theme: 'rose-pine',
+	});
 
 	const folderContent = [...traverseFolder(blogPath, '.md')];
 	const directories = folderContent.reduce((dirs, file) => {
@@ -115,29 +99,9 @@ export async function readPosts(): Promise<
 			const postPath = files.find((f) => f.file === 'index.md').path;
 			const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
 
-			const { html, metadata } = parseFileToHtmlAndMeta(postPath, {
-				createAnchorAndFragment: (_level, _metadata, text) => {
-					const anchorRegExp = /{([^}]+)}/g;
-					const anchorOverwrite = anchorRegExp.exec(text);
-					const fragment = anchorOverwrite
-						? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
-						: slugify(text);
-
-					return { anchor: `#${fragment}`, fragment };
-				},
-			});
+			const { html, metadata } = parseFileToHtmlAndMeta(postPath, highlighter);
 			const { html: tldr } = tldrPath
-				? parseFileToHtmlAndMeta(tldrPath, {
-						createAnchorAndFragment: (_level, _metadata, text) => {
-							const anchorRegExp = /{([^}]+)}/g;
-							const anchorOverwrite = anchorRegExp.exec(text);
-							const fragment = anchorOverwrite
-								? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
-								: slugify(text);
-
-							return { anchor: `#${fragment}`, fragment };
-						},
-				  })
+				? parseFileToHtmlAndMeta(tldrPath, highlighter)
 				: { html: null };
 
 			const tags = metadata.tags;
@@ -198,11 +162,7 @@ export async function readPosts(): Promise<
 
 function parseFileToHtmlAndMeta(
 	file,
-	{
-		createAnchorAndFragment = () => {
-			// noop
-		},
-	}: any,
+	highlighter: shiki.Highlighter,
 ): { html: string; metadata: any & { outgoingSlugs: string[] }; assetsSrc: string } {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
@@ -220,7 +180,8 @@ function parseFileToHtmlAndMeta(
 		const title_attr = title ? `title="${title}"` : '';
 		const internal = link.startsWith('/');
 		const rel_attr = internal || link.startsWith('#') ? `` : 'rel="external"';
-		const attributes = [href_attr, title_attr, rel_attr];
+		const svelteTags = internal ? `data-sveltekit-reload` : '';
+		const attributes = [href_attr, title_attr, rel_attr, svelteTags];
 
 		let style = '';
 		if (internal) {
@@ -272,16 +233,15 @@ function parseFileToHtmlAndMeta(
 			lineIndex !== -1 || fileIndex !== -1
 				? lang.substring(0, Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1))).trim()
 				: lang;
-		const prismLanguage = langToPrism[language];
 		const file = fileIndex !== -1 ? lang.substr(lang.indexOf(':') + 1).trim() : '';
 
+		const linesHighlight: number[] = [];
 		const lineNumberRegExp = /{([^}]+)}/g;
-		const linesHighlight = [];
 		let curMatch;
 		while ((curMatch = lineNumberRegExp.exec(lang))) {
 			const parts = curMatch[1].split(',');
 			parts.forEach((p) => {
-				let [min, max] = p.split('-').map(Number);
+				let [min, max]: [number, number] = p.split('-').map(Number);
 				max = max || min;
 				while (min <= max) {
 					linesHighlight.push(min++);
@@ -291,19 +251,6 @@ function parseFileToHtmlAndMeta(
 
 		const id = createHash('md5').update(source).digest('hex');
 
-		if (!prismLanguage) {
-			console.warn('did not found a language for: ' + language);
-			return `<pre id="${id}" class='language-text' aria-hidden="true" tabindex="-1"><code>${source}</code></pre>`;
-		}
-
-		const highlightedLines = highlightCode(prismLanguage, source, {}, linesHighlight);
-
-		const highlighted = highlightedLines
-			.replace(/gatsby-highlight-code-line/g, 'line-highlight')
-			// add space to render the line
-			.replace(/<span class="line-highlight"><\/span>/g, '<span class="line-highlight"> </span>');
-
-		const codeBlock = `<code>${highlighted}</code>`;
 		const icon = langToIcon[language] || iconCodePurple;
 		const headingParts = [icon, file ? `<span class="file">${file}</span>` : undefined].filter(
 			Boolean,
@@ -311,17 +258,71 @@ function parseFileToHtmlAndMeta(
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
 			: '';
-		return `<pre id="${id}" class='language-${prismLanguage}' aria-hidden="true" tabindex="-1">${heading}${codeBlock}</pre>`;
+
+		let shikiLang = language;
+		if (shikiLang === 'cs') {
+			shikiLang = 'csharp';
+		}
+		if (shikiLang === 'yml') {
+			shikiLang = 'yaml';
+		}
+
+		function generateHTMLFromTokens(tokens: IThemedToken[][]): string {
+			let html = '<code>';
+
+			tokens.forEach((token, line) => {
+				const lineClass = linesHighlight.includes(line + 1) ? 'line-highlight' : '';
+				html += `<div class="${lineClass}">`;
+
+				token.forEach((innertoken) => {
+					const cssVar = replaceColorToCSSVariable(innertoken.color);
+					html += `<span style="color: ${cssVar}">${innertoken.content}</span>`;
+				});
+
+				html += `</div>`;
+			});
+
+			html += '</code>';
+			return html;
+
+			function replaceColorToCSSVariable(color: string) {
+				const scopeColors = pallete.tokenColors.map((tc) => {
+					return {
+						scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) =>
+							c.replace(/\./g, '-'),
+						),
+						color: tc.settings.foreground,
+					};
+				});
+
+				const key = scopeColors.find((c) => c.color?.toLowerCase() === color?.toLowerCase());
+				if (!key) {
+					return `var(--syntax-unknown)`;
+				}
+				return `var(--syntax-${key.scope[0]})`;
+			}
+		}
+
+		const tokens = highlighter.codeToThemedTokens(source, shikiLang, 'rose-pine', {
+			includeExplanation: false,
+		});
+		const codeblock = generateHTMLFromTokens(tokens);
+		return `<pre id="${id}" aria-hidden="true" tabindex="-1">${heading}${codeblock}</pre>`;
 	};
 
 	renderer.codespan = (source) => {
-		return `<code class="language-text">${source}</code>`;
+		return `<code>${source}</code>`;
 	};
 
 	renderer.heading = (text, level, rawtext) => {
 		const headingText = text.includes('{') ? text.substring(0, text.indexOf('{') - 1) : text;
 
-		const { fragment } = createAnchorAndFragment(level, metadata, rawtext);
+		const anchorRegExp = /{([^}]+)}/g;
+		const anchorOverwrite = anchorRegExp.exec(rawtext);
+		const fragment = anchorOverwrite
+			? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
+			: slugify(text);
+
 		if (!fragment) {
 			return `<h${level}>${headingText}</h${level}>`;
 		}
@@ -434,4 +435,32 @@ function appendCreatorId(link: string) {
 	} catch {
 		return link;
 	}
+}
+
+function createStyle(scope: string, theme) {
+	const scopeColors = theme.tokenColors.map((tc) => {
+		return {
+			scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) => c.replace(/\./g, '-')),
+			color: tc.settings.foreground,
+		};
+	});
+
+	let style = `${scope} {`;
+
+	style += '\n\t' + `:root {`;
+
+	for (const color of scopeColors) {
+		for (const scope of color.scope) {
+			style += '\n\t\t' + `--syntax-${scope}: ${color.color};`;
+		}
+	}
+
+	for (const [key, color] of Object.entries(theme.colors)) {
+		style += '\n\t\t' + `--${key.replace(/\./g, '-')}: ${color};`;
+	}
+
+	style += '\n\t' + `}`;
+	style += '\n' + `}`;
+
+	return style;
 }
