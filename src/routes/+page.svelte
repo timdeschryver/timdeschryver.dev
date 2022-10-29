@@ -2,7 +2,12 @@
 	import Head from '$lib/Head.svelte';
 	import confetti from 'canvas-confetti';
 
+	let lastConfetti = 0;
 	function fireConfetti(evt: MouseEvent): void {
+		if(lastConfetti + 1_111 > Date.now()) return;
+
+		lastConfetti = Date.now()
+
 		const defaults = {
 			disableForReducedMotion: true,
 			origin: { x: evt.x / window.innerWidth, y: (evt.y - 1) / window.innerHeight },
