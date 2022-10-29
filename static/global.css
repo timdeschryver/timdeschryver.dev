@@ -163,6 +163,7 @@ a:focus,
 a:active {
 	outline: 2px solid currentColor;
 	outline-offset: 0.25em !important;
+	transition: .2s ease-in-out;
 }
 
 :focus:not(:focus-visible) {
@@ -223,7 +224,6 @@ iframe {
 
 blockquote {
 	border-left: 3px solid currentColor;
-	padding-left: 2em;
 	background: var(--background-color-transparant);
 	padding: 1em 2em;
 }
@@ -325,6 +325,7 @@ pre > code {
 	display: block;
 	margin-top: 0;
 	line-height: 2;
+	overflow: auto;
 }
 
 code {
@@ -334,7 +335,7 @@ code {
 
 pre .line-highlight {
 	background: var(--editor-selectionHighlightBackground);
-	border-left: 0.3em solid currentColor;
+	border-left: 0.3em solid var(--editor-selectionForeground);
 	display: block;
 	margin: 0px -1em;
 	padding: 0px 0.7em;

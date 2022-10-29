@@ -4,7 +4,7 @@
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Comments from '../../../lib/Comments.svelte';
-	import { blogTitle } from '$lib/current-blog.store';
+	import { blog } from '$lib/current-blog.store';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -30,71 +30,43 @@
 		})
 		.filter(Boolean);
 
-	let tldrToggle;
 	let scrollY;
 
 	let pres: HTMLElement[] = [];
 
 	onMount(() => {
 		pres = [...(document.querySelectorAll('pre') as any)];
-
 		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
-		blogTitle.set(post.metadata.title);
-		if (!window.location.hash) {
-			requestAnimationFrame(() => {
-				window.scrollTo({ top: document.querySelector('header').clientHeight + 25 });
-			});
-		}
 	});
 
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
 		}
-		blogTitle.set('');
+		blog.reset();
 	});
 
 	let headings = null;
 	afterUpdate(() => {
-		tldrToggle = new URLSearchParams(window.location.search).get('tldr') !== null;
-		headings = tldrToggle
+		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
+		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' :'single');
+		headings = hasTldr
 			? null
 			: headings || window.history.pushState
 			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
 			: [];
 	});
 
-	$: if (tldrToggle !== undefined) {
-		let params = new URLSearchParams(window.location.search);
-		if (tldrToggle) {
-			params.set('tldr', '1');
-		} else {
-			params.delete('tldr');
-		}
 
-		const paramsAsString = params.toString();
-		if (paramsAsString) {
-			window.history.replaceState(
-				window.history.state,
-				'',
-				`${location.pathname}?${paramsAsString}`,
-			);
-		} else {
-			window.history.replaceState(window.history.state, '', `${location.pathname}`);
-		}
-	}
 
-	function tldrClicked() {
-		tldrToggle = !tldrToggle;
-	}
 
-	let lastHeading;
+	let lastHeading = null;
 	$: {
 		if (typeof window !== 'undefined') {
-			if (tldrToggle === true && lastHeading) {
+			if ($blog?.state === 'tldr' && lastHeading) {
 				lastHeading = null;
 				window.history.replaceState(window.history.state, '', ' ');
-			} else if (tldrToggle === false && headings) {
+			} else if ($blog?.state !== 'tldr' && headings) {
 				const heading = headings.find((h) => h.offsetTop <= scrollY);
 				if (lastHeading !== heading) {
 					lastHeading = heading;
@@ -169,9 +141,6 @@
 </header>
 
 <div class="side-actions" hidden={(scrollY || 0) < 1000}>
-	{#if post.tldr}
-		<button on:click={tldrClicked}>{tldrToggle ? 'Detailed Version' : 'TLDR Version'}</button>
-	{/if}
 	{#if post.metadata.translations}
 		<div>Translations</div>
 		{#each post.metadata.translations as translation}
@@ -197,12 +166,12 @@
 {/if}
 
 {#if post.tldr}
-	<button class="tldr" on:click={tldrClicked}>
-		👀 {tldrToggle ? 'I want to read the blog post' : 'Just show me the code already'}</button
+	<button class="tldr" on:click={blog.toggleTldr}>
+		👀 {$blog?.state === 'tldr' ? 'I want to read the blog post' : 'Just show me the code already'}</button
 	>
 {/if}
 
-{#if tldrToggle && post.tldr}
+{#if $blog?.state === 'tldr' && post.tldr}
 	{@html post.tldr}
 {:else}
 	{@html post.html}

@@ -4,7 +4,7 @@
     import {afterNavigate} from '$app/navigation';
     import {variables} from '$lib/variables';
     import Host from '$lib/Host.svelte';
-    import {blogTitle} from "$lib/current-blog.store";
+    import {blog} from "$lib/current-blog.store";
 
     $: segment = $page.url.pathname.substring(1);
     let support;
@@ -55,14 +55,24 @@
 <header>
     <div>
         <h2><a href="/">Tim Deschryver</a></h2>
-        <small>{$blogTitle}</small>
+
+        <nav>
+            <a href="/blog" class:active={segment.startsWith('blog')}>BLOG</a>
+        </nav>
+
+        {#if $blog}
+            <div class="current-details">
+                {$blog.title}
+            </div>
+        {/if}
+
+        {#if $blog && $blog.state !== 'single'}
+            <div class="current-details">
+                <button on:click={blog.toggleTldr}>{$blog.state === 'detailed' ? 'Detailed Version' : 'TLDR Version'}</button>
+            </div>
+        {/if}
     </div>
-    <nav>
-        <a href="/blog" class:active={segment.startsWith('blog')}>BLOG</a>
-    </nav>
 </header>
-
-
 
 <svelte:head>
     <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js">
@@ -83,15 +93,26 @@
 
 <style>
     header {
-        display: flex !important;
-        justify-content: space-evenly;
-        align-items: center;
         position: fixed;
         top: 0;
         width: 100%;
         height: var(--header-height);
         backdrop-filter: saturate(100%) blur(3px);
         z-index: 3;
+    }
+
+    header > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    header > div > *:nth-child(even) {
+        justify-self: right;
+    }
+
+    header > * > * {
+        margin-top: 0;
     }
 
     @media (prefers-color-scheme: light) {
@@ -107,22 +128,22 @@
     }
 
     @media (max-width: 480px) {
-        header {
-            justify-content: space-around;
-        }
-
-        header small {
+        header .current-details {
             display: none;
         }
-    }
 
+        header > div {
+            grid-template-columns: auto auto;
+        }
+    }
 
     header h2 > a {
         text-decoration: none;
     }
 
-    nav {
-        margin-top: var(--spacing-small);
+    header .current-details {
+        margin-top: -1.5em;
+        font-size: .8rem;
     }
 
     nav a {
@@ -134,6 +155,12 @@
     nav a.active, nav a:hover {
         color: var(--text-color);
         text-decoration: underline;
+    }
+
+    header button {
+        padding: 0;
+        margin: 0;
+        border: none;
     }
 
     footer {
