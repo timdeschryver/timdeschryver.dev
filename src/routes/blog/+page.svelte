@@ -19,7 +19,7 @@
 
 	onMount(() => {
 		params = new URLSearchParams(window.location.search);
-		// fallback, in the vercel build `query` seems to be undefined
+		// fallback, sometimes `query` seems to be undefined
 		query = $page.url.searchParams.get('q') || params.get('q') || '';
 	});
 
@@ -99,16 +99,16 @@
 	{#each filteredPosts as post}
 		<li>
 			<h2>
-				<a href={`/blog/${post.slug}`} sveltekit:prefetch>
+				<a href={`/blog/${post.slug}`} data-sveltekit-prefetch>
 					{post.title}
 				</a>
 			</h2>
 			<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 			<div>{post.description}</div>
 			<div>
-				<a href={`/blog/${post.slug}`} sveltekit:prefetch>Read more</a>
+				<a href={`/blog/${post.slug}`} data-sveltekit-prefetch>Read more</a>
 				{#if post.tldr}
-					| <a href={`/blog/${post.slug}?tldr=true`} sveltekit:prefetch>Read TLDR</a>
+					| <a href={`/blog/${post.slug}?tldr=true`} data-sveltekit-prefetch>Read TLDR</a>
 				{/if}
 			</div>
 		</li>

@@ -14,6 +14,7 @@
 	--spacing: 1.5em;
 	--spacing-small: 0.5em;
 	--spacing-large: 3em;
+	--header-height: 5em;
 }
 
 @media (prefers-color-scheme: light) {
@@ -58,7 +59,7 @@
 }
 
 main {
-	margin-top: 0;
+	margin-top: var(--header-height);
 }
 
 *,

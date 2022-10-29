@@ -4,6 +4,7 @@
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Comments from '../../../lib/Comments.svelte';
+	import {blogTitle} from "$lib/current-blog.store";
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -38,7 +39,7 @@
 		pres = [...(document.querySelectorAll('pre') as any)];
 
 		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
-
+		blogTitle.set(post.metadata.title)
 		if (!window.location.hash) {
 			requestAnimationFrame(() => {
 				window.scrollTo({ top: document.querySelector('header').clientHeight + 25 });
@@ -50,6 +51,7 @@
 		if (typeof document !== 'undefined') {
 			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
 		}
+		blogTitle.set('')
 	});
 
 	let headings = null;
@@ -167,9 +169,8 @@
 </header>
 
 <div class="side-actions" hidden={(scrollY || 0) < 1000}>
-	<a href="/blog">All posts</a>
 	{#if post.tldr}
-		<button on:click={tldrClicked}>{tldrToggle ? 'Full Version' : 'TLDR Version'}</button>
+		<button on:click={tldrClicked}>{tldrToggle ? 'Detailed Version' : 'TLDR Version'}</button>
 	{/if}
 	{#if post.metadata.translations}
 		<div>Translations</div>
@@ -182,7 +183,7 @@
 {#if post.metadata.translations}
 	<div class="translations">
 		<hr />
-		<p>This article is also available in:</p>
+		<p>This post is also available in:</p>
 		<ul>
 			{#each post.metadata.translations as translation}
 				<li>
@@ -280,7 +281,7 @@
 	.side-actions {
 		display: block;
 		position: fixed;
-		margin: 0;
+		margin-top: var(--header-height);
 		top: 20px;
 		left: 20px;
 	}
