@@ -43,7 +43,7 @@
 		"@typescript-eslint/eslint-plugin": "5.30.7",
 		"@typescript-eslint/parser": "5.30.7",
 		"axe-playwright": "1.1.11",
-		"canvas-confetti": "1.5.1",
+		"canvas-confetti": "1.6.0",
 		"cpy-cli": "4.2.0",
 		"dotenv-extended": "2.9.0",
 		"esbuild": "0.15.12",
@@ -65,7 +65,7 @@
 		"tslib": "2.4.0",
 		"twitter-api-sdk": "1.2.1",
 		"typescript": "4.8.4",
-		"vite": "3.1.8",
+		"vite": "3.2.0",
 		"vite-plugin-restart": "0.2.0",
 		"vite-svg-loader": "3.6.0"
 	}
