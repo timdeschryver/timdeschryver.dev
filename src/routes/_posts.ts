@@ -272,7 +272,12 @@ function parseFileToHtmlAndMeta(
 			let html = `<code class="${codeClass}">`;
 
 			tokens.forEach((token, line) => {
-				const lineClass = linesHighlight.includes(line + 1) ? 'highlight' : '';
+				const lineClass = [
+					linesHighlight.includes(line + 1) ? 'highlight' : '',
+					token.length ? '' : 'empty',
+				]
+					.filter(Boolean)
+					.join(' ');
 				html += `<div class="${lineClass}">`;
 
 				token.forEach((innertoken) => {

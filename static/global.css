@@ -347,7 +347,7 @@ code.dim:hover > div:not(.highlight) {
 	opacity: 1;
 }
 
-code > div {
+code > div:not(.empty) {
 	margin-top: 0;
 }
 
