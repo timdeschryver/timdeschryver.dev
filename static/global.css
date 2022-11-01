@@ -1,6 +1,6 @@
-@import "light.theme.css";
-@import "dark.theme.css";
-@import "tweet-preview.css";
+@import 'light.theme.css';
+@import 'dark.theme.css';
+@import 'tweet-preview.css';
 
 :root {
 	--text-font: -ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -47,6 +47,12 @@
 	}
 }
 
+@media (prefers-reduced-motion) {
+	* {
+		transition: none !important;
+	}
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -71,7 +77,6 @@ main {
 html {
 	height: 100%;
 	box-sizing: border-box;
-	-webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -163,7 +168,7 @@ a:focus,
 a:active {
 	outline: 2px solid currentColor;
 	outline-offset: 0.25em !important;
-	transition: .2s ease-in-out;
+	transition: 0.2s ease-in-out;
 }
 
 :focus:not(:focus-visible) {
@@ -291,7 +296,7 @@ a[data-with-favicon]:before {
 code,
 pre {
 	font-family: 'Cartograph CF', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Fira Code',
-	'Cascadia Mono', 'JetBrains Mono', 'Victor Mono', Consolas, monospace;
+		'Cascadia Mono', 'JetBrains Mono', 'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
 	direction: ltr;
 	text-align: left;
@@ -329,11 +334,24 @@ pre > code {
 }
 
 code {
-	word-break: break-all;
+	word-break: break-word;
 	background: var(--editor-background);
 }
 
-pre .line-highlight {
+code.dim > div:not(.highlight) {
+	opacity: 0.3;
+	transition: 0.2s ease-in;
+}
+
+code.dim:hover > div:not(.highlight) {
+	opacity: 1;
+}
+
+code > div {
+	margin-top: 0;
+}
+
+pre .highlight {
 	background: var(--editor-selectionHighlightBackground);
 	border-left: 0.3em solid var(--editor-selectionForeground);
 	display: block;

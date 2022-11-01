@@ -268,10 +268,11 @@ function parseFileToHtmlAndMeta(
 		}
 
 		function generateHTMLFromTokens(tokens: IThemedToken[][]): string {
-			let html = '<code>';
+			const codeClass = linesHighlight.length ? 'dim' : '';
+			let html = `<code class="${codeClass}">`;
 
 			tokens.forEach((token, line) => {
-				const lineClass = linesHighlight.includes(line + 1) ? 'line-highlight' : '';
+				const lineClass = linesHighlight.includes(line + 1) ? 'highlight' : '';
 				html += `<div class="${lineClass}">`;
 
 				token.forEach((innertoken) => {
