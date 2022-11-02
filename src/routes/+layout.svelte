@@ -78,16 +78,21 @@
 
 <header>
 	<div>
-		<h2><a href="/">Tim Deschryver</a></h2>
+		<h2>
+			<a href="/"
+				><span class="name-long">Tim Deschryver</span><span class="name-short">Tim</span></a
+			>
+		</h2>
 
 		<nav>
 			<a href="/blog" class:active={segment.startsWith('blog')}>BLOG</a>
+			<a href="/blog/rss.xml" data-sveltekit-reload>RSS</a>
 			{#if theme === 'dark'}
 				<button
 					class="theme-switch"
 					title="Switch to light theme"
 					on:click={() => toggleTheme('light')}
-					in:fly={{ y: -20, duration: 200, delay: 200 }}
+					in:fly={{ y: 20, duration: 200, delay: 200 }}
 				>
 					☀️ Light
 				</button>
@@ -96,7 +101,7 @@
 					class="theme-switch"
 					title="Switch to dark theme"
 					on:click={() => toggleTheme('dark')}
-					in:fly={{ y: 20, duration: 200, delay: 200 }}
+					in:fly={{ y: -20, duration: 200, delay: 200 }}
 					>🌚 Dark
 				</button>
 			{/if}
@@ -150,29 +155,37 @@
 		justify-self: right;
 	}
 
-	header > * > * {
+	header * {
 		margin-top: 0;
 	}
 
-	@media (prefers-color-scheme: light) {
-		header {
-			box-shadow: rgb(0 0 0 / 5%) 0px 5px 15px;
-		}
+	:global(body.light) header {
+		box-shadow: rgb(0 0 0 / 5%) 0px 5px 15px;
 	}
 
-	@media (prefers-color-scheme: dark) {
-		header {
-			box-shadow: rgb(255 255 255 / 5%) 0px 5px 15px;
-		}
+	:global(body.dark) header {
+		box-shadow: rgb(255 255 255 / 5%) 0px 5px 15px;
+	}
+
+	.name-short {
+		display: none;
+	}
+
+	.name-long {
+		display: block;
 	}
 
 	@media (max-width: 480px) {
-		header .current-details {
-			display: none;
-		}
-
 		header > div {
 			grid-template-columns: auto auto;
+		}
+
+		.name-short {
+			display: block;
+		}
+
+		.name-long {
+			display: none;
 		}
 	}
 
@@ -189,7 +202,11 @@
 		width: 100%;
 		display: flex;
 		justify-content: end;
-		gap: 1em;
+		gap: 0.6em;
+	}
+
+	nav > *:last-child {
+		margin-left: 0.6em;
 	}
 
 	nav a {
