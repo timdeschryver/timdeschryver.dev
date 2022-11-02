@@ -4,9 +4,9 @@
 
 	let lastConfetti = 0;
 	function fireConfetti(evt: MouseEvent): void {
-		if(lastConfetti + 1_111 > Date.now()) return;
+		if (lastConfetti + 1_111 > Date.now()) return;
 
-		lastConfetti = Date.now()
+		lastConfetti = Date.now();
 
 		const defaults = {
 			disableForReducedMotion: true,
@@ -50,21 +50,22 @@
 <Head title="Tim Deschryver" details={true} />
 
 <section>
-	<h1>Hi, I'm Tim 👋</h1>
+	<h1>
+		Hi, I'm Tim <div class="wave">👋</div>
+	</h1>
 
 	<p>
-		A software engineer from Belgium who enjoys to <strong
-			on:mouseover={fireConfetti}
-			on:focus={fireConfetti}><a href="/blog">blog</a></strong
+		A software engineer from Belgium who enjoys to <strong on:mouseover={fireConfetti}
+			><a href="/blog">blog</a></strong
 		>
 		about my experiences with the aim to help others and my future self, primarily on
-		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>Angular</strong>
+		<strong on:mouseover={fireConfetti}>Angular</strong>
 		and
-		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>.NET</strong>.
+		<strong on:mouseover={fireConfetti}>.NET</strong>.
 	</p>
 
 	<p>
-		Lifelong learner and <strong on:mouseover={fireConfetti} on:focus={fireConfetti}
+		Lifelong learner and <strong on:mouseover={fireConfetti}
 			><a href="https://github.com/timdeschryver" rel="external">open-source enthusiast</a></strong
 		>, mainly working on <a href="https://ngrx.io/" rel="external">NgRx</a> and
 		<a href="https://testing-library.com/angular" rel="external">Angular Testing Library</a>.
@@ -94,5 +95,41 @@
 		text-align: center;
 		font-size: 1.25rem;
 		margin-top: 2em;
+	}
+
+	/* Thanks to https://codepen.io/jakejarvis/pen/pBZWZw */
+	.wave {
+		animation-name: wave-animation;
+		animation-duration: 2.5s;
+		animation-iteration-count: infinite;
+		transform-origin: 70% 70%;
+		display: inline-block;
+	}
+
+	@keyframes wave-animation {
+		0% {
+			transform: rotate(0deg);
+		}
+		10% {
+			transform: rotate(14deg);
+		}
+		20% {
+			transform: rotate(-8deg);
+		}
+		30% {
+			transform: rotate(14deg);
+		}
+		40% {
+			transform: rotate(-4deg);
+		}
+		50% {
+			transform: rotate(10deg);
+		}
+		60% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(0deg);
+		}
 	}
 </style>

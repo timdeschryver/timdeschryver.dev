@@ -3,12 +3,8 @@
 @import 'tweet-preview.css';
 
 :root {
-	--text-font: -ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-		'Segoe UI Symbol', 'Noto Color Emoji';
-	--head-font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-		'Segoe UI Symbol', 'Noto Color Emoji';
+	--text-font: system-ui, sans-serif;
+	--head-font: system-ui, sans-serif;
 	--font-size: calc(1rem + 0.33vw);
 	--line-height: 1.5;
 	--spacing: 1.5em;
@@ -17,34 +13,20 @@
 	--header-height: 5em;
 }
 
-@media (prefers-color-scheme: light) {
-	:root {
-		--background-color: hsla(0, 0%, 100%, 0.9);
-		--background-color-transparant: hsla(0, 0%, 0%, 0.05);
-		--text-color: hsla(0, 0%, 0%, 0.95);
-		--text-color-light: hsla(0, 0%, 0%, 0.7);
-		--text-color-subtle: hsla(0, 0%, 0%, 0.4);
-	}
-
-	strong,
-	b {
-		color: hsla(0, 0%, 0%, 1);
-	}
+body.light {
+	--background-color: hsla(0, 0%, 100%, 0.9);
+	--background-color-transparent: hsla(0, 0%, 0%, 0.05);
+	--text-color: hsla(0, 0%, 0%, 0.95);
+	--text-color-light: hsla(0, 0%, 0%, 0.7);
+	--text-color-subtle: hsla(0, 0%, 0%, 0.4);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background-color: hsla(0, 0%, 0%, 0.9);
-		--background-color-transparant: hsla(0, 0%, 100%, 0.05);
-		--text-color: hsla(0, 0%, 100%, 0.9);
-		--text-color-light: hsla(0, 0%, 100%, 0.7);
-		--text-color-subtle: hsla(0, 0%, 100%, 0.4);
-	}
-
-	strong,
-	b {
-		color: hsla(0, 0%, 100%, 1);
-	}
+body.dark {
+	--background-color: hsla(0, 0%, 0%, 0.9);
+	--background-color-transparent: hsla(0, 0%, 100%, 0.05);
+	--text-color: hsla(0, 0%, 100%, 0.9);
+	--text-color-light: hsla(0, 0%, 100%, 0.7);
+	--text-color-subtle: hsla(0, 0%, 100%, 0.4);
 }
 
 @media (prefers-reduced-motion) {
@@ -229,7 +211,7 @@ iframe {
 
 blockquote {
 	border-left: 3px solid currentColor;
-	background: var(--background-color-transparant);
+	background: var(--background-color-transparent);
 	padding: 1em 2em;
 }
 
@@ -295,8 +277,9 @@ a[data-with-favicon]:before {
 
 code,
 pre {
-	font-family: 'Cartograph CF', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Fira Code',
-		'Cascadia Mono', 'JetBrains Mono', 'Victor Mono', Consolas, monospace;
+	font-family: 'Ligconsolata', 'MonoLisa', 'Cartograph CF', 'Cascadia Code', 'Dank Mono',
+		'Operator Mono Lig', 'Operator Mono Lig', 'Fira Code', 'Cascadia Mono', 'JetBrains Mono',
+		'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
 	direction: ltr;
 	text-align: left;

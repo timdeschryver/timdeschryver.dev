@@ -23,14 +23,8 @@ import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
-fs.writeFileSync(
-	'static/dark.theme.css',
-	createStyle('@media (prefers-color-scheme: dark)', pallete),
-);
-fs.writeFileSync(
-	'static/light.theme.css',
-	createStyle('@media (prefers-color-scheme: light)', palleteDawn),
-);
+fs.writeFileSync('static/dark.theme.css', createStyle('dark', pallete));
+fs.writeFileSync('static/light.theme.css', createStyle('light', palleteDawn));
 
 const blogPath = 'blog';
 const langToIcon = {
@@ -451,21 +445,18 @@ function createStyle(scope: string, theme) {
 		};
 	});
 
-	let style = `${scope} {`;
-
-	style += '\n\t' + `:root {`;
+	let style = `body.${scope} {`;
 
 	for (const color of scopeColors) {
 		for (const scope of color.scope) {
-			style += '\n\t\t' + `--syntax-${scope}: ${color.color};`;
+			style += '\n\t' + `--syntax-${scope}: ${color.color};`;
 		}
 	}
 
 	for (const [key, color] of Object.entries(theme.colors)) {
-		style += '\n\t\t' + `--${key.replace(/\./g, '-')}: ${color};`;
+		style += '\n\t' + `--${key.replace(/\./g, '-')}: ${color};`;
 	}
 
-	style += '\n\t' + `}`;
 	style += '\n' + `}`;
 
 	return style;
