@@ -55,17 +55,18 @@
 	</h1>
 
 	<p>
-		A software engineer from Belgium who enjoys to <strong on:mouseover={fireConfetti}
-			><a href="/blog">blog</a></strong
+		A software engineer from Belgium who enjoys to <strong
+			on:mouseover={fireConfetti}
+			on:focus={fireConfetti}><a href="/blog">blog</a></strong
 		>
 		about my experiences with the aim to help others and my future self, primarily on
-		<strong on:mouseover={fireConfetti}>Angular</strong>
+		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>Angular</strong>
 		and
-		<strong on:mouseover={fireConfetti}>.NET</strong>.
+		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>.NET</strong>.
 	</p>
 
 	<p>
-		Lifelong learner and <strong on:mouseover={fireConfetti}
+		Lifelong learner and <strong on:mouseover={fireConfetti} on:focus={fireConfetti}
 			><a href="https://github.com/timdeschryver" rel="external">open-source enthusiast</a></strong
 		>, mainly working on <a href="https://ngrx.io/" rel="external">NgRx</a> and
 		<a href="https://testing-library.com/angular" rel="external">Angular Testing Library</a>.
