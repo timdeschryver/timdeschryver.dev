@@ -115,7 +115,7 @@ For one caregiver, the `getCaregiverSchedule` method was called 7 times. If ther
 It was this method that was having difficulties because it contained the list of all the appointments from all the caregivers, and had to loop through the whole list of appointments, for every caregiver, for every day. At first sight, this does not look too bad. But... this triggers a change detection cycle for the child component because the input changes. To make it worse, this gets repeated whenever the Angular change detection cycle runs for this component.
 
 We noticed that this method was easily been called around 2.000 times in a matter of seconds, repeatedly.
-It was also the main cause to change the [HostListener](#hostlistener-runs-the-change-detection-cycle) because it didn't help that this was executed on every keystroke.
+It was also the main cause to change the [HostListener](#hostlistener-runs-a-new-change-detection-cycle) because it didn't help that this was executed on every keystroke.
 
 To solve this, we moved the filter logic to the NgRx selector. Where it should live.
 Instead of 2 separate lists, we modeled the data to serve the view.

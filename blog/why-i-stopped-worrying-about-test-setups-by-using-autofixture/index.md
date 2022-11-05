@@ -212,7 +212,7 @@ public void Creates_a_customer_when_valid(Customer customer)
 ```
 
 This keeps things simple and it's a good way to become familiar with AutoFixture.
-On the other hand, it doesn't provide a complete answer to the [problem](#the-problem).
+On the other hand, it doesn't provide a complete answer to the [problem](#the-problem-with-test-setups).
 While the current implementation keeps testing models in sync with the application code and is fast to set up, it still doesn't keep the tests DRY.
 
 ### Customize fixtures

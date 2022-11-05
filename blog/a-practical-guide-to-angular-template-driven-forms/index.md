@@ -14,7 +14,7 @@ tags: Angular, Guide, Forms, Template Driven
 - [Form Errors](#form-errors)
 - [Dynamic Forms](#dynamic-forms)
 - [Sub-Form Components](#sub-form-components)
-- [Testing Template-Driven Forms](#testing-template-drive-forms)
+- [Testing Template-Driven Forms](#testing-template-driven-forms)
 - [Conclusion](#conclusion)
 
 > Didn't find what you're looking for? Feel free to reach out to me on [Twitter](https://twitter.com/tim_deschryver)
@@ -702,7 +702,7 @@ To use the `RequiredCheckboxGroupValidatorDirective` validator, we can now appen
 </div>
 ```
 
-In [Displaying Validation Errors](#displaying-validation-errors), we'll see how we can transform this object into human-friendly messages.
+In [Validation Messages](#validation-messages), we'll see how we can transform this object into human-friendly messages.
 
 > You can also create a [generic validator directive](/blog/a-generic-angular-template-driven-validator) to validate most of your logic without the required setup.
 
@@ -1473,7 +1473,7 @@ export class DynamicComponentFlat {
 }
 ```
 
-In [Creating a Form](#creating-a-form), we've already learned that the form in the DOM is a representation of the TypeScript model.
+In [Creating a Template-Driven Form](#creating-a-template-driven-form), we've already learned that the form in the DOM is a representation of the TypeScript model.
 
 That's why we can simply iterate over a collection of our model to create a nested form and bind the properties of the items to form controls by using two-way binding.
 Every mutation made to that collection (`model.members` in the example) will immediately be applied to the DOM structure.
