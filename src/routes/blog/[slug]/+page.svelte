@@ -49,16 +49,13 @@
 	let headings = null;
 	afterUpdate(() => {
 		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
-		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' :'single');
+		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
 		headings = hasTldr
 			? null
 			: headings || window.history.pushState
 			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
 			: [];
 	});
-
-
-
 
 	let lastHeading = null;
 	$: {
@@ -136,7 +133,9 @@
 			{/each}
 		</div>
 
-		<a class="mt-0" href="https://timdeschryver.dev/twitter" rel="external">@tim_deschryver</a>
+		<a class="mt-0 author" href="https://timdeschryver.dev/twitter" rel="external"
+			>@tim_deschryver</a
+		>
 	</div>
 </header>
 
@@ -167,7 +166,9 @@
 
 {#if post.tldr}
 	<button class="tldr" on:click={blog.toggleTldr}>
-		👀 {$blog?.state === 'tldr' ? 'I want to read the blog post' : 'Just show me the code already'}</button
+		👀 {$blog?.state === 'tldr'
+			? 'I want to read the blog post'
+			: 'Just show me the code already'}</button
 	>
 {/if}
 

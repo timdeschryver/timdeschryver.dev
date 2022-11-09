@@ -75,6 +75,10 @@ const content = './blog';
 						el.style['overflow'] = 'hidden';
 					});
 
+					await page.$eval('.author', (el) => {
+						el.style['text-decoration'] = 'none';
+					});
+
 					await page.evaluate(() => {
 						window.scrollTo({ top: document.querySelector('header').clientHeight });
 					});
