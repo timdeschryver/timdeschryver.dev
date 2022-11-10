@@ -84,11 +84,15 @@ export const CustomerPageActions = createActionGroup({
     source: "Customers Page",
     events: {
       // Action without props
-      CustomersLoaded: emptyProps(),
+      'Customers Loaded': emptyProps(),
       // Action with props
-      CustomerDetailOpened: props<{ customerId: string }>(),
+      'Customer Detail Opened': props<{ customerId: string }>(),
     },
 });
+
+// Generates the following actions that can be dispatched
+CustomerPageActions.customerDetailOpened({ customerId: 'CUST-123' });
+CustomerPageActions.customersLoaded()
 ```
 
 ## Reducers
