@@ -86,12 +86,9 @@
 	</p>
 
 	<p>
-		You can find me on <a href="https://timdeschryver.dev/github" rel="external">GitHub</a> and
-		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a><a
-			style="display:none"
-			rel="me"
-			href="https://mastodon.social/@timdeschryver">Mastodon</a
-		>.
+		You can find me on <a href="https://timdeschryver.dev/github" rel="external">GitHub</a>,
+		<a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>, and
+		<a rel="me" href="https://mastodon.social/@timdeschryver">Mastodon</a>.
 	</p>
 </section>
 

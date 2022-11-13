@@ -108,8 +108,12 @@
 		</nav>
 
 		{#if $blog}
-			<div class="current-details">
-				{$blog.title}
+			<div
+				class="current-details title"
+				on:click={() =>
+					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
+			>
+				🔗 {$blog.title}
 			</div>
 		{/if}
 
@@ -196,6 +200,10 @@
 	header .current-details {
 		margin-top: -1.5em;
 		font-size: 0.8rem;
+	}
+
+	header .current-details.title {
+		cursor: pointer;
 	}
 
 	nav {

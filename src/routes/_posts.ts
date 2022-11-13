@@ -246,9 +246,11 @@ function parseFileToHtmlAndMeta(
 		const id = createHash('md5').update(source).digest('hex');
 
 		const icon = langToIcon[language] || iconCodePurple;
-		const headingParts = [icon, file ? `<span class="file">${file}</span>` : undefined].filter(
-			Boolean,
-		);
+		const headingParts = [
+			icon,
+			file ? `<span class="file-name">${file}</span>` : undefined,
+			`<button class="copy-code" data-ref="${id}">📋</button>`,
+		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
 			: '';

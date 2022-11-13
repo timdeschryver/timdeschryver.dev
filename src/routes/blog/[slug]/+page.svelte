@@ -33,15 +33,20 @@
 	let scrollY;
 
 	let pres: HTMLElement[] = [];
+	let copyButtons: HTMLElement[] = [];
 
 	onMount(() => {
 		pres = [...(document.querySelectorAll('pre') as any)];
-		pres.forEach((pre) => pre.addEventListener('click', copyOnClick));
+		pres.forEach((pre) => pre.addEventListener('click', copyLinkToCodeBlock));
+
+		copyButtons = [...(document.querySelectorAll('.copy-code') as any)];
+		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
 	});
 
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
-			pres.forEach((pre) => pre.removeEventListener('click', copyOnClick));
+			pres.forEach((pre) => pre.removeEventListener('click', copyLinkToCodeBlock));
+			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
 		}
 		blog.reset();
 	});
@@ -73,10 +78,24 @@
 		}
 	}
 
-	function copyOnClick(e: PointerEvent) {
+	function copyLinkToCodeBlock(e: PointerEvent) {
 		if (e.ctrlKey && navigator.clipboard && navigator.clipboard.writeText) {
 			const { origin, pathname } = window.location;
 			navigator.clipboard.writeText(`${origin}${pathname}#${(e.currentTarget as HTMLElement).id}`);
+		}
+	}
+
+	function copyCodeOnClick(e: PointerEvent) {
+		if (e.target instanceof HTMLElement) {
+			const target = e.target;
+			const ref = target.getAttribute('data-ref');
+			const code = document.querySelector(`[id="${ref}"] code`);
+			if (code instanceof HTMLElement) {
+				navigator.clipboard.writeText(code.innerText).then(() => {
+					target.classList.add('success');
+					setTimeout(() => target.classList.remove('success'), 1000);
+				});
+			}
 		}
 	}
 </script>

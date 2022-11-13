@@ -355,11 +355,18 @@ pre > .code-heading {
 	top: 0;
 	left: 0;
 	right: 0;
-	opacity: 0.8;
 }
 
-pre > .code-heading > .file {
+pre > .code-heading > .file-name {
 	width: 100%;
+}
+
+pre > .code-heading > .copy-code {
+	margin-left: auto;
+}
+
+pre > .code-heading > .copy-code.success {
+	animation: wiggle 1s linear;
 }
 
 pre > .code-heading + code {
@@ -373,4 +380,28 @@ pre > .code-heading > * {
 pre > .code-heading > a {
 	font-weight: 900;
 	font-size: initial;
+}
+
+@keyframes wiggle {
+	0%, 7% {
+		transform: rotateZ(0);
+	}
+	15% {
+		transform: rotateZ(-15deg);
+	}
+	20% {
+		transform: rotateZ(10deg);
+	}
+	25% {
+		transform: rotateZ(-10deg);
+	}
+	30% {
+		transform: rotateZ(6deg);
+	}
+	35% {
+		transform: rotateZ(-4deg);
+	}
+	40%, 100% {
+		transform: rotateZ(0);
+	}
 }
