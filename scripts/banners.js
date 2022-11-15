@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { execSync, exec } from 'child_process';
+import { exec } from 'child_process';
 import { chromium } from 'playwright';
 
 const content = './blog';
@@ -17,12 +17,7 @@ const content = './blog';
 	}
 
 	if (generateBanners.length) {
-		execSync('npm run build', { stdio: 'inherit' });
-		const serve = exec('npm run preview');
-
-		serve.stderr.on('data', (data) => {
-			console.error(data.toString());
-		});
+		const serve = exec('npm run dev');
 
 		serve.stdout.on('data', async (data) => {
 			console.log('[banner] ', data.toString());
@@ -42,10 +37,10 @@ const content = './blog';
 				for (const { post, bannerPath } of generateBanners) {
 					console.log(`[banner] Generating banner for ${post}`);
 
-					await page.goto(`http://localhost:4173/blog/${post}`);
+					await page.goto(`http://localhost:5173/blog/${post}`);
 					if (first) {
 						// to hide BMC message
-						await page.goto(`http://localhost:4173/blog/${post}`);
+						await page.goto(`http://localhost:5173/blog/${post}`);
 						first = false;
 					}
 
