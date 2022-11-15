@@ -278,7 +278,12 @@ function parseFileToHtmlAndMeta(
 
 				token.forEach((innertoken) => {
 					const cssVar = replaceColorToCSSVariable(innertoken.color);
-					html += `<span style="color: ${cssVar}">${innertoken.content}</span>`;
+					const escaped = innertoken.content
+						.replace(/&/g, '&amp;')
+						.replace(/</g, '&lt;')
+						.replace(/>/g, '&gt;')
+						.replace(/"/g, '&quot;');
+					html += `<span style="color: ${cssVar}">${escaped}</span>`;
 				});
 
 				html += `</div>`;
