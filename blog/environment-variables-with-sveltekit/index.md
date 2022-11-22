@@ -7,6 +7,10 @@ date: 2021-04-26
 tags: Svelte, SvelteKit, Environment Variables
 ---
 
+> ⚠️ Update: SvelteKit now supports environment variables, making this post obsolete.
+> For more info see the documentation on:
+> [$env/dynamic/private](https://kit.svelte.dev/docs/modules#$env-dynamic-private), [$env/dynamic/public](https://kit.svelte.dev/docs/modules#$env-dynamic-public), [$env/static/private](https://kit.svelte.dev/docs/modules#$env-static-private), and [$env/static/public](https://kit.svelte.dev/docs/modules#$env-static-public). Thanks for the heads-up [Josh Habdas](https://twitter.com/vhsdev).
+
 When the beta version of [SvelteKit](https://kit.svelte.dev/) was [announced](https://svelte.dev/blog/sveltekit-beta), I immediately got excited and migrated my blog from Sapper to SvelteKit. Overall, the migration was very smooth and quick. The big reason why this went smooth is that the API is almost identical, and the docs and examples were helpful.
 
 I just stumbled upon one problem with environment variables.

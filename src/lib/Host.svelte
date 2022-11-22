@@ -13,5 +13,6 @@
 		href="https://azure.microsoft.com/en-us/services/app-service/static/#features?WT.mc_id={variables.creator_id}"
 		rel="noreferrer"
 		target="_blank">Azure</a
-	>.
+	>
+	| Last update: {new Date().toISOString()}.
 </div>

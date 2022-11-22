@@ -6,10 +6,10 @@
 	--text-font: system-ui, sans-serif;
 	--head-font: system-ui, sans-serif;
 	--font-size: calc(1rem + 0.33vw);
-	--line-height: 1.5;
-	--spacing: 1.5em;
+	--line-height: 1.8;
+	--spacing: 2.44rem;
 	--spacing-small: 0.5em;
-	--spacing-large: 3em;
+	--spacing-large: 3.2em;
 	--header-height: 5em;
 }
 
