@@ -1,10 +1,11 @@
 @import 'light.theme.css';
 @import 'dark.theme.css';
 @import 'tweet-preview.css';
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Teko:wght@300;400;500;600;700&display=swap');
 
 :root {
-	--text-font: system-ui, sans-serif;
-	--head-font: system-ui, sans-serif;
+	--text-font: 'Exo 2', sans-serif;
+	--head-font: 'Teko', sans-serif;
 	--font-size: calc(1rem + 0.33vw);
 	--line-height: 1.8;
 	--spacing: 2.44rem;
@@ -68,6 +69,15 @@ body {
 	font-size: 17px;
 	line-height: var(--line-height);
 	padding-bottom: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--head-font);
 }
 
 a {
@@ -309,7 +319,7 @@ pre {
 }
 
 pre > code {
-	padding: 1em;
+	padding: 2em 1em;
 	display: block;
 	margin-top: 0;
 	line-height: 2;
@@ -369,10 +379,6 @@ pre > .code-heading > .copy-code.success {
 	animation: wiggle 1s linear;
 }
 
-pre > .code-heading + code {
-	margin-top: var(--spacing);
-}
-
 pre > .code-heading > * {
 	margin: 0 0.4em;
 }
@@ -383,7 +389,8 @@ pre > .code-heading > a {
 }
 
 @keyframes wiggle {
-	0%, 7% {
+	0%,
+	7% {
 		transform: rotateZ(0);
 	}
 	15% {
@@ -401,7 +408,8 @@ pre > .code-heading > a {
 	35% {
 		transform: rotateZ(-4deg);
 	}
-	40%, 100% {
+	40%,
+	100% {
 		transform: rotateZ(0);
 	}
 }

@@ -151,7 +151,7 @@
 
 	header > div {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 2fr 1fr;
 		align-items: center;
 	}
 
@@ -184,11 +184,15 @@
 			grid-template-columns: auto auto;
 		}
 
-		.name-short {
+		header .current-details.title {
+			visibility: hidden;
+		}
+
+		header .name-short {
 			display: block;
 		}
 
-		.name-long {
+		header .name-long {
 			display: none;
 		}
 	}
