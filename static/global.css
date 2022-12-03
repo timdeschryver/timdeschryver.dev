@@ -14,6 +14,26 @@
 	--header-height: 5em;
 }
 
+@media (prefers-color-scheme: light) {
+	body {
+		--background-color: hsla(0, 0%, 100%, 0.9);
+		--background-color-transparent: hsla(0, 0%, 0%, 0.05);
+		--text-color: hsla(0, 0%, 0%, 0.95);
+		--text-color-light: hsla(0, 0%, 0%, 0.7);
+		--text-color-subtle: hsla(0, 0%, 0%, 0.4);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		--background-color: hsla(0, 0%, 0%, 0.9);
+		--background-color-transparent: hsla(0, 0%, 100%, 0.05);
+		--text-color: hsla(0, 0%, 100%, 0.9);
+		--text-color-light: hsla(0, 0%, 100%, 0.7);
+		--text-color-subtle: hsla(0, 0%, 100%, 0.4);
+	}
+}
+
 body.light {
 	--background-color: hsla(0, 0%, 100%, 0.9);
 	--background-color-transparent: hsla(0, 0%, 0%, 0.05);
