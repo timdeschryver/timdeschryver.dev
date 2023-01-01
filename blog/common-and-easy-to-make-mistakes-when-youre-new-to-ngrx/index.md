@@ -30,7 +30,7 @@ ng new ngrx-fizzbuzz --defaults && cd ngrx-fizzbuzz
 ng add @ngrx/store --no-minimal
 ng add @ngrx/effects --skipTests --group
 ng add @ngrx/store-devtools
-yarn add @ngrx/schematics --dev
+ng add @ngrx/schematics
 ```
 
 ## Creating the FizzBuzz reducer
