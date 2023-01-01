@@ -26,7 +26,7 @@ The output starts as follows:
 Let’s get started! We can create the project using the `ng new` command and we’ll install the NgRx packages using the NgRx schematics. These schematics will install the package and will also automate the needed configurations to wire up NgRx correctly.
 
 ```bash
-ng new ngrx-fizzbuzz
+ng new ngrx-fizzbuzz --defaults && cd ngrx-fizzbuzz
 ng add @ngrx/store
 ng add @ngrx/effects --skipTests --group
 ng add @ngrx/store-devtools
