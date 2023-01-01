@@ -28,7 +28,7 @@ Let’s get started! We can create the project using the `ng new` command and we
 ```bash
 ng new ngrx-fizzbuzz
 ng add @ngrx/store
-ng add @ngrx/effects --no-spec --group
+ng add @ngrx/effects --skipTests --group
 ng add @ngrx/store-devtools
 yarn add @ngrx/schematics --dev
 ```
