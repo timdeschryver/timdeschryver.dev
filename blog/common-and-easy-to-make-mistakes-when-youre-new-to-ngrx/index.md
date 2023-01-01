@@ -38,7 +38,7 @@ ng add @ngrx/schematics
 With the project ready, we can start to implement FizzBuzz. We do this by creating the fizzbuzz reducer, using the [reducer schematic](https://ngrx.io/guide/schematics/reducer).
 
 ```bash
-ng generate @ngrx/schematics:reducer fizzbuzz --reducers=reducers/index.ts --group=true --spec=false
+ng generate @ngrx/schematics:reducer fizzbuzz --reducers=reducers/index.ts --group --skip-tests
 ```
 
 In the reducer:
