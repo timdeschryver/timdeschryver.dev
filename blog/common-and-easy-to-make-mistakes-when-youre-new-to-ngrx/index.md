@@ -26,11 +26,11 @@ The output starts as follows:
 Let’s get started! We can create the project using the `ng new` command and we’ll install the NgRx packages using the NgRx schematics. These schematics will install the package and will also automate the needed configurations to wire up NgRx correctly.
 
 ```bash
-ng new ngrx-fizzbuzz
-ng add @ngrx/store
-ng add @ngrx/effects --spec=false --group=true
+ng new ngrx-fizzbuzz --defaults && cd ngrx-fizzbuzz
+ng add @ngrx/store --no-minimal
+ng add @ngrx/effects --skipTests --group
 ng add @ngrx/store-devtools
-yarn add @ngrx/schematics --dev
+ng add @ngrx/schematics
 ```
 
 ## Creating the FizzBuzz reducer
@@ -38,7 +38,7 @@ yarn add @ngrx/schematics --dev
 With the project ready, we can start to implement FizzBuzz. We do this by creating the fizzbuzz reducer, using the [reducer schematic](https://ngrx.io/guide/schematics/reducer).
 
 ```bash
-ng generate @ngrx/schematics:reducer fizzbuzz --reducers=reducers/index.ts --group=true --spec=false
+ng generate @ngrx/schematics:reducer fizzbuzz --reducers=reducers/index.ts --group --skip-tests
 ```
 
 In the reducer:
