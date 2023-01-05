@@ -384,6 +384,8 @@ function extractFrontmatter(markdown): { content: string; metadata: any } {
 				}
 				return a;
 			});
+	} else {
+		result.attributes.tags = [];
 	}
 	if (Array.isArray(result.attributes.translations)) {
 		for (const translation of result.attributes.translations) {

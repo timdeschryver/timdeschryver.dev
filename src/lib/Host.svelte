@@ -14,5 +14,5 @@
 		rel="noreferrer"
 		target="_blank">Azure</a
 	>
-	| Last update: {new Date().toISOString()}.
+	| Last update: {variables.timestamp.toISOString()}.
 </div>

@@ -40,12 +40,11 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		.map((node) => {
 			return `
 				<item>
-				<title><![CDATA[ ${node.title} ]]></title>
-				<description><![CDATA[ ${node.description} ]]></description>
-				<link>${node.link}</link>
-				<guid isPermaLink="false">${node.link}</guid>
-				<pubDate>${node.pubDate}</pubDate>
-				<content:encoded>${node.content}></content:encoded>
+					<title><![CDATA[ ${node.title} ]]></title>
+					<description><![CDATA[ ${node.description} ]]></description>
+					<link>${node.link}</link>
+					<guid>${node.link}</guid>
+					<pubDate>${node.pubDate}</pubDate>
 				</item>
 			`;
 		})
@@ -63,14 +62,14 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:webfeeds="http://webfeeds.org/rss/1.0" version="2.0">
 		<channel>
 		<title><![CDATA[ Tim Deschryver ]]></title>
-		<webfeeds:accentColor>#F8C400</webfeeds:accentColor>
-		<webfeeds:analytics id="${variables.gtag_id}" engine="GoogleAnalytics"/>
 		<description><![CDATA[ Blog by Tim Deschryver ]]></description>
+		<lastBuildDate>${variables.timestamp.toISOString()}</lastBuildDate>
+		<ttl>60</ttl>
+		<webfeeds:analytics id="${variables.gtag_id}" engine="GoogleAnalytics"/>
+		<language>en-us</language>
 		${link}
 		${atom}
 		${image}
-		<language>en-us</language>
-		<lastBuildDate>${new Date().toISOString()}</lastBuildDate>
 		${itemNodes}
 		</channel>
 		</rss>`;
