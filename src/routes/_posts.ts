@@ -276,15 +276,19 @@ function parseFileToHtmlAndMeta(
 					.join(' ');
 				html += `<div class="${lineClass}">`;
 
-				token.forEach((innertoken) => {
-					const cssVar = replaceColorToCSSVariable(innertoken.color);
-					const escaped = innertoken.content
-						.replace(/&/g, '&amp;')
-						.replace(/</g, '&lt;')
-						.replace(/>/g, '&gt;')
-						.replace(/"/g, '&quot;');
-					html += `<span style="color: ${cssVar}">${escaped}</span>`;
-				});
+				if (token.length) {
+					token.forEach((innertoken) => {
+						const cssVar = replaceColorToCSSVariable(innertoken.color);
+						const escaped = innertoken.content
+							.replace(/&/g, '&amp;')
+							.replace(/</g, '&lt;')
+							.replace(/>/g, '&gt;')
+							.replace(/"/g, '&quot;');
+						html += `<span style="color: ${cssVar}">${escaped}</span>`;
+					});
+				} else {
+					html += `<span></span>`;
+				}
 
 				html += `</div>`;
 			});

@@ -1,7 +1,7 @@
-import type { PageServerLoad } from './$types';
 import { readPosts } from '../_posts';
 
-export async function load(): Promise<PageServerLoad> {
+/** @type {import('./$types').PageLoad} */
+export async function load() {
 	const posts = await readPosts();
 	const metadata = posts.map((p) => ({
 		title: p.metadata.title,
