@@ -32,7 +32,7 @@
 	},
 	"devDependencies": {
 		"@azure/static-web-apps-cli": "1.0.4",
-		"@playwright/test": "1.29.0",
+		"@playwright/test": "1.29.1",
 		"@squoosh/lib": "0.4.0",
 		"@sveltejs/adapter-auto": "1.0.0",
 		"@sveltejs/adapter-node": "1.0.0",
@@ -54,7 +54,7 @@
 		"lint-staged": "13.1.0",
 		"marked": "4.2.5",
 		"node-fetch": "3.3.0",
-		"playwright": "1.29.0",
+		"playwright": "1.29.1",
 		"prettier": "2.8.1",
 		"prettier-plugin-svelte": "2.9.0",
 		"rimraf": "3.0.2",
