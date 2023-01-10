@@ -24,9 +24,9 @@ npm install @angular/material@7.0.0-rc.1
 Next, we can import the `DragDropModule` into our module:
 
 ```ts
-import { NgModule } from '[@angular/core](http://twitter.com/angular/core "Twitter profile for @angular/core")';
-import { BrowserModule } from '[@angular/platform-browser](http://twitter.com/angular/platform-browser "Twitter profile for @angular/platform-browser")';
-import { DragDropModule } from '[@angular/cdk](http://twitter.com/angular/cdk "Twitter profile for @angular/cdk")/drag-drop';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 
@@ -104,8 +104,8 @@ dropped: EventEmitter<CdkDragDrop<T, any>> =
 
 With this knowledge we can implement the `dropped` function inside the `AppComponent`:
 
-import { Component } from '[@angular/core](http://twitter.com/angular/core "Twitter profile for @angular/core")';
-import { CdkDragDrop, moveItemInArray } from '[@angular/cdk](http://twitter.com/angular/cdk "Twitter profile for @angular/cdk")/drag-drop';
+import { Component } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component(...)
 export class AppComponent {
