@@ -287,7 +287,7 @@ function parseFileToHtmlAndMeta(
 						html += `<span style="color: ${cssVar}">${escaped}</span>`;
 					});
 				} else {
-					html += `<span></span>`;
+					html += `<span> </span>`;
 				}
 
 				html += `</div>`;

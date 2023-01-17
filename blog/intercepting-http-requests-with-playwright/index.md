@@ -134,24 +134,34 @@ test('mock response with playwright that throws an error', async ({ page }) => {
 
 Last, but not least, we can also make the original request and modify the response. I like to use this method because it's the best of both worlds. We still test the interaction between the application and the server, but we still have to possibility to create edge cases without a lot of overhead.
 
-```ts{4-19}:app.component.spec.ts
+```ts{4-29}:app.component.spec.ts
 import { test, expect } from '@playwright/test';
 
-test('tweak the original response', async ({ page, browser }) => {
+test('tweak the original response', async ({ page }) => {
     await page.route(
         'https://my-json-server.typicode.com/typicode/demo/posts**',
         async (route) => {
             // Make the original request
-            const response = await page.request.fetch(route.request());
-            let result = await response.json();
+            const response = await route.fetch();
+            // route.fetch() was added in v1.29, for lower versions do:
+            // const response = await page.request.fetch(route.request());
 
-            // "copy" original response and overwrite body
-            route.fulfill({
-                response,
-                body: JSON.stringify(
-                    result.map((post) => ({ ...post, title: `${post.title} (Modified)` }))
-                ),
+            // Get the response
+            const result = await response.json();
+
+            // Modify the response
+            const modifiedResult = result.map((post) => {
+                return { ...post, title: `${post.title} (Modified)` };
             });
+
+            route.fulfill({ json: modifiedResult });
+            // route.fullfill({ json }) was added in v1.29, for lower versions do:
+            // route.fulfill({
+            //     response,
+            //     body: JSON.stringify(
+            //         result.map((post) => ({ ...post, title: `${post.title} (Modified)` }))
+            //     ),
+            // });
         }
     );
     await page.goto('http://localhost:4200/');
