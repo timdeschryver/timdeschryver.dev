@@ -135,6 +135,8 @@ Stack Trace:
     ...
 ```
 
+> The same result can be achieved with the [Shouldly](https://github.com/shouldly/shouldly) library by using [SatisfyAllConditions](https://docs.shouldly.org/documentation/satisfyallconditions)
+
 I also encourage you to give a description to the scope by passing in a description as an argument.
 This makes it very explicit that assertions belong to each other, and also gives a clear view of why the test fails.
 

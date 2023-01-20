@@ -3,6 +3,8 @@ This has the benefit that when a test fails, you are immediately presented with 
 In contrast to not using them, where you have to re-execute the same test over and over again until all assertions are fixed.
 Not only does this increase the developer experience, it also increases the productivity of you and your team.
 
+> The same result can be achieved with the [Shouldly](https://github.com/shouldly/shouldly) library by using [SatisfyAllConditions](https://docs.shouldly.org/documentation/satisfyallconditions)
+
 ## Example
 
 ```cs{13-17}:Tests.ts
