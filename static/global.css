@@ -360,7 +360,7 @@ code.dim:hover > div:not(.highlight) {
 	opacity: 1;
 }
 
-code > div:not(.empty) {
+code > div {
 	margin-top: 0;
 }
 
