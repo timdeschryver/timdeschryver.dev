@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, onMount, afterUpdate } from 'svelte';
+	import { onDestroy, afterUpdate, tick } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
@@ -35,24 +35,13 @@
 	let pres: HTMLElement[] = [];
 	let copyButtons: HTMLElement[] = [];
 
-	onMount(() => {
-		pres = [...(document.querySelectorAll('pre') as any)];
-		pres.forEach((pre) => pre.addEventListener('click', copyLinkToCodeBlock));
-
-		copyButtons = [...(document.querySelectorAll('.copy-code') as any)];
-		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
-	});
-
 	onDestroy(() => {
-		if (typeof document !== 'undefined') {
-			pres.forEach((pre) => pre.removeEventListener('click', copyLinkToCodeBlock));
-			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
-		}
+		unRegisterCopyClick();
 		blog.reset();
 	});
 
 	let headings = null;
-	afterUpdate(() => {
+	afterUpdate(async () => {
 		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
 		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
 		headings = hasTldr
@@ -60,6 +49,14 @@
 			: headings || window.history.pushState
 			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
 			: [];
+
+		await tick();
+		unRegisterCopyClick();
+		pres = [...(document.querySelectorAll('pre') as any)];
+		pres.forEach((pre) => pre.addEventListener('click', copyLinkToCodeBlock));
+
+		copyButtons = [...(document.querySelectorAll('.copy-code') as any)];
+		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
 	});
 
 	let lastHeading = null;
@@ -78,6 +75,13 @@
 		}
 	}
 
+	function unRegisterCopyClick() {
+		if (typeof document !== 'undefined') {
+			pres.forEach((pre) => pre.removeEventListener('click', copyLinkToCodeBlock));
+			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
+		}
+	}
+
 	function copyLinkToCodeBlock(e: PointerEvent) {
 		if (e.ctrlKey && navigator.clipboard && navigator.clipboard.writeText) {
 			const { origin, pathname } = window.location;
@@ -92,8 +96,12 @@
 			const code = document.querySelector(`[id="${ref}"] code`);
 			if (code instanceof HTMLElement) {
 				navigator.clipboard.writeText(code.innerText).then(() => {
+					target.innerHTML = 'assignment_turned_in';
 					target.classList.add('success');
-					setTimeout(() => target.classList.remove('success'), 1000);
+					setTimeout(() => {
+						target.classList.remove('success');
+						target.innerHTML = 'content_paste';
+					}, 1000);
 				});
 			}
 		}

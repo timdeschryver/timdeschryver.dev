@@ -89,12 +89,12 @@
 			<a href="/blog/rss.xml" data-sveltekit-reload>RSS</a>
 			{#if theme === 'dark'}
 				<button
-					class="theme-switch"
+					class="theme-switch "
 					title="Switch to light theme"
 					on:click={() => toggleTheme('light')}
 					in:fly={{ y: 20, duration: 200, delay: 200 }}
 				>
-					☀️ Light
+					<span class="material-symbols-outlined"> light_mode </span> Light
 				</button>
 			{:else}
 				<button
@@ -102,7 +102,8 @@
 					title="Switch to dark theme"
 					on:click={() => toggleTheme('dark')}
 					in:fly={{ y: -20, duration: 200, delay: 200 }}
-					>🌚 Dark
+				>
+					<span class="material-symbols-outlined"> dark_mode </span> Dark
 				</button>
 			{/if}
 		</nav>

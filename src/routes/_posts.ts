@@ -249,7 +249,7 @@ function parseFileToHtmlAndMeta(
 		const headingParts = [
 			icon,
 			file ? `<span class="file-name">${file}</span>` : undefined,
-			`<button class="copy-code" data-ref="${id}">📋</button>`,
+			`<button class="copy-code material-symbols-outlined" data-ref="${id}">content_paste</button>`,
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
