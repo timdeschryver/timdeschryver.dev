@@ -100,7 +100,7 @@ export async function readPosts(): Promise<
 
 			const tags = metadata.tags;
 			const banner = path
-				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.webp'))
+				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.jpg'))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
@@ -164,6 +164,7 @@ function parseFileToHtmlAndMeta(
 	const assetsSrc = path.dirname(file);
 	const renderer = new marked.Renderer();
 	const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
+
 	renderer.link = (href, title, text) => {
 		if (text === href && tweetRegexp.test(href)) {
 			return `::${href}::`;
@@ -217,6 +218,9 @@ function parseFileToHtmlAndMeta(
 		`;
 	};
 
+	renderer.paragraph = (text) => {
+		return text.trim().startsWith('<figure>') ? text : `<p>${text}</p>`;
+	};
 	renderer.code = (source, lang) => {
 		lang = lang || 'txt';
 
@@ -340,7 +344,9 @@ function parseFileToHtmlAndMeta(
 
 		return `
 		<h${level} id="${fragment}">
-		  <a href="#${fragment}" class="anchor" tabindex="-1">${headingText}</a>
+		  <a href="#${fragment}" class="anchor" tabindex="-1">${headingText} <span class="material-symbols-outlined">
+		  link
+		  </span></a>
 		</h${level}>`;
 	};
 
@@ -348,7 +354,6 @@ function parseFileToHtmlAndMeta(
 		content.replace(/^\t+/gm, (match) => match.split('\t').join('  ')),
 		{ renderer },
 	);
-
 	return { html, metadata, assetsSrc };
 }
 

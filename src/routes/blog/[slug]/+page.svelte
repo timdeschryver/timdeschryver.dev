@@ -141,6 +141,7 @@
 
 <header>
 	<h1>{post.metadata.title}</h1>
+	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
 		<div class="published-at">
 			{#if post.metadata.modified !== post.metadata.date}
@@ -156,13 +157,17 @@
 
 		<div class="logos">
 			{#each logos as logo}
-				<img class="mt-0" src="/images/{logo.src}" alt={logo.alt} height="48px" />
+				<img class="mt-0 logo" src="/images/{logo.src}" alt={logo.alt} />
 			{/each}
 		</div>
 
-		<a class="mt-0 author" href="https://timdeschryver.dev/twitter" rel="external"
-			>@tim_deschryver</a
-		>
+		<div class="mt-0 author">
+			<img class="author-img" src="/images/tim.jpg" alt="profile" />
+			<div class="mt-0">
+				<div class="author-name">Tim Deschryver</div>
+				<div class="author-source mt-0">timdeschryver.dev</div>
+			</div>
+		</div>
 	</div>
 </header>
 
@@ -301,18 +306,6 @@
 		margin-bottom: 0;
 	}
 
-	@media (max-width: 1450px) {
-		.side-actions {
-			width: 130px;
-		}
-	}
-
-	@media (max-width: 1380px) {
-		.side-actions {
-			display: none;
-		}
-	}
-
 	:global(#svelte > main) > header {
 		grid-column: 1 / 4;
 		min-height: 100vh;
@@ -328,12 +321,44 @@
 		font-size: clamp(1rem, 3vw, 6rem);
 	}
 
+	.banner {
+		display: none;
+	}
+
 	.details {
 		display: flex;
 		justify-content: space-between;
 		margin: 0;
 		font-size: 1.5rem;
 		width: 100%;
+		align-items: center;
+	}
+
+	.author-img,
+	.logo {
+		width: 64px;
+		height: 64px;
+	}
+
+	.author {
+		display: flex;
+		align-items: center;
+		text-align: left;
+		gap: 0.5em;
+	}
+
+	.author-name {
+		font-size: 1.3rem;
+	}
+	.author-source {
+		font-size: 0.8rem;
+		transform: translate(3px, -8px);
+		display: none;
+	}
+
+	.author-img {
+		width: auto;
+		border-radius: 100%;
 	}
 
 	.details > * {
@@ -349,6 +374,28 @@
 	@media screen and (max-width: 1150px) {
 		.details {
 			font-size: 1rem;
+		}
+
+		.author-name {
+			font-size: 1rem;
+		}
+
+		.author-img,
+		.logo {
+			width: 48px;
+			height: 48px;
+		}
+	}
+
+	@media (max-width: 1450px) {
+		.side-actions {
+			width: 130px;
+		}
+	}
+
+	@media (max-width: 1380px) {
+		.side-actions {
+			display: none;
 		}
 	}
 

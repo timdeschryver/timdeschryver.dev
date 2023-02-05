@@ -79,9 +79,7 @@
 <header>
 	<div>
 		<h2>
-			<a href="/"
-				><span class="name-long">Tim Deschryver</span><span class="name-short">Tim</span></a
-			>
+			<a href="/">Tim Deschryver</a>
 		</h2>
 
 		<nav>
@@ -172,14 +170,6 @@
 		box-shadow: rgb(255 255 255 / 5%) 0px 5px 15px;
 	}
 
-	.name-short {
-		display: none;
-	}
-
-	.name-long {
-		display: block;
-	}
-
 	@media (max-width: 480px) {
 		header > div {
 			grid-template-columns: auto auto;
@@ -187,14 +177,6 @@
 
 		header .current-details.title {
 			visibility: hidden;
-		}
-
-		header .name-short {
-			display: block;
-		}
-
-		header .name-long {
-			display: none;
 		}
 	}
 

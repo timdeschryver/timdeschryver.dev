@@ -15,7 +15,6 @@ const content = './blog';
 			generateBanners.push({ post, bannerPath });
 		}
 	}
-
 	if (generateBanners.length) {
 		const serve = exec('npm run dev');
 
@@ -29,8 +28,8 @@ const content = './blog';
 				});
 
 				await page.setViewportSize({
-					width: 2048,
-					height: 2048 / 2,
+					width: 1200,
+					height: 627,
 				});
 
 				let first = true;
@@ -51,21 +50,11 @@ const content = './blog';
 						el.style.display = 'none';
 					});
 					await page.$eval('.logos', (el) => {
-						const logos = el.querySelectorAll('img');
-						if (logos.length) {
-							el.style.display = 'flex';
-							logos.forEach((logo) => {
-								logo.height = 128;
-							});
-						}
+						el.style.display = 'flex';
 					});
-
-					await page.$eval('.details', (el) => {
-						el.style['justify-content'] = 'space-around';
-						el.style['align-items'] = 'center';
-						el.style['font-size'] = '2.5rem';
+					await page.$eval('.author-source', (el) => {
+						el.style.display = 'block';
 					});
-
 					await page.$eval('body', (el) => {
 						el.style['overflow'] = 'hidden';
 					});
