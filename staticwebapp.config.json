@@ -16,6 +16,11 @@
 			"statusCode": 301
 		},
 		{
+			"route": "/blog/i-tried-the-angular-standalone-migration-and-here-is-the-results",
+			"redirect": "/blog/i-tried-the-angular-standalone-migration-and-here-is-the-result",
+			"statusCode": 301
+		},
+		{
 			"route": "/newsletter",
 			"redirect": "https://tinyletter.com/timdeschryver",
 			"statusCode": 302

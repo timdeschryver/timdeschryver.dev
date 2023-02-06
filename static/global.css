@@ -146,6 +146,7 @@ p {
 ul {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
+	margin-top: var(--spacing-half);
 	list-style-position: inside;
 	font-weight: 300;
 }
@@ -357,7 +358,7 @@ pre {
 }
 
 pre > code {
-	padding: 2em 1em 0.5em 1em;
+	padding: 3em 1em 0.5em 1em;
 	display: block;
 	margin-top: 0;
 	line-height: 2;

@@ -219,7 +219,9 @@ function parseFileToHtmlAndMeta(
 	};
 
 	renderer.paragraph = (text) => {
-		return text.trim().startsWith('<figure>') ? text : `<p>${text}</p>`;
+		return text.trim().startsWith('<figure>') || text.trim().startsWith('::')
+			? text
+			: `<p>${text}</p>`;
 	};
 	renderer.code = (source, lang) => {
 		lang = lang || 'txt';

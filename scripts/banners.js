@@ -15,6 +15,7 @@ const content = './blog';
 			generateBanners.push({ post, bannerPath });
 		}
 	}
+
 	if (generateBanners.length) {
 		const serve = exec('npm run dev');
 
