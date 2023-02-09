@@ -442,7 +442,7 @@ Because once you get to know RxJS, it makes it easier to work with asynchronous 
 
 ## RxJS-based examples
 
-### Typehead
+### Typeahead
 
 It's been a while since I had to write a typeahead without RxJS but this took some time and a lot of code. The implementation also contained fewer features, as the cancellability of previous requests. Sadly, most of the time, the implementation also introduced bugs.
 
@@ -504,7 +504,7 @@ The code above creates a reference to the input box by using Svelte's [`bind:thi
 When the component is mounted, we use RxJS to subscribe to the `input` event on the input box. The rest of the code fires an AJAX request to an API and binds the result to the `books` variable.
 In the HTML, we print out the output by subscribing to the `books` variable with the `$` sign.
 
-### Refactored Typehead
+### Refactored Typeahead
 
 The above code can be cleaned up. What I don't like about it, is the usage of the `inputElement` binding.
 Because, again, this adds extra code in our codebase that we have to maintain.
