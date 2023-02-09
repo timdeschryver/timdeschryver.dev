@@ -442,7 +442,7 @@ Because once you get to know RxJS, it makes it easier to work with asynchronous 
 
 ## RxJS-based examples
 
-### Typehead
+### Typeahead
 
 It's been a while since I had to write a typeahead without RxJS but this took some time and a lot of code. The implementation also contained fewer features, as the cancellability of previous requests. Sadly, most of the time, the implementation also introduced bugs.
 
