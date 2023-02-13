@@ -6,19 +6,18 @@
 	import { variables } from '$lib/variables';
 	import Host from '$lib/Host.svelte';
 	import { blog } from '$lib/current-blog.store';
+	import { theme } from '$lib/theme.store';
 
 	$: segment = $page.url.pathname.substring(1);
 	let support;
 	let y;
 
-	let theme = '';
-
 	onMount(() => {
-		theme =
+		theme.set(
 			window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
 				? 'dark'
-				: 'light';
-		document.body.classList.add(theme);
+				: 'light',
+		);
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
 			toggleTheme(event.matches ? 'dark' : 'light');
 		});
@@ -64,8 +63,11 @@
 	}
 
 	function toggleTheme(newTheme: string) {
-		document.body.classList.replace(theme, newTheme);
-		theme = newTheme;
+		theme.set(newTheme);
+	}
+
+	$: if (typeof document !== 'undefined') {
+		document.body.className = $theme;
 	}
 </script>
 
@@ -85,7 +87,7 @@
 		<nav>
 			<a href="/blog" class:active={segment.startsWith('blog')}>BLOG</a>
 			<a href="/blog/rss.xml" data-sveltekit-reload>RSS</a>
-			{#if theme === 'dark'}
+			{#if $theme === 'dark'}
 				<button
 					class="theme-switch "
 					title="Switch to light theme"
@@ -110,6 +112,8 @@
 			<div
 				class="current-details title"
 				on:click={() =>
+					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
+				on:keydown={() =>
 					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
 			>
 				🔗 {$blog.title}
