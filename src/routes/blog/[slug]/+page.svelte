@@ -24,6 +24,8 @@
 					return { src: 'ngrx.svg', alt: 'The NgRx logo' };
 				case 'azure':
 					return { src: 'azure.svg', alt: 'The Azure logo' };
+				case 'zod':
+					return { src: 'zod.svg', alt: 'The zod logo' };
 				default:
 					return null;
 			}
