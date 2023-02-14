@@ -7,8 +7,7 @@ const config = {
 	plugins: [
 		sveltekit(),
 		svgLoader(),
-		// @ts-ignore - Doesn't look like `vite-plugin-restart` exports correctly.
-		VitePluginRestart.default({
+		VitePluginRestart({
 			restart: ['./blog/**'],
 		}),
 	],
