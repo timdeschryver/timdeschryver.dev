@@ -130,7 +130,14 @@ async function fetchTweetsInternal(tweetIds: string[]) {
 		const author = authors.data.find((author) => tweet.author_id === author.id);
 		let text = tweet.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
+		let first = true;
 		for (const url of tweet.entities?.urls || []) {
+			if (!first) {
+				text = text.replace(url.url, ``);
+				continue;
+			}
+			first = false;
+
 			if (url.media_key) {
 				const media = tweets.includes.media.find((m) => m.media_key === url.media_key) as any;
 				if (media?.type === 'animated_gif' || media?.type === 'video') {

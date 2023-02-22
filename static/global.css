@@ -7,8 +7,8 @@
 :root {
 	--text-font: 'Mulish', sans-serif;
 	--head-font: 'Dosis', sans-serif;
-	--font-size: calc(1rem + 0.33vw);
-	--line-height: 1.8;
+    --font-size: calc(1rem + 0.33vw);
+    --line-height: 1.8;
 	--spacing: 2.44em;
 	--spacing-half: 1.22em;
 	--spacing-small: 0.5em;
@@ -143,15 +143,10 @@ p {
 	}
 }
 
-ul {
+ul, ol {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
 	margin-top: var(--spacing-half);
-	list-style-position: inside;
-	font-weight: 300;
-}
-
-ol {
 	list-style-position: inside;
 	font-weight: 300;
 }
@@ -161,7 +156,7 @@ li > a + ul {
 	margin-top: var(--spacing-small);
 }
 
-ul ul {
+ul ul, ol ol {
 	padding-left: 1.11em;
 }
 

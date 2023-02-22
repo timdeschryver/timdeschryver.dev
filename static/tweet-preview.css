@@ -1,7 +1,16 @@
+:root {
+    --tweet-size: 1rem;
+}
+
 .tweet-preview {
 	border: 1px solid var(--text-color-subtle);
 	border-radius: 0.3em;
 	padding: 1em 0.8em;
+    font-size: var(--tweet-size);
+}
+
+.tweet-preview p {
+    font-size: var(--tweet-size);
 }
 
 .tweet-preview * {
@@ -9,20 +18,14 @@
 }
 
 .tweet-preview > .header {
-	font-size: var(--font-size);
 	display: grid;
 	grid-template-columns: 48px 1fr;
 	align-items: center;
 	gap: 1em;
 }
 
-.tweet-preview .author-username {
-	font-size: 1rem;
-}
-
 .tweet-preview > .content {
 	margin-top: 0.5em;
-	font-size: var(--font-size);
 }
 
 .tweet-preview .author-profile {
@@ -34,10 +37,6 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-top: 0.5em;
-}
-
-.tweet-preview > .footer * {
-	font-size: 1rem;
 }
 
 .tweet-preview .tweet-url {
