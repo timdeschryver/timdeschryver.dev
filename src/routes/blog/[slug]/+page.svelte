@@ -26,6 +26,8 @@
 					return { src: 'azure.svg', alt: 'The Azure logo' };
 				case 'zod':
 					return { src: 'zod.svg', alt: 'The zod logo' };
+				case 'angular testing library':
+					return { src: 'atl.png', alt: 'The Angular Testing Library logo' };
 				default:
 					return null;
 			}

@@ -1,7 +1,11 @@
-import { optimizeImage } from './optimize-image.js';
 import { execSync } from 'child_process';
+import { optimizeImage } from './optimize-image.js';
 
 for (const filepath of getChangedFiles()) {
+	if (!filepath.includes('blog')) {
+		continue;
+	}
+
 	if (
 		!(
 			filepath.endsWith('.png') ||

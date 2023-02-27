@@ -1,10 +1,12 @@
-import { writeFileSync } from 'fs';
+import { writeFile, readFile } from 'fs/promises';
 import { ImagePool } from '@squoosh/lib';
+import { cpus } from 'os';
 
 export async function optimizeImage(img) {
-	const imagePool = new ImagePool();
+	const imagePool = new ImagePool(cpus().length);
 
-	const image = imagePool.ingestImage(img);
+	const file = await readFile(img);
+	const image = imagePool.ingestImage(file);
 	await image.encode({
 		mozjpeg: {},
 		webp: {},
@@ -12,11 +14,11 @@ export async function optimizeImage(img) {
 
 	if (!img.endsWith('.webp')) {
 		const mozjpeg = await image.encodedWith.mozjpeg;
-		await writeFileSync(img, mozjpeg.binary);
+		await writeFile(img, mozjpeg.binary);
 	}
 
 	const webp = await image.encodedWith.webp;
-	await writeFileSync(img.replace(/\.(png|jpg|jpeg|jpeg)$/, '.webp'), webp.binary);
+	await writeFile(img.replace(/\.(png|jpg|jpeg|jpeg)$/, '.webp'), webp.binary);
 
 	await imagePool.close();
 }
