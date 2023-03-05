@@ -8,7 +8,7 @@
 		const scriptElm = document.createElement('script');
 		scriptElm.setAttribute('repo', 'timdeschryver/timdeschryver.dev');
 		scriptElm.setAttribute('issue-term', 'og:title');
-		scriptElm.setAttribute('theme', $theme === 'dark' ? 'github-dark' : 'github-light');
+		scriptElm.setAttribute('theme', 'preferred-color-scheme');
 		scriptElm.setAttribute('label', '💬 Utterences');
 		scriptElm.setAttribute('crossorigin', 'anonymous');
 

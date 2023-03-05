@@ -7,8 +7,8 @@
 :root {
 	--text-font: 'Mulish', sans-serif;
 	--head-font: 'Dosis', sans-serif;
-    --font-size: calc(1rem + 0.33vw);
-    --line-height: 1.8;
+	--font-size: calc(1rem + 0.33vw);
+	--line-height: 1.8;
 	--spacing: 2.44em;
 	--spacing-half: 1.22em;
 	--spacing-small: 0.5em;
@@ -143,7 +143,8 @@ p {
 	}
 }
 
-ul, ol {
+ul,
+ol {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
 	margin-top: var(--spacing-half);
@@ -156,7 +157,8 @@ li > a + ul {
 	margin-top: var(--spacing-small);
 }
 
-ul ul, ol ol {
+ul ul,
+ol ol {
 	padding-left: 1.11em;
 }
 
@@ -420,6 +422,37 @@ pre > .code-heading > * {
 pre > .code-heading > a {
 	font-weight: 900;
 	font-size: initial;
+}
+
+div.success {
+	background: hsla(150, 52%, 51%, 0.1);
+	border: 1px solid hsla(150, 52%, 51%, 0.8);
+	border-radius: 3px;
+	padding: 0.5em 1em;
+}
+div.error {
+	background: hsla(356, 100%, 41%, 0.1);
+	border: 1px solid hsla(356, 100%, 41%, 0.8);
+	border-radius: 3px;
+	padding: 0.5em 1em;
+}
+div.info {
+	background: hsla(208, 100%, 51%, 0.1);
+	border: 1px solid hsla(208, 100%, 51%, 0.8);
+	border-radius: 3px;
+	padding: 0.5em 1em;
+}
+div.warning {
+	background: hsla(37, 90%, 51%, 0.1);
+	border: 1px solid hsla(37, 90%, 51%, 0.8);
+	border-radius: 3px;
+	padding: 0.5em 1em;
+}
+div.info > p,
+div.success > p,
+div.error > p,
+div.warning > p {
+	margin-top: 0;
 }
 
 .material-symbols-outlined {

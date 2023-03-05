@@ -219,9 +219,22 @@ function parseFileToHtmlAndMeta(
 	};
 
 	renderer.paragraph = (text) => {
-		return text.trim().startsWith('<figure>') || text.trim().startsWith('::')
-			? text
-			: `<p>${text}</p>`;
+		const trimmed = text.trim();
+		if (trimmed.startsWith(':::')) {
+			const [clazz, ...txt] = trimmed
+				.split('\n')
+				.map((t) => (t.startsWith(':::') ? t.substring(3) : t))
+				.map((t) => t.trim())
+				.filter(Boolean);
+
+			return `<div class="${clazz}">${txt.map((t) => `<p>${t}</p>`).join('')}</div>`;
+		}
+
+		if (trimmed.startsWith('<figure>') || trimmed.startsWith('::')) {
+			return trimmed;
+		}
+
+		return `<p>${trimmed}</p>`;
 	};
 	renderer.code = (source, lang) => {
 		lang = lang || 'txt';
