@@ -219,7 +219,7 @@ function parseFileToHtmlAndMeta(
 	};
 
 	renderer.paragraph = (text) => {
-		const trimmed = text.trim();
+		const trimmed = text.replace('👋', `<span class="wave">👋</span>`).trim();
 		if (trimmed.startsWith(':::')) {
 			const [clazz, ...txt] = trimmed
 				.split('\n')
