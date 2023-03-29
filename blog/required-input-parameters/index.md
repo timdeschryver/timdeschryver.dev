@@ -7,6 +7,14 @@ date: 2018-05-14T14:00:12.814Z
 tags: Angular
 ---
 
+:::warning
+👀 Heads-up!
+If you're using Angular [v16.0.0-next.4](https://github.com/angular/angular/releases/tag/16.0.0-next.4) or later, you can ignore this post.
+The Angular Compiler now supports required `@Input()` properties, so we do not need to resort to workarounds mentioned in this post.
+To create a required `@Input()` property, simply use the new `required` property while defining a required property:
+`@Input({ required: true }) woopARequiredInput: string;`
+:::
+
 This week I got asked how to make a component’s input property required. Without giving it much thought I started my answer ‘well, you can just …’, then I stopped asking myself the same question. So I opened a new [StackBlitz](https://stackblitz.com/) project and started exploring the options before giving an answer.
 
 Before we start let’s imagine we’re creating a component `HelloComponent` to greet a person. In order to greet the person properly, the `person` property is required.
