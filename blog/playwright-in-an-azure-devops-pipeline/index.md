@@ -16,13 +16,16 @@ The scaffolding includes the installation of Playwright, a pre-configured setup,
 
 In this post, the generated GitHub workflow is migrated into an Azure DevOps pipeline.
 The pipeline installs Node.js, installs the dependencies (browsers included), runs the tests, and publishes the test artifact.
+Because Playwright uses the CI environment variable to determine some behavior, we manually set this variable to `true` (this is done automatic via GitHub actions). If you don't set this variable, then the test reporter will continue to stay open after the tests are finished.
 
 ```yaml:.azure-pipeline/playwright.yml
 name: Playwright Tests
 
+variables:
+  CI: true
+
 trigger:
   - main
-  - master
 
 jobs:
   - job: test

@@ -1,9 +1,11 @@
 ```yaml:.azure-pipeline/playwright.yml
 name: Playwright Tests
 
+variables:
+  CI: true
+
 trigger:
   - main
-  - master
 
 jobs:
   - job: test
