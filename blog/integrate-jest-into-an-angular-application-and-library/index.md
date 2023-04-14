@@ -29,9 +29,13 @@ tags: Angular, Testing, Jest, Library
 
 The first thing to do is to create an application. Using the Angular CLI, we can use the following command to generate our project.
 
+```bash
 ng new my-awesome-app
+```
 
-> If you don’t got the Angular CLI installed, you can install it globally with `npm install @angular/cli -g`.
+:::info
+If you don’t got the Angular CLI installed, you can install it globally with `npm install @angular/cli -g`.
+:::
 
 After the Angular CLI has scaffolded our project let’s make sure everything works.
 
@@ -43,7 +47,9 @@ When we navigate to [http://localhost:4200](http://localhost:4200) we should see
 
 So far so good, let’s also run the tests
 
+```bash
 npm test
+```
 
 This should open a new browser window and our tests should run. Don’t worry if one test is failing, this is working as intended.
 
@@ -57,50 +63,59 @@ Before we’re going to use Jest as our test runner, let’s fix this failing te
 
 To use Jest as our test runner we’re going to use [jest-preset-angular](https://github.com/thymikee/jest-preset-angular). To get it up and running we simply have to follow the instructions in the [README](https://github.com/thymikee/jest-preset-angular/blob/master/README.md), so let’s go over the steps.
 
-> The jest-preset-angular library will [configure](https://github.com/thymikee/jest-preset-angular#exposed-configuration) Jest and it will also [configure](https://github.com/thymikee/jest-preset-angular/blob/master/setupJest.js#L17) the Angular TestBed for you.
+The jest-preset-angular library [configures](https://github.com/thymikee/jest-preset-angular#exposed-configuration) Jest and it will also [configure](https://github.com/thymikee/jest-preset-angular/blob/master/setupJest.js#L17) the Angular TestBed for you.
 
 First, we have to install all the dependencies we need.
 
+```bash
 npm install jest jest-preset-angular --save-dev
+```
 
-Secondly, we create a `setupJest.ts` file in the root and import `jest-preset-angular` inside of it.
+Secondly, we create a `setup-jest.ts` file in the root and import `jest-preset-angular` inside of it.
 
+```ts:setup-jest.ts
 import 'jest-preset-angular';
+```
 
 The last step is to add the Jest configuration in the `package.json`.
+Or, we can create a `jest.config.js` file in the root and add the configuration there.
 
-```json
+```json:package.json
 {
 	"jest": {
 		"preset": "jest-preset-angular",
-		"setupTestFrameworkScriptFile": "<rootDir>/setupJest.ts"
+		"setupTestFrameworkScriptFile": "<rootDir>/setup-jest.ts"
 	}
 }
 ```
 
 To run our tests with Jest we can now modify the test script to use Jest instead of `ng test`.
 
-```json
-"test": "jest",
+```json{3}:package.json
+{
+	"scripts": {
+		"test": "jest"
+	}
+}
 ```
 
 If we now run `npm test`, our tests are using the Jest runner and better yet everything is still green (and we don’t need a browser)!
 
-> With minimal effort we can integrate Jest within our Angular project!
+With minimal effort we can integrate Jest within our Angular project!
 
 ![all 3 tests are still succeeding](./images/3.png)
 
 I think now would be the perfect time to remove all the [Karma](https://github.com/karma-runner/karma) dependencies and configuration files, just to have our project cleaner. We can remove all the Karma dependencies with the following command
 
 ```bash
-npm uninstall karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter
+npm uninstall karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter karma-coverage jasmine-core
 ```
 
 We also have to delete the `karma.config.js` and `test.ts` files in the `src` directory and we also have to remove the `test` entry inside the `angular.json` file.
 
-Our tests are still using Jasmine and while Jasmine is mostly compatible with Jest, let’s rewrite our tests to use the Jest syntax. In our little application it’s sufficient to change the Jasmine’s `it` method to Jest’s `test` method. While we’re there we should also modify our test description from a Behaviour Driven Development (BDD) style to a more Test Driven Development (TDD)style. This might look like:
+Our tests are still using Jasmine and while Jasmine is mostly compatible with Jest, let’s rewrite our tests to use the Jest syntax. In our little application it’s sufficient to change the Jasmine’s `it` method to Jest’s `test` method. While we’re there we should also modify our test description from a Behaviour Driven Development (BDD) style to a more Test Driven Development (TDD) style. This might look like:
 
-```ts
+```ts:component.spec.ts
 test(`the title is 'my-awesome-app'`, async(() => {
 	const fixture = TestBed.createComponent(AppComponent);
 	const app = fixture.debugElement.componentInstance;
@@ -114,24 +129,32 @@ If we re-run the tests, everything should still turn up green.
 
 ![all 3 tests are still succeeding](./images/4.png)
 
-> After this post was written, someone pointed me to [briebug/jest-schematics](https://github.com/briebug/jest-schematic), which is an schematic that does all these steps above for your. If you run `` `ng add @briebug/jest``` it adds and configures jest-preset-angular and removes the karma dependencies and files. This means you don’t have to do a single thing!
+:::info
+After this post was written, someone pointed me to [briebug/jest-schematics](https://github.com/briebug/jest-schematic), which is an schematic that does all these steps above for your. If you run `ng add @briebug/jest` it adds and configures jest-preset-angular and removes the karma dependencies and files. This means you don’t have to do a single thing!
+:::
 
-> As of 2018–08–30, Nrwl Nx 6.3 provides the option to use Jest for unit testing. For more info see [Nrwl Nx 6.3: Faster Testing with Jest](https://blog.nrwl.io/nrwl-nx-6-3-faster-testing-with-jest-20a8ddb5064).
+:::info
+As of 2018–08–30, Nrwl Nx 6.3 provides the option to use Jest for unit testing. For more info see [Nrwl Nx 6.3: Faster Testing with Jest](https://blog.nrwl.io/nrwl-nx-6-3-faster-testing-with-jest-20a8ddb5064).
+:::
 
 ## Creating the library
 
 With our application and Jest ready, let’s tackle the second part and create a library using the Angular CLI.
 
+```bash
 ng generate library my-awesome-lib
+```
 
-> The Angular CLI will prefix your library components automatically with `lib`. In order to prevent this, you can use the `--prefix` flag.
+:::info
+The Angular CLI will prefix your library components automatically with `lib`. In order to prevent this, you can use the `--prefix` flag.
+:::
 
 This will generate our library `my-awesome-lib` inside the `projects` folder and it also adds a couple of configurations inside `angular.json`. It will also add the paths to our freshly created library inside `tsconfig.json`, this to import the library in our application like a module.
 
 We can see that the command also generates the default test files. Just like before we’ll delete the `karma.config.js` and `test.ts` files and we’ll also edit the test inside the generated spec file to look like this:
 
-```ts
-test(’it creates my component’, () => {
+```ts:component.spec.ts
+test('it creates my component', () => {
   expect(component).toBeTruthy();
 });
 ```
@@ -142,9 +165,13 @@ With this change we can test our library with the same script as our application
 
 Before we can use our library inside of our application we have to build it first. This can be done by adding a build script inside the `package.json` from our application. I would also suggest to rename the default build script from `build` to `build:app`, so it is always clear what you’re building.
 
-```json
-"build:app": "ng build --prod",
-"build:lib": "ng build my-awesome-lib --prod"
+```json{3-4}:package.json
+{
+	"scripts": {
+		"build:app": "ng build --prod",
+		"build:lib": "ng build my-awesome-lib --prod"
+	}
+}
 ```
 
 By using the created script `npm run build:lib`, we can build the library.
@@ -155,7 +182,7 @@ By using the created script `npm run build:lib`, we can build the library.
 
 Finally! With our library built, we can use our library inside our application. Therefor we have to import our library, this can be done by adding the library’s module to the `imports` of our `AppModule`.
 
-```ts
+```ts:app.module.ts
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -178,14 +205,14 @@ And now we can use our library’s component inside our `AppComponent` template 
 
 With our application working let’s re-run our tests to make sure we didn’t break anything. And of course… our application tests are failing because we didn’t import our `MyAwesomeLibModule` into the `TestBed`. So just like in our `AppModule` we can add `MyAwesomeLibModule` as an import.
 
-```ts
+```ts:component.spec.ts
 TestBed.configureTestingModule({
 	declarations: [AppComponent],
 	imports: [MyAwesomeLibModule],
 }).compileComponents();
 ```
 
-> HINT: in a “real world scenario” you would probably want to run the tests first before running your application.
+HINT: in a “real world scenario” you would probably want to run the tests first before running your application.
 
 With this in place our tests will be green again, right? Well not exactly, when we run our tests we get the following error
 
@@ -203,7 +230,7 @@ In order to do this we have to configure Jest a little bit different.
 
 Instead of configuring Jest in the `package.json` we’ll create a new file `jest.base.config.js` in the root of our project and move the configuration to this file.
 
-```ts
+```js:jest.base.config.js
 module.exports = {
 	preset: 'jest-preset-angular',
 	setupTestFrameworkScriptFile: '<rootDir>/setupJest.ts',
@@ -212,16 +239,16 @@ module.exports = {
 
 With our base config ready, the next step is to create two config files, one for our library `jest.lib.config.js` and the other one for our application `jest.app.config.js`.
 
-```ts
-// `jest.lib.config.js`
+```ts:jest.lib.config.js
 const baseConfig = require('./jest.base.config');
 
 module.exports = {
 	...baseConfig,
 	roots: ['<rootDir>/projects'],
 };
+```
 
-// `jest.app.config.js`
+```ts:jest.app.config.js
 const baseConfig = require('./jest.base.config');
 
 module.exports = {
@@ -234,9 +261,15 @@ As you can see we’re importing the base configuration from `jest.base.config.j
 
 With the Jest config files created we can use the `—-config` flag to let Jest know which config to use in order to run the tests. We’ll remove the existing test script and add the following scripts to the application’s `package.json`.
 
-```json
-"test:lib": "jest --config ./jest.lib.config.js",
-"test:app": "jest --config ./jest.app.config.js",
+```json{5-6}:package.json
+{
+	"scripts": {
+		"build:app": "ng build --prod",
+		"build:lib": "ng build my-awesome-lib --prod",
+		"test:lib": "jest --config ./jest.lib.config.js",
+		"test:app": "jest --config ./jest.app.config.js",
+	}
+}
 ```
 
 ![with the command npm run test:lib, only the library tests ran and are succeeding](./images/9.png)
@@ -247,8 +280,7 @@ But we’re not there yet. While our library tests are succeeding, our applicati
 
 If we take a look at the error message, we can see that Jest is having some troubles to find our library. In order to fix this we’ll have to re-open the Jest configuration `jest.app.config`, and we have to let Jest know where it can find our library by using the `modulePaths` property.
 
-```ts
-// `jest.app.config.js`
+```ts{6}:jest.app.config.js
 const baseConfig = require('./jest.base.config');
 
 module.exports = {
@@ -266,10 +298,16 @@ And voila, our tests finally show up green.
 
 To make it ourselves easy we can create a command that test both our library and application. This command can come in handy before you commit to make sure everything works as expected, or during your Continuous Integration (CI) build.
 
-```json
-"test": "npm run test:lib && npm run build:lib && npm run test:app",
-"test:lib": "jest --config ./jest.lib.config.js",
-"test:app": "jest --config ./jest.app.config.js",
+```json{5}:package.json
+{
+	"scripts": {
+		"build:app": "ng build --prod",
+		"build:lib": "ng build my-awesome-lib --prod",
+		"test": "npm run test:lib && npm run build:lib && npm run test:app",
+		"test:lib": "jest --config ./jest.lib.config.js",
+		"test:app": "jest --config ./jest.app.config.js",
+	}
+}
 ```
 
 ![See it in action](./images/12.gif)
