@@ -518,7 +518,7 @@ You can include your own custom policies within the callback of `IServiceCollect
 In the next example, the named cache policy `InvariantQueries` is created to ignore all query parameters.
 This is done with the `AddPolicy`, which expects a policy name (a `string`), and an `Action<OutputCachePolicyBuilder>` to configure the cache policy.
 
-```cs{2-6}:Program.cs
+```cs{2-8}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOutputCache(options =>
 {
@@ -531,7 +531,7 @@ builder.Services.AddOutputCache(options =>
 
 To make use of the `InvariantQueries` policy, use another overload on the `CacheOutput` middleware and pass it the name of the policy. In our example, `InvariantQueries`.
 
-```cs{2-6, 32}:Program.cs
+```cs{2-8, 32}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOutputCache(options =>
 {
@@ -714,3 +714,5 @@ Using the middleware improves the performance of your application.
 Looking at the API, we've seen that it almost requires no code to use the caching middleware, while it's flexible to be configured to your own needs.
 
 For more context, see the [GitHub issue](https://github.com/dotnet/aspnetcore/issues/41955) that discusses the new output caching middleware. For more examples, you can also take a look at the [OutputCachingSample](https://github.com/dotnet/aspnetcore/blob/main/src/Middleware/OutputCaching/samples/OutputCachingSample/Startup.cs).
+
+There's also a geat talk about the introduction and capabilities of the new [Output Caching in ASP.NET Core 7](https://www.youtube.com/watch?v=RYw2pyG74YM).
