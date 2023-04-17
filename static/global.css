@@ -93,6 +93,11 @@ body {
 	padding-bottom: 1em;
 }
 
+::selection {
+	color: var(--background-color);
+	background: var(--text-color);
+}
+
 h1,
 h2,
 h3,
