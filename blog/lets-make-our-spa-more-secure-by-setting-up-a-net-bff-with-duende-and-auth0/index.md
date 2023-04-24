@@ -276,7 +276,9 @@ By using a BFF we centralize the authentication and authorization process.
 From my limited experience, it looks like that a BFF using the Authorization Code flow with PKCE has fewer moving parts in comparison to the Implicit flow.
 This makes it easier to understand, implement, deploy, and maintain.
 
-In the next blog post, we'll consume this BFF from an Angular application.
+In the next blog post, we'll [consume this BFF from an Angular application](../lets-make-our-spa-more-secure-by-consuming-a-duende-bff-with-angular/index.md).
+
+[You can play with the demo BackendForFrontend application on Github.](https://github.com/timdeschryver/BackendForFrontend)
 
 ## Resources
 
