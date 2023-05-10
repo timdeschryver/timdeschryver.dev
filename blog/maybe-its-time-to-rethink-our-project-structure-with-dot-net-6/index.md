@@ -5,6 +5,11 @@ description: Challenging the status quo with some thoughts on the new .NET Minim
 author: Tim Deschryver
 date: 2021-09-27
 tags: .NET, architecture, csharp, minimal api
+translations:
+  - language: ru
+    url: https://habr.com/ru/companies/skbkontur/articles/723840/
+    author: Vadim Martynov
+    profile: https://twitter.com/rnddotnet
 ---
 
 With the upcoming release of .NET 6, we're also getting a new API to build applications.
