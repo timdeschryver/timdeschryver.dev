@@ -30,6 +30,9 @@ After a few `console.log` statements inside the [`OnChanges` lifecycle hook](htt
 
 We already had the `ChangeDetectionStrategy` of all of our components to [`ChangeDetectionStrategy.OnPush`](https://angular.io/api/core/ChangeDetectionStrategy#OnPush), and we're already using pure pipes in multiple places of our application.
 These good practices took us far, but not far enough later on in the development phase.
+:::info
+If you don't know how Change Detection in Angular works, [this video explains it in 5 minutes](https://blog.simplified.courses/angular-change-detection-explained-in-5-minutes/)
+:::
 
 ## Solutions <!-- omit in toc -->
 
