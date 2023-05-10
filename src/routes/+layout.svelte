@@ -89,7 +89,7 @@
 			<a href="/blog/rss.xml" data-sveltekit-reload>RSS</a>
 			{#if $theme === 'dark'}
 				<button
-					class="theme-switch "
+					class="theme-switch"
 					title="Switch to light theme"
 					on:click={() => toggleTheme('light')}
 					in:fly={{ y: 20, duration: 200, delay: 200 }}
@@ -116,7 +116,8 @@
 				on:keydown={() =>
 					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
 			>
-				🔗 {$blog.title}
+				<span class="material-symbols-outlined"> link </span>
+				{$blog.title}
 			</div>
 		{/if}
 

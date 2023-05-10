@@ -413,7 +413,11 @@ function extractFrontmatter(markdown): { content: string; metadata: any } {
 	}
 	if (Array.isArray(result.attributes.translations)) {
 		for (const translation of result.attributes.translations) {
-			translation.language = translation.language === 'es' ? 'Español' : translation.language;
+			const translationsMap = {
+				es: 'Español',
+				ru: 'Russian',
+			};
+			translation.language = translationsMap[translation.language] ?? translation.language;
 		}
 	}
 	return { metadata: result.attributes, content: result.body };
