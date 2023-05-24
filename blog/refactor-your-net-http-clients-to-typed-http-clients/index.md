@@ -219,7 +219,7 @@ starwarsGroup.MapGet("planets/{planetId}", async (string planetId, IHttpClientFa
 app.Run();
 ```
 
-And it doesn't stop there, we can add `HttpMessageHandler`s to tweak the behavior of the HTTP client.
+And it doesn't stop there, we can add `HttpMessageHandler`s to tweak the behavior of the HTTP client using a [DelegatingHandler](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0#outgoing-request-middleware).
 
 Some implementations of such handlers are handlers to retry failed requests, add a rate-limiter to the requests, insert a caching layer, or add a circuit breaker to the HTTP client.
 Luckily we don't have to write this manually, but we can resort to the popular [Polly](http://www.thepollyproject.org/) package.
@@ -233,6 +233,27 @@ builder.Services.AddHttpClient("starwars", (client) => {
     .AddHttpMessageHandler<MyCustomHttpMessageHandler>() // Using a custom handler
     .AddPolicyHandler(GetRetryPolicy()); // using a Polly handler
 ```
+
+We can also use the `DelegatingHandler` to append data to outgoing requests, for example, to add headers.
+Take a look at [Jimmy Bogard](https://twitter.com/jbogard)'s [article (Securing Web APIs with Azure AD: Connecting External Clients)](https://jimmybogard.com/securing-web-apis-with-azure-ad-connecting-external-clients/) for more information about this with a practical example on how to include authentication headers.
+
+#### Header propagation
+
+Instead of manually adding headers to outoing HTTP requests, we can also automatically propagate headers using the [Microsoft.AspNetCore.HeaderPropagation](https://www.nuget.org/packages/Microsoft.AspNetCore.HeaderPropagation) package.
+
+Because we're creating HTTP clients, we can configure a specific client to propagate headers.
+This is useful because we don't want to propagate headers to every client, but only to the ones that need it, and are in our ownership.
+Otherwise, we could leak sensitive information to third-party services.
+
+```csharp{5}:Program.cs
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient("starwars", (client) => {
+        client.BaseAddress = new Uri("https://swapi.dev/api/");
+    })
+    .AddHeaderPropagation();
+```
+
+For more info see the [documenten](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests#header-propagation-middleware).
 
 ### Refactor to Typed HTTP clients
 
