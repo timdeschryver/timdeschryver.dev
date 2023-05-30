@@ -214,7 +214,7 @@
 	{@html post.html}
 
 	{#if post.contributors.length}
-		<h5>A warm thank you to the contributors of this blog post</h5>
+		<h4>A warm thank you to the contributors of this blog post</h4>
 		<ul class="mt-0">
 			{#each post.contributors as [login, name]}
 				<li>
@@ -225,7 +225,7 @@
 	{/if}
 
 	{#if post.metadata.incomingLinks.length}
-		<h5>Incoming links</h5>
+		<h4>Incoming links</h4>
 		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.incomingLinks as link}
 				<li>
@@ -236,7 +236,7 @@
 	{/if}
 
 	{#if post.metadata.outgoingLinks.length}
-		<h5>Outgoing links</h5>
+		<h4>Outgoing links</h4>
 		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.outgoingLinks as link}
 				<li>

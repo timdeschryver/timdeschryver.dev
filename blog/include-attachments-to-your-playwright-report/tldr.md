@@ -27,7 +27,7 @@ test('adds a downloaded file to report', async ({ page }, testInfo) => {
 ```ts{7-9, 11-12, 14-17}:external.spec.ts
 import { test } from '@playwright/test';
 
-test('adds an external file to report', async ({ page }, testInfo) => {
+test('adds an external file to report', async ({ page, request }, testInfo) => {
     // 1. Navigate to the page
     await page.goto('https://owasp.org/www-project-top-ten/');
 
