@@ -279,5 +279,8 @@ How you extract this is up to your own preference, for example, you can rely on 
 
 Extracting your business outside of the endpoint has the benefit that it can be reused, and that it can be tested in isolation. The application layer doesn't contain business/functional logic, and that's why I don't see a need to unit test its behavior. Instead, I prefer to write integration tests that cover the whole flow and also the dependencies, e.g. the database.
 
+As an addition you can also take a look at the [FastEndpoints](https://fast-endpoints.com/) library, which plays nicely with the ideas from this post.
+The library aims to create performant endpoints with ease, and includes some useful utilities methods to create your endpoints.
+
 To end this post, I also encourage you to take a look at [Oskar Dudycz](https://www.linkedin.com/in/oskardudycz/)'s recorded talk [CQRS is Simpler than you think with C#11 & NET7](https://www.youtube.com/watch?v=iY7LO289qnQ). The talk resonated with me and inspired me to write this post.
 You can also find the code in Oskar's example on [GitHub](https://github.com/oskardudycz/cqrs-is-simpler-with-net-and-csharp), which takes a CQRS-based approach.
