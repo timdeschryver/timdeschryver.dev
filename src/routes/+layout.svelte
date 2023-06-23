@@ -92,7 +92,7 @@
 					class="theme-switch"
 					title="Switch to light theme"
 					on:click={() => toggleTheme('light')}
-					in:fly={{ y: 20, duration: 200, delay: 200 }}
+					in:fly|global={{ y: 20, duration: 200, delay: 200 }}
 				>
 					<span class="material-symbols-outlined"> light_mode </span> Light
 				</button>
@@ -101,7 +101,7 @@
 					class="theme-switch"
 					title="Switch to dark theme"
 					on:click={() => toggleTheme('dark')}
-					in:fly={{ y: -20, duration: 200, delay: 200 }}
+					in:fly|global={{ y: -20, duration: 200, delay: 200 }}
 				>
 					<span class="material-symbols-outlined"> dark_mode </span> Dark
 				</button>
