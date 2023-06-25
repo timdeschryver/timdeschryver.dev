@@ -115,6 +115,8 @@
 					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
 				on:keydown={() =>
 					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
+				role="button"
+				tabindex="0"
 			>
 				<span class="material-symbols-outlined"> link </span>
 				{$blog.title}
