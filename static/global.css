@@ -28,7 +28,7 @@
 
 @media (prefers-color-scheme: dark) {
 	body {
-		--background-color: hsla(0, 0%, 0%, 0.9);
+		--background-color: hsla(0, 0%, 0%, 0.95);
 		--background-color-transparent: hsla(0, 0%, 100%, 0.05);
 		--text-color: hsla(0, 0%, 100%, 0.9);
 		--text-color-light: hsla(0, 0%, 100%, 0.7);
@@ -45,7 +45,7 @@ body.light {
 }
 
 body.dark {
-	--background-color: hsla(0, 0%, 0%, 0.9);
+	--background-color: hsla(0, 0%, 0%, 0.95);
 	--background-color-transparent: hsla(0, 0%, 100%, 0.05);
 	--text-color: hsla(0, 0%, 100%, 0.9);
 	--text-color-light: hsla(0, 0%, 100%, 0.7);
