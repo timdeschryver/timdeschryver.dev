@@ -44,11 +44,12 @@ Yes of course because it's your assurance that the contract between the front-en
 ## Enter zod
 
 Luckily, we can use `zod` to validate the shape of the response.
-When you're already using zod, for example to [verify HTTP response bodies](../why-we-should-verify-http-response-bodies-and-why-we-should-use-zod-for-this/index.md) at runtime, this becomes even easier.
 
 To use `zod` to validate the shape of the response, we first need to define a schema.
 In the example below, we define a schema `todoSchema` for a todo item.
-Then, we use the `parse` method to validate the response body.
+When you're already using zod, for example to [verify HTTP response bodies](../why-we-should-verify-http-response-bodies-and-why-we-should-use-zod-for-this/index.md) at runtime, this becomes even easier because you can reuse the same schema in production code as in test code.
+
+Then, we use the `parse` method to validate the response body against the zod schema.
 Under the hood, `zod` will throw an error when the response body doesn't match the schema, so we can use the `.not.toThrow()` assertion from Playwright to test if the shape is correct.
 
 ```ts:todo.test.ts
