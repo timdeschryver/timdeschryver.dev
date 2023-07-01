@@ -27,7 +27,7 @@ expect.extend({
   },
 });
 
-export default defineConfig({...});
+export default defineConfig({/* Playwright config here */});
 ```
 
 ## Add the matcher to the Playwright namespace
@@ -46,10 +46,11 @@ declare global {
 
 ## Use the matcher in a test case
 
-```ts:todo.test.ts
+```ts{16}:todo.test.ts
 import { expect, test } from '@playwright/test';
 import { z } from 'zod';
 
+// define a scheme or import the scheme from your production code
 const todoSchema = z.object({
 	userId: z.number(),
 	id: z.number(),
@@ -61,8 +62,7 @@ test('get todo returns a todo item', async ({ request }) => {
 	const todoResponse = await request.get('/todos/1');
 	expect(todoResponse.ok()).toBeTruthy();
 
-	const todo = await todoResponse.json();
-	expect(todo).toMatchSchema(todoSchema);
+	expect(todoResponse).toMatchSchema(todoSchema);
 });
 ```
 

@@ -15,9 +15,9 @@ If you're new to Playwright API testing, I recommend taking a look at the [offic
 
 ## Starting point
 
-When you're reading the documentation or looking at examples of how to write API tests with Playwright, you'll come across examples using the following structure. The examples use the `request` context to fire an HTTP request and validate the content of the response object
+When you're reading the documentation or looking at examples of how to write API tests with Playwright, you'll come across examples using the following structure. The examples use the `request` context to fire an HTTP request and validate the content of the response object.
 
-```ts:todo.test.ts
+```ts{7-13}:todo.test.ts
 import { expect, test } from '@playwright/test';
 
 test('get todo returns a todo item', async ({ request }) => {
@@ -52,10 +52,11 @@ When you're already using zod, for example to [verify HTTP response bodies](../w
 Then, we use the `parse` method to validate the response body against the zod schema.
 Under the hood, `zod` will throw an error when the response body doesn't match the schema, so we can use the `.not.toThrow()` assertion from Playwright to test if the shape is correct.
 
-```ts:todo.test.ts
+```ts{5-10, 16-17}:todo.test.ts
 import { expect, test } from '@playwright/test';
 import { z } from 'zod';
 
+// define a scheme or import the scheme from your production code
 const todoSchema = z.object({
     userId: z.number(),
     id: z.number(),
@@ -140,7 +141,7 @@ expect.extend({
   },
 });
 
-export default defineConfig({...});
+export default defineConfig({/* Playwright config here */});
 ```
 
 To make TypeScript happy, we also need to define the `toMatchSchema` matcher within the Playwright schema.
@@ -159,7 +160,7 @@ declare global {
 
 With these two changes in place, we can now use the `toMatchSchema` matcher in our test case(s).
 
-```ts:todo.test.ts
+```ts{15}:todo.test.ts
 import { expect, test } from '@playwright/test';
 import { z } from 'zod';
 
@@ -174,8 +175,7 @@ test('get todo returns a todo item', async ({ request }) => {
 	const todoResponse = await request.get('/todos/1');
 	expect(todoResponse.ok()).toBeTruthy();
 
-	const todo = await todoResponse.json();
-	expect(todo).toMatchSchema(todoSchema);
+	expect(todoResponse).toMatchSchema(todoSchema);
 });
 ```
 
