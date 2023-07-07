@@ -106,6 +106,7 @@ h5,
 h6 {
 	font-family: var(--head-font);
 	line-height: 1.2;
+	font-weight: 400;
 }
 
 h1 + p,
@@ -212,7 +213,7 @@ a:active {
 	outline: none;
 }
 
-#svelte > *:not(footer, script) {
+body > div > *:not(footer, script) {
 	display: grid;
 	grid-template-columns:
 		minmax(1.2rem, 1fr)
@@ -220,7 +221,7 @@ a:active {
 		minmax(1.2rem, 1fr);
 }
 
-#svelte > * > * {
+body > div > * > * {
 	grid-column: 2;
 }
 
@@ -233,19 +234,19 @@ main > h3 {
 	text-transform: uppercase;
 }
 
-#svelte > main > pre,
-#svelte > main > iframe,
-#svelte > main > figure,
-#svelte > main > table,
-#svelte > main > blockquote,
-#svelte > main > .wide {
+body > div > main > pre,
+body > div > main > iframe,
+body > div > main > figure,
+body > div > main > table,
+body > div > main > blockquote,
+body > div > main > .wide {
 	grid-column: 1 / 4;
 	width: 100%;
 	max-width: 95ch;
 	justify-self: center;
 }
 
-#svelte > main > iframe {
+body > div > main > iframe {
 	max-width: 95%;
 }
 

@@ -98,19 +98,23 @@
 <ul>
 	{#each filteredPosts as post}
 		<li>
-			<h2>
-				<a href={`/blog/${post.slug}`} data-sveltekit-prefetch>
-					{post.title}
-				</a>
-			</h2>
-			<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
-			<div>{post.description}</div>
-			<div>
-				<a href={`/blog/${post.slug}`} data-sveltekit-prefetch>Read more</a>
-				{#if post.tldr}
-					| <a href={`/blog/${post.slug}?tldr=true`} data-sveltekit-prefetch>Read TLDR</a>
-				{/if}
-			</div>
+			<article>
+				<h2>
+					<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
+						{post.title}
+					</a>
+				</h2>
+				<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
+				<div>{post.description}</div>
+				<div>
+					<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">Read more</a>
+					{#if post.tldr}
+						| <a href={`/blog/${post.slug}?tldr=true`} data-sveltekit-preload-data="hover"
+							>Read TLDR</a
+						>
+					{/if}
+				</div>
+			</article>
 		</li>
 	{:else}Sorry, no posts matched your criteria...
 	{/each}

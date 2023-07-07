@@ -310,7 +310,7 @@
 		margin-bottom: 0;
 	}
 
-	:global(#svelte > main) > header {
+	:global(body > div > main) > header {
 		grid-column: 1 / 4;
 		min-height: 100vh;
 		min-width: 90%;

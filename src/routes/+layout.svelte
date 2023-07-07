@@ -7,6 +7,7 @@
 	import Host from '$lib/Host.svelte';
 	import { blog } from '$lib/current-blog.store';
 	import { theme } from '$lib/theme.store';
+	import './layout.css';
 
 	$: segment = $page.url.pathname.substring(1);
 	let support;
@@ -237,5 +238,13 @@
 		justify-content: center;
 		color: var(--text-color-light);
 		font-size: 0.9rem;
+	}
+
+	.theme-switch {
+		color: var(--text-color-light);
+	}
+
+	.theme-switch > span {
+		vertical-align: text-top;
 	}
 </style>

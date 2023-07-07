@@ -12,7 +12,6 @@
 		<meta name="twitter:domain" content="timdeschryver.dev" />
 
 		<link rel="alternate" type="application/rss+xml" title="Tim Deschryver" href="/blog/rss.xml" />
-		<link rel="stylesheet" href="/global.css" />
 
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
@@ -33,6 +32,6 @@
 		%sveltekit.head%
 	</head>
 	<body>
-		<div id="svelte">%sveltekit.body%</div>
+		<div style="display: contents" data-sveltekit-preload-data="hover">%sveltekit.body%</div>
 	</body>
 </html>
