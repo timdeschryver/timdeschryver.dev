@@ -1,7 +1,7 @@
 ---
-title: Configuring angular-oidc-client with the new functional APIs
-slug: configuring-angular-oidc-client-with-the-new-functional-apis
-description: Recently the angular-oidc-client library (v16) introduced new APIs to configure the library in a functional way. In this blog post, I'll show you how to use them.
+title: Configuring angular-auth-oidc-client with the new functional APIs
+slug: configuring-angular-auth-oidc-client-with-the-new-functional-apis
+description: Recently the angular-auth-oidc-client library (v16) introduced new APIs to configure the library in a functional way. In this blog post, I'll show you how to use them.
 date: 2023-07-03
 tags: Angular, Security
 ---

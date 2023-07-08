@@ -68,11 +68,16 @@
 	}
 
 	$: if (typeof document !== 'undefined') {
-		document.body.className = $theme;
+		document.documentElement.className = $theme;
 	}
 </script>
 
 <svelte:head>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+	<link
+		href={`https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap`}
+		rel="stylesheet"
+	/>
 	<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js">
 	</script>
 </svelte:head>
@@ -170,11 +175,11 @@
 		margin-top: 0;
 	}
 
-	:global(body.light) header {
+	:global(html.light) header {
 		box-shadow: rgb(0 0 0 / 5%) 0px 5px 15px;
 	}
 
-	:global(body.dark) header {
+	:global(html.dark) header {
 		box-shadow: rgb(255 255 255 / 5%) 0px 5px 15px;
 	}
 

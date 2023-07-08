@@ -11,6 +11,11 @@
 			"statusCode": 301
 		},
 		{
+			"route": "/blog/configuring-angular-oidc-client-with-the-new-functional-apis",
+			"redirect": "/blog/configuring-angular-auth-oidc-client-with-the-new-functional-apis",
+			"statusCode": 301
+		},
+		{
 			"route": "/blog/be-proactive-when-you-join-an-existing-angular-project",
 			"redirect": "/blog/be-proactive-when-you-join-an-angular-project",
 			"statusCode": 301

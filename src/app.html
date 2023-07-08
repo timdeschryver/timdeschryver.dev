@@ -28,8 +28,12 @@
 			}
 			gtag('js', new Date());
 		</script>
-
 		%sveltekit.head%
+		<script>
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				document.documentElement.classList.add('dark');
+			}
+		</script>
 	</head>
 	<body>
 		<div style="display: contents" data-sveltekit-preload-data="hover">%sveltekit.body%</div>
