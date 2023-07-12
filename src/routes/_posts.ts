@@ -23,8 +23,8 @@ import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
-fs.writeFileSync('static/dark.theme.css', createStyle('dark', pallete));
-fs.writeFileSync('static/light.theme.css', createStyle('light', palleteDawn));
+fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
+fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
 
 const blogPath = 'blog';
 const langToIcon = {
@@ -482,7 +482,7 @@ function createStyle(scope: string, theme) {
 		};
 	});
 
-	let style = `body.${scope} {`;
+	let style = `html.${scope} {`;
 
 	for (const color of scopeColors) {
 		for (const scope of color.scope) {

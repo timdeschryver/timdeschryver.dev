@@ -1,6 +1,6 @@
-@import 'light.theme.css';
-@import 'dark.theme.css';
-@import 'tweet-preview.css';
+@import './light.theme.css';
+@import './dark.theme.css';
+@import './tweet-preview.css';
 
 :root {
 	--text-font: 'Mulish', sans-serif;
