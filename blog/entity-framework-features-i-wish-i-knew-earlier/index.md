@@ -19,6 +19,16 @@ Even by writing this blog post, I discovered some additional functions.
 
 Instead of using workarounds, that often introduce some gotcha's, I hope this blog post can also help you to do things in the recommended/official way.
 
+- [Starting point](#starting-point)
+- [AutoInclude](#autoinclude)
+- [Single or Split Queries](#single-or-split-queries)
+- [HasQueryFilter](#hasqueryfilter)
+- [Temporal (History) Table](#temporal-history-table)
+- [Shadow properties](#shadow-properties)
+- [DbFunction](#dbfunction)
+- [SqlQuery to unmapped type](#sqlquery-to-unmapped-type)
+- [Conclusion](#conclusion)
+
 ## Starting point
 
 To follow along with the examples, we need a starting point to work with.
@@ -355,7 +365,7 @@ var customersViaSoundEx = await dbContext.Set<Customer>()
     .ToListAsync();
 ```
 
-## SqlQuery
+## SqlQuery to unmapped type
 
 In another blog post, [You can now return unmapped types from raw SQL select statements with Entity Framework 8](../you-can-now-return-unmapped-types-from-raw-sql-select-statements-with-entity-framework-8/index.md), we've seen that it's possible to return unmapped types from raw SQL select statements. This is useful to use an optimized query or to return a subset or aggregation of the data.
 
