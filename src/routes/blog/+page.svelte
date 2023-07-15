@@ -137,15 +137,22 @@
 
 	li {
 		list-style: none;
+		padding: 1em;
+		transition: all 0.2s ease;
+	}
+
+	li:hover {
+		transform: scale(1.02);
+		background-color: var(--background-color-transparent);
+	}
+
+	li + li {
+		margin-top: var(--spacing);
 	}
 
 	li div {
 		margin-top: var(--spacing-small);
 		color: var(--text-color-light);
-	}
-
-	li + li {
-		margin-top: var(--spacing-large);
 	}
 
 	time {
