@@ -98,6 +98,43 @@ var customers = await dbContext.Set<Customer>()
 
 [Documentation](https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager#model-configuration-for-auto-including-navigations)
 
+## Single or Split Queries
+
+`Including` (or `AutoIncluding`) related entities can lead to performance issues when the related entities contain a lot of relational data.
+Because the generated SQL query contains many joins, which can lead to a lot of duplicated data being retrieved.
+This is called the [Cartesian explosion](https://learn.microsoft.com/en-us/ef/core/querying/single-split-queries#cartesian-explosion).
+
+For example, let's say that a customer has 10 addresses.
+When you query the customer, the generated SQL query will contain a join to the addresses.
+The result is that the customer is retrieved 10 times, once for each address.
+
+A solution to this problem is to use `AsSplitQuery` to split the query into multiple queries.
+This way, the customer is retrieved once, and the addresses are retrieved in a separate query.
+
+```csharp
+var customersWithAddresses = await dbContext.Set<Customer>()
+    .AsSplitQuery()
+    .ToListAsync();
+```
+
+Entity Framework also helps you out by logging a warning when it detects that multiple collections are loaded in a singe query.
+
+A single query is the default behavior, but you can also enable this behavior globally by using the `UseQuerySplittingBehavior` method on the `DbContextOptionsBuilder`.
+
+```csharp
+optionsBuilder.UseSqlServer(connectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+```
+
+When a split queries is enabled, you can use `AsSingleQuery` to force a single query.
+
+```csharp
+var customersWithAddresses = await dbContext.Set<Customer>()
+    .AsSingleQuery()
+    .ToListAsync();
+```
+
+[Documentation](https://learn.microsoft.com/en-us/ef/core/querying/single-split-queries#cartesian-explosion)
+
 ## HasQueryFilter
 
 This tip is similar to `AutoInclude` because `HasQueryFilter` also allows you to configure your entity in a centralized location.
