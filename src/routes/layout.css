@@ -115,10 +115,39 @@ h6 > a {
 	text-decoration: none;
 }
 
+h1 > a > .material-symbols-outlined,
+h2 > a > .material-symbols-outlined,
+h3 > a > .material-symbols-outlined,
+h4 > a > .material-symbols-outlined,
+h5 > a > .material-symbols-outlined,
+h6 > a > .material-symbols-outlined {
+	opacity: 0;
+	transition: 0.2s ease-in-out;
+}
+
+h1:hover > a,
+h2:hover > a,
+h3:hover > a,
+h4:hover > a,
+h5:hover > a,
+h6:hover > a {
+	text-decoration: underline;
+}
+
+h1:hover > a > .material-symbols-outlined,
+h2:hover > a > .material-symbols-outlined,
+h3:hover > a > .material-symbols-outlined,
+h4:hover > a > .material-symbols-outlined,
+h5:hover > a > .material-symbols-outlined,
+h6:hover > a > .material-symbols-outlined {
+	opacity: 1;
+}
+
 p {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
 	font-weight: 300;
+	transition: 0.2s ease-in-out;
 }
 
 @media (max-width: 480px) {
@@ -333,30 +362,36 @@ pre {
 }
 
 :not(pre) > code {
-	padding: 0.1em 0.3em;
+	padding: 0.3em 0.5em;
 	border-radius: 0.3em;
 	white-space: normal;
 }
 
 pre > code {
-	padding: 3em 1em 0.5em 1em;
+	padding: 0;
 	display: block;
 	margin-top: 0;
 	line-height: 2;
 	overflow: auto;
 }
 
+pre:has(.code-heading) > code {
+	padding: 3em 1em 0.5em 1.2em;
+}
+
 code {
 	word-break: break-word;
-	background: var(--editor-background);
+	border: 1px solid var(--input-border);
 }
 
 code.dim > div:not(.highlight) {
 	opacity: 0.3;
-	transition: 0.2s ease-in;
+	filter: blur(0.3px);
+	transition: all 0.2s ease-in;
 }
 
 code.dim:hover > div:not(.highlight) {
+	filter: blur(0px);
 	opacity: 1;
 }
 
@@ -364,13 +399,13 @@ code > div {
 	margin-top: 0;
 }
 
-pre .highlight {
+/* pre .highlight {
 	background: var(--editor-selectionHighlightBackground);
 	border-left: 0.3em solid var(--editor-selectionForeground);
 	display: block;
 	margin: 0px -1em;
 	padding: 0px 0.7em;
-}
+} */
 
 pre > .code-heading {
 	background: var(--tab-activeBackground);
@@ -393,6 +428,11 @@ pre > .code-heading > .file-name {
 
 pre > .code-heading > .copy-code {
 	margin-left: auto;
+	opacity: 0;
+}
+
+pre:hover > .code-heading > .copy-code {
+	opacity: 1;
 }
 
 pre > .code-heading > .copy-code.success {
