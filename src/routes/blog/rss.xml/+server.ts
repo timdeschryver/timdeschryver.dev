@@ -1,6 +1,6 @@
 import { UTCDate } from '$lib/formatters';
 import { variables } from '../../../lib/variables';
-import { readPosts } from '../../_posts';
+import { readPosts } from '../_posts';
 
 export const prerender = true;
 

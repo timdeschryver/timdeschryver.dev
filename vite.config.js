@@ -8,7 +8,7 @@ const config = {
 		sveltekit(),
 		svgLoader(),
 		VitePluginRestart({
-			restart: ['./blog/**'],
+			restart: ['./blog/**', './bits/**'],
 		}),
 	],
 	server: {

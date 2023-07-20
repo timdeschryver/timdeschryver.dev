@@ -1,5 +1,45 @@
 <script lang="ts">
 	import Head from '$lib/Head.svelte';
+	import { onDestroy, onMount } from 'svelte';
+
+	/** @type {import('./$types').PageData} */
+	export let data;
+	const { bits } = data;
+
+	let copyButtons: HTMLElement[] = [];
+
+	onDestroy(() => {
+		unRegisterCopyClick();
+	});
+
+	onMount(async () => {
+		copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
+		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
+	});
+
+	function unRegisterCopyClick() {
+		if (typeof document !== 'undefined') {
+			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
+		}
+	}
+
+	function copyCodeOnClick(e: PointerEvent) {
+		if (e.target instanceof HTMLElement) {
+			const target = e.target;
+			const ref = target.getAttribute('data-ref');
+			const code = document.querySelector(`[id="${ref}"] code`);
+			if (code instanceof HTMLElement) {
+				navigator.clipboard.writeText(code.innerText).then(() => {
+					target.innerHTML = 'assignment_turned_in';
+					target.classList.add('success');
+					setTimeout(() => {
+						target.classList.remove('success');
+						target.innerHTML = 'content_paste';
+					}, 1000);
+				});
+			}
+		}
+	}
 </script>
 
 <Head title="Bits - Tim Deschryver" details={false} />
@@ -27,58 +67,14 @@
 
 <header class="mt-normal" />
 
-<section>
-	<h2>Tools to keep your NPM dependencies up-to-date</h2>
-
-	<div>
-		You can use the default npm commands <a href="https://docs.npmjs.com/cli/commands/npm-outdated"
-			><code>npm outdated</code></a
-		>
-		(check the registry to see if any packages are currently outdated) and
-		<a href="https://docs.npmjs.com/cli/commands/npm-update"><code>npm update</code></a> (update all
-		the packages listed to the latest version, respecting the semver constraints of both your package
-		and its dependencies).
-	</div>
-
-	<pre>
-		<code>
-			npm outdated # list packages to update
-			npm outdated --save # update package.json
-			npm update # update packages
-		</code>
-	</pre>
-
-	<div>
-		But, to get a more detailed and prettier overview of the dependencies, you resort to the CLI
-		tool <a href="https://github.com/antfu/taze"><code>🥦 taze</code></a>, which also works for
-		monorepos.
-	</div>
-
-	<pre>
-		<code>
-			npx taze
-			npx taze major
-		</code>
-	</pre>
-
-	<div>
-		The Visual Studio Code users under us can install the <a
-			href="https://marketplace.visualstudio.com/items?itemName=idered.npm"><code>NPM</code></a
-		> extension to get a nice sidebar with the package information (and quick actions to update them).
-	</div>
-</section>
+{#each bits as bit}
+	<section>
+		{@html bit.html}
+	</section>
+{/each}
 
 <style>
-	h2 {
-		margin-bottom: var(--spacing-half);
-	}
-
-	pre {
-		margin-top: 0;
-		line-height: 1;
-	}
-
-	* + div {
-		margin-top: 0;
+	section:not(:last-child) {
+		border-top: 1px solid;
 	}
 </style>

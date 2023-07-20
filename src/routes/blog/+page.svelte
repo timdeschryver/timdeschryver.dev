@@ -139,11 +139,14 @@
 		list-style: none;
 		padding: 1em;
 		transition: all 0.2s ease;
+		border: 1px solid var(--background-color-transparent);
+		border-radius: 3px;
 	}
 
 	li:hover {
 		transform: scale(1.02);
 		background-color: var(--background-color-transparent);
+		border-color: currentColor;
 	}
 
 	li + li {

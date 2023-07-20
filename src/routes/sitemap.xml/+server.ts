@@ -1,6 +1,6 @@
 import { ISODate } from '$lib/formatters';
 import { variables } from '../../lib/variables';
-import { readPosts } from '../_posts';
+import { readPosts } from '../blog/_posts';
 
 export const prerender = true;
 
@@ -28,6 +28,12 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			changefreq: 'daily',
 			date: ISODate(post.metadata.modified),
 		})),
+		{
+			loc: `${variables.basePath}/bits`,
+			priority: '0.8',
+			changefreq: 'daily',
+			date,
+		},
 		{
 			loc: `${variables.basePath}/blog`,
 			priority: '0.6',

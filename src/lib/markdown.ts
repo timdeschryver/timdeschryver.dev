@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import url from 'url';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as url from 'url';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
 import frontmatter from 'front-matter';
@@ -20,13 +20,15 @@ import type { IThemedToken } from 'shiki';
 import pallete from 'shiki/themes/rose-pine.json';
 // @ts-ignore
 import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
-import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
 
-const blogPath = 'blog';
+const highlighter = await shiki.getHighlighter({
+	theme: 'rose-pine',
+});
+
 const langToIcon = {
 	bash: iconShell,
 	sh: iconShell,
@@ -49,126 +51,22 @@ const langToIcon = {
 	md: iconMarkdown,
 };
 
-const posts:
-	| {
-			html: string;
-			tldr: string;
-			metadata: any;
-	  }[] = [];
-
-export async function readPosts(): Promise<
-	{
-		html: string;
-		tldr: string;
-		metadata: {
-			title: string;
-			slug: string;
-			description: string;
-			date: string;
-			tags: string[];
-			canonical: string;
-			edit: string;
-			outgoingLinks: { slug: string; title: string }[];
-			incomingLinks: { slug: string; title: string }[];
-			translations: { url: string; author: string; profile: string }[];
-		};
-	}[]
-> {
-	if (posts.length) {
-		return posts;
-	}
-	console.log('\x1b[35m[posts] generate\x1b[0m');
-	const highlighter = await shiki.getHighlighter({
-		theme: 'rose-pine',
-	});
-
-	const folderContent = [...traverseFolder(blogPath, '.md')];
-	const directories = folderContent.reduce((dirs, file) => {
-		dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-		return dirs;
-	}, {} as { [directory: string]: { file: string; path: string }[] });
-
-	const postsSorted = Object.values(directories)
-		.map((files) => {
-			const postPath = files.find((f) => f.file === 'index.md').path;
-			const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
-
-			const { html, metadata } = parseFileToHtmlAndMeta(postPath, highlighter);
-			const { html: tldr } = tldrPath
-				? parseFileToHtmlAndMeta(tldrPath, highlighter)
-				: { html: null };
-
-			const tags = metadata.tags;
-			const banner = path
-				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.jpg'))
-				.replace(/\\/g, '/')
-				.replace('/', '//');
-
-			const canonical = path
-				.normalize(path.join(variables.basePath, 'blog', metadata.slug))
-				.replace(/\\/g, '/')
-				.replace('/', '//');
-
-			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${metadata.slug}/index.md`;
-			return {
-				html,
-				tldr,
-				metadata: {
-					...metadata,
-					date: ISODate(metadata.date),
-					tags,
-					banner,
-					canonical,
-					edit,
-					outgoingLinks: [],
-					incomingLinks: [],
-				},
-			};
-		})
-		.sort(sortByDate);
-
-	for (const post of postsSorted) {
-		const incomingLinks = new Set([
-			...postsSorted
-				.filter((p) => p.metadata.outgoingSlugs.includes(post.metadata.slug))
-				.map((p) => ({
-					slug: p.metadata.slug,
-					title: p.metadata.title,
-				})),
-		]);
-
-		const outgoingLinks = new Set([
-			...postsSorted
-				.filter((p) => post.metadata.outgoingSlugs.includes(p.metadata.slug))
-				.map((p) => ({
-					slug: p.metadata.slug,
-					title: p.metadata.title,
-				})),
-		]);
-
-		post.metadata.incomingLinks.push(...incomingLinks);
-		post.metadata.outgoingLinks.push(...outgoingLinks);
-	}
-
-	posts.push(...postsSorted);
-	return postsSorted;
-}
-
-function parseFileToHtmlAndMeta(
-	file,
-	highlighter: shiki.Highlighter,
-): { html: string; metadata: any & { outgoingSlugs: string[] }; assetsSrc: string } {
+export function parseFileToHtmlAndMeta(file): {
+	html: string;
+	metadata: any & { outgoingSlugs: string[] };
+	assetsSrc: string;
+} {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
 	metadata.outgoingSlugs = [] as string[];
 	const assetsSrc = path.dirname(file);
 	const renderer = new marked.Renderer();
-	const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
+	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
 	renderer.link = (href, title, text) => {
-		if (text === href && tweetRegexp.test(href)) {
-			return `::${href}::`;
-		}
+		// if (text === href && tweetRegexp.test(href)) {
+		// 	return `::${href}::`;
+		// }
 
 		const link = href.replace('../', '/blog/').replace('/index.md', '');
 		const href_attr = `href="${appendCreatorId(link)}"`;
@@ -440,7 +338,7 @@ function slugify(string) {
 		.replace(/-+$/, ''); // Trim - from end of text
 }
 
-function sortByDate(a, b) {
+export function sortByDate(a, b) {
 	return new Date(a.metadata.date) < new Date(b.metadata.date) ? 1 : -1;
 }
 

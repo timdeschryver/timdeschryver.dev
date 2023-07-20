@@ -1,4 +1,4 @@
-import { readPosts } from '../_posts';
+import { readPosts } from './_posts';
 
 /** @type {import('./$types').PageLoad} */
 export async function load() {

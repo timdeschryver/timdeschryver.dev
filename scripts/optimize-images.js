@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { optimizeImage } from './optimize-image.js';
 
 for (const filepath of getChangedFiles()) {
-	if (!filepath.includes('blog')) {
+	if (!filepath.includes('blog') && !filepath.includes('bits')) {
 		continue;
 	}
 
