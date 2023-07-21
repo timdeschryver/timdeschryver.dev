@@ -3,5 +3,6 @@ import { readBits } from './_bits';
 /** @type {import('./$types').PageLoad} */
 export async function load() {
 	const bits = await readBits();
-	return { bits };
+	const tags = [...new Set(bits.map((bit) => bit.metadata.tags).flat())];
+	return { bits, tags };
 }

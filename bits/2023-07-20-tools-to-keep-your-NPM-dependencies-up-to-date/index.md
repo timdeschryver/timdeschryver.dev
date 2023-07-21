@@ -23,8 +23,4 @@ npx taze
 npx taze major
 ```
 
-![The windows terminal showing the output of the taze CLI](./images/taze.png)
-
 The Visual Studio Code users among us can install the [NPM](https://marketplace.visualstudio.com/items?itemName=idered.npm) extension to get a nice sidebar with the package information (and quick actions to update them). Just take a little glance at the sidebar to see if there are any updates available.
-
-![The NPM sidebar in Visual Studio Code displaying the installed packages and their version](./images/npm.png)
