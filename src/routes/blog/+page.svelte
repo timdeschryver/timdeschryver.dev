@@ -126,44 +126,35 @@
 
 <style>
 	button {
-		--border-color: transparent;
-
 		color: var(--text-color-light);
-		border-color: var(--border-color);
+		border: 1px solid transparent;
 		transition: color 0.2s ease;
 	}
 
 	button:hover,
 	button.active {
 		color: var(--text-color);
+		border-color: hsla(var(--accent-color), 0.8);
 	}
 
 	button.active {
-		--background-color: none;
-
-		--border-color: currentColor;
-		background-color: var(--background-color);
+		background-color: hsla(var(--accent-color), 0.2);
+		border-color: hsla(var(--accent-color), 0.8);
 	}
 
 	li {
-		--border-color: var(--background-color-transparent);
-		--background-color: none;
-
 		list-style: none;
 		padding: 1em;
 		transition: all 0.2s ease;
 		border: 1px solid;
 		border-radius: 3px;
-
-		background-color: var(--background-color);
-		border-color: var(--border-color);
+		border-color: hsla(var(--accent-color), 0.2);
 	}
 
 	li:hover {
-		--background-color: var(--background-color-transparent);
-		--border-color: currentColor;
-
 		transform: scale(1.02);
+		background-color: hsla(var(--accent-color), 0.2);
+		border-color: hsla(var(--accent-color), 0.8);
 	}
 
 	li + li {
@@ -177,77 +168,5 @@
 
 	time {
 		color: var(--text-color-light);
-	}
-
-	[class~='typescript' i]:hover,
-	[class~='typescript' i].active {
-		--border-color: hsla(233, 82%, 69%, 0.8);
-		--background-color: hsla(233, 82%, 69%, 0.2);
-	}
-	li[class~='typescript' i] {
-		--border-color: hsla(233, 82%, 69%, 0.2);
-	}
-
-	[class~='angular' i]:hover,
-	[class~='angular' i].active {
-		--border-color: hsla(0, 74%, 56%, 0.8);
-		--background-color: hsla(0, 74%, 56%, 0.2);
-	}
-	li[class~='angular' i] {
-		--border-color: hsla(0, 74%, 56%, 0.2);
-	}
-
-	[class~='.net' i]:hover,
-	[class~='.net' i].active {
-		--border-color: hsla(261, 80%, 72%, 0.8);
-		--background-color: hsla(261, 80%, 72%, 0.2);
-	}
-	li[class~='.net' i] {
-		--border-color: hsla(261, 80%, 72%, 0.2);
-	}
-
-	[class~='ngrx' i]:hover,
-	[class~='ngrx' i].active {
-		--border-color: hsla(289, 65%, 46%, 0.8);
-		--background-color: hsla(289, 65%, 46%, 0.2);
-	}
-	li[class~='ngrx' i] {
-		--border-color: hsla(289, 65%, 46%, 0.2);
-	}
-
-	[class~='playwright' i]:hover,
-	[class~='playwright' i].active {
-		--border-color: hsla(135, 59%, 49%, 0.8);
-		--background-color: hsla(135, 59%, 49%, 0.2);
-	}
-	li[class~='playwright' i] {
-		--border-color: hsla(135, 59%, 49%, 0.2);
-	}
-
-	[class~='rxjs' i]:hover,
-	[class~='rxjs' i].active {
-		--border-color: hsla(336, 78%, 43%, 0.8);
-		--background-color: hsla(336, 78%, 43%, 0.2);
-	}
-	li[class~='rxjs' i] {
-		--border-color: hsla(336, 78%, 43%, 0.2);
-	}
-
-	[class~='azure' i]:hover,
-	[class~='azure' i].active {
-		--border-color: hsla(206, 100%, 36%, 0.8);
-		--background-color: hsla(206, 100%, 36%, 0.2);
-	}
-	li[class~='azure' i] {
-		--border-color: hsla(206, 100%, 36%, 0.2);
-	}
-
-	[class~='zod' i]:hover,
-	[class~='zod' i].active {
-		--border-color: hsla(215, 54%, 33%, 0.8);
-		--background-color: hsla(215, 54%, 33%, 0.2);
-	}
-	li[class~='zod' i] {
-		--border-color: hsla(215, 54%, 33%, 0.2);
 	}
 </style>

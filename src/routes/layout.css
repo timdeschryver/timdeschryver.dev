@@ -7,11 +7,20 @@
 	--head-font: 'Dosis', sans-serif;
 	--font-size: calc(1rem + 0.33vw);
 	--line-height: 1.8;
-	--spacing: 2.44em;
+	--spacing: 1.74em;
 	--spacing-half: 1.22em;
 	--spacing-small: 0.5em;
 	--spacing-large: 3.2em;
 	--header-height: 5em;
+
+	--typescript: 233, 82%, 69%;
+	--angular: 0, 74%, 56%;
+	--dotnet: 261, 80%, 72%;
+	--ngrx: 289, 65%, 46%;
+	--playwright: 135, 59%, 49%;
+	--rxjs: 336, 78%, 43%;
+	--azure: 206, 100%, 36%;
+	--zod: 215, 54%, 33%;
 }
 
 html.light {
@@ -98,12 +107,16 @@ h6 + p {
 }
 
 a {
-	text-decoration-line: underline;
+	text-decoration-line: none;
 	text-decoration-style: solid;
 	text-decoration-thickness: 1px;
 	text-underline-offset: 0.2em;
 	font-size: inherit;
 	line-height: inherit;
+}
+
+a:hover {
+	text-decoration-line: underline;
 }
 
 h1 > a,
@@ -237,7 +250,10 @@ main > h1 {
 }
 
 main > h2,
-main > h3 {
+main > h3,
+main > h4,
+main > h5,
+main > h6 {
 	text-transform: uppercase;
 }
 
@@ -329,9 +345,35 @@ a[data-with-favicon]:before {
 	vertical-align: middle;
 	width: 1em;
 	height: 1em;
-	margin: 0 0.2em;
+	margin: 0 0.4em;
 	background-size: contain;
 	background-image: var(--favicon);
+}
+
+[class~='typescript' i] {
+	--accent-color: var(--typescript);
+}
+[class~='angular' i] {
+	--accent-color: var(--angular);
+}
+[class~='.net' i],
+[class~='dotnet' i] {
+	--accent-color: var(--dotnet);
+}
+[class~='ngrx' i] {
+	--accent-color: var(--ngrx);
+}
+[class~='playwright' i] {
+	--accent-color: var(--playwright);
+}
+[class~='rxjs' i] {
+	--accent-color: var(--rxjs);
+}
+[class~='azure' i] {
+	--accent-color: var(--azure);
+}
+[class~='zod' i] {
+	--accent-color: var(--zod);
 }
 
 code,

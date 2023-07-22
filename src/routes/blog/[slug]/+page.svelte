@@ -44,6 +44,27 @@
 		blog.reset();
 	});
 
+	const postColor = post.metadata.tags
+		.map((tag) => {
+			switch (tag.toLowerCase()) {
+				case '.net':
+					return '--dotnet';
+				default:
+					return `--${tag.toLowerCase()}`;
+			}
+		})
+		.find(Boolean);
+	$: htmlStyle = `<style> 
+		main a, 
+		main a, 
+		main a, 
+		main a, 
+		main a, 
+		main a {
+			color: hsla(var(${postColor}), 1);
+		}	
+	</style>`;
+
 	let headings = null;
 	afterUpdate(async () => {
 		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
@@ -209,9 +230,9 @@
 {/if}
 
 {#if $blog?.state === 'tldr' && post.tldr}
-	{@html post.tldr}
+	{@html htmlStyle + post.tldr}
 {:else}
-	{@html post.html}
+	{@html htmlStyle + post.html}
 
 	{#if post.contributors.length}
 		<h4>A warm thank you to the contributors of this blog post</h4>
