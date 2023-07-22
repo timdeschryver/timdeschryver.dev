@@ -312,7 +312,7 @@
 
 	:global(body > div > main) > header {
 		grid-column: 1 / 4;
-		min-height: 100vh;
+		min-height: 100dvh;
 		min-width: 90%;
 		max-width: 90%;
 		display: flex;

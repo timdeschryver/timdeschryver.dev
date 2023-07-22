@@ -125,7 +125,7 @@ export function parseFileToHtmlAndMeta(file): {
 				.map((t) => t.trim())
 				.filter(Boolean);
 
-			return `<div class="${clazz}">${txt.map((t) => `<p>${t}</p>`).join('')}</div>`;
+			return `<div class="custom-block ${clazz}">${txt.map((t) => `<p>${t}</p>`).join('')}</div>`;
 		}
 
 		if (trimmed.startsWith('<figure>') || trimmed.startsWith('::')) {
