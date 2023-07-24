@@ -14,21 +14,6 @@
 	let y;
 
 	onMount(() => {
-		const themeStored = localStorage.getItem('theme');
-		if (themeStored) {
-			theme.set(themeStored);
-		} else {
-			theme.set(
-				window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-					? 'dark'
-					: 'light',
-			);
-		}
-
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-			toggleTheme(event.matches ? 'dark' : 'light');
-		});
-
 		if (typeof kofiWidgetOverlay !== 'undefined') {
 			kofiWidgetOverlay.draw('timdeschryver', {
 				type: 'floating-chat',
@@ -71,7 +56,6 @@
 
 	function toggleTheme(newTheme: string) {
 		theme.set(newTheme);
-		localStorage.setItem('theme', newTheme);
 	}
 
 	$: if (typeof document !== 'undefined') {

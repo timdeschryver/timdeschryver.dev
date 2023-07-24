@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Head from '$lib/Head.svelte';
 	import confetti from 'canvas-confetti';
+	import Socials from '$lib/Socials.svelte';
 
 	let lastConfetti = 0;
 	function fireConfetti(evt: MouseEvent): void {
@@ -86,10 +87,7 @@
 	</p>
 
 	<p>
-		You can find me on <a href="https://timdeschryver.dev/twitter" rel="external">Twitter</a>,
-		<a href="https://www.linkedin.com/in/tim-deschryver" rel="external">LinkedIn</a>,
-		<a href="https://timdeschryver.dev/github" rel="external">GitHub</a>, and
-		<a href="https://mastodon.social/@timdeschryver" rel="me">Mastodon</a>.
+		<Socials />
 	</p>
 </section>
 

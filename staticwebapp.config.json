@@ -32,7 +32,12 @@
 		},
 		{
 			"route": "/twitter",
-			"redirect": "https://twitter.com/tim_deschryver",
+			"redirect": "https://twitter.com/intent/follow?screen_name=tim_deschryver",
+			"statusCode": 302
+		},
+		{
+			"route": "/linkedin",
+			"redirect": "https://www.linkedin.com/in/tim-deschryver",
 			"statusCode": 302
 		},
 		{

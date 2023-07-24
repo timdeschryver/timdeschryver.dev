@@ -6,23 +6,30 @@
 
 	onMount(() => {
 		const scriptElm = document.createElement('script');
-		scriptElm.setAttribute('repo', 'timdeschryver/timdeschryver.dev');
-		scriptElm.setAttribute('issue-term', 'og:title');
-		scriptElm.setAttribute('theme', 'preferred-color-scheme');
-		scriptElm.setAttribute('label', '💬 Utterences');
-		scriptElm.setAttribute('crossorigin', 'anonymous');
+		scriptElm.setAttribute('data-repo', 'timdeschryver/timdeschryver.dev');
+		scriptElm.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnkxNzg3MjYyMDg=');
+		scriptElm.setAttribute('data-category', 'Announcements');
+		scriptElm.setAttribute('data-category-id', 'DIC_kwDOCqclQM4CYFDh');
+		scriptElm.setAttribute('data-mapping', 'og:title');
+		scriptElm.setAttribute('data-strict', '0');
+		scriptElm.setAttribute('data-reactions-enabled', '1');
+		scriptElm.setAttribute('data-emit-metadata', '0');
+		scriptElm.setAttribute('data-input-position', 'top');
+		scriptElm.setAttribute('data-theme', $theme === 'dark' ? 'dark' : 'light');
+		scriptElm.setAttribute('data-lang', 'en');
+		scriptElm.setAttribute('data-loading', 'lazy');
 
-		scriptElm.src = 'https://utteranc.es/client.js';
-
+		scriptElm.src = 'https://giscus.app/client.js';
 		divElement.appendChild(scriptElm);
 
 		theme.subscribe((theme) => {
 			const message = {
-				type: 'set-theme',
-				theme: theme === 'dark' ? 'github-dark' : 'github-light',
+				setConfig: {
+					theme: theme === 'dark' ? 'dark' : 'light',
+				},
 			};
-			const utterances = document.querySelector('iframe.utterances-frame') as HTMLFrameElement;
-			utterances?.contentWindow.postMessage(message, 'https://utteranc.es');
+			const frame = document.querySelector('iframe.giscus-frame') as HTMLFrameElement;
+			frame?.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
 		});
 	});
 </script>

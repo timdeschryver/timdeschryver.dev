@@ -3,8 +3,9 @@
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
-	import Comments from '../../../lib/Comments.svelte';
+	import Comments from '$lib/Comments.svelte';
 	import { blog } from '$lib/current-blog.store';
+	import Socials from '$lib/Socials.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -133,7 +134,7 @@
 	}
 </script>
 
-<Head title="{post.metadata.title} - Tim Deschryver" details={false} />
+<Head title={post.metadata.title} details={false} />
 
 <svelte:head>
 	<link rel="canonical" href={post.metadata.canonical} />
@@ -268,6 +269,10 @@
 	{/if}
 {/if}
 
+<h4>Follow me</h4>
+<p class="mt-0"><Socials /></p>
+
+<h4>Support me</h4>
 <Support />
 
 <Comments />

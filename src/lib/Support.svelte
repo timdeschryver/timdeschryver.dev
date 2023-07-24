@@ -1,4 +1,3 @@
-<h4>Support me</h4>
 <p class="mt-0">
 	I appreciate it if you would support me if have you enjoyed this post and found it useful, thank
 	you in advance.
