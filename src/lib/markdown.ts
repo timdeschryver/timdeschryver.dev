@@ -53,13 +53,17 @@ const langToIcon = {
 
 export function parseFileToHtmlAndMeta(file): {
 	html: string;
-	metadata: any & { outgoingSlugs: string[] };
+	metadata: unknown & { outgoingSlugs: string[] };
 	assetsSrc: string;
 } {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
 	metadata.outgoingSlugs = [] as string[];
 	const assetsSrc = path.dirname(file);
+	marked.setOptions({
+		mangle: false,
+		headerIds: false,
+	});
 	const renderer = new marked.Renderer();
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
@@ -134,6 +138,7 @@ export function parseFileToHtmlAndMeta(file): {
 
 		return `<p>${trimmed}</p>`;
 	};
+
 	renderer.code = (source, lang) => {
 		lang = lang || 'txt';
 
@@ -289,7 +294,7 @@ export function* traverseFolder(
 	}
 }
 
-function extractFrontmatter(markdown): { content: string; metadata: any } {
+function extractFrontmatter(markdown): { content: string; metadata: unknown } {
 	const result = frontmatter<{ tags: string | string[]; translations?: Record<string, string> }>(
 		markdown,
 	);
