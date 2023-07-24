@@ -334,6 +334,8 @@ function slugify(string) {
 	return string
 		.toString()
 		.toLowerCase()
+		.replace('<code>', '')
+		.replace('</code>', '')
 		.replace(/\s+/g, '-') // Replace spaces with -
 		.replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
 		.replace(/&/g, '-and-') // Replace & with 'and'

@@ -147,6 +147,7 @@
 		padding: 1em;
 		transition: all 0.2s ease;
 		border: 1px solid;
+		border-left-width: 8px;
 		border-radius: 3px;
 		border-color: hsla(var(--accent-color), 0.2);
 	}
@@ -155,6 +156,7 @@
 		transform: scale(1.02);
 		background-color: hsla(var(--accent-color), 0.2);
 		border-color: hsla(var(--accent-color), 0.8);
+		border-left-width: 16px;
 	}
 
 	li + li {

@@ -114,7 +114,7 @@
 
 {#each bits as bit}
 	<section
-		hidden={queryParts.length !== 0 && !queryParts.some((q) => tagSelected(bit.metadata.tags[0]))}
+		hidden={queryParts.length !== 0 && !queryParts.some((q) => bit.metadata.tags.some(tag => tagSelected(tag)))}
 	>
 		<article class="mt-0">
 			{@html bit.html}

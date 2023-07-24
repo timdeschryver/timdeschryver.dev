@@ -5,7 +5,7 @@
 :root {
 	--text-font: 'Mulish', sans-serif;
 	--head-font: 'Dosis', sans-serif;
-	--font-size: calc(1rem + 0.33vw);
+	--font-size: calc(1rem + 0.23dvw);
 	--line-height: 1.8;
 	--spacing: 1.74em;
 	--spacing-half: 1.22em;
@@ -523,7 +523,11 @@ pre > .code-heading > a {
 }
 
 .material-symbols-outlined {
-	font-variation-settings: 'FILL' 0, 'wght' 100, 'GRAD' 200, 'opsz' 48;
+	font-variation-settings:
+		'FILL' 0,
+		'wght' 100,
+		'GRAD' 200,
+		'opsz' 48;
 	vertical-align: middle;
 	display: inline;
 }
