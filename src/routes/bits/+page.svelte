@@ -113,9 +113,7 @@
 </header>
 
 {#each bits as bit}
-	<section
-		hidden={queryParts.length !== 0 && !queryParts.some((q) => bit.metadata.tags.some(tag => tagSelected(tag)))}
-	>
+	<section hidden={queryParts.length !== 0 && !bit.metadata.tags.some((tag) => tagSelected(tag))}>
 		<article class="mt-0">
 			{@html bit.html}
 		</article>
@@ -123,7 +121,8 @@
 {/each}
 
 <style>
-	section:not(:last-child) {
+	section:not(:last-first) {
+		margin-top: var(--spacing);
 		border-top: 1px solid;
 	}
 
