@@ -4,7 +4,7 @@ slug: semantically-release-your-angular-library
 description: I’m taking you along in my journey towards a fully automated process for releasing a library! Using CircleCI and the semantic-release.
 author: Tim Deschryver
 date: 2018-10-22T09:13:01.145Z
-tags: Library, Continuous Integration, Continuous Deployment
+tags: Angular, Continuous Integration, Continuous Deployment
 ---
 
 Are you, like me, getting tired of releasing your Angular library manually? And how about keeping that CHANGELOG up to date? In this post I’m taking you along in my journey towards a fully automated process for my [ngx-testing-library](https://github.com/timdeschryver/ngx-testing-library) library!

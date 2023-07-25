@@ -12,7 +12,7 @@
 	--spacing-small: 0.5em;
 	--spacing-large: 3.2em;
 	--header-height: 5em;
-
+	--accent-color: var(--base-color);
 	--typescript: 233, 82%, 69%;
 	--angular: 0, 74%, 56%;
 	--dotnet: 261, 80%, 72%;
@@ -21,9 +21,14 @@
 	--rxjs: 336, 78%, 43%;
 	--azure: 206, 100%, 36%;
 	--zod: 215, 54%, 33%;
+	--svelte: 12, 94%, 62%;
+	--cypress: 184, 100%, 25%;
+	--javascript: 50, 100%, 50%;
+	--vue: 153, 47%, 49%;
 }
 
 html.light {
+	--base-color: 0, 0%, 0%;
 	--background-color: hsla(0, 0%, 100%, 0.9);
 	--background-color-transparent: hsla(0, 0%, 0%, 0.05);
 	--text-color: hsla(0, 0%, 0%, 0.95);
@@ -32,6 +37,7 @@ html.light {
 }
 
 html.dark {
+	--base-color: 0, 0%, 100%;
 	--background-color: hsla(0, 0%, 0%, 0.95);
 	--background-color-transparent: hsla(0, 0%, 100%, 0.05);
 	--text-color: hsla(0, 0%, 100%, 0.9);
@@ -350,6 +356,27 @@ a[data-with-favicon]:before {
 	background-image: var(--favicon);
 }
 
+[class~='rxjs' i] {
+	--accent-color: var(--rxjs);
+}
+[class~='azure' i] {
+	--accent-color: var(--azure);
+}
+[class~='zod' i] {
+	--accent-color: var(--zod);
+}
+[class~='svelte' i] {
+	--accent-color: var(--svelte);
+}
+[class~='cypress' i] {
+	--accent-color: var(--cypress);
+}
+[class~='javascript' i] {
+	--accent-color: var(--javascript);
+}
+[class~='vue' i] {
+	--accent-color: var(--vue);
+}
 [class~='typescript' i] {
 	--accent-color: var(--typescript);
 }
@@ -365,15 +392,6 @@ a[data-with-favicon]:before {
 }
 [class~='playwright' i] {
 	--accent-color: var(--playwright);
-}
-[class~='rxjs' i] {
-	--accent-color: var(--rxjs);
-}
-[class~='azure' i] {
-	--accent-color: var(--azure);
-}
-[class~='zod' i] {
-	--accent-color: var(--zod);
 }
 
 code,
