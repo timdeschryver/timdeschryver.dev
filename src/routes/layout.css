@@ -134,14 +134,24 @@ h6 > a {
 	text-decoration: none;
 }
 
-h1 > a > .material-symbols-outlined,
-h2 > a > .material-symbols-outlined,
-h3 > a > .material-symbols-outlined,
-h4 > a > .material-symbols-outlined,
-h5 > a > .material-symbols-outlined,
-h6 > a > .material-symbols-outlined {
+h1 > .material-symbols-outlined,
+h2 > .material-symbols-outlined,
+h2 > .material-symbols-outlined,
+h3 > .material-symbols-outlined,
+h4 > .material-symbols-outlined,
+h5 > .material-symbols-outlined,
+h6 > .material-symbols-outlined {
 	opacity: 0;
 	transition: 0.2s ease-in-out;
+}
+
+h1:hover > .material-symbols-outlined,
+h2:hover > .material-symbols-outlined,
+h3:hover > .material-symbols-outlined,
+h4:hover > .material-symbols-outlined,
+h5:hover > .material-symbols-outlined,
+h6:hover > .material-symbols-outlined {
+	opacity: 1;
 }
 
 h1:hover > a,
@@ -151,15 +161,6 @@ h4:hover > a,
 h5:hover > a,
 h6:hover > a {
 	text-decoration: underline;
-}
-
-h1:hover > a > .material-symbols-outlined,
-h2:hover > a > .material-symbols-outlined,
-h3:hover > a > .material-symbols-outlined,
-h4:hover > a > .material-symbols-outlined,
-h5:hover > a > .material-symbols-outlined,
-h6:hover > a > .material-symbols-outlined {
-	opacity: 1;
 }
 
 p {

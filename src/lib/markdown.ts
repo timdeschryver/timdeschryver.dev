@@ -262,9 +262,10 @@ export function parseFileToHtmlAndMeta(file): {
 
 		return `
 		<h${level} id="${fragment}">
-		  <a href="#${fragment}" class="anchor" tabindex="-1">${headingText} <span class="material-symbols-outlined">
+		  <a href="#${fragment}" class="anchor" tabindex="-1">${headingText}</a>
+		  <span class="material-symbols-outlined">
 		  link
-		  </span></a>
+		  </span>
 		</h${level}>`;
 	};
 

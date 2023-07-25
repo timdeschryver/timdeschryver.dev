@@ -38,7 +38,7 @@
 	let scrollY;
 
 	let pres: HTMLElement[] = [];
-	let copyButtons: HTMLElement[] = [];
+	let copyButtons: Element[] = [];
 
 	onDestroy(() => {
 		unRegisterCopyClick();
@@ -56,12 +56,8 @@
 		})
 		.find(Boolean);
 	$: htmlStyle = `<style> 
-		main a, 
-		main a, 
-		main a, 
-		main a, 
-		main a, 
-		main a {
+		main a,
+		main a ~ .material-symbols-outlined {
 			color: hsla(var(${postColor}), 1);
 		}	
 	</style>`;
@@ -73,15 +69,15 @@
 		headings = hasTldr
 			? null
 			: headings || window.history.pushState
-			? [...(document.querySelectorAll('main h2,h3') as any)].reverse()
+			? [...document.querySelectorAll('main h2,h3')].reverse()
 			: [];
 
 		await tick();
 		unRegisterCopyClick();
-		pres = [...(document.querySelectorAll('pre') as any)];
+		pres = [...document.querySelectorAll('pre')];
 		pres.forEach((pre) => pre.addEventListener('click', copyLinkToCodeBlock));
 
-		copyButtons = [...(document.querySelectorAll('.copy-code') as any)];
+		copyButtons = [...document.querySelectorAll('.copy-code')];
 		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
 	});
 
