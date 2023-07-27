@@ -114,24 +114,17 @@ h6 + p {
 
 a {
 	text-decoration-line: none;
-	text-decoration-style: solid;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 0.2em;
 	font-size: inherit;
 	line-height: inherit;
 }
 
-a:hover {
-	text-decoration-line: underline;
+main a.mark {
+	box-shadow: inset 0 -0.1875rem 0 hsla(var(--accent-color), 0.7);
+	transition: all 0.2s ease-in-out;
 }
-
-h1 > a,
-h2 > a,
-h3 > a,
-h4 > a,
-h5 > a,
-h6 > a {
-	text-decoration: none;
+main a.mark:hover,
+main a.mark-hover:hover {
+	box-shadow: inset 0 -0.2375rem 0 hsla(var(--accent-color), 1);
 }
 
 h1 > .material-symbols-outlined,
@@ -152,15 +145,6 @@ h4:hover > .material-symbols-outlined,
 h5:hover > .material-symbols-outlined,
 h6:hover > .material-symbols-outlined {
 	opacity: 1;
-}
-
-h1:hover > a,
-h2:hover > a,
-h3:hover > a,
-h4:hover > a,
-h5:hover > a,
-h6:hover > a {
-	text-decoration: underline;
 }
 
 p {
@@ -349,7 +333,6 @@ thead {
 a[data-with-favicon]:before {
 	content: '';
 	display: inline-block;
-	vertical-align: middle;
 	width: 1em;
 	height: 1em;
 	margin: 0 0.4em;
@@ -365,9 +348,6 @@ a[data-with-favicon]:before {
 }
 [class~='zod' i] {
 	--accent-color: var(--zod);
-}
-[class~='svelte' i] {
-	--accent-color: var(--svelte);
 }
 [class~='cypress' i] {
 	--accent-color: var(--cypress);
@@ -387,6 +367,9 @@ a[data-with-favicon]:before {
 [class~='.net' i],
 [class~='dotnet' i] {
 	--accent-color: var(--dotnet);
+}
+[class~='svelte' i] {
+	--accent-color: var(--svelte);
 }
 [class~='ngrx' i] {
 	--accent-color: var(--ngrx);

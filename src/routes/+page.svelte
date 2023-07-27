@@ -58,7 +58,7 @@
 	<p>
 		A software engineer from Belgium who enjoys to <strong
 			on:mouseover={fireConfetti}
-			on:focus={fireConfetti}><a href="/blog">blog</a></strong
+			on:focus={fireConfetti}><a class="mark mark-hover" href="/blog">blog</a></strong
 		>
 		about my experiences with the aim to help others and my future self, primarily on
 		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>Angular</strong>
@@ -68,14 +68,20 @@
 
 	<p>
 		Lifelong learner and <strong on:mouseover={fireConfetti} on:focus={fireConfetti}
-			><a href="https://github.com/timdeschryver" rel="external">open-source enthusiast</a></strong
-		>, mainly working on <a href="https://ngrx.io/" rel="external">NgRx</a> and
-		<a href="https://testing-library.com/angular" rel="external">Angular Testing Library</a>.
+			><a class="mark mark-hover" href="https://github.com/timdeschryver" rel="external"
+				>open-source enthusiast</a
+			></strong
+		>, mainly working on <a class="mark mark-hover" href="https://ngrx.io/" rel="external">NgRx</a>
+		and
+		<a class="mark mark-hover" href="https://testing-library.com/angular" rel="external"
+			>Angular Testing Library</a
+		>.
 	</p>
 
 	<p>
 		Recognized by Microsoft as a <strong on:mouseover={fireConfetti} on:focus={fireConfetti}
 			><a
+				class="mark mark-hover"
 				href="https://mvp.microsoft.com/en-us/PublicProfile/5004452?fullName=Tim%20Deschryver"
 				rel="external">Most Valuable Professional (MVP)</a
 			></strong

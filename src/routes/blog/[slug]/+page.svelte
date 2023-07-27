@@ -51,15 +51,25 @@
 				case '.net':
 					return '--dotnet';
 				default:
-					return `--${tag.toLowerCase()}`;
+					return `--${tag.toLowerCase().split(' ')[0]}`;
 			}
 		})
 		.find(Boolean);
 	$: htmlStyle = `<style> 
-		main a,
-		main a ~ .material-symbols-outlined {
-			color: hsla(var(${postColor}), 1);
-		}	
+		main {
+			--accent-color: var(${postColor});
+		}
+
+		main h1, 
+		main h2,  
+		main h3, 
+		main h4,
+		main h5, 
+		main h6,
+		strong,
+		b {
+			color: hsla(var(--accent-color), 1);
+		}
 	</style>`;
 
 	let headings = null;

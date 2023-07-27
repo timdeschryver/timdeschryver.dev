@@ -104,17 +104,21 @@
 		<li class={post.tags.join(' ')}>
 			<article>
 				<h2>
-					<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
+					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover">
 						{post.title}
 					</a>
 				</h2>
 				<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 				<div>{post.description}</div>
 				<div>
-					<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">Read more</a>
+					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover"
+						>Read more</a
+					>
 					{#if post.tldr}
-						| <a href={`/blog/${post.slug}?tldr=true`} data-sveltekit-preload-data="hover"
-							>Read TLDR</a
+						| <a
+							href={`/blog/${post.slug}?tldr=true`}
+							class="mark-hover"
+							data-sveltekit-preload-data="hover">Read TLDR</a
 						>
 					{/if}
 				</div>

@@ -98,7 +98,7 @@ export function parseFileToHtmlAndMeta(file): {
 		}
 
 		const attributesString = attributes.filter(Boolean).join(' ');
-		return `<a ${attributesString} ${style}>${text}</a>`;
+		return `<a class="mark mark-hover" ${attributesString} ${style}>${text}</a>`;
 	};
 
 	renderer.image = (href, _title, text) => {
@@ -262,7 +262,7 @@ export function parseFileToHtmlAndMeta(file): {
 
 		return `
 		<h${level} id="${fragment}">
-		  <a href="#${fragment}" class="anchor" tabindex="-1">${headingText}</a>
+		  <a href="#${fragment}" class="anchor mark-hover" tabindex="-1">${headingText}</a>
 		  <span class="material-symbols-outlined">
 		  link
 		  </span>
