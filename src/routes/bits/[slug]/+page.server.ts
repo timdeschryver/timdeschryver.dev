@@ -12,6 +12,7 @@ export async function load({ params }) {
 				author: 'Tim Deschryver',
 				canonical: `https://timdeschryver.dev/bits/${bit.metadata.slug}`,
 				description: bit.metadata.title,
+				banner: `https://timdeschryver.dev/bits/${bit.metadata.slug}/images/banner.webp`,
 			},
 		},
 	};

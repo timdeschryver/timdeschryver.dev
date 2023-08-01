@@ -7,7 +7,7 @@ tags: tools
 
 ## HTTP File
 
-`.http` files are a simple way to quickly invoke your API endpoints because you don't have ro leave your IDE to use a separate tool.
+`.http` files are a simple way to quickly invoke your API endpoints because you don't have to leave your IDE to use a separate tool.
 I use it regularly when I'm building a new feature.
 
 You can commit this file to your repository so that your teammates can also make use of it!
