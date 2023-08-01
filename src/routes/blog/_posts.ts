@@ -2,26 +2,27 @@ import * as path from 'path';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '../../lib/markdown';
+import { execSync } from 'child_process';
 
 const blogPath = 'blog';
 
-const posts:
-	| {
-			html: string;
-			tldr: string;
-			metadata: {
-				title: string;
-				slug: string;
-				description: string;
-				date: string;
-				tags: string[];
-				canonical: string;
-				edit: string;
-				outgoingLinks: { slug: string; title: string }[];
-				incomingLinks: { slug: string; title: string }[];
-				translations: { url: string; author: string; profile: string }[];
-			};
-	  }[] = [];
+const posts: {
+	html: string;
+	tldr: string;
+	metadata: {
+		title: string;
+		slug: string;
+		description: string;
+		date: string;
+		modified: string | null;
+		tags: string[];
+		canonical: string;
+		edit: string;
+		outgoingLinks: { slug: string; title: string }[];
+		incomingLinks: { slug: string; title: string }[];
+		translations: { url: string; author: string; profile: string }[];
+	};
+}[] = [];
 
 export async function readPosts(): Promise<
 	{
@@ -32,6 +33,7 @@ export async function readPosts(): Promise<
 			slug: string;
 			description: string;
 			date: string;
+			modified: string | null;
 			tags: string[];
 			canonical: string;
 			edit: string;
@@ -47,10 +49,13 @@ export async function readPosts(): Promise<
 	console.log('\x1b[35m[posts] generate\x1b[0m');
 
 	const folderContent = [...traverseFolder(blogPath, '.md')];
-	const directories = folderContent.reduce((dirs, file) => {
-		dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-		return dirs;
-	}, {} as { [directory: string]: { file: string; path: string }[] });
+	const directories = folderContent.reduce(
+		(dirs, file) => {
+			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
+			return dirs;
+		},
+		{} as { [directory: string]: { file: string; path: string }[] },
+	);
 
 	const postsSorted = Object.values(directories)
 		.map((files) => {
@@ -72,12 +77,14 @@ export async function readPosts(): Promise<
 				.replace('/', '//');
 
 			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${metadata.slug}/index.md`;
+			const modified = getLastModifiedDate(metadata.slug);
 			return {
 				html,
 				tldr,
 				metadata: {
 					...metadata,
 					date: ISODate(metadata.date),
+					modified: modified ? ISODate(modified) : null,
 					tags,
 					banner,
 					canonical,
@@ -114,4 +121,13 @@ export async function readPosts(): Promise<
 
 	posts.push(...postsSorted);
 	return postsSorted;
+}
+
+function getLastModifiedDate(slug: string) {
+	const buffer = execSync(`git log -1 --format=%ci ./blog/${slug}/index.md`);
+	if (!buffer) {
+		return null;
+	}
+
+	return buffer.toString().trim();
 }

@@ -113,19 +113,12 @@
 </header>
 
 {#each bits as bit}
-	<section hidden={queryParts.length !== 0 && !bit.metadata.tags.some((tag) => tagSelected(tag))}>
-		<article class="mt-0">
-			{@html bit.html}
-		</article>
-	</section>
+	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
+		{@html bit.html}
+	{/if}
 {/each}
 
 <style>
-	section:not(:last-first) {
-		margin-top: var(--spacing);
-		border-top: 1px solid;
-	}
-
 	button {
 		color: var(--text-color-light);
 		transition: color 0.2s ease;

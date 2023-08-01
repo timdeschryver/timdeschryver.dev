@@ -1,8 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { readPosts } from '../_posts';
 import type { PageServerLoad } from './$types';
-import { execSync } from 'child_process';
-import { ISODate } from '$lib/formatters';
 import * as fs from 'fs';
 
 // const twitterClient = new TwitterClient(variables.twitterBearerToken.replace('Bearer:', '').trim());
@@ -60,7 +58,6 @@ export async function load({ params }): Promise<PageServerLoad> {
 	// }
 
 	const contributors = getContributors(post.metadata.slug);
-	const modifiedDate = getLastModifiedDate(post.metadata.slug);
 
 	return {
 		post: {
@@ -68,20 +65,10 @@ export async function load({ params }): Promise<PageServerLoad> {
 			html,
 			metadata: {
 				...post.metadata,
-				modified: ISODate(modifiedDate),
 			},
 			contributors,
 		},
 	};
-}
-
-function getLastModifiedDate(slug: string) {
-	const buffer = execSync(`git log -1 --format=%ci ./blog/${slug}/index.md`);
-	if (!buffer) {
-		return null;
-	}
-
-	return buffer.toString().trim();
 }
 
 function getContributors(slug: string) {

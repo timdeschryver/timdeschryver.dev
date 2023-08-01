@@ -276,7 +276,7 @@
 {/if}
 
 <h4>Follow me</h4>
-<p class="mt-0"><Socials /></p>
+<Socials />
 
 <h4>Support me</h4>
 <Support />

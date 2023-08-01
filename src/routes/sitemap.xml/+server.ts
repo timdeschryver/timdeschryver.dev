@@ -1,19 +1,24 @@
 import { ISODate } from '$lib/formatters';
 import { variables } from '../../lib/variables';
 import { readPosts } from '../blog/_posts';
+import { readBits } from '../bits/_bits';
 
 export const prerender = true;
 
 export async function GET() {
 	const posts = await readPosts();
-	return new Response(generate(posts), {
+	const bits = await readBits();
+	return new Response(generate(posts, bits), {
 		headers: {
 			'Content-Type': 'application/xml',
 		},
 	});
 }
 
-function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
+function generate(
+	posts: Awaited<ReturnType<typeof readPosts>>,
+	bits: Awaited<ReturnType<typeof readBits>>,
+) {
 	const date = ISODate(new Date());
 	const nodes = [
 		{
@@ -26,7 +31,13 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			loc: `${variables.basePath}/blog/${post.metadata.slug}`,
 			priority: '1.0',
 			changefreq: 'daily',
-			date: ISODate(post.metadata.modified),
+			date: ISODate(post.metadata.modified || post.metadata.date),
+		})),
+		...bits.map((bit) => ({
+			loc: `${variables.basePath}/bits/${bit.metadata.slug}`,
+			priority: '1.0',
+			changefreq: 'daily',
+			date: ISODate(bit.metadata.date),
 		})),
 		{
 			loc: `${variables.basePath}/bits`,
