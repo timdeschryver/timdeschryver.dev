@@ -115,6 +115,12 @@
 {#each bits as bit}
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
 		{@html bit.html}
+		<a
+			href="/bits/{bit.metadata.slug}"
+			class="mark-hover"
+			data-sveltekit-preload-data="hover"
+			hidden>Share</a
+		>
 	{/if}
 {/each}
 
