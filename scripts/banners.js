@@ -33,6 +33,8 @@ const content = './blog';
 					height: 627,
 				});
 
+				await page.goto(`http://localhost:5173/blog/`);
+
 				let first = true;
 				for (const { post, bannerPath } of generateBanners) {
 					console.log(`[banner] Generating banner for ${post}`);
@@ -44,9 +46,11 @@ const content = './blog';
 						first = false;
 					}
 
+					await page.waitForSelector('header');
 					await page.$eval('header', (el) => {
 						el.style.display = 'none';
 					});
+
 					await page.$eval('.published-at', (el) => {
 						el.style.display = 'none';
 					});

@@ -3,6 +3,7 @@ import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '../../lib/markdown';
 import { execSync } from 'child_process';
+import { dev } from '$app/environment';
 
 const blogPath = 'blog';
 
@@ -124,6 +125,9 @@ export async function readPosts(): Promise<
 }
 
 function getLastModifiedDate(slug: string) {
+	if (dev) {
+		return null;
+	}
 	const buffer = execSync(`git log -1 --format=%ci ./blog/${slug}/index.md`);
 	if (!buffer) {
 		return null;
