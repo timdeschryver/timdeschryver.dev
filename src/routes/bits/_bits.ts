@@ -1,5 +1,5 @@
 import { ISODate } from '$lib/formatters';
-import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '../../lib/markdown';
+import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
 
 const bitsPath = 'bits';
 
@@ -44,7 +44,7 @@ export async function readBits(): Promise<
 
 			const tags = metadata.tags;
 			return {
-				html,
+				html: html,
 				metadata: {
 					title: metadata.title,
 					slug: metadata.slug,

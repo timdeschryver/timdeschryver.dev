@@ -26,6 +26,11 @@
 			"statusCode": 301
 		},
 		{
+			"route": "/bits/http-file",
+			"redirect": "/bits/http-files",
+			"statusCode": 301
+		},
+		{
 			"route": "/newsletter",
 			"redirect": "https://tinyletter.com/timdeschryver",
 			"statusCode": 302

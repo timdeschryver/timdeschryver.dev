@@ -2,6 +2,8 @@
 	import Head from '$lib/Head.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import Support from "$lib/Support.svelte";
+	import Socials from "$lib/Socials.svelte";
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -112,17 +114,24 @@
 	</div>
 </header>
 
-{#each bits as bit}
+{#each bits as bit, i}
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
+		<h2>{bits.length - i}. <a
+				href="/bits/{bit.metadata.slug}"
+				class="mark-hover"
+				data-sveltekit-preload-data="hover"
+				>{bit.metadata.title}</a></h2>
 		{@html bit.html}
-		<a
-			href="/bits/{bit.metadata.slug}"
-			class="mark-hover"
-			data-sveltekit-preload-data="hover"
-			hidden>Share</a
-		>
+
 	{/if}
 {/each}
+
+<h4>Follow me</h4>
+<Socials />
+
+<h4>Support me</h4>
+<Support />
+
 
 <style>
 	button {

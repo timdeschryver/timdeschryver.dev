@@ -5,7 +5,7 @@ date: 2023-07-20
 tags: tools, vscode
 ---
 
-## Tools to keep your NPM dependencies up-to-date
+# Tools to keep your NPM dependencies up-to-date
 
 You can use the default npm commands [npm outdated](https://docs.npmjs.com/cli/commands/npm-outdated) (check the registry to see if any packages are currently outdated) and [npm update](https://docs.npmjs.com/cli/commands/npm-update) (update all the packages listed to the latest version, respecting the semver constraints of both your package and its dependencies).
 

@@ -5,7 +5,7 @@ date: 2023-07-25
 tags: angular
 ---
 
-## Angular Input enhancements
+# Angular Input enhancements
 
 The [Angular 16 release](https://blog.angular.io/angular-v16-is-here-4d7a28ec680d) adds useful enhancements to the `@Input` decorator.
 We can make an input required, we can transform the input value, and we can bind inputs route data (parameters, query parameters, and the route data property).

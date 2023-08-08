@@ -256,7 +256,7 @@ export function parseFileToHtmlAndMeta(file): {
 			? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
 			: slugify(text);
 
-		if (!fragment) {
+		if (!fragment || level === 1) {
 			return `<h${level}>${headingText}</h${level}>`;
 		}
 

@@ -1,11 +1,11 @@
 ---
-title: Http File
-slug: http-file
+title: Http Files
+slug: http-files
 date: 2023-08-01
-tags: tools
+tags: tools, developer-experience
 ---
 
-## HTTP File
+# HTTP Files
 
 `.http` files are a simple way to quickly invoke your API endpoints because you don't have to leave your IDE to use a separate tool.
 I use it regularly when I'm building a new feature.
@@ -48,3 +48,10 @@ Content-Type: application/json
 
 DELETE {{base}}/todoitems/1
 ```
+
+For more information, check out the documentation for the various IDEs:
+
+- [Visual Studio](https://learn.microsoft.com/en-us/aspnet/core/test/http-files)
+- [Visual Studio Code (HTTP extension)](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+- [JetBrains Rider](https://www.jetbrains.com/help/rider/Http_client_in__product__code_editor.html)
+- [JetBrains WebStorm](https://www.jetbrains.com/help/webstorm/http-client-in-product-code-editor.html)
