@@ -293,7 +293,6 @@ table {
 	text-align: left;
 	table-layout: fixed;
 	font-variant-numeric: tabular-nums;
-	display: block;
 	overflow-x: auto;
 	white-space: nowrap;
 }

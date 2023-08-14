@@ -23,6 +23,19 @@ What I like about feature flags in the .NET ecosystem, is that you can start out
 
 Now, let's implement a naive feature flag in .NET and extend it to end up with a more robust solution.
 
+## Table of contents <!-- omit in toc -->
+
+- [Setting the stage](#setting-the-stage)
+- [Implementing a basic feature flag](#implementing-a-basic-feature-flag)
+- [Configurable feature flag](#configurable-feature-flag)
+- [Introducing standards with the Feature Management package](#introducing-standards-with-the-feature-management-package)
+  - [Built-in filters](#built-in-filters)
+- [Writing a Custom Filter Implementation](#writing-a-custom-filter-implementation)
+  - [Using Parameters within Custom Filters](#using-parameters-within-custom-filters)
+- [FeatureGate for MVC Controllers](#featuregate-for-mvc-controllers)
+- [Azure Feature Management](#azure-feature-management)
+- [Conclusion](#conclusion)
+
 ## Setting the stage
 
 To follow along with me, create a new application with the following commands.

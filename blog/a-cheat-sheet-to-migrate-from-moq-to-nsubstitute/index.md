@@ -1,6 +1,6 @@
 ---
-title: A cheat sheet for migrating from Moq to NSubstitute
-slug: a-cheat-sheet-for-migrating-from-moq-to-nsubstitute
+title: A cheat sheet to migrate from Moq to NSubstitute
+slug: a-cheat-sheet-to-migrate-from-moq-to-nsubstitute
 description: A quick reference to help the migration from Moq to NSubstitute.
 date: 2023-08-14
 tags: dotNET, NSubstitute, Moq, Testing
@@ -516,7 +516,7 @@ Before using them, make sure that you're working on a clean branch.
 | `new AutoMoqCustomization`                                                                                     | `new AutoNSubstituteCustomization`                                  |
 | `using AutoFixture\.AutoMoq`                                                                                   | `using AutoFixture.AutoNSubstitute`                                 |
 
-I based mine on the following resources:
+I based mine implementation of these expression on the following resources:
 
 - https://github.com/AlbertoMonteiro/moq-to-nsubstitute
 - https://github.com/moq/moq/issues/1374#issuecomment-1671241122
@@ -525,4 +525,8 @@ I based mine on the following resources:
 
 In this cheat sheet, we've seen the syntax differences between Moq and NSubstitute, more specifically how to convert Moq code to NSubstitute code.
 We've also touched on how to automate the migration of your codebase.
+
+What I like about NSubstitute is that it's a lot more lightweight than Moq, and it doesn't require a lot of wrapping to mock interfaces.
+This makes the syntax more compact and easier to read.
+
 For more information on NSubstitute, take a look at the [NSubstitute documentation](https://nsubstitute.github.io/help/getting-started/).

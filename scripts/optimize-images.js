@@ -2,23 +2,27 @@ import { execSync } from 'child_process';
 import { optimizeImage } from './optimize-image.js';
 
 for (const filepath of getChangedFiles()) {
-	if (!filepath.includes('blog') && !filepath.includes('bits')) {
-		continue;
-	}
+	try {
+		if (!filepath.includes('blog') && !filepath.includes('bits')) {
+			continue;
+		}
 
-	if (
-		!(
-			filepath.endsWith('.png') ||
-			filepath.endsWith('.jpg') ||
-			filepath.endsWith('.jpeg') ||
-			filepath.endsWith('.webp')
-		)
-	) {
-		continue;
-	}
+		if (
+			!(
+				filepath.endsWith('.png') ||
+				filepath.endsWith('.jpg') ||
+				filepath.endsWith('.jpeg') ||
+				filepath.endsWith('.webp')
+			)
+		) {
+			continue;
+		}
 
-	console.log('Optimizing image:', filepath);
-	await optimizeImage(filepath);
+		console.log('Optimizing image:', filepath);
+		await optimizeImage(filepath);
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 function getChangedFiles() {
