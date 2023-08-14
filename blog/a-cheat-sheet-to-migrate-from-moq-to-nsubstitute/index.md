@@ -12,6 +12,7 @@ tags: dotNET, NSubstitute, Moq, Testing
 - [Argument matchers](#argument-matchers)
   - [Matches any value: `It.IsAny<T>()` =\> `Arg.Any<T>()`](#matches-any-value-itisanyt--arganyt)
   - [Matches a specific value: `It.Is<T>()` =\> `Arg.Is<T>()`](#matches-a-specific-value-itist--argist)
+  - [Matches a generic type: `It.IsAnyType()` =\> `TBD`](#matches-a-generic-type-itisanytype--tbd)
 - [Testing method invocations: `Verify()` =\> `Received()`](#testing-method-invocations-verify--received)
   - [Method without arguments](#method-without-arguments)
   - [Method invoked with any arguments](#method-invoked-with-any-arguments)
@@ -76,6 +77,11 @@ Arg.Is<int>(matcher => matcher >= 10 && matcher <= 20)
 
 // shorthand: use `value` directly instead of the `Arg` syntax (examples follow later)
 ```
+
+### Matches a generic type: `It.IsAnyType()` => `TBD`
+
+Moq's helpers `It.IsAnyType`, `It.IsValueType`, and `It.IsSubtype<T>` are currently not supported by NSubstitute.
+Keep an eye on this [issue #634](https://github.com/nsubstitute/NSubstitute/issues/634) for updates.
 
 ## Testing method invocations: `Verify()` => `Received()`
 
@@ -496,25 +502,22 @@ These are not perfect, but they can be an enoourmous boost to get you started, a
 Here are a few that I used.
 Before using them, make sure that you're working on a clean branch.
 
-| Find                                                                                                           | Replace                                                             |
-| -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `using Moq`                                                                                                    | `using NSubstitute`                                                 |
-| `new Mock<(.\*)>\(\)`                                                                                          | `Substitute.For<$1>()`                                              |
-| `Mock<(.\*?)>`                                                                                                 | `$1`                                                                |
-| `\.Setup\([\w\s]_=>[\w\s]_\.(.\*)\)\)`                                                                         | `.$1)`                                                              |
-| `\.Setup\([\w\s]_=>[\w\s]_\.(.\*)\),`                                                                          | `.$1),`                                                             |
-| `\.Setup\([\w\s]_=>[\w\s]_\.(.\*)\)`                                                                           | `.$1`                                                               |
-| `\.ReturnsAsync\(`                                                                                             | `.Returns(`                                                         |
-| `It\.IsAny`                                                                                                    | `Arg.Any`                                                           |
-| `It\.Is`                                                                                                       | `Arg.Is`                                                            |
-| `\.Object`                                                                                                     | `(be careful here as it may also replace other non-moq properties)` |
-| `((\w+)\|(\w+\s+))\.Verify\([\w\s]*=>[\w\s]*\.(.*)\)((.*?)), Times.Never\(\)\)`                                | `Arg.Any`                                                           |
-| `((\w+)\|(\w+\s+))\.Verify\([\w\s]_=>[\w\s]_\.(._)\)((._?)), Times\.(Once(\(\))?\|Exactly\((?<times>.\*)\))\)` | `await $1.Received(${times}).$4)`                                   |
-| `\.Verify\([\w\s]_=>[\w\s]_\.(._)\)((._?)), Times\.(Once(\(\))?`                                               | `Received(${times}).$1)`                                            |
-| `\.Verify\([\w\s]_=>[\w\s]_\.(._)\)((._?)), Times.Never\)`                                                     | `.DidNotReceive().$1)`                                              |
-| `\.Verify\([\w\s]_=>[\w\s]_\.(._)\)((._?))`                                                                    | `.Received().$1`                                                    |
-| `new AutoMoqCustomization`                                                                                     | `new AutoNSubstituteCustomization`                                  |
-| `using AutoFixture\.AutoMoq`                                                                                   | `using AutoFixture.AutoNSubstitute`                                 |
+| Find                                                                                                          | Replace                                                             |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `using Moq`                                                                                                   | `using NSubstitute`                                                 |
+| `new Mock<(.*)>\(\)`                                                                                          | `Substitute.For<$1>()`                                              |
+| `Mock<(.*?)>`                                                                                                 | `$1`                                                                |
+| `\.Setup\([\w\s]*=>[\w\s]*(.*)\)`                                                                             | `$1`                                                                |
+| `\.ReturnsAsync\(`                                                                                            | `.Returns(`                                                         |
+| `It\.IsAny`                                                                                                   | `Arg.Any`                                                           |
+| `It\.Is`                                                                                                      | `Arg.Is`                                                            |
+| `\.Object`                                                                                                    | `(be careful here as it may also replace other non-moq properties)` |
+| `((\w+)\|(\w+\s+))\.Verify\([\w\s]*=>[\w\s]*\.(.*)\)((.*?)), Times.Never\(\)\)`                               | `await $1.DidNotReceive().$4)`                                      |
+| `\.Verify\([\w\s]*=>[\w\s]*\.(.*)\)((.*?)),`                                                                  | `.DidNotReceive().$1)`                                              |
+| `((\w+)\|(\w+\s+))\.Verify\([\w\s]*=>[\w\s]*\.(.*)\)((.*?)), Times\.(Once(\(\))?\|Exactly\((?<times>.*)\))\)` | `await $1.Received(${times}).$4)`                                   |
+| `\.Verify\([\w\s]*=>[\w\s]*\.(.*)\)((.*?)), Times\.(Once(\(\))?\|Exactly\((?<times>.*)\))\)`                  | `Received(${times}).$1)`                                            |
+| `new AutoMoqCustomization`                                                                                    | `new AutoNSubstituteCustomization`                                  |
+| `using AutoFixture\.AutoMoq`                                                                                  | `using AutoFixture.AutoNSubstitute`                                 |
 
 I based mine implementation of these expression on the following resources:
 
