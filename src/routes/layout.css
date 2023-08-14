@@ -13,18 +13,20 @@
 	--spacing-large: 3.2em;
 	--header-height: 5em;
 	--accent-color: var(--base-color);
-	--typescript: 233, 82%, 69%;
-	--angular: 0, 74%, 56%;
-	--dotnet: 261, 80%, 72%;
-	--ngrx: 289, 65%, 46%;
-	--playwright: 135, 59%, 49%;
-	--rxjs: 336, 78%, 43%;
-	--azure: 206, 100%, 36%;
-	--zod: 215, 54%, 33%;
-	--svelte: 12, 94%, 62%;
-	--cypress: 184, 100%, 25%;
-	--javascript: 50, 100%, 50%;
-	--vue: 153, 47%, 49%;
+
+	/* https://simpleicons.org/ */
+	--typescript: 211, 60%, 48%;
+	--angular: 347, 100%, 43%;
+	--dotnet: 253, 66%, 50%;
+	--ngrx: 291, 66%, 50%;
+	--playwright: 122, 58%, 43%;
+	--rxjs: 316, 78%, 40%;
+	--azure: 206, 100%, 42%;
+	--zod: 219, 48%, 47%;
+	--svelte: 15, 100%, 50%;
+	--cypress: 214, 31%, 13%;
+	--javascript: 53, 93%, 54%;
+	--vue: 153, 47%, 53%;
 }
 
 html.light {
@@ -151,7 +153,7 @@ p {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
 	font-weight: 200;
-	transition: 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 
 @media (max-width: 480px) {
@@ -532,6 +534,7 @@ pre > .code-heading > a {
 		'opsz' 48;
 	vertical-align: middle;
 	display: inline;
+	margin-top: 0;
 }
 
 @keyframes wiggle {
