@@ -93,6 +93,11 @@
 	</p>
 
 	<p>
+		Favorite word: <strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous
+		improvement based on the idea that small, ongoing positive changes can reap significant improvements.
+	</p>
+
+	<p>
 		<Socials />
 	</p>
 </section>
