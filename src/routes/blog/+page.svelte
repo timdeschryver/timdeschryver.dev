@@ -142,7 +142,7 @@
 	}
 
 	button.active {
-		background-color: hsla(var(--accent-color), 0.2);
+		background-color: hsla(var(--accent-color), 0.1);
 		border-color: hsla(var(--accent-color), 0.8);
 	}
 
@@ -157,8 +157,8 @@
 	}
 
 	li:hover {
-		transform: scale(1.02);
-		background-color: hsla(var(--accent-color), 0.2);
+		transform: scale(1.05);
+		background-color: hsla(var(--accent-color), 0.1);
 		border-color: hsla(var(--accent-color), 0.8);
 		border-left-width: 16px;
 	}
