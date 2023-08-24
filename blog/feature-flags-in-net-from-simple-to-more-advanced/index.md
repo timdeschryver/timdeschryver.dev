@@ -213,7 +213,7 @@ Therefore, we add an extra section `FeatureFlags`, within the section we also cr
 
 To use the newly introduced configuration, replace the `forecastEnabled` variable with the value from the appsettings.
 
-```cs{13}:Program.cs
+```cs{13-16}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
@@ -268,6 +268,12 @@ To do this:
 - register the `AddFeatureManagement` service;
 - inject the `IFeatureManager` into the endpoint;
 - use the `IFeatureManager.IsEnabledAsync` method to check if the feature is enabled;
+
+:::info
+ASP.NET v7 introduced an [`EndpointFilter`](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters?view=aspnetcore-7.0) that can be used with Minimal API's.
+This is useful because you can easily reuse filter logic, and you don't bloated your endpoint with this logic (in this case, verifying if a feature is enabled).
+To create a reusable endpoint filter for your feature flags, you can take a look at my blog post [Implementing a Feature Flag based Endpoint Filter](../implementing-a-feature-flag-based-endpoint-filter/index.md)
+:::
 
 ```cs{1, 4-5, 15, 17-20}:Program.cs
 using Microsoft.FeatureManagement;
@@ -332,7 +338,9 @@ The following filters are available:
 
 For more info about these, you can take a look at the [docs](https://docs.microsoft.com/en-us/azure/azure-app-configuration/howto-feature-filters-aspnet-core).
 
-> Important: As far as I know, the `TargetingFilter` filter cannot be used when the Minimal API structure is used. When you register the filter, you'll receive the error: System.InvalidOperationException: Unable to resolve service for type 'Microsoft.FeatureManagement.FeatureFilters.ITargetingContextAccessor' while attempting to activate 'Microsoft.FeatureManagement.FeatureFilters.TargetingFilter'.
+:::warning
+As far as I know, the `TargetingFilter` filter cannot be used when the Minimal API structure is used. When you register the filter, you'll receive the error: System.InvalidOperationException: Unable to resolve service for type 'Microsoft.FeatureManagement.FeatureFilters.ITargetingContextAccessor' while attempting to activate 'Microsoft.FeatureManagement.FeatureFilters.TargetingFilter'.
+:::
 
 These filters are available from the `Microsoft.FeatureManagement.FeatureFilters` namespace and must be registered individually.
 

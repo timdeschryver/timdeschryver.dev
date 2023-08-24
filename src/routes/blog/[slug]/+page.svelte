@@ -257,7 +257,7 @@
 		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.incomingLinks as link}
 				<li>
-					<a href={`/blog/${link.slug}`}>{link.title}</a>
+					<a href={`/blog/${link.slug}`} class="mark">{link.title}</a>
 				</li>
 			{/each}
 		</ul>
@@ -268,7 +268,7 @@
 		<ul class="mt-0" data-sveltekit-reload>
 			{#each post.metadata.outgoingLinks as link}
 				<li>
-					<a href={`/blog/${link.slug}`}>{link.title}</a>
+					<a href={`/blog/${link.slug}`} class="mark">{link.title}</a>
 				</li>
 			{/each}
 		</ul>
