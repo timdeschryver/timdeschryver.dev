@@ -22,20 +22,24 @@ jobs:
     outputs:
       swa_url: ${{ steps.swa.outputs.static_web_app_url }}
     steps:
-      - uses: actions/checkout@v3
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Install Dependencies
+      - name: ⏳ Install Dependencies
         run: npm ci
+
+      - name: 🧪 Unit Test
+        run: npm run test:unit
 
       - name: 🎭 Install Playwright
         run: npx playwright install --with-deps
 
-      - name: Fetching Contributors
+      - name: 🧑‍🤝‍🧑 Fetching Contributors
         run: npm run contributors
 
-      - name: Build And Deploy
+      - name: 🚀 Build And Deploy
         id: swa
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -90,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
-      - name: Close Pull Request
+      - name: 📕 Close Pull Request
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:

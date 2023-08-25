@@ -1,9 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vitest/config';
 import VitePluginRestart from 'vite-plugin-restart';
 import svgLoader from 'vite-svg-loader';
 
-/** @type {import('vite').UserConfig} */
-const config = {
+export default defineConfig({
 	plugins: [
 		sveltekit(),
 		svgLoader(),
@@ -16,6 +16,8 @@ const config = {
 			allow: ['..'],
 		},
 	},
-};
-
-export default config;
+	test: {
+		include: ['src/**/*.test.ts'],
+		environmentMatchGlobs: [['src/**/*.dom.test.ts', 'jsdom']],
+	},
+});
