@@ -6,10 +6,13 @@
 	import Comments from '$lib/Comments.svelte';
 	import { blog } from '$lib/current-blog.store';
 	import Socials from '$lib/Socials.svelte';
+	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	const { post } = data;
+
+	codeBlockLifeCycle();
 
 	const logos = post.metadata.tags
 		.map((tag) => {

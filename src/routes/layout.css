@@ -473,7 +473,7 @@ pre > .code-heading > .file-name {
 
 pre > .code-heading > .copy-code {
 	margin-left: auto;
-	opacity: 0;
+	opacity: 0.3;
 }
 
 pre:hover > .code-heading > .copy-code {
@@ -481,7 +481,8 @@ pre:hover > .code-heading > .copy-code {
 }
 
 pre > .code-heading > .copy-code.success {
-	animation: wiggle 1s linear;
+	animation: wiggle 1.5s linear;
+	color: hsla(135, 59%, 49%, 0.8);
 }
 
 pre > .code-heading > * {
@@ -523,6 +524,23 @@ pre > .code-heading > a {
 .custom-block.warning {
 	--background-color: hsla(52, 100%, 71%, 0.1);
 	--border-color: hsla(52, 100%, 71%, 0.8);
+}
+
+.code-group-tabs {
+	display: flex;
+	flex-direction: row;
+}
+
+.code-group-tab {
+	margin-top: 0;
+}
+
+.code-group-tab.active {
+	border-bottom: 1px solid hsla(var(--accent-color));
+}
+
+.code-group-code {
+	margin-top: var(--spacing-small);
 }
 
 .material-symbols-outlined {

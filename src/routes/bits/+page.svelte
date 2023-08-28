@@ -2,12 +2,15 @@
 	import Head from '$lib/Head.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import Support from "$lib/Support.svelte";
-	import Socials from "$lib/Socials.svelte";
+	import Support from '$lib/Support.svelte';
+	import Socials from '$lib/Socials.svelte';
+	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	const { bits, tags } = data;
+
+	codeBlockLifeCycle();
 
 	let copyButtons: HTMLElement[] = [];
 
@@ -116,13 +119,13 @@
 
 {#each bits as bit, i}
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
-		<h2>{bits.length - i}. <a
-				href="/bits/{bit.metadata.slug}"
-				class="mark-hover"
-				data-sveltekit-preload-data="hover"
-				>{bit.metadata.title}</a></h2>
+		<h2>
+			{bits.length - i}.
+			<a href="/bits/{bit.metadata.slug}" class="mark-hover" data-sveltekit-preload-data="hover"
+				>{bit.metadata.title}</a
+			>
+		</h2>
 		{@html bit.html}
-
 	{/if}
 {/each}
 
@@ -131,7 +134,6 @@
 
 <h4>Support me</h4>
 <Support />
-
 
 <style>
 	button {

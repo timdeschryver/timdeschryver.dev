@@ -21,9 +21,19 @@ import pallete from 'shiki/themes/rose-pine.json';
 // @ts-ignore
 import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
 import { variables } from '$lib/variables';
+import { codeGroup } from './code-block';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
+
+marked.setOptions({
+	mangle: false,
+	headerIds: false,
+});
+marked.use({
+	extensions: [codeGroup],
+});
+const renderer = new marked.Renderer();
 
 const highlighter = await shiki.getHighlighter({
 	theme: 'rose-pine',
@@ -50,21 +60,22 @@ const langToIcon = {
 	xml: iconBracketsPurple,
 	md: iconMarkdown,
 };
-
 export function parseFileToHtmlAndMeta(file): {
 	html: string;
-	metadata: unknown & { outgoingSlugs: string[] };
+	metadata: unknown & {
+		outgoingSlugs: string[];
+		title: string;
+		slug: string;
+		date: string;
+		tags: string[];
+	};
 	assetsSrc: string;
 } {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
 	metadata.outgoingSlugs = [] as string[];
 	const assetsSrc = path.dirname(file);
-	marked.setOptions({
-		mangle: false,
-		headerIds: false,
-	});
-	const renderer = new marked.Renderer();
+
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
 	renderer.link = (href, title, text) => {
@@ -177,7 +188,7 @@ export function parseFileToHtmlAndMeta(file): {
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
 			: '';
 
-		let shikiLang = language;
+		let shikiLang = language.trim();
 		if (shikiLang === 'cs') {
 			shikiLang = 'csharp';
 		}

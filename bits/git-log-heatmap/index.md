@@ -13,9 +13,9 @@ For example, the file contains too much logic and should be split up into multip
 
 The following `git log` command returns a list of files (excluding `json` and `lock` files) that have been changed within the last 6 months, sorted by the number of changes.
 
-## PowerShell Variant
+:::code-group
 
-```powershell
+```powershell [title=PowerShell Variant]
 git log --since 6.months.ago --pretty=format: --name-only `
     | Where-Object { ![string]::IsNullOrEmpty($_) } `
     | ?{$_ -notmatch ".(json|lock)$" } `
@@ -25,9 +25,7 @@ git log --since 6.months.ago --pretty=format: --name-only `
     | Select-Object -Property Count, Name -First 25
 ```
 
-## Bash Variant
-
-```bash
+```bash [title=Bash Variant]
 git log --since 6.months.ago --pretty=format: --name-only  \
     | sed '/^\s*$/'d \
     | grep -v -E '*\.(json|lock)$' \
@@ -36,3 +34,5 @@ git log --since 6.months.ago --pretty=format: --name-only  \
     |  sort -nr  \
     | head -n 25
 ```
+
+:::

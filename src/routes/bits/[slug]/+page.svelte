@@ -3,10 +3,13 @@
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Socials from '$lib/Socials.svelte';
+	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	const { bit } = data;
+
+	codeBlockLifeCycle();
 </script>
 
 <Head title={bit.metadata.title} details={false} />

@@ -3,16 +3,15 @@ import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdow
 
 const bitsPath = 'bits';
 
-const bits:
-	| {
-			html: string;
-			metadata: {
-				title: string;
-				slug: string;
-				date: string;
-				tags: string[];
-			};
-	  }[] = [];
+const bits: {
+	html: string;
+	metadata: {
+		title: string;
+		slug: string;
+		date: string;
+		tags: string[];
+	};
+}[] = [];
 
 export async function readBits(): Promise<
 	{
@@ -32,10 +31,13 @@ export async function readBits(): Promise<
 	console.log('\x1b[35m[bits] generate\x1b[0m');
 
 	const folderContent = [...traverseFolder(bitsPath, '.md')];
-	const directories = folderContent.reduce((dirs, file) => {
-		dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-		return dirs;
-	}, {} as { [directory: string]: { file: string; path: string }[] });
+	const directories = folderContent.reduce(
+		(dirs, file) => {
+			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
+			return dirs;
+		},
+		{} as { [directory: string]: { file: string; path: string }[] },
+	);
 
 	const bitsSorted = Object.values(directories)
 		.map((files) => {

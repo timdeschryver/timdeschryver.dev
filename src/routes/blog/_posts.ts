@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
-import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '../../lib/markdown';
+import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
 import { execSync } from 'child_process';
 import { dev } from '$app/environment';
 

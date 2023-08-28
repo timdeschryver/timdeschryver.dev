@@ -19,7 +19,9 @@ See my blog post [You can now return unmapped types from raw SQL select statemen
 
 ## Select Query to retrieve a collection
 
-```csharp
+:::code-group
+
+```csharp [title=C# Code]
 var customers  = await dbContext.Database
     // 👇 Map to a unmapped type
     .SqlQuery<CustomerDto>(
@@ -35,7 +37,7 @@ var customers  = await dbContext.Database
     .ToListAsync();
 ```
 
-```sql
+```sql [title=Generated SQL]
 SELECT
        c.Id as CustomerId,
        c.FirstName,
@@ -44,9 +46,13 @@ FROM dbo.Customers c
 JOIN dbo.Addresses a ON c.Id = a.CustomerId
 ```
 
+:::
+
 ## Select Query with a parameter within the where clause
 
-```csharp
+:::code-group
+
+```csharp [title=C# Code]
 var customers = await dbContext.Database
     .SqlQuery<CustomerDto>(
         $"""
@@ -63,7 +69,7 @@ var customers = await dbContext.Database
     .ToListAsync();
 ```
 
-```sql
+```sql [title=Generated SQL]
 exec sp_executesql N'SELECT
        c.Id as CustomerId,
        c.FirstName,
@@ -75,9 +81,13 @@ WHERE c.FirstName like ''%'' + @p0 + ''%''
 ',N'@p0 nvarchar(4000)',@p0=N'ali'
 ```
 
+:::
+
 ## Select Query using LINQ to retrieve a single entity
 
-```csharp
+:::code-group
+
+```csharp [title=C# Code]
 var customer = await dbContext.Database
     .SqlQuery<CustomerDto>(
         $"""
@@ -93,7 +103,7 @@ var customer = await dbContext.Database
     .SingleOrDefaultAsync(c => c.CustomerId == customerId);
 ```
 
-```sql
+```sql [title=Generated SQL]
 exec sp_executesql N'SELECT TOP(2) [c].[CustomerId], [c].[FirstName], [c].[Street]
 FROM (
     SELECT
@@ -106,3 +116,5 @@ FROM (
 --                       👇 LINQ filters also are parameterized
 WHERE [c].[CustomerId] = @__customerId_1',N'@__customerId_1 int',@__customerId_1=1
 ```
+
+:::
