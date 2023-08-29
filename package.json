@@ -23,6 +23,7 @@
 		"copy:blog": "cpy 'blog/**/*.*' '!blog/**/*.md' 'static/blog'",
 		"copy:bits": "cpy 'bits/**/*.*' '!bits/**/*.md' 'static/bits'",
 		"g": "node ./scripts/generate",
+		"gb": "node ./scripts/generate-bit",
 		"p": "node ./scripts/devto",
 		"banners": "node ./scripts/banners.js",
 		"pre-commit": "npm run banners && git add ./**/banner.jpg && lint-staged",
