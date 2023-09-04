@@ -43,6 +43,7 @@
 
 <div></div>
 
+<h1 style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
 {@html bit.html}
 
 <h4>Follow me</h4>
@@ -50,3 +51,11 @@
 
 <h4>Support me</h4>
 <Support />
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		h1 {
+			view-transition-name: var(--name);
+		}
+	}
+</style>

@@ -104,8 +104,7 @@
 
 <header class="mt-normal">
 	<h3>
-		A new bit every Tuesday of a tool || feature || blog that I encountered recently that has helped
-		and/or impressed me.
+		A new bit every Tuesday of a tool || feature || blog that has helped me, or which I encountered recently and impressed me.
 	</h3>
 
 	<div class="mt-normal">
@@ -121,7 +120,7 @@
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
 		<h2>
 			{bits.length - i}.
-			<a href="/bits/{bit.metadata.slug}" class="mark-hover" data-sveltekit-preload-data="hover"
+			<a href="/bits/{bit.metadata.slug}" class="mark-hover" data-sveltekit-preload-data="hover" style:--name="bit-title-{bit.metadata.slug}"
 				>{bit.metadata.title}</a
 			>
 		</h2>
@@ -148,5 +147,11 @@
 	button.active {
 		border-color: currentColor;
 		color: var(--text-color);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		a {
+			view-transition-name: var(--name);
+		}
 	}
 </style>

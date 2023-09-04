@@ -174,8 +174,8 @@
 
 <svelte:window bind:scrollY />
 
-<header>
-	<h1>{post.metadata.title}</h1>
+<header style:--name="post-title-{post.metadata.slug}">
+	<h1 >{post.metadata.title}</h1>
 	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
 		<div class="published-at">
@@ -446,5 +446,11 @@
 	.translations ul {
 		list-style: none;
 		margin-top: var(--spacing-small);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		header {
+			view-transition-name: var(--name);
+		}
 	}
 </style>

@@ -7,6 +7,7 @@ export async function load({ params }) {
 	return {
 		bit: {
 			...bit,
+			html: bit.html.replace(/<h1.*?>.*?<\/h1>/s, ''),
 			metadata: {
 				...bit.metadata,
 				author: 'Tim Deschryver',

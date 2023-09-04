@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { variables } from '$lib/variables';
 	import Host from '$lib/Host.svelte';
 	import { blog } from '$lib/current-blog.store';
@@ -34,6 +34,17 @@
 		if (variables && typeof gtag === 'function') {
 			gtag('config', variables.gtag_id);
 		}
+	});
+
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+		
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
 
 	afterNavigate(({ to }) => {
@@ -244,4 +255,5 @@
 	.theme-switch > span {
 		vertical-align: text-top;
 	}
+
 </style>
