@@ -17,11 +17,9 @@ Usually this results in a faster query and less data transferred over the wire.
 
 See my blog post [You can now return unmapped types from raw SQL select statements with Entity Framework 8](../../blog/you-can-now-return-unmapped-types-from-raw-sql-select-statements-with-entity-framework-8/index.md) for more info about this new feature.
 
-## Select Query to retrieve a collection
-
 :::code-group
 
-```csharp [title=C# Code]
+```csharp:SELECT QUERY TO RETRIEVE A COLLECTION [title=C# Code]
 var customers  = await dbContext.Database
     // 👇 Map to a unmapped type
     .SqlQuery<CustomerDto>(
@@ -37,7 +35,7 @@ var customers  = await dbContext.Database
     .ToListAsync();
 ```
 
-```sql [title=Generated SQL]
+```sql:SELECT QUERY TO RETRIEVE A COLLECTION [title=Generated SQL]
 SELECT
        c.Id as CustomerId,
        c.FirstName,
@@ -48,11 +46,9 @@ JOIN dbo.Addresses a ON c.Id = a.CustomerId
 
 :::
 
-## Select Query with a parameter within the where clause
-
 :::code-group
 
-```csharp [title=C# Code]
+```csharp:Select Query with a parameter within the where clause [title=C# Code]
 var customers = await dbContext.Database
     .SqlQuery<CustomerDto>(
         $"""
@@ -69,7 +65,7 @@ var customers = await dbContext.Database
     .ToListAsync();
 ```
 
-```sql [title=Generated SQL]
+```sql:Select Query with a parameter within the where clause [title=Generated SQL]
 exec sp_executesql N'SELECT
        c.Id as CustomerId,
        c.FirstName,
@@ -83,11 +79,9 @@ WHERE c.FirstName like ''%'' + @p0 + ''%''
 
 :::
 
-## Select Query using LINQ to retrieve a single entity
-
 :::code-group
 
-```csharp [title=C# Code]
+```csharp:Select Query using LINQ to retrieve a single entity [title=C# Code]
 var customer = await dbContext.Database
     .SqlQuery<CustomerDto>(
         $"""
@@ -103,7 +97,7 @@ var customer = await dbContext.Database
     .SingleOrDefaultAsync(c => c.CustomerId == customerId);
 ```
 
-```sql [title=Generated SQL]
+```sql:Select Query using LINQ to retrieve a single entity [title=Generated SQL]
 exec sp_executesql N'SELECT TOP(2) [c].[CustomerId], [c].[FirstName], [c].[Street]
 FROM (
     SELECT
