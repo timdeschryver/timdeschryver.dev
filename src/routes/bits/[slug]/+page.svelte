@@ -44,6 +44,7 @@
 <div></div>
 
 <h1 style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
+<img src={bit.metadata.banner} alt="banner" />
 {@html bit.html}
 
 <h4>Follow me</h4>
