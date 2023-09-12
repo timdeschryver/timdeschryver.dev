@@ -526,6 +526,10 @@ pre > .code-heading > a {
 	--border-color: hsla(52, 100%, 71%, 0.8);
 }
 
+.code-group {
+	overflow: auto;
+}
+
 .code-group-tabs {
 	display: flex;
 	flex-direction: row;

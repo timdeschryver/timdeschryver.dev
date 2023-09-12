@@ -123,9 +123,10 @@ This looks a lot like the setup that's used with Karma.
 Important here is to not forget to import the `zone-testing-bundle` file to make sure that zone.js is loaded.
 Lastly, we can add the injection token to the `platformBrowserDynamicTesting()` method.
 
-```ts{1, 7-12}:after:setup-test.ts
+```ts{1, 8-13}:after:setup-test.ts
 import 'zone.js/bundles/zone-testing-bundle.umd.js';
 import '@testing-library/jest-dom';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { MY_INJECTION_TOKEN } from './src/app/app.config';
 
 getTestBed().initTestEnvironment(

@@ -1,10 +1,14 @@
 import { writeFile, readFile } from 'fs/promises';
 import { ImagePool } from '@squoosh/lib';
 import { cpus } from 'os';
+import { existsSync } from 'fs';
 
 export async function optimizeImage(img) {
-	const imagePool = new ImagePool(cpus().length);
+	if (!existsSync(img)) {
+		return;
+	}
 
+	const imagePool = new ImagePool(cpus().length);
 	const file = await readFile(img);
 	const image = imagePool.ingestImage(file);
 	await image.encode({
