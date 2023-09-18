@@ -1,4 +1,4 @@
-import { readPosts } from './_posts';
+import { orderTags, readPosts } from './_posts';
 
 /** @type {import('./$types').PageLoad} */
 export async function load() {
@@ -11,24 +11,6 @@ export async function load() {
 		date: p.metadata.date,
 		tags: p.metadata.tags,
 	}));
-	const tags = Object.entries<number>(
-		posts
-			.map((p) => p.metadata.tags)
-			.reduce((acc, tag) => [...acc, ...tag], [])
-			.filter(
-				(tag) =>
-					tag.toLowerCase() !== 'redux' &&
-					tag.toLowerCase() !== 'developerexperience' &&
-					tag.toLowerCase() !== 'csharp',
-			)
-			.reduce((acc, tag) => {
-				acc[tag] = (acc[tag] || 0) + 1;
-				return acc;
-			}, {} as { [tag: string]: number }),
-	)
-		.sort(([v1, c1], [v2, c2]) => c2 - c1 || v2.localeCompare(v1))
-		.slice(0, 15)
-		.map(([v]) => v);
-
+	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
 	return { metadata, tags };
 }

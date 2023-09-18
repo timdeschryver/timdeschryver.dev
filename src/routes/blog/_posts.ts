@@ -135,3 +135,41 @@ function getLastModifiedDate(slug: string) {
 
 	return buffer.toString().trim();
 }
+
+export function orderTags(tags: string[]) {
+	return Object.entries<number>(
+		tags
+			.filter(
+				(tag) =>
+					tag.toLowerCase() !== 'redux' &&
+					tag.toLowerCase() !== 'developerexperience' &&
+					tag.toLowerCase() !== 'csharp',
+			)
+			.reduce(
+				(acc, tag) => {
+					acc[tag] = (acc[tag] || 0) + 1;
+					return acc;
+				},
+				{} as { [tag: string]: number },
+			),
+	)
+		.sort(([v1, c1], [v2, c2]) => c2 - c1 || v2.localeCompare(v1))
+		.slice(0, 15)
+		.map(([v]) => v);
+}
+
+export const TAG_COLORS = {
+	typescript: 'typescript',
+	angular: 'angular',
+	dotnet: 'dotnet',
+	'.net': 'dotnet',
+	ngrx: 'ngrx',
+	playwright: 'playwright',
+	rxjs: 'rxjs',
+	azure: 'azure',
+	zod: 'zod',
+	svelte: 'svelte',
+	cypress: 'cypress',
+	javascript: 'javascript',
+	vue: 'vue',
+};

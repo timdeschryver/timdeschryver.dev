@@ -48,19 +48,9 @@
 		blog.reset();
 	});
 
-	const postColor = post.metadata.tags
-		.map((tag) => {
-			switch (tag.toLowerCase()) {
-				case '.net':
-					return '--dotnet';
-				default:
-					return `--${tag.toLowerCase().split(' ')[0]}`;
-			}
-		})
-		.find(Boolean);
 	$: htmlStyle = `<style> 
 		main {
-			--accent-color: var(${postColor});
+			--accent-color: var(--${post.metadata.color});
 		}
 
 		main h1, 
@@ -175,7 +165,7 @@
 <svelte:window bind:scrollY />
 
 <header style:--name="post-title-{post.metadata.slug}">
-	<h1 >{post.metadata.title}</h1>
+	<h1>{post.metadata.title}</h1>
 	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
 		<div class="published-at">

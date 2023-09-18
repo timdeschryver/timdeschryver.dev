@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { readPosts } from '../_posts';
+import { TAG_COLORS, orderTags, readPosts } from '../_posts';
 import type { PageServerLoad } from './$types';
 import * as fs from 'fs';
 
@@ -7,7 +7,7 @@ import * as fs from 'fs';
 export async function load({ params }): Promise<PageServerLoad> {
 	const posts = await readPosts();
 	const post = posts.find((p) => p.metadata.slug === params.slug);
-
+	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
 	if (!post) {
 		throw error(404, `Blog ${params.slug} Not found`);
 	}
@@ -58,13 +58,20 @@ export async function load({ params }): Promise<PageServerLoad> {
 	// }
 
 	const contributors = getContributors(post.metadata.slug);
-
 	return {
 		post: {
 			...post,
 			html,
 			metadata: {
 				...post.metadata,
+				color: post.metadata.tags
+					.sort((a, b) => {
+						const aIndex = tags.indexOf(a);
+						const bIndex = tags.indexOf(b);
+						return bIndex - aIndex;
+					})
+					.find((t) => TAG_COLORS[t.toLowerCase()])
+					?.toLowerCase(),
 			},
 			contributors,
 		},
