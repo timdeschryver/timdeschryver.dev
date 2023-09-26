@@ -12,8 +12,12 @@ export async function optimizeImage(img) {
 	const file = await readFile(img);
 	const image = imagePool.ingestImage(file);
 	await image.encode({
-		mozjpeg: {},
-		webp: {},
+		mozjpeg: {
+			quality: 100,
+		},
+		webp: {
+			quality: 100,
+		},
 	});
 
 	if (!img.endsWith('.webp')) {
