@@ -25,6 +25,7 @@ POST {{base}}/todoitems
 Content-Type: application/json
 
 {
+  "id": "{{$guid}}",
   "name":"walk dog",
   "isComplete":false
 }

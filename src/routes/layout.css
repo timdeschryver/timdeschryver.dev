@@ -126,7 +126,8 @@ main a.mark {
 }
 main a.mark:hover,
 main a.mark-hover:hover {
-	box-shadow: inset 0 -0.46rem 0 hsla(var(--accent-color), 0.8);
+	box-shadow: inset 0 -0.33rem 0 hsla(var(--accent-color), 0.8);
+	text-shadow: 0 0 5px hsla(var(--accent-color), 0.8);
 }
 
 h1 > .material-symbols-outlined,
