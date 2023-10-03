@@ -24,7 +24,7 @@ As an example, let's take a look at my `if-else` condition and compare both solu
 
 :::code-group
 
-```html [title=Control Flow]
+```html [title=If Control Flow]
 @if (ifCondition) {
 <div>If template</div>
 } @else if (elseIfCondition) {
@@ -56,18 +56,18 @@ For completeness let's also take a look at the new syntaxes to iterate over a co
 
 :::code-group
 
-```html [title=For]
-@for todo of todo; track item.id {
+```html [title=For Control Flow]
+@for (todo of todos; track todo.id) {
 <li>{{ todo.description }}</li>
 } @empty {
 <li>Congratulations! You've conquered your to-do list.</li>
 }
 ```
 
-```html [title=Switch]
-@switch (card.kind) { @case 'summary' {
+```html [title=Switch Control Flow]
+@switch (card.kind) { @case ('summary') {
 <app-summary-card [card]="card" />
-} @case 'image' {
+} @case ('image') {
 <app-image-card [card]="card" />
 } @default {
 <app-simple-card [card]="card" />
@@ -75,5 +75,16 @@ For completeness let's also take a look at the new syntaxes to iterate over a co
 ```
 
 :::
+
+To already try out the new Control Flow feature before it's officialy released, update the angular compiler options within the TypeScript configuration file.
+Add the `_enabledBlockTypes` property, and add the blocks you want to use within your application.
+
+```json:tsconfig.json
+{
+  "angularCompilerOptions": {
+    "_enabledBlockTypes": ["if", "switch", "for", "defer"]
+  }
+}
+```
 
 For more information see the Angular blog post [Meet Angular’s New Control Flow](https://blog.angular.io/meet-angulars-new-control-flow-a02c6eee7843).
