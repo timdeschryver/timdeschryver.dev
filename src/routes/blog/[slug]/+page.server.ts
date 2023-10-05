@@ -70,7 +70,8 @@ export async function load({ params }): Promise<PageServerLoad> {
 						const bIndex = tags.indexOf(b);
 						return bIndex - aIndex;
 					})
-					.find((t) => TAG_COLORS[t.toLowerCase()])
+					.map((t) => TAG_COLORS[t.toLowerCase()])
+					.find(Boolean)
 					?.toLowerCase(),
 			},
 			contributors,
