@@ -133,7 +133,7 @@ The only reference, thus far, within the examples to Wolverine, is the `IMessage
 
 Unlike many Wolverine alternatives, we don't have to decorate our code, nor do you see interfaces to declare the intent of certain classes (e.g. `IRequest` or `IHandler`).
 
-This is because Wolverine makes use **[C# Source Generators](https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview)** to reduce most (if not all?) the ceremony/orchestration code (read boilerplate code), for example, to hook the correct handler to the appropriate command behind the scenes. It can do this because it relies on conventional approaches (which can be disabled if you want).
+This is because Wolverine makes use **Roslyn for Runtime Code Generation** to reduce most (if not all?) the ceremony/orchestration code (read boilerplate code), for example, to glue the correct handler to the appropriate command behind the scenes. It can do this because it relies on conventional approaches (which can be disabled if that's preferred).
 
 :::info
 If this (good) magic is a bit too much, you can always inspect and debug the generator code as described in [Unraveling the Magic in Wolverine](https://jeremydmiller.com/2023/10/02/unraveling-the-magic-in-wolverine/).

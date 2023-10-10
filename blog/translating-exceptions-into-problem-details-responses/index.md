@@ -87,7 +87,7 @@ Besides the described format, this object can also be extended with additional m
 ## Problem Details with ASP.NET
 
 ASP.NET Core already has built-in support for Problem Details.
-To enable it, you need to invoke the `IServiceCollection.UseProblemDetails()` extension method and the `IApplicationBuilder.UseStatusCodePages()` extension method.
+To enable it, you need to invoke the `IServiceCollection.AddProblemDetails()` extension method and the `IApplicationBuilder.UseStatusCodePages()` extension method.
 
 ```cs{2, 5}:Program.cs
 var builder = WebApplication.CreateBuilder(args);

@@ -46,8 +46,7 @@ winget install GitHub.cli
 # Development Enviroment
 winget install Microsoft.dotnet
 winget install Yarn.Yarn
-# Not needed because I use fnm (see the next section for more info)
-# winget install OpenJS.NodeJS
+winget install Schniz.fnm
 
 # IDE
 winget install Microsoft.VisualStudio.2022.Enterprise-Preview
@@ -67,7 +66,6 @@ winget install 7zip.7zip
 
 The above script installs the majority, but there are a few programs that need to be installed manually because they aren't available on `winget`.
 
-- [fnm](https://github.com/Schniz/fnm), fast and simple Node.js version manager
 - [Gpg4win](https://www.gpg4win.org/download.html), sign git commits to make them "verified"
 
 ## Different Node.JS versions with `fnm`
@@ -79,17 +77,17 @@ The best part is that `fnm` automatically uses the correct version.
 The only requirement is that a `.node-version` or `.nvm` file exists in the root directory.
 
 ```txt:.node-version
-14.16
+18.16
 ```
 
 When the specified Node.JS version isn't installed, `fnm` prompts a install command.
 
 ```bash
 cd my-awesome-project
-> Can't find an installed Node version matching v14.16.x.
+> Can't find an installed Node version matching 18.16.x.
 > Do you want to install it? answer [y/n]: y
-> Installing Node v14.16.1 (x64)
-> Using Node v14.16.1
+> Installing Node 18.16.1 (x64)
+> Using Node 18.16.1
 cd ../second-great-project
 > Using Node v16.13.2
 ```
@@ -97,11 +95,11 @@ cd ../second-great-project
 Other helpful commands are `install`, `use`, `default`, and `current`:
 
 ```bash
-fnm install 16
-fnm default 16
-fnm use 16
+fnm install 20
+fnm default 20
+fnm use 20
 fnm current
-> v16.13.2
+> v20.8.0
 ```
 
 ## dotNET Tools
