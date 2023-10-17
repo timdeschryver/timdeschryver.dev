@@ -22,10 +22,8 @@
 	<meta name="title" content={bit.metadata.title} />
 	<meta name="description" content={bit.metadata.description} />
 	<meta name="keywords" content={bit.metadata.tags.join(',')} />
-	<meta name="image" content={bit.metadata.banner} />
 
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content={bit.metadata.banner} />
 	<meta name="twitter:image:alt" content={bit.metadata.title} />
 	<meta name="twitter:title" content={bit.metadata.title} />
 	<meta name="twitter:description" content={bit.metadata.description} />
@@ -38,13 +36,21 @@
 	<meta name="og:title" content={bit.metadata.title} />
 	<meta name="og:description" content={bit.metadata.description} />
 	<meta name="og:type" content="article" />
-	<meta name="og:image" content={bit.metadata.banner} />
+
+	{#if bit.metadata.no_banner === false}
+		<meta name="image" content={bit.metadata.banner} />
+		<meta name="twitter:image" content={bit.metadata.banner} />
+		<meta name="og:image" content={bit.metadata.banner} />
+	{/if}
 </svelte:head>
 
 <div></div>
 
 <h1 style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
-<img src={bit.metadata.banner} alt="banner" />
+{#if bit.metadata.no_banner === false}
+	<img src={bit.metadata.banner} alt="banner" />
+{/if}
+
 {@html bit.html}
 
 <h4>Follow me</h4>

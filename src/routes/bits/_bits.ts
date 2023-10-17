@@ -10,6 +10,7 @@ const bits: {
 		slug: string;
 		date: string;
 		tags: string[];
+		no_banner: boolean;
 	};
 }[] = [];
 
@@ -21,6 +22,7 @@ export async function readBits(): Promise<
 			slug: string;
 			date: string;
 			tags: string[];
+			no_banner: boolean;
 		};
 	}[]
 > {
@@ -43,7 +45,6 @@ export async function readBits(): Promise<
 		.map((files) => {
 			const postPath = files.find((f) => f.file === 'index.md').path;
 			const { html, metadata } = parseFileToHtmlAndMeta(postPath);
-
 			const tags = metadata.tags;
 			return {
 				html: html,
@@ -52,6 +53,7 @@ export async function readBits(): Promise<
 					slug: metadata.slug,
 					date: ISODate(metadata.date),
 					tags: tags.map((t) => t.toLowerCase()),
+					no_banner: metadata.no_banner ?? false,
 				},
 			};
 		})
