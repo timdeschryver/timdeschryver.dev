@@ -9,6 +9,7 @@
 	export let data;
 	const { bit } = data;
 
+	let scrollY;
 	codeBlockLifeCycle();
 </script>
 
@@ -44,11 +45,25 @@
 	{/if}
 </svelte:head>
 
-<div></div>
+<svelte:window bind:scrollY />
 
+<div></div>
 <h1 style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
 {#if bit.metadata.no_banner === false}
-	<img src={bit.metadata.banner} alt="banner" />
+	<img
+		src={bit.metadata.banner}
+		alt="banner"
+		style="--scroll: {(scrollY ?? 0) <= 150
+			? 1
+			: scrollY <= 200
+			? 0.75
+			: scrollY <= 300
+			? 0.5
+			: scrollY <= 500
+			? 0.25
+			: 0}"
+		loading="lazy"
+	/>
 {/if}
 
 {@html bit.html}
@@ -63,6 +78,16 @@
 	@media (prefers-reduced-motion: no-preference) {
 		h1 {
 			view-transition-name: var(--name);
+		}
+
+		img {
+			transform: translate3d(0px, 0vh, 0px) scale3d(1, 1, 1)
+				rotateX(calc((1 - var(--scroll)) * 40deg)) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+			transition: all 1s ease-out;
+			grid-column: 1 / 4;
+			width: 100%;
+			max-width: 95ch;
+			justify-self: center;
 		}
 	}
 </style>

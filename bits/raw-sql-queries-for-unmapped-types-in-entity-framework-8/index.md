@@ -2,7 +2,7 @@
 title: Raw SQL Queries for Unmapped Types in Entity Framework 8
 slug: raw-sql-queries-for-unmapped-types-in-entity-framework-8
 date: 2023-08-15
-tags: dotnet
+tags: dotnet, entity-framework
 ---
 
 # Raw SQL Queries for Unmapped Types in Entity Framework 8

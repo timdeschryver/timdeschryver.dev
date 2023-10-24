@@ -236,7 +236,7 @@ Here's where things get interesting, and this part often raises eyebrows while I
 
 Because the default terminal uses Powershell a lot of tasks can be scripted. To reduce my keystrokes, I like to create aliases and shortcuts to quickly get done what I want to do. The best part is that these tasks are at my disposal when I'm in the terminal.
 
-The Powershell scripts are created in a [Powershell profile](<(https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.2#the-profile-variable)>), accessible via the `$PROFILE` variable.
+The Powershell scripts are created in a [Powershell profile](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.2#the-profile-variable), accessible via the `$PROFILE` variable.
 To create the profile, either manually create the file at `"C:\Users\USER\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"`, or use a command to create and open the file, e.g. `code-insiders $PROFILE` (if you're using the normal Visual Studio Code, use `code $PROFILE`).
 
 My profile, which can be found below, creates a couple of functions and aliases to:

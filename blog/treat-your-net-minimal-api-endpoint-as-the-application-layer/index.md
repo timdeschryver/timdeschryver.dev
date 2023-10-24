@@ -207,7 +207,7 @@ So, we need to refactor this so it doesn't become a problem.
 As mentioned before, we have several options to do this.
 
 For this example, we'll do this in a DDD fashion (see the example shared in the conclusion for a CQRS-based approach).
-The solution below makes of the `User` entity as the root of the aggregate, which contains all of its activities.
+The solution below makes of the `User` entity as the aggregate root, which contains all of its activities.
 
 ```csharp{14-16}:RegisterActivity.cs
 app.MapPost(
