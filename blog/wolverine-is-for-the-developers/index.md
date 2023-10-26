@@ -3,7 +3,7 @@ title: Wolverine is for the developers
 slug: wolverine-is-for-the-developers
 description: Keep your codebase simple by introducing Wolverine. As you'll notice in this blog post, Wolverine helps to reduce complexity and brings a lot of functionality without the hassle and the noise.
 date: 2023-10-05
-tags: .NET, CQRS
+tags: .NET, CQRS, Wolverine
 ---
 
 In this blog post, we'll take a quick look at [Wolverine](https://wolverine.netlify.app/), which is part of the [Critter Stack](https://github.com/JasperFx).
