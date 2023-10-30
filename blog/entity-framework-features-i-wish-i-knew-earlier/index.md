@@ -1,7 +1,7 @@
 ---
 title: Entity framework features I wish I knew earlier
 slug: entity-framework-features-i-wish-i-knew-earlier
-description: Some useful built-in Entity Framework features that I discovered along the way, which have helped me.
+description: Some useful built-in Entity Framework features that I discovered along the way.
 date: 2023-07-12
 tags: .NET, Entity Framework
 ---

@@ -119,10 +119,11 @@ a {
 	text-decoration-line: none;
 	font-size: inherit;
 	line-height: inherit;
+	font-weight: 400;
 }
 
 main a.mark {
-	box-shadow: inset 0 -0.2375rem 0 hsla(var(--accent-color), 0.6);
+	box-shadow: inset 0 -0.1375rem 0 hsla(var(--accent-color), 0.6);
 	transition: all 0.2s ease-in-out;
 }
 main a.mark:hover,
@@ -535,6 +536,7 @@ pre > .code-heading > a {
 .code-group-tabs {
 	display: flex;
 	flex-direction: row;
+	overflow: auto;
 }
 
 .code-group-tab {

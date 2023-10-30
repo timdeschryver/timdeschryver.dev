@@ -11,17 +11,18 @@ My previous blog post [Wolverine is for the developers](../wolverine-is-for-the-
 To keep things as simple as possible I like to use vertical slices because it helps to remove unnecessary abstractions and layers.
 The examples that are used in the previous blog post show the what and the how of Wolverine, but there's some ceremony involved to orchestrate the flow.
 
-In this post, we'll see how to use Wolverine to [Treat a controller as the application layer](https://timdeschryver.dev/blog/treat-your-net-minimal-api-endpoint-as-the-application-layer).
+In this post, we'll see how to use Wolverine to [Treat a controller as the application layer](../treat-your-net-minimal-api-endpoint-as-the-application-layer/index.md).
 As you will see in the examples this simplifies your codebase, resulting in a [Minimal Architecture](https://www.dotnetrocks.com/details/1860/).
 
 To refresh our minds, the following example was used in the previously.
 
-```cs
+```cs{1-2, 8-16}:Program.cs
 app.MapPost("/carts", ([AsParameters] CreateCartRequest request)
     => request.Bus.InvokeAsync(request.command, request.CancellationToken));
 
 public record CreateCart(Guid Id);
-public record CreateCartRequest(CreateCart command, IMessageBus Bus, CancellationToken CancellationToken);
+public record CreateCartRequest(
+    CreateCart command, IMessageBus Bus, CancellationToken CancellationToken);
 
 public static class CartHandler
 {
@@ -57,12 +58,12 @@ This will do the exact same thing, but shorter.
 The bus is invoked using the request body of the request.
 This will use the generic type to parse the body into an object.
 
-```cs
-// Returns a 200 with an empty response body
+```cs:Program.cs
+// Returns a 200 status code with an empty response body
 // Cascading handlers are invoked
 app.MapPostToWolverine<CreateCart>("/carts");
 
-// Returns a 200 with a CartCreated response body
+// Returns CartCreated within the response body with a 200 status code
 // Cascading handlers are not invoked
 app.MapPostToWolverine<CreateCart, CartCreated>("/carts");
 ```
@@ -75,15 +76,15 @@ Endpoints use the Request EndPoint Response (REPR) approach
 Using the Wolverine attributes (`[WolverineVerb]`), which are equivalent to the ASP.NET attributes (`[HTTPVerb]`), an endpoint turns into a handler and vice versa.
 For example, a POST endpoint using `HttpPost` turns into `WolverinePost`.
 
-```cs
+```cs:CreateCartEndpoint.cs
 public static class CreateCartEndpoint
 {
     [WolverinePost("carts")]
-    public static (IResult, CartCreated) Create(CreateCart command, ShoppingCartDbContext context)
+    public static (IResult, CartCreated) Create(
+        CreateCart command, ShoppingCartDbContext context)
     {
         var cart = new Cart(command.Id);
         context.Add(cart);
-
 
         // The first object is used as the response body
         // The following objects are cascading messages
@@ -98,15 +99,18 @@ In the example below we use the `Before` to orchestrate the next flow:
 - when a cart already exists, Wolverine short-circuits the request and a `BadRequest`, the `Create` method is not invoked in this case;
 - when the cart doesn't exist, the `Create` method is invoked because the `Before` method returns a `WolverineContinue` instance;
 
-```cs
+```cs{3-12}:CreateCartEndpoint.cs
 public static class CreateCartEndpoint
 {
-    public static async Task<(Cart? cart, IResult result)> Before(CreateCart command, ShoppingCartDbContext context)
+    public static async Task<(Cart? cart, IResult result)> Before(
+        CreateCart command, ShoppingCartDbContext context)
     {
         var cart = await context.Set<Cart>().FindAsync(command.Id);
-        return cart is null
-            ? (null, WolverineContinue.Result())
-            : (cart, Results.BadRequest("Cart already exists"));
+        return cart switch
+        {
+            null => (null, WolverineContinue.Result()),
+            _ => (cart, Results.BadRequest("Cart already exists"))
+        };
     }
 
     [WolverinePost("carts")]
@@ -128,24 +132,27 @@ Because the handler receives the entity (instead of having to fetch it), which i
 Because the handler doesn't require a fetched entity, the above implementation can be refactored using the Problem Details specification.
 Instead of using `WolverineContinue.Result()` to continue the request, we have to use `WolverineContinue.NoProblems` here.
 
-```cs
+```cs{3-16}:CreateCartEndpoint.cs
 public static class CreateCartEndpoint
 {
-    public static async Task<ProblemDetails> Before(CreateCart command, ShoppingCartDbContext context)
+    public static async Task<ProblemDetails> Before(
+        CreateCart command, ShoppingCartDbContext context)
     {
         var cart = await context.Set<Cart>().FindAsync(command.Id);
-        if (cart is not null)
-            return new ProblemDetails
+        return cart switch
+        {
+            null => WolverineContinue.NoProblems,
+            _ => new ProblemDetails
             {
                 Detail = "Cart already exists",
                 Status = 400
-            };
-
-        return WolverineContinue.NoProblems;
+            }
+        };
     }
 
     [WolverinePost("carts")]
-    public static (IResult, CartCreated) Create(CreateCart command, ShoppingCartDbContext context)
+    public static (IResult, CartCreated) Create(
+        CreateCart command, ShoppingCartDbContext context)
     {
         var cart = new Cart(command.Id);
         context.Add(cart);
@@ -155,9 +162,46 @@ public static class CreateCartEndpoint
 }
 ```
 
+The last change to make the enpoint cleaner, as Jeremy pointed out in the [comments](https://github.com/timdeschryver/timdeschryver.dev/discussions/282#discussioncomment-7394197), is to use the `EmptyResponse` attribute.
+
+The presence of this attribute on top of the endpoint results in an empty response with the 204 status code.
+The returned values are ignored in the response body, but are still published tot he bus to be processed.
+Within our example, we don't have to manually return an `IResult` anymore, which simplifies the signature and further removes some noise.
+
+```cs{19, 26}:CreateCartEndpoint.cs
+public static class CreateCartEndpoint
+{
+    public static async Task<ProblemDetails> Before(
+        CreateCart command, ShoppingCartDbContext context)
+    {
+        var cart = await context.Set<Cart>().FindAsync(command.Id);
+        return cart switch
+        {
+            null => WolverineContinue.NoProblems,
+            _ => new ProblemDetails
+            {
+                Detail = "Cart already exists",
+                Status = 400
+            }
+        };
+    }
+
+    [WolverinePost("carts")]
+    [EmptyResponse]
+    public static CartCreated Create(
+        CreateCart command, ShoppingCartDbContext context)
+    {
+        var cart = new Cart(command.Id);
+        context.Add(cart);
+
+        return new CartCreated(cart.Id);
+    }
+}
+```
+
 More info can be found in the [Endpoint Documentation](https://wolverine.netlify.app/guide/http/endpoints.html).
 
-## MapWolverineEndpoints
+## HTTP Messaging using `MapWolverineEndpoints`
 
 The last option is to use `MapWolverineEndpoints`.
 `MapWolverineEndpoints` can be used to configure the Wolverine HTTP pipeline, which we won't go into in this post.
@@ -166,13 +210,15 @@ Within the callback, endpoints can be configured to send or publish incoming req
 Just as with the [MapVERBToWolverine](#bus-invocations-using-appmapverbtowolverine) approach, these methods expect a generic type to parse the body before it's sent/published to the bus.
 These are just fire-and-forget endpoints that don't return a response, but an acknowledgment that the request is received (202 Accepted).
 
-```cs
+```cs:Program.cs
 app.MapWolverineEndpoints(opts =>
 {
     opts.SendMessage<CreateCart>(HttpMethod.Post, "/carts");
     opts.PublishMessage<CreateCart>(HttpMethod.Post, "/carts");
 });
 ```
+
+More info can be found in the [HTTP Messaging Documentation](https://wolverine.netlify.app/guide/http/messaging.html).
 
 ## Conclusion
 
