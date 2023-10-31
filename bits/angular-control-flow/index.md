@@ -24,17 +24,17 @@ As an example, let's take a look at my `if-else` condition and compare both solu
 
 :::code-group
 
-```html [title=If Control Flow]
+```razor [title=If Control Flow]
 @if (ifCondition) {
-<div>If template</div>
+    <div>If template</div>
 } @else if (elseIfCondition) {
-<div>Else-if Template</div>
+    <div>Else-if Template</div>
 } @else {
-<div>Else Template</div>
+    <div>Else Template</div>
 }
 ```
 
-```html [title=NgIf Directive]
+```razor [title=NgIf Directive]
 <ng-container *ngIf="ifCondition; else elseIfTemplate">
 	<div>If template</div>
 </ng-container>
@@ -56,22 +56,24 @@ For completeness let's also take a look at the new syntaxes to iterate over a co
 
 :::code-group
 
-```html [title=For Control Flow]
+```razor [title=For Control Flow]
 @for (todo of todos; track todo.id) {
-<li>{{ todo.description }}</li>
+    <li>{{ todo.description }}</li>
 } @empty {
-<li>Congratulations! You've conquered your to-do list.</li>
+    <li>Congratulations! You've conquered your to-do list.</li>
 }
 ```
 
-```html [title=Switch Control Flow]
-@switch (card.kind) { @case ('summary') {
-<app-summary-card [card]="card" />
-} @case ('image') {
-<app-image-card [card]="card" />
-} @default {
-<app-simple-card [card]="card" />
-} }
+```razor [title=Switch Control Flow]
+@switch (card.kind) {
+    @case ('summary') {
+        <app-summary-card [card]="card" />
+    } @case ('image') {
+        <app-image-card [card]="card" />
+    } @default {
+        <app-simple-card [card]="card" />
+    }
+}
 ```
 
 :::
