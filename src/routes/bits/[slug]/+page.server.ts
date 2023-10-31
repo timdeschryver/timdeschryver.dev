@@ -1,3 +1,4 @@
+import { variables } from '$lib/variables';
 import { readBits } from '../_bits';
 
 /** @type {import('./$types').PageLoad} */
@@ -11,9 +12,9 @@ export async function load({ params }) {
 			metadata: {
 				...bit.metadata,
 				author: 'Tim Deschryver',
-				canonical: `https://timdeschryver.dev/bits/${bit.metadata.slug}`,
+				canonical: `${variables.basePath}/bits/${bit.metadata.slug}`,
 				description: bit.metadata.title,
-				banner: `https://timdeschryver.dev/bits/${bit.metadata.slug}/images/banner.webp`,
+				banner: `${variables.basePath}/bits/${bit.metadata.slug}/images/banner.webp`,
 			},
 		},
 	};
