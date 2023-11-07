@@ -239,7 +239,7 @@
 		<ul class="mt-0">
 			{#each post.contributors as [login, name]}
 				<li>
-					<a href={`https://github.com/${login}`} rel="external">{name}</a>
+					<a href={`https://github.com/${login}`} rel="external">{name ?? login}</a>
 				</li>
 			{/each}
 		</ul>

@@ -256,6 +256,7 @@ main > h6 {
 body > div > main > pre,
 body > div > main > iframe,
 body > div > main > figure,
+body > div > main > p:has(video),
 body > div > main > table,
 body > div > main > blockquote,
 body > div > main > .wide {

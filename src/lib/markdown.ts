@@ -124,6 +124,13 @@ export function parseFileToHtmlAndMeta(file): {
 					.join('/')
 					.replace(/\.(png|jpg|jpeg)$/, '.webp');
 
+		if (src.endsWith('.mp4')) {
+			return `
+				<video loading="lazy" autoplay>
+					<source src="${src}" type="video/mp4">
+				</video>`;
+		}
+
 		return `
 			<figure>
 				<img src="${src}" alt="" loading="lazy"/>
