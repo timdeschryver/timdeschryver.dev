@@ -94,6 +94,23 @@ body {
 	background: var(--text-color);
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+}
+::view-transition-old(root) {
+	z-index: 1;
+}
+::view-transition-new(root) {
+	z-index: 9999;
+}
+.dark::view-transition-old(root) {
+	z-index: 9999;
+}
+.dark::view-transition-new(root) {
+	z-index: 1;
+}
+
 h1,
 h2,
 h3,
@@ -124,7 +141,9 @@ a {
 
 main a.mark {
 	box-shadow: inset 0 -0.1375rem 0 hsla(var(--accent-color), 0.6);
-	transition: all 0.2s ease-in-out;
+	transition:
+		text-shadow 0.2s ease-in-out,
+		box-shadow 0.2s ease-in-out;
 }
 main a.mark:hover,
 main a.mark-hover:hover {
@@ -156,7 +175,6 @@ p {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
 	font-weight: 200;
-	transition: all 0.2s ease-in-out;
 }
 
 @media (max-width: 480px) {

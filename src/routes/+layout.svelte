@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
 	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { variables } from '$lib/variables';
@@ -38,7 +37,7 @@
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
-		
+
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
 				resolve();
@@ -65,8 +64,38 @@
 		}
 	}
 
-	function toggleTheme(newTheme: string) {
-		theme.set(newTheme);
+	function toggleTheme(event: MouseEvent, newTheme: string) {
+		// credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
+		const isAppearanceTransition =
+			document.startViewTransition &&
+			!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		if (!isAppearanceTransition) {
+			theme.set(newTheme);
+			return;
+		}
+
+		const x = event.clientX;
+		const y = event.clientY;
+		const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+		const transition = document.startViewTransition(async () => {
+			theme.set(newTheme);
+			await tick();
+		});
+		transition.ready.then(() => {
+			const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`];
+			document.documentElement.animate(
+				{
+					clipPath: newTheme === 'dark' ? [...clipPath].reverse() : clipPath,
+				},
+				{
+					duration: 400,
+					easing: 'ease-out',
+					pseudoElement:
+						newTheme === 'dark' ? '::view-transition-old(root)' : '::view-transition-new(root)',
+				},
+			);
+		});
 	}
 
 	$: if (typeof document !== 'undefined') {
@@ -100,8 +129,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to light theme"
-					on:click={() => toggleTheme('light')}
-					in:fly|global={{ y: 20, duration: 200, delay: 200 }}
+					on:click={(evt) => toggleTheme(evt, 'light')}
 				>
 					<span class="material-symbols-outlined"> light_mode </span> Light
 				</button>
@@ -109,8 +137,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to dark theme"
-					on:click={() => toggleTheme('dark')}
-					in:fly|global={{ y: -20, duration: 200, delay: 200 }}
+					on:click={(evt) => toggleTheme(evt, 'dark')}
 				>
 					<span class="material-symbols-outlined"> dark_mode </span> Dark
 				</button>
@@ -255,5 +282,4 @@
 	.theme-switch > span {
 		vertical-align: text-top;
 	}
-
 </style>
