@@ -4,6 +4,7 @@
 	import Head from '$lib/Head.svelte';
 	import Socials from '$lib/Socials.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
+	import copyLifeCycle from '$lib/copy-lifecycle';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -11,6 +12,7 @@
 
 	let scrollY;
 	codeBlockLifeCycle();
+	copyLifeCycle();
 </script>
 
 <Head title={bit.metadata.title} details={false} />

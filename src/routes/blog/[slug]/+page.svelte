@@ -7,12 +7,14 @@
 	import { blog } from '$lib/current-blog.store';
 	import Socials from '$lib/Socials.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
+	import copyLifeCycle from '$lib/copy-lifecycle';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	const { post } = data;
 
 	codeBlockLifeCycle();
+	copyLifeCycle();
 
 	const logos = post.metadata.tags
 		.map((tag) => {
@@ -41,10 +43,8 @@
 	let scrollY;
 
 	let pres: HTMLElement[] = [];
-	let copyButtons: Element[] = [];
 
 	onDestroy(() => {
-		unRegisterCopyClick();
 		blog.reset();
 	});
 
@@ -76,12 +76,8 @@
 			: [];
 
 		await tick();
-		unRegisterCopyClick();
 		pres = [...document.querySelectorAll('pre')];
 		pres.forEach((pre) => pre.addEventListener('click', copyLinkToCodeBlock));
-
-		copyButtons = [...document.querySelectorAll('.copy-code')];
-		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
 	});
 
 	let lastHeading = null;
@@ -100,35 +96,10 @@
 		}
 	}
 
-	function unRegisterCopyClick() {
-		if (typeof document !== 'undefined') {
-			pres.forEach((pre) => pre.removeEventListener('click', copyLinkToCodeBlock));
-			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
-		}
-	}
-
 	function copyLinkToCodeBlock(e: PointerEvent) {
 		if (e.ctrlKey && navigator.clipboard && navigator.clipboard.writeText) {
 			const { origin, pathname } = window.location;
 			navigator.clipboard.writeText(`${origin}${pathname}#${(e.currentTarget as HTMLElement).id}`);
-		}
-	}
-
-	function copyCodeOnClick(e: PointerEvent) {
-		if (e.target instanceof HTMLElement) {
-			const target = e.target;
-			const ref = target.getAttribute('data-ref');
-			const code = document.querySelector(`[id="${ref}"] code`);
-			if (code instanceof HTMLElement) {
-				navigator.clipboard.writeText(code.innerText).then(() => {
-					target.innerHTML = 'assignment_turned_in';
-					target.classList.add('success');
-					setTimeout(() => {
-						target.classList.remove('success');
-						target.innerHTML = 'content_paste';
-					}, 1000);
-				});
-			}
 		}
 	}
 </script>

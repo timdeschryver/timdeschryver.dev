@@ -33,6 +33,7 @@ In short, an application that is observable benefits the team by helping create 
 
 :::info
 OpenTelemetry, also known as OTel for short, is a vendor-neutral open source Observability framework for instrumenting, generating, collecting, and exporting telemetry data such as traces, metrics, logs. As an industry-standard, it is supported by 40+ observability vendors, integrated by many libraries, services and apps and adopted by a number of end-users.
+
 For more information see [What is OpenTelemetry?](https://opentelemetry.io/docs/what-is-opentelemetry/), and its [mission, vision, and values](https://opentelemetry.io/community/mission/).
 :::
 

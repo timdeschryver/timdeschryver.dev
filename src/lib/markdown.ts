@@ -22,6 +22,7 @@ import pallete from 'shiki/themes/rose-pine.json';
 import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
+import { customBlock } from './custom-block';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
@@ -31,7 +32,7 @@ marked.setOptions({
 	headerIds: false,
 });
 marked.use({
-	extensions: [codeGroup],
+	extensions: [codeGroup, customBlock],
 });
 const renderer = new marked.Renderer();
 
@@ -141,17 +142,8 @@ export function parseFileToHtmlAndMeta(file): {
 
 	renderer.paragraph = (text) => {
 		const trimmed = text.replace('👋', `<span class="wave">👋</span>`).trim();
-		if (trimmed.startsWith(':::')) {
-			const [clazz, ...txt] = trimmed
-				.split('\n')
-				.map((t) => (t.startsWith(':::') ? t.substring(3) : t))
-				.map((t) => t.trim())
-				.filter(Boolean);
 
-			return `<div class="custom-block ${clazz}">${txt.map((t) => `<p>${t}</p>`).join('')}</div>`;
-		}
-
-		if (trimmed.startsWith('<figure>') || trimmed.startsWith('::')) {
+		if (trimmed.startsWith('<figure>')) {
 			return trimmed;
 		}
 

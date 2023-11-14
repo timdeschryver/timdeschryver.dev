@@ -1,18 +1,18 @@
 <script lang="ts">
 	import Head from '$lib/Head.svelte';
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Support from '$lib/Support.svelte';
 	import Socials from '$lib/Socials.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
+	import copyLifeCycle from '$lib/copy-lifecycle';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	const { bits, tags } = data;
 
 	codeBlockLifeCycle();
-
-	let copyButtons: HTMLElement[] = [];
+	copyLifeCycle();
 
 	let query: string;
 	let params: URLSearchParams;
@@ -21,13 +21,6 @@
 		params = new URLSearchParams(window.location.search);
 		// fallback, sometimes `query` seems to be undefined
 		query = $page.url.searchParams.get('q') || params.get('q') || '';
-
-		copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
-		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
-	});
-
-	onDestroy(() => {
-		unRegisterCopyClick();
 	});
 
 	$: if (params) {
@@ -41,30 +34,6 @@
 	}
 
 	$: queryParts = (query || '').split(' ').filter(Boolean);
-
-	function unRegisterCopyClick() {
-		if (typeof document !== 'undefined') {
-			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
-		}
-	}
-
-	function copyCodeOnClick(e: PointerEvent) {
-		if (e.target instanceof HTMLElement) {
-			const target = e.target;
-			const ref = target.getAttribute('data-ref');
-			const code = document.querySelector(`[id="${ref}"] code`);
-			if (code instanceof HTMLElement) {
-				navigator.clipboard.writeText(code.innerText).then(() => {
-					target.innerHTML = 'assignment_turned_in';
-					target.classList.add('success');
-					setTimeout(() => {
-						target.classList.remove('success');
-						target.innerHTML = 'content_paste';
-					}, 1000);
-				});
-			}
-		}
-	}
 
 	function tagClicked(tag) {
 		if (queryParts.includes(tag)) {
@@ -104,7 +73,8 @@
 
 <header class="mt-normal">
 	<h3>
-		A new bit every Tuesday of a tool || feature || blog that has helped me, or which I encountered recently and impressed me.
+		A new bit every Tuesday of a tool || feature || blog that has helped me, or which I encountered
+		recently and impressed me.
 	</h3>
 
 	<div class="mt-normal">
@@ -120,8 +90,11 @@
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
 		<h2>
 			{bits.length - i}.
-			<a href="/bits/{bit.metadata.slug}" class="mark-hover" data-sveltekit-preload-data="hover" style:--name="bit-title-{bit.metadata.slug}"
-				>{bit.metadata.title}</a
+			<a
+				href="/bits/{bit.metadata.slug}"
+				class="mark-hover"
+				data-sveltekit-preload-data="hover"
+				style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
 			>
 		</h2>
 		{@html bit.html}

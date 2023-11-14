@@ -377,8 +377,6 @@ The examples in this post show that Entity Framework has powerful features built
 
 :::info
 🧑‍💻 The source code that is used throughout this blogpost is available on [GitHub](https://github.com/timdeschryver/entity-framework-demo).
-:::
 
-:::info
 📔 And, if you want to take a closer look and acquire more information, feel free to use my [Microsoft Learn Collection on Entity Framework](https://learn.microsoft.com/en-us/users/timdeschryver/collections/qnds53g3y0eyj).
 :::
