@@ -165,7 +165,7 @@ public static class CreateCartEndpoint
 The last change to make the enpoint cleaner, as Jeremy pointed out in the [comments](https://github.com/timdeschryver/timdeschryver.dev/discussions/282#discussioncomment-7394197), is to use the `EmptyResponse` attribute.
 
 The presence of this attribute on top of the endpoint results in an empty response with the 204 status code.
-The returned values are ignored in the response body, but are still published tot he bus to be processed.
+The returned values are ignored in the response body, but are still published to the bus to be processed.
 Within our example, we don't have to manually return an `IResult` anymore, which simplifies the signature and further removes some noise.
 
 ```cs{19, 26}:CreateCartEndpoint.cs
