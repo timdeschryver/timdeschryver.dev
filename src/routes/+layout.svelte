@@ -131,7 +131,8 @@
 					title="Switch to light theme"
 					on:click={(evt) => toggleTheme(evt, 'light')}
 				>
-					<span class="material-symbols-outlined"> light_mode </span> Light
+					<span class="material-symbols-outlined"> light_mode </span>
+					<span class="hide-on-small">Light</span>
 				</button>
 			{:else}
 				<button
@@ -139,7 +140,8 @@
 					title="Switch to dark theme"
 					on:click={(evt) => toggleTheme(evt, 'dark')}
 				>
-					<span class="material-symbols-outlined"> dark_mode </span> Dark
+					<span class="material-symbols-outlined"> dark_mode </span>
+					<span class="hide-on-small">Dark</span>
 				</button>
 			{/if}
 		</nav>
@@ -279,7 +281,7 @@
 		color: var(--text-color-light);
 	}
 
-	.theme-switch > span {
+	.theme-switch > span:first-child {
 		vertical-align: text-top;
 	}
 </style>

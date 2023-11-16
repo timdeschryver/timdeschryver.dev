@@ -581,6 +581,13 @@ pre > .code-heading > a {
 	margin-top: 0;
 }
 
+@media (max-width: 720px) {
+	.hide-on-small {
+		display: none;
+		visibility: hidden;
+	}
+}
+
 @keyframes wiggle {
 	0%,
 	7% {
