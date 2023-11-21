@@ -154,13 +154,13 @@ export function parseFileToHtmlAndMeta(file): {
 		lang = lang || 'txt';
 
 		const lineIndex = lang.indexOf('{');
-		const fileIndex = lang.indexOf(':');
+		const fileIndex = lang.indexOf(':') === -1 ? lang.indexOf(' ') : lang.indexOf(':');
 
 		const language =
 			lineIndex !== -1 || fileIndex !== -1
 				? lang.substring(0, Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1))).trim()
 				: lang;
-		const file = fileIndex !== -1 ? lang.substr(lang.indexOf(':') + 1).trim() : '';
+		const file = fileIndex !== -1 ? lang.substr(fileIndex + 1).trim() : '';
 
 		const linesHighlight: number[] = [];
 		const lineNumberRegExp = /{([^}]+)}/g;
