@@ -101,10 +101,10 @@
 
 <ul>
 	{#each filteredPosts as post}
-		<li class={post.tags.join(' ')} >
+		<li class={post.tags.join(' ')}>
 			<article>
-				<h2 style:--name="post-title-{post.slug}">
-					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover" >
+				<h2 style:--post-title="post-title-{post.slug}">
+					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover">
 						{post.title}
 					</a>
 				</h2>
@@ -178,7 +178,7 @@
 
 	@media (prefers-reduced-motion: no-preference) {
 		h2 {
-			view-transition-name: var(--name);
+			view-transition-name: var(--post-title);
 		}
 	}
 </style>

@@ -67,8 +67,5 @@
 				"Cache-Control": "public, max-age=86400, immutable"
 			}
 		}
-	],
-	"navigationFallback": {
-		"rewrite": "/index.html"
-	}
+	]
 }

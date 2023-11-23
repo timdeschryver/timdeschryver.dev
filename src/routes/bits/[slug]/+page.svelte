@@ -50,7 +50,7 @@
 <svelte:window bind:scrollY />
 
 <div></div>
-<h1 style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
+<h1 style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
 {#if bit.metadata.no_banner === false}
 	<img
 		src={bit.metadata.banner}
@@ -79,7 +79,7 @@
 <style>
 	@media (prefers-reduced-motion: no-preference) {
 		h1 {
-			view-transition-name: var(--name);
+			view-transition-name: var(--bit-title);
 		}
 
 		img {

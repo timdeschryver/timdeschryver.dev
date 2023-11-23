@@ -94,7 +94,7 @@
 				href="/bits/{bit.metadata.slug}"
 				class="mark-hover"
 				data-sveltekit-preload-data="hover"
-				style:--name="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
+				style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
 			>
 		</h2>
 		{@html bit.html}
@@ -124,7 +124,7 @@
 
 	@media (prefers-reduced-motion: no-preference) {
 		a {
-			view-transition-name: var(--name);
+			view-transition-name: var(--bit-title);
 		}
 	}
 </style>

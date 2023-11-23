@@ -135,7 +135,7 @@
 
 <svelte:window bind:scrollY />
 
-<header style:--name="post-title-{post.metadata.slug}">
+<header style:--post-title="post-title-{post.metadata.slug}">
 	<h1>{post.metadata.title}</h1>
 	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
@@ -411,7 +411,7 @@
 
 	@media (prefers-reduced-motion: no-preference) {
 		header {
-			view-transition-name: var(--name);
+			view-transition-name: var(--post-title);
 		}
 	}
 </style>

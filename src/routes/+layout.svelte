@@ -35,15 +35,14 @@
 		}
 	});
 
-	onNavigate((navigation) => {
-		if (!document.startViewTransition) return;
-
-		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve();
-				await navigation.complete;
-			});
-		});
+	onNavigate((_navigation) => {
+		// if (!document.startViewTransition) return;
+		// return new Promise((resolve) => {
+		// 	document.startViewTransition(async () => {
+		// 		resolve();
+		// 		await navigation.complete;
+		// 	});
+		// });
 	});
 
 	afterNavigate(({ to }) => {
@@ -65,7 +64,7 @@
 	}
 
 	function toggleTheme(event: MouseEvent, newTheme: string) {
-		// credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
+		// Credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
 		const isAppearanceTransition =
 			document.startViewTransition &&
 			!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
