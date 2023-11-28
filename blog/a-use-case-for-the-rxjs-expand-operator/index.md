@@ -18,7 +18,7 @@ To give you an idea, this is how it looks like when a query failed and is retryi
 
 The implementation of the above screen looks like this with rx-query:
 
-```ts{6-12}{25-28}
+```ts{6-12,25-28}
 @Component({
   selector: 'app-root',
   template: `
@@ -110,7 +110,7 @@ The only step left is to add the state to the successful result and the error re
 This state is used to determine if the request should be retried.
 Because we don't want the request to be retried until it's successful, we also add a retry count to the result.
 
-```ts{9}{15-16}
+```ts{9,15-16}
 @Component({
   selector: 'app-root',
   template: `<pre>{{ characters$ | async | json }}</pre>`,
@@ -140,7 +140,7 @@ export class AppComponent {
 We can finally use the `expand` operator now.
 By rewriting the `characters$` Observable to a method we can invoke it with the retry count. This is needed so the number of retries can be added to the result. Inside the callback of the `expand` operator, we recursively invoke the method until the request is successful or until the maximum number of retries has been reached.
 
-```ts{6}{24-30}
+```ts{6, 24-30}
 @Component({
   selector: 'app-root',
   template: `<pre>{{ charactersWithRetry$ | async | json }}</pre> `,

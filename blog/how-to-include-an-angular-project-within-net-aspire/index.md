@@ -180,7 +180,7 @@ module.exports = {
 
 Next, add the config to your `angular.json` file:
 
-```json angular.json {14-16}
+```json angular.json {13-15}
 {
 	"serve": {
 		"builder": "@angular-devkit/build-angular:dev-server",

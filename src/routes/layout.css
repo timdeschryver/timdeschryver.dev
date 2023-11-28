@@ -426,6 +426,13 @@ pre {
 pre {
 	overflow: auto;
 	position: relative;
+	border: 1px solid;
+	border-color: transparent;
+}
+
+pre:hover {
+	border-color: var(--accent-color);
+	transition: all 0.2s ease-in;
 }
 
 :not(pre) > code {
@@ -487,6 +494,7 @@ pre > .code-heading {
 	top: 0;
 	left: 0;
 	right: 0;
+	transition: color 0.2s ease-in;
 }
 
 pre > .code-heading > .file-name {

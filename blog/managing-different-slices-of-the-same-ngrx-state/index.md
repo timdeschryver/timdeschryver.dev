@@ -139,7 +139,7 @@ The first and second drawbacks are both URL related. We want to be able to share
 
 Once this is done, it becomes possible to render the active counter component via an Angular [Router Outlet](https://angular.io/api/router/RouterOutlet). We also use the [Router Link directive](https://angular.io/api/router/RouterLink) to navigate between the counters.
 
-```html{2}{5}:counters-page.component.html
+```html{2,5}:counters-page.component.html
 <div *ngFor="let counter of counters$ | async">
   <a [routerLink]="counter.counterId">{{ counter.counterId }}</a>
 </div>

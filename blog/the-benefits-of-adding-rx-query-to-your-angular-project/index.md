@@ -170,7 +170,7 @@ export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
 
 Then we can prefetch the hero details as follow.
 
-```ts{7}{25-27}:heroes.component.ts
+```ts{7,25-27}:heroes.component.ts
 @Component({
   selector: 'app-heroes',
   template: `

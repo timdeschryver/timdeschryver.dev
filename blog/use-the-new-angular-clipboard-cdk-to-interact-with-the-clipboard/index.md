@@ -15,7 +15,7 @@ The [helium-barbell (v9.0.0-next.1)](https://github.com/angular/components/relea
 
 The first step to use the CDK is to import the `ClipboardModule` from `@angular/cdk/clipboard` and add it to the `imports` declaration.
 
-```ts{3}{10}
+```ts{3,10}
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { ClipboardModule } from '@angular/cdk/clipboard'
@@ -78,7 +78,7 @@ But it doesn't allow us, as developers, to copy content programmatically. This i
 <button (click)="generateId()">Generate Id</button>
 ```
 
-```ts{2}{10}
+```ts{2,10}
 export class AppComponent {
   constructor(private clipboard: Clipboard) {}
 

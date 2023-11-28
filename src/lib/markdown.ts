@@ -160,15 +160,20 @@ export function parseFileToHtmlAndMeta(file): {
 			lineIndex !== -1 || fileIndex !== -1
 				? lang.substring(0, Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1))).trim()
 				: lang;
-		const file = fileIndex !== -1 ? lang.substr(fileIndex + 1).trim() : '';
-
+		const fileName =
+			fileIndex !== -1
+				? lang
+						.substr(fileIndex + 1)
+						.trim()
+						.replace(/\s?\{[^}]+\}/g, '')
+				: '';
 		const linesHighlight: number[] = [];
 		const lineNumberRegExp = /{([^}]+)}/g;
 		let curMatch;
 		while ((curMatch = lineNumberRegExp.exec(lang))) {
 			const parts = curMatch[1].split(',');
 			parts.forEach((p) => {
-				let [min, max]: [number, number] = p.split('-').map(Number);
+				let [min, max]: [number, number] = p.trim().split('-').map(Number);
 				max = max || min;
 				while (min <= max) {
 					linesHighlight.push(min++);
@@ -181,7 +186,7 @@ export function parseFileToHtmlAndMeta(file): {
 		const icon = langToIcon[language] || iconCodePurple;
 		const headingParts = [
 			icon,
-			file ? `<span class="file-name">${file}</span>` : undefined,
+			fileName ? `<span class="file-name">${fileName}</span>` : undefined,
 			`<button class="copy-code material-symbols-outlined" data-ref="${id}">content_paste</button>`,
 		].filter(Boolean);
 		const heading = headingParts.length
