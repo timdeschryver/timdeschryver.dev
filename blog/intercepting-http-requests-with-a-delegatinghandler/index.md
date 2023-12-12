@@ -62,7 +62,7 @@ To make use of the delegating handler, add it within the DI container and regist
 ```cs Program.cs {3, 5-11}
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ExternalServiceAuthenticationHeaderHttpInterceptor>();
+builder.Services.AddTransient<ExternalServiceAuthenticationHeaderHttpInterceptor>();
 
 builder.Services
     .AddHttpClient<IExternalClient, ExternalClient>("external-service", b =>
