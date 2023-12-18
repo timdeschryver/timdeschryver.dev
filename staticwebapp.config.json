@@ -67,5 +67,11 @@
 				"Cache-Control": "public, max-age=86400, immutable"
 			}
 		}
-	]
+	],
+	"responseOverrides": {
+		"404": {
+			"rewrite": "/404.html",
+			"statusCode": 404
+		}
+	}
 }
