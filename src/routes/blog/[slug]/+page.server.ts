@@ -9,7 +9,7 @@ export async function load({ params }): Promise<PageServerLoad> {
 	const post = posts.find((p) => p.metadata.slug === params.slug);
 	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
 	if (!post) {
-		throw error(404, `Blog ${params.slug} Not found`);
+		error(404, `Blog ${params.slug} Not found`);
 	}
 
 	const html = post.html;
