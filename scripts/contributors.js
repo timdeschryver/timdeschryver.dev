@@ -47,7 +47,6 @@ async function getContributors(slug) {
 		while (true) {
 			if (visited.includes(page.url())) {
 				// we ended up in a loop
-				console.log('Loop detected');
 				break;
 			}
 
