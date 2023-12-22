@@ -23,8 +23,8 @@ type Prettify<T> = {
 
 `Prettify` takes a generic parameter `T` and maps over its keys using a mapped type to essentially create a new type that has the same properties as `T`.
 
-:::info
-🤖 Here's a breakdown of what's happening:
+:::ai
+Here's a breakdown of what's happening:
 
 - `type Prettify<T>`: This is a declaration of a new type called `Prettify` that takes a generic parameter `T`. `T` is a placeholder for any type that you want to use with `Prettify`.
 - `[K in keyof T]`: This is a mapped type. It iterates over all keys of `T` (represented by `K`). `keyof T` is a type that represents all keys of `T`.
@@ -39,7 +39,7 @@ Let's take a look at an example to make this clear:
 
 :::code-group
 
-```ts{4-5, 7-8} [title=Combined Types]
+```ts{4-5,7-8} [title=Combined Types]
 type Person = { name: string };
 type Address = { street: string };
 
@@ -50,7 +50,7 @@ type PersonWithAddressPrettified = Prettify<Person & Address>;
 //   ^? PersonWithAddressPrettified = { name: string; street: string; }
 ```
 
-```ts{4-5, 7-8} [title=Union Types]
+```ts{4-5,7-8} [title=Union Types]
 type PrimaryAddress = { type: 'Primary'; street: string };
 type SecondaryAddress = { type: 'Secondary'; street: string };
 

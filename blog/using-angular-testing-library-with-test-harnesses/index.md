@@ -3,7 +3,7 @@ title: Using Angular Testing Library with Test Harnesses
 slug: using-angular-testing-library-with-test-harnesses
 description: In most cases, I write tests for Angular components without using Test Harnesses, but finding the correct element(s) is not always straightforward. Here, Test Harnesses play a part in easily finding and interacting with those components that can't be queried. Using Test Harnesses is also a good practice into keeping your tests readable and resilient to changes.
 date: 2022-12-19
-tags: Angular, Testing
+tags: Angular, Testing, Angular Testing Library
 ---
 
 The test cases you write for your own components are mostly the simple ones to write because you know the code base and you're in control of the component's HTML structure.

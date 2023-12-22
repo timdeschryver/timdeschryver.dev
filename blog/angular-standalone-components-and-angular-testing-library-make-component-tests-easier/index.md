@@ -3,7 +3,7 @@ title: Angular standalone components and Angular Testing Library make component 
 slug: angular-standalone-components-and-angular-testing-library-make-component-tests-easier
 description: Standalone components give you a better foundation to build on, as your Angular component becomes less affected by its internals. It doesn't matter if the component has its own template, or if it's using child components. This makes your test cases less brittle than before with Angular Modules. To interact with the component we're still using the Angular Testing Library because it provides useful utilities to interact and query the component.
 date: 2023-02-27
-tags: Angular, Angular Testing Library, Testing
+tags: Angular Testing Library, Angular, Testing
 ---
 
 Let's face it, testing an Angular component isn't always fun.

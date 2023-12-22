@@ -118,7 +118,7 @@ export function parseFileToHtmlAndMeta(file): {
 		const src = href.startsWith('http')
 			? href
 			: `/` +
-			  path
+				path
 					.join(assetsSrc, href)
 					.split(path.sep)
 					.filter((_, index, { length }) => index >= length - 4)
@@ -261,6 +261,9 @@ export function parseFileToHtmlAndMeta(file): {
 
 	renderer.codespan = (source) => {
 		return `<code>${source}</code>`;
+	};
+	renderer.blockquote = (source) => {
+		return `<blockquote><span class="material-symbols-outlined">format_quote</span>${source}</blockquote>`;
 	};
 
 	renderer.heading = (text, level, rawtext) => {

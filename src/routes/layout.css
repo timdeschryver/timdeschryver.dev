@@ -53,6 +53,7 @@ html.dark {
 @media (prefers-reduced-motion) {
 	* {
 		transition: none !important;
+		animation: none !important;
 	}
 }
 
@@ -305,7 +306,16 @@ blockquote {
 	background: var(--background-color-transparent);
 	padding: 1em 2em;
 }
-
+blockquote > p {
+	display: inline-block;
+	margin-top: 0;
+	font-style: italic;
+}
+blockquote > span.material-symbols-outlined {
+	vertical-align: top;
+	margin-right: 0.5em;
+	font-size: 2.2rem;
+}
 small,
 time {
 	font-size: 80%;
@@ -540,21 +550,37 @@ pre > .code-heading > a {
 .custom-block > p {
 	margin-top: 0;
 }
+.custom-block-title {
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	display: block;
+	color: var(--title-color);
+}
+.custom-block-title > span {
+	vertical-align: middle;
+}
+
 .custom-block.success {
 	--background-color: hsla(135, 59%, 49%, 0.1);
 	--border-color: hsla(135, 59%, 49%, 0.8);
+	--title-color: hsla(135, 59%, 49%, 1);
 }
 .custom-block.danger {
 	--background-color: hsla(0, 74%, 56%, 0.1);
 	--border-color: hsla(0, 74%, 56%, 0.8);
+	--title-color: hsla(0, 74%, 56%, 1);
 }
 .custom-block.info {
 	--background-color: hsla(233, 82%, 69%, 0.1);
 	--border-color: hsla(233, 82%, 69%, 0.8);
+	--title-color: hsla(233, 82%, 69%, 1);
 }
 .custom-block.warning {
 	--background-color: hsla(52, 100%, 71%, 0.1);
 	--border-color: hsla(52, 100%, 71%, 0.8);
+	--title-color: hsla(52, 100%, 71%, 1);
 }
 
 .code-group {
@@ -656,5 +682,20 @@ pre > .code-heading > a {
 	}
 	100% {
 		transform: rotate(0deg);
+	}
+}
+.pulse {
+	animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		font-variation-settings: 'wght' 100;
+	}
+	50% {
+		font-variation-settings: 'wght' 700;
+	}
+	100% {
+		font-variation-settings: 'wght' 100;
 	}
 }

@@ -1,6 +1,6 @@
 import type { marked } from 'marked';
 
-const admonitionTypes = ['danger', 'warning', 'info', 'success'];
+const admonitionTypes = ['danger', 'warning', 'info', 'success', 'note', 'ai'];
 const startReg = new RegExp(`^:::(${admonitionTypes.join('|')})$`);
 const endReg = /^:::$/;
 
@@ -49,6 +49,17 @@ export const customBlock = {
 		}
 	},
 	renderer(this: marked.RendererThis, token) {
-		return `<div class="custom-block ${token.icon}">${this.parser.parse(token.tokens!)}</div>`;
+		const [clazz, icon, title] = {
+			danger: ['danger', 'priority_high', 'Alert'],
+			warning: ['warning', 'warning', 'Warning'],
+			info: ['info', 'sticky_note_2', 'Note'],
+			note: ['info', 'sticky_note_2', 'Note'],
+			ai: ['info', 'smart_toy', 'AI Note'],
+			success: ['success', 'recommend', 'Good'],
+		}[token.icon];
+		return `<div class="custom-block ${clazz}">
+			<div><span class="custom-block-title"><span class="material-symbols-outlined pulse">${icon}</span> <span>${title}</span></div>
+			${this.parser.parse(token.tokens!)}
+		</div>`;
 	},
 };
