@@ -33,7 +33,7 @@
 				case 'zod':
 					return { src: 'zod.svg', alt: 'The zod logo' };
 				case 'angular testing library':
-					return { src: 'atl.png', alt: 'The Angular Testing Library logo' };
+					return { src: 'atl.svg', alt: 'The Angular Testing Library logo' };
 				default:
 					return null;
 			}
@@ -72,8 +72,8 @@
 		headings = hasTldr
 			? null
 			: headings || window.history.pushState
-			? [...document.querySelectorAll('main h2,h3')].reverse()
-			: [];
+				? [...document.querySelectorAll('main h2,h3')].reverse()
+				: [];
 
 		await tick();
 		pres = [...document.querySelectorAll('pre')];
