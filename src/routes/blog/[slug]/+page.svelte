@@ -5,7 +5,8 @@
 	import Head from '$lib/Head.svelte';
 	import Comments from '$lib/Comments.svelte';
 	import { blog } from '$lib/current-blog.store';
-	import Socials from '$lib/Socials.svelte';
+	import Share from '$lib/Share.svelte';
+	import Actions from '$lib/Actions.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 	import copyLifeCycle from '$lib/copy-lifecycle';
 
@@ -23,7 +24,7 @@
 				case 'dotnet':
 					return { src: 'dotnet.svg', alt: 'The .NET logo' };
 				case 'angular':
-					return { src: 'angular.svg', alt: 'The Angular logo' };
+					return { src: 'angular.png', alt: 'The Angular logo' };
 				case 'playwright':
 					return { src: 'playwright.svg', alt: 'The Playwright logo' };
 				case 'ngrx':
@@ -239,37 +240,15 @@
 	{/if}
 {/if}
 
-<h4>Follow me</h4>
-<Socials />
+<h4>Share this post</h4>
+<Share text={post.metadata.title} url={post.metadata.canonical} />
 
 <h4>Support me</h4>
 <Support />
 
-<Comments />
+<Actions editUrl={post.metadata.edit} />
 
-<div class="article-actions">
-	<a class="mt-0" target="_blank" rel="noreferrer" href="https://timdeschryver.dev/support">
-		Support the blog
-	</a>
-	<a
-		class="mt-0"
-		target="_blank"
-		rel="noreferrer"
-		href="https://twitter.com/intent/tweet?text={post.metadata.title}&via=tim_deschryver&url={post
-			.metadata.canonical}"
-	>
-		Share on Twitter
-	</a>
-	<a
-		class="mt-0"
-		href="https://twitter.com/search?q={post.metadata.canonical}"
-		target="_blank"
-		rel="noreferrer"
-	>
-		Discuss on Twitter
-	</a>
-	<a class="mt-0" target="_blank" rel="noreferrer" href={post.metadata.edit}> Edit on GitHub </a>
-</div>
+<Comments />
 
 <style>
 	.tldr {
@@ -397,11 +376,6 @@
 		.side-actions {
 			display: none;
 		}
-	}
-
-	.article-actions {
-		display: flex;
-		justify-content: space-evenly;
 	}
 
 	.translations ul {

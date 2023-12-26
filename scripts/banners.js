@@ -9,7 +9,7 @@ const content = './blog';
 	const generateBanners = [];
 	const posts = fs.readdirSync(content);
 	for (const post of posts) {
-		const bannerPath = path.join(content, post, 'images', 'banner.jpg');
+		const bannerPath = path.join(content, post, 'images', 'banner.png');
 		const bannerExists = fs.existsSync(bannerPath);
 		if (!bannerExists) {
 			generateBanners.push({ post, bannerPath });
@@ -47,8 +47,13 @@ const content = './blog';
 					}
 
 					await page.waitForSelector('header');
+					await page.waitForTimeout(5000);
 					await page.$eval('header', (el) => {
 						el.style.display = 'none';
+					});
+
+					await page.$eval('main', (el) => {
+						el.style.marginTop = '.4em';
 					});
 
 					await page.$eval('.published-at', (el) => {
@@ -61,11 +66,11 @@ const content = './blog';
 						el.style.display = 'block';
 					});
 					await page.$eval('body', (el) => {
-						el.style['overflow'] = 'hidden';
+						el.style.overflow = 'hidden';
 					});
 
 					await page.$eval('.author', (el) => {
-						el.style['text-decoration'] = 'none';
+						el.style.textDecoration = 'none';
 					});
 
 					await page.evaluate(() => {
@@ -73,8 +78,7 @@ const content = './blog';
 					});
 
 					await page.screenshot({
-						quality: 100,
-						type: 'jpeg',
+						type: 'png',
 						path: bannerPath,
 					});
 				}

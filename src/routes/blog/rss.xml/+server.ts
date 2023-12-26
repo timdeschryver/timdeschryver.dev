@@ -25,7 +25,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			link,
 			pubDate: UTCDate(post.metadata.date),
 			content: (
-				`<img class="webfeedsFeaturedVisual" src="${link}/images/banner.jpg" alt="${post.metadata.title}"/>` +
+				`<img class="webfeedsFeaturedVisual" src="${link}/images/banner.png" alt="${post.metadata.title}"/>` +
 				tldr +
 				post.html
 			)

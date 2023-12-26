@@ -4,7 +4,7 @@ slug: help-angular-to-make-your-application-faster
 description: Learn what we did to make our Angular application snappier.
 author: Tim Deschryver
 date: 2020-02-03T20:02:16.323Z
-tags: Angular, Performance, NgRx, TypeScript
+tags: Angular, Performance, NgRx
 ---
 
 To give a little background, at work we're creating an application to schedule the daily rounds of caregivers.

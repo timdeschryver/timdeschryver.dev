@@ -19,7 +19,7 @@
 
 	/* https://simpleicons.org/ */
 	--typescript: 211, 60%, 48%;
-	--angular: 347, 100%, 43%;
+	--angular: 328, 97%, 59%;
 	--dotnet: 253, 66%, 50%;
 	--ngrx: 291, 66%, 50%;
 	--playwright: 122, 58%, 43%;
@@ -27,7 +27,7 @@
 	--azure: 206, 100%, 42%;
 	--zod: 219, 48%, 47%;
 	--svelte: 15, 100%, 50%;
-	--cypress: 214, 31%, 13%;
+	--cypress: 160, 54.6%, 62%;
 	--javascript: 53, 93%, 54%;
 	--vue: 153, 47%, 53%;
 }
@@ -562,32 +562,51 @@ pre > .code-heading > a {
 	margin-bottom: 0.5rem;
 	font-size: 1rem;
 	font-weight: 600;
-	display: block;
 	color: var(--title-color);
 }
-.custom-block-title > span {
+
+.custom-block-title::before {
+	font-family: 'Material Symbols Outlined';
+	font-size: 1.2rem;
+	animation: pulse 3s infinite;
+	margin-right: .5em;
 	vertical-align: middle;
-}
+ }
 
 .custom-block.success {
 	--background-color: hsla(135, 59%, 49%, 0.1);
 	--border-color: hsla(135, 59%, 49%, 0.8);
 	--title-color: hsla(135, 59%, 49%, 1);
 }
+.custom-block.success .custom-block-title::before {
+	content: 'sticksuccessy_note_2';
+}
 .custom-block.danger {
 	--background-color: hsla(0, 74%, 56%, 0.1);
 	--border-color: hsla(0, 74%, 56%, 0.8);
 	--title-color: hsla(0, 74%, 56%, 1);
 }
-.custom-block.info {
+.custom-block.danger .custom-block-title::before {
+	content: 'priority_high';
+}
+.custom-block.info, .custom-block.info-ai {
 	--background-color: hsla(233, 82%, 69%, 0.1);
 	--border-color: hsla(233, 82%, 69%, 0.8);
 	--title-color: hsla(233, 82%, 69%, 1);
+}
+.custom-block.info .custom-block-title::before {
+	content: 'sticky_note_2';
+}
+.custom-block.info-ai .custom-block-title::before {
+	content: 'smart_toy';
 }
 .custom-block.warning {
 	--background-color: hsla(52, 100%, 71%, 0.1);
 	--border-color: hsla(52, 100%, 71%, 0.8);
 	--title-color: hsla(52, 100%, 71%, 1);
+}
+.custom-block.warning .custom-block-title::before {
+	content: 'warning';
 }
 
 .code-group {

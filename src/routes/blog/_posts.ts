@@ -18,7 +18,6 @@ const posts: {
 		modified: string | null;
 		tags: string[];
 		canonical: string;
-		edit: string;
 		outgoingLinks: { slug: string; title: string }[];
 		incomingLinks: { slug: string; title: string }[];
 		translations: { url: string; author: string; profile: string }[];
@@ -37,7 +36,6 @@ export async function readPosts(): Promise<
 			modified: string | null;
 			tags: string[];
 			canonical: string;
-			edit: string;
 			outgoingLinks: { slug: string; title: string }[];
 			incomingLinks: { slug: string; title: string }[];
 			translations: { url: string; author: string; profile: string }[];
@@ -68,7 +66,7 @@ export async function readPosts(): Promise<
 
 			const tags = metadata.tags;
 			const banner = path
-				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.jpg'))
+				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.png'))
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
@@ -77,7 +75,6 @@ export async function readPosts(): Promise<
 				.replace(/\\/g, '/')
 				.replace('/', '//');
 
-			const edit = `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${metadata.slug}/index.md`;
 			const modified = getLastModifiedDate(metadata.slug);
 			return {
 				html,
@@ -89,7 +86,6 @@ export async function readPosts(): Promise<
 					tags,
 					banner,
 					canonical,
-					edit,
 					outgoingLinks: [],
 					incomingLinks: [],
 				},

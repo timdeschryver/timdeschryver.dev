@@ -2,9 +2,11 @@
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
-	import Socials from '$lib/Socials.svelte';
+	import Share from '$lib/Share.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 	import copyLifeCycle from '$lib/copy-lifecycle';
+	import Actions from '$lib/Actions.svelte';
+	import Comments from '$lib/Comments.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -58,23 +60,27 @@
 		style="--scroll: {(scrollY ?? 0) <= 150
 			? 1
 			: scrollY <= 200
-			? 0.75
-			: scrollY <= 300
-			? 0.5
-			: scrollY <= 500
-			? 0.25
-			: 0}"
+				? 0.75
+				: scrollY <= 300
+					? 0.5
+					: scrollY <= 500
+						? 0.25
+						: 0}"
 		loading="lazy"
 	/>
 {/if}
 
 {@html bit.html}
 
-<h4>Follow me</h4>
-<Socials />
+<h4>Share this bit</h4>
+<Share text={bit.metadata.title} url={bit.metadata.canonical} />
 
 <h4>Support me</h4>
 <Support />
+
+<Actions editUrl={bit.metadata.edit} />
+
+<Comments />
 
 <style>
 	@media (prefers-reduced-motion: no-preference) {

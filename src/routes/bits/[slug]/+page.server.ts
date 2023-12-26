@@ -15,6 +15,7 @@ export async function load({ params }) {
 				canonical: `${variables.basePath}/bits/${bit.metadata.slug}`,
 				description: bit.metadata.title,
 				banner: `${variables.basePath}/bits/${bit.metadata.slug}/images/banner.webp`,
+				edit: `https://github.com/timdeschryver/timdeschryver.dev/tree/main/bits/${bit.metadata.slug}/index.md`,
 			},
 		},
 	};
