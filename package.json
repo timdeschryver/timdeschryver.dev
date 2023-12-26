@@ -26,7 +26,7 @@
 		"gb": "node ./scripts/generate-bit",
 		"p": "node ./scripts/devto",
 		"banners": "node ./scripts/banners.js",
-		"pre-commit": "npm run banners && git add ./**/banner.jpg && lint-staged",
+		"pre-commit": "npm run banners && git add ./**/banner.png && lint-staged",
 		"optimize:image": "node ./scripts/optimize-image-cli.js",
 		"optimize:images": "node ./scripts/optimize-images.js",
 		"contributors": "node ./scripts/contributors.js",

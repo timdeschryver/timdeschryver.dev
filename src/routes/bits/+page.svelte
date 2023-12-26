@@ -101,11 +101,12 @@
 	{/if}
 {/each}
 
-<h4>Follow me</h4>
-<Socials />
-
 <h4>Support me</h4>
 <Support />
+
+<div>
+	<Socials />
+</div>
 
 <style>
 	button {

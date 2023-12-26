@@ -73,6 +73,7 @@ export async function load({ params }): Promise<PageServerLoad> {
 					.map((t) => TAG_COLORS[t.toLowerCase()])
 					.find(Boolean)
 					?.toLowerCase(),
+				edit: `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${post.metadata.slug}/index.md`,
 			},
 			contributors,
 		},
