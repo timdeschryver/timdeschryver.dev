@@ -330,10 +330,17 @@ table {
 	white-space: nowrap;
 }
 
-table,
-td,
-th {
+tr {
 	border: 1px solid;
+	border-bottom: 1px solid var(--text-color-subtle);
+}
+
+tr:last-child {
+	border: 1px solid;
+}
+
+th {
+	background-color: var(--text-color-subtle);
 }
 
 td,
