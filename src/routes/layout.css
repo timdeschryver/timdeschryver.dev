@@ -573,13 +573,16 @@ pre > .code-heading > a {
 	vertical-align: middle;
  }
 
-.custom-block.success {
+.custom-block.success, .custom-block.tip {
 	--background-color: hsla(135, 59%, 49%, 0.1);
 	--border-color: hsla(135, 59%, 49%, 0.8);
 	--title-color: hsla(135, 59%, 49%, 1);
 }
 .custom-block.success .custom-block-title::before {
-	content: 'sticksuccessy_note_2';
+	content: 'person_celebrate';
+}
+.custom-block.tip .custom-block-title::before {
+	content: 'lightbulb';
 }
 .custom-block.danger {
 	--background-color: hsla(0, 74%, 56%, 0.1);
@@ -640,13 +643,6 @@ pre > .code-heading > a {
 	vertical-align: middle;
 	display: inline;
 	margin-top: 0;
-}
-
-@media (max-width: 720px) {
-	.hide-on-small {
-		display: none;
-		visibility: hidden;
-	}
 }
 
 @keyframes wiggle {

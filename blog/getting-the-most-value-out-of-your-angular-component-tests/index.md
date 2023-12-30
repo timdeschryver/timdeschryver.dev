@@ -4,7 +4,7 @@ slug: getting-the-most-value-out-of-your-angular-component-tests
 description: How I write my Angular Component Tests with the Angular Testing Library.
 author: Tim Deschryver
 date: 2021-07-06
-tags: angular, testing, testing-library
+tags: angular, testing, Angular Testing Library
 translations:
   - language: es
     url: https://dev.to/danyparedes/obteniendo-el-mayor-valor-nuestros-tests-en-angular-50od

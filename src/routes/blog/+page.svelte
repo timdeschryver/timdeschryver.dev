@@ -6,51 +6,71 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-	const { metadata, tags } = data;
+	const { posts, tags } = data;
 
-	let query;
+	let filter = {
+		query: '',
+		from: null,
+		to: null,
+	};
+
 	let params;
 
 	let meta = {
 		canonical: 'https://timdeschryver.dev/blog',
 		title: "Tim's Blog",
-		description: `${metadata.length} notes, mainly about Angular and .NET`,
+		description: `${posts.length} notes, mainly about Angular and .NET`,
 	};
 
 	onMount(() => {
 		params = new URLSearchParams(window.location.search);
 		// fallback, sometimes `query` seems to be undefined
-		query = $page.url.searchParams.get('q') || params.get('q') || '';
+		filter.query = $page.url.searchParams.get('q') || params.get('q') || '';
+		filter.from = $page.url.searchParams.get('from') || params.get('from');
+		filter.to = $page.url.searchParams.get('to') || params.get('to');
 	});
 
 	$: if (params) {
-		if (query) {
-			params.set('q', query);
-			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
+		if (filter.query) {
+			params.set('q', filter.query);
 		} else {
 			params.delete('q');
-			window.history.replaceState(window.history.state, '', location.pathname);
+		}
+
+		const paramsParts = [location.pathname, params.size ? params : null].filter(Boolean);
+		window.history.replaceState(window.history.state, '', `${paramsParts.join('?')}`);
+	}
+
+	$: queryParts = (filter.query || '').split(' ');
+
+	let filteredPosts = [];
+	$: {
+		if (filter.query) {
+			filteredPosts = posts.filter((p) => {
+				return queryParts.every(
+					(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q),
+				);
+			});
+		} else {
+			filteredPosts = posts;
+		}
+
+		if (filter.from) {
+			filteredPosts = filteredPosts.filter((p) => new Date(p.date) >= new Date(filter.from));
+		}
+
+		if (filter.to) {
+			filteredPosts = filteredPosts.filter((p) => new Date(p.date) <= new Date(filter.to));
 		}
 	}
 
-	$: queryParts = (query || '').split(' ');
-
-	let filteredPosts = [];
-	$: if (query) {
-		filteredPosts = metadata.filter((p) => {
-			return queryParts.every(
-				(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q),
-			);
-		});
-	} else {
-		filteredPosts = metadata;
-	}
-
 	function tagClicked(tag) {
-		if (queryParts.includes(tag)) {
-			query = queryParts.filter((q) => q !== tag).join(' ');
+		if (filter.query === tag) {
+			filter.query = '';
+		} else if (queryParts.includes(tag)) {
+			filter.query = queryParts.filter((q) => q !== tag).join(' ');
 		} else {
-			query = query ? `${query.trim()} ${tag}` : tag;
+			filter.query = filter.query ? `${filter.query.trim()} ${tag}` : tag;
 		}
 	}
 
@@ -83,15 +103,18 @@
 <div class="mt-normal">
 	<input
 		type="search"
-		bind:value={query}
+		bind:value={filter.query}
 		placeholder="Search"
 		autocomplete="off"
 		aria-label="Search"
 	/>
+	<div class="mt-0 search-info">
+		found {filteredPosts.length} posts out of {posts.length} posts
+	</div>
 	{#each tags as tag}
 		<button
 			class={tag}
-			class:active={queryParts.some((q) => match(q, tag))}
+			class:active={queryParts.some((q) => match(q, tag)) || filter.query === tag}
 			on:click={() => tagClicked(tag)}
 		>
 			{tag}
@@ -174,6 +197,11 @@
 
 	time {
 		color: var(--text-color-light);
+	}
+
+	.search-info {
+		color: var(--text-color-light);
+		text-align: right;
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

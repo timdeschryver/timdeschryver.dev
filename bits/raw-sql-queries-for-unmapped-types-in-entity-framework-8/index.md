@@ -19,7 +19,7 @@ See my blog post [You can now return unmapped types from raw SQL select statemen
 
 :::code-group
 
-```csharp:SELECT QUERY TO RETRIEVE A COLLECTION [title=C# Code]
+```csharp:Select Query to retrieve a collection [title=C# Code]
 var customers  = await dbContext.Database
     // 👇 Map to a unmapped type
     .SqlQuery<CustomerDto>(
@@ -35,7 +35,7 @@ var customers  = await dbContext.Database
     .ToListAsync();
 ```
 
-```sql:SELECT QUERY TO RETRIEVE A COLLECTION [title=Generated SQL]
+```sql:Select Query to retrieve a collection [title=Generated SQL]
 SELECT
        c.Id as CustomerId,
        c.FirstName,

@@ -18,7 +18,7 @@ For more info, see my blog post ["New in Entity Framework 7: Bulk Operations wit
 await context.Set<CartItem>()
   .ExecuteDeleteAsync();
 
-//  Use Where as a filter to find specific entities (to delete or update)
+// Use Where as a filter to find specific entities (to delete or update)
 await context.Set<CartItem>()
   .Where(c => c.Sku == "ABC")
   .ExecuteDeleteAsync();
@@ -26,14 +26,14 @@ await context.Set<CartItem>()
 // Use ExecuteUpdateAsync to update entities
 await context.Set<CartItem>()
   .ExecuteUpdateAsync(s =>
-// Use SetProperty with a fixed value to update a property
+    // Use SetProperty with a fixed value to update a property
     s.SetProperty(p => p.Amount, 100)
   );
 
 await context.Set<CartItem>()
   .Where(c => c.Amount == 2)
   .ExecuteUpdateAsync(s =>
-//Use SetProperty to update a property using its current value
+    // Use SetProperty to update a property using its current value
     s.SetProperty(p => p.Amount, v => v.Amount + 1)
   );
 ```

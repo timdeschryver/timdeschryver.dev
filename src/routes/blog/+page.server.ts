@@ -12,5 +12,5 @@ export async function load() {
 		tags: p.metadata.tags,
 	}));
 	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
-	return { metadata, tags };
+	return { posts: metadata, tags };
 }

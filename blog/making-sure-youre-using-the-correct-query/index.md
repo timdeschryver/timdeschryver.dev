@@ -4,7 +4,7 @@ slug: making-sure-youre-using-the-correct-query
 description: Keeping your Angular Testing Library tests maintainable by using its new features.
 author: Tim Deschryver
 date: 2020-06-01
-tags: Testing, testing-library, Angular Testing Library, accessibility
+tags: Testing, Angular Testing Library, accessibility
 translations:
   - language: es
     url: https://dev.to/danyparedes/usando-selectores-correctos-en-angular-testing-library-3p56

@@ -50,12 +50,13 @@ export const customBlock = {
 	},
 	renderer(this: marked.RendererThis, token) {
 		const [clazz, title] = {
-			danger: ['danger', 'priority_high', 'Alert'],
-			warning: ['warning', 'warning', 'Warning'],
+			danger: ['danger', 'Alert'],
+			warning: ['warning', 'Warning'],
 			info: ['info', 'Note'],
 			note: ['info', 'Note'],
 			ai: ['info-ai', 'AI Note'],
-			success: ['success', 'recommend', 'Good'],
+			success: ['success', 'Congratulations'],
+			tip: ['tip', 'Tip'],
 		}[token.icon];
 		return `<div class="custom-block ${clazz}">
 			<div class="custom-block-title">${title}</div>

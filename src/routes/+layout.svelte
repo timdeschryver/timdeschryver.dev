@@ -21,11 +21,11 @@
 					? {
 							'floating-chat.donateButton.background-color': '#fff',
 							'floating-chat.donateButton.text-color': '#111',
-					  }
+						}
 					: {
 							'floating-chat.donateButton.background-color': '#fff',
 							'floating-chat.donateButton.text-color': '#eee',
-					  }),
+						}),
 			});
 			support = document.querySelector('[id*=kofi-widget-overlay]');
 		}
@@ -127,7 +127,6 @@
 					on:click={(evt) => toggleTheme(evt, 'light')}
 				>
 					<span class="material-symbols-outlined"> light_mode </span>
-					<span class="hide-on-small">Light</span>
 				</button>
 			{:else}
 				<button
@@ -136,7 +135,6 @@
 					on:click={(evt) => toggleTheme(evt, 'dark')}
 				>
 					<span class="material-symbols-outlined"> dark_mode </span>
-					<span class="hide-on-small">Dark</span>
 				</button>
 			{/if}
 		</nav>

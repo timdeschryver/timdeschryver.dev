@@ -45,5 +45,6 @@
 
 	a {
 		margin-right: 0.5em;
+		font-weight: 300;
 	}
 </style>
