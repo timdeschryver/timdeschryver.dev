@@ -5,8 +5,8 @@
 	import Share from '$lib/Share.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 	import copyLifeCycle from '$lib/copy-lifecycle';
-	import Actions from '$lib/Actions.svelte';
 	import Comments from '$lib/Comments.svelte';
+	import Newsletter from '$lib/Newsletter.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -72,13 +72,11 @@
 
 {@html bit.html}
 
-<h4>Share this bit</h4>
-<Share text={bit.metadata.title} url={bit.metadata.canonical} />
-
-<h4>Support me</h4>
 <Support />
 
-<Actions editUrl={bit.metadata.edit} />
+<Newsletter beehiivId={bit.beehiivId} />
+
+<Share title="Share this bit on" text={bit.metadata.title} url={bit.metadata.canonical} />
 
 <Comments />
 

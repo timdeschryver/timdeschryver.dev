@@ -7,6 +7,7 @@
 	import { blog } from '$lib/current-blog.store';
 	import { theme } from '$lib/theme.store';
 	import './layout.css';
+	import Socials from '$lib/Socials.svelte';
 
 	$: segment = $page.url.pathname.substring(1);
 	let support;
@@ -166,13 +167,14 @@
 	</div>
 </header>
 
-<main>
+<main style={segment?.startsWith('bit') ? '	perspective: 2000px;' : ''} data-segment={segment}>
 	<slot />
 </main>
 
 {#if segment}
 	<footer>
 		<Host />
+		<Socials />
 	</footer>
 {/if}
 
@@ -264,10 +266,9 @@
 		position: static;
 		bottom: 0;
 		width: 100%;
-		display: flex;
-		justify-content: center;
 		color: var(--text-color-light);
 		font-size: 0.9rem;
+		text-align: center;
 	}
 
 	.theme-switch {

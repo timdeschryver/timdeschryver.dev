@@ -76,6 +76,11 @@ export async function load({ params }): Promise<PageServerLoad> {
 				edit: `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${post.metadata.slug}/index.md`,
 			},
 			contributors,
+			beehiivId: post.metadata.tags.some((x) => x.toLowerCase() == '.net')
+				? '8429a039-a5f6-4056-92f8-b6a53f7b28a3'
+				: post.metadata.tags.some((x) => x.toLowerCase() == 'angular' || x.toLowerCase() == 'ngrx')
+					? '39e02e8e-88c3-460e-92d6-616cc8740c5b'
+					: '6e82f6ae-d456-4c88-8cda-8ceb01587e01',
 		},
 	};
 }

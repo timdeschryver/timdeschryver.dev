@@ -2,10 +2,9 @@
 	import Head from '$lib/Head.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import Support from '$lib/Support.svelte';
-	import Socials from '$lib/Socials.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 	import copyLifeCycle from '$lib/copy-lifecycle';
+	import Newsletter from '$lib/Newsletter.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -54,28 +53,27 @@
 	<meta name="title" content={"Tim's Bits"} />
 	<meta
 		name="description"
-		content={'A new bit every Tuesday of a tool || feature || blog that I encountered recently that has helped and/or impressed me.'}
+		content={"Tools || (new) features || blog posts in a bit format on topics that I'm excited about."}
 	/>
 
 	<meta name="twitter:title" content={"Tim's Bits"} />
 	<meta
 		name="twitter:description"
-		content={'A new bit every Tuesday of a tool || feature || blog that I encountered recently that has helped and/or impressed me.'}
+		content={"Tools || (new) features || blog posts in a bit format on topics that I'm excited about."}
 	/>
 
 	<meta name="og:title" content={"Tim's Bits"} />
 	<meta
 		name="og:description"
-		content={'A new bit every Tuesday of a tool || feature || blog that I encountered recently that has helped and/or impressed me.'}
+		content={"Tools || (new) features || blog posts in a bit format on topics that I'm excited about."}
 	/>
 	<meta name="og:type" content="website" />
 </svelte:head>
 
 <header class="mt-normal">
-	<h3>
-		A new bit every Tuesday of a tool || feature || blog that has helped me, or which I encountered
-		recently and impressed me.
-	</h3>
+	<h3>Tools || (new) features || blog posts in a bit format on topics that I'm excited about.</h3>
+
+	<Newsletter hideTitle={true} />
 
 	<div class="mt-normal">
 		{#each tags as tag}
@@ -100,13 +98,6 @@
 		{@html bit.html}
 	{/if}
 {/each}
-
-<h4>Support me</h4>
-<Support />
-
-<div>
-	<Socials />
-</div>
 
 <style>
 	button {

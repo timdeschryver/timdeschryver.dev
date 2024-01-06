@@ -1,7 +1,10 @@
 <script>
 	export let text = '';
 	export let url = '';
+	export let title = '';
 </script>
+
+<h4>{title}</h4>
 
 <p class="mt-0">
 	<a
@@ -45,6 +48,5 @@
 
 	a {
 		margin-right: 0.5em;
-		font-weight: 300;
 	}
 </style>

@@ -9,6 +9,7 @@
 	import Actions from '$lib/Actions.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 	import copyLifeCycle from '$lib/copy-lifecycle';
+	import Newsletter from '$lib/Newsletter.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -20,7 +21,6 @@
 	const logos = post.metadata.tags
 		.map((tag) => {
 			switch (tag.toLowerCase()) {
-				case '.net':
 				case 'dotnet':
 					return { src: 'dotnet.svg', alt: 'The .NET logo' };
 				case 'angular':
@@ -175,6 +175,7 @@
 			<a href={translation.url} rel="external">{translation.language}</a>
 		{/each}
 	{/if}
+	<Share title="Share this post on" text={post.metadata.title} url={post.metadata.canonical} />
 </div>
 
 {#if post.metadata.translations}
@@ -240,13 +241,13 @@
 	{/if}
 {/if}
 
-<h4>Share this post</h4>
-<Share text={post.metadata.title} url={post.metadata.canonical} />
+<Actions editUrl={post.metadata.edit} />
 
-<h4>Support me</h4>
+<Newsletter beehiivId={post.beehiivId} />
+
 <Support />
 
-<Actions editUrl={post.metadata.edit} />
+<Share title="Share this post on" text={post.metadata.title} url={post.metadata.canonical} />
 
 <Comments />
 
@@ -255,7 +256,7 @@
 		background: none;
 		border: none;
 		text-align: center;
-		font-weight: 900;
+		font-weight: bolder;
 		margin-top: var(--spacing);
 	}
 
@@ -264,7 +265,7 @@
 		position: fixed;
 		margin-top: var(--header-height);
 		top: 20px;
-		left: 20px;
+		left: 100px;
 	}
 
 	.side-actions div {

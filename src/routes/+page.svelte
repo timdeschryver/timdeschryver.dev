@@ -2,6 +2,7 @@
 	import Head from '$lib/Head.svelte';
 	import confetti from 'canvas-confetti';
 	import Socials from '$lib/Socials.svelte';
+	import Newsletter from '$lib/Newsletter.svelte';
 
 	let lastConfetti = 0;
 	function fireConfetti(evt: MouseEvent): void {
@@ -96,6 +97,8 @@
 		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement
 		based on the idea that small, ongoing positive changes can reap significant improvements.
 	</p>
+
+	<Newsletter />
 
 	<p>
 		<Socials />

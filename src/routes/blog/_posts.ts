@@ -141,6 +141,7 @@ export function orderTags(tags: string[]) {
 					tag.toLowerCase() !== 'developerexperience' &&
 					tag.toLowerCase() !== 'csharp',
 			)
+			.map((tag) => (tag.toLowerCase() === 'dotnet' ? '.NET' : tag))
 			.reduce(
 				(acc, tag) => {
 					acc[tag] = (acc[tag] || 0) + 1;

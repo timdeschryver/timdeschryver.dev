@@ -34,4 +34,4 @@
 	});
 </script>
 
-<div bind:this={divElement} />
+<div bind:this={divElement} class="mt-0" />

@@ -42,7 +42,7 @@
 .tweet-preview .tweet-url {
 	text-decoration: none;
 	color: #1da1f2;
-	font-weight: 500;
+	font-weight: bold;
 }
 
 .tweet-preview .tweet-card {

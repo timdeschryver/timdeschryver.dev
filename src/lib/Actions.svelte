@@ -1,25 +1,18 @@
 <script>
-	import Socials from './Socials.svelte';
-
 	export let editUrl = '';
 </script>
 
-<hr />
-
-<div class="article-actions">
-	<a class="mt-0" target="_blank" rel="noreferrer" href={editUrl}> Edit on GitHub </a>
-	<Socials short={true} />
-</div>
-
-<hr />
+<p>
+	Feel free to update this blog post on <a
+		class="mark"
+		target="_blank"
+		rel="noreferrer"
+		href={editUrl}>GitHub</a
+	>, thanks in advance!
+</p>
 
 <style>
-	.article-actions {
-		display: flex;
-		justify-content: space-evenly;
-	}
-
-	a {
-		font-weight: bold;
+	p {
+		font-style: italic;
 	}
 </style>
