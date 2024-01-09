@@ -159,7 +159,7 @@ Because Angular doesn't support to use of environment variables out of the box w
 The proxy will proxy (forward) all requests to the configured endpoint, to the desired endpoint.
 Within the proxy's configuration file, you'll be able to access the environment variables to set the backend's address.
 
-:::info
+:::tip
 I also encourage to use of a proxy to create a [more secure environment using a Backend For Frontend (BFF)](../lets-make-our-spa-more-secure-by-consuming-a-duende-bff-with-angular/index.md).
 :::
 
@@ -199,6 +199,23 @@ Next, add the config to your `angular.json` file:
 	}
 }
 ```
+
+:::tip
+Instead of using the hardcoded port in Angular, you can also pass the Angular port, which is set via the Aspire configuration to the Angular application.
+For this, set the port of the Angular application using the `PORT` environment variable while serving the application.
+The snippet below uses [run-script-os](https://www.npmjs.com/package/run-script-os) because the environment variable syntax is a bit different across different operation systems.
+
+```json
+"scripts": {
+    "start": "run-script-os",
+    "start:win32": "ng serve --port %PORT%",
+    "start:default": "ng serve --port $PORT%"
+}
+```
+
+I learned this trick in a [tweet](https://twitter.com/davidpine7/status/1743303865657602282) from [David Pine](https://twitter.com/davidpine7).
+
+:::
 
 After this, we're all set to go.
 When the Angular application sends a request to the backend, we should receive the response, and we should also find a trace on the Aspire dashboard.

@@ -2,13 +2,12 @@
 @import './dark.theme.css';
 /* @import './tweet-preview.css'; */
 
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Trispace:wght@100;200;300;400;500;600;700;800&family=Oxygen:wght@300;400;700&family=Fira+Code:wght@300;400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 :root {
-	--head-font: 'Josefin Sans', sans-serif;
-	--text-font: 'Mulish', sans-serif;
+	--head-font: 'Trispace', sans-serif;
+	--text-font: 'Oxygen', sans-serif;
 
 	--font-size: calc(1rem + 0.23dvw);
 	--line-height: 1.876;
@@ -141,6 +140,11 @@ a {
 	font-size: inherit;
 	line-height: inherit;
 	font-weight: bold;
+}
+
+p > a,
+li > a {
+	word-break: break-word;
 }
 
 main a.mark {

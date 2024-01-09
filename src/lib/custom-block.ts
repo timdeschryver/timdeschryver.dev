@@ -1,6 +1,6 @@
 import type { marked } from 'marked';
 
-const admonitionTypes = ['danger', 'warning', 'info', 'success', 'note', 'ai'];
+const admonitionTypes = ['danger', 'warning', 'info', 'success', 'note', 'ai', 'tip'];
 const startReg = new RegExp(`^:::(${admonitionTypes.join('|')})$`);
 const endReg = /^:::$/;
 

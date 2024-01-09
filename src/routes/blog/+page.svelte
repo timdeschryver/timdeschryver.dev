@@ -109,7 +109,7 @@
 		aria-label="Search"
 	/>
 	<div class="mt-0 search-info">
-		found {filteredPosts.length} posts out of {posts.length} posts
+		<small>found {filteredPosts.length} posts out of {posts.length} posts</small>
 	</div>
 	{#each tags as tag}
 		<button
