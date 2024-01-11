@@ -4,7 +4,7 @@ slug: angular-build-once-deploy-to-multiple-environments
 description: In our quest to build a twelve-factor app where we build once and deploy to multiple environment we encountered some problems, but we managed to solve them. Read here how we did it.
 author: Tim Deschryver
 date: 2019-05-20T13:00:00.000Z
-tags: Angular, DevOps, CI/CD, Build
+tags: Angular, DevOps, CI/CD
 ---
 
 ## [The twelve-factor app](https://12factor.net/)
@@ -28,6 +28,10 @@ A codebase is transformed into a (non-development) deploy through three stages:
 - The _run stage_ (also known as “runtime”) runs the app in the execution environment, by launching some set of the app’s processes against a selected release. Code becomes a build, which is combined with config to create a release.
 
 The twelve-factor app uses strict separation between the build, release, and run stages. For example, it is impossible to make changes to the code at runtime, since there is no way to propagate those changes back to the build stage.
+
+:::info
+This blog post was updated in context of standalone components, if you're looking for that see [Multiple releases using the same but configurable Angular Standalone Application build](../multiple-releases-using-the-same-but-configurable-angular-standalone-application-build/index.md)
+:::
 
 ## environment.ts
 

@@ -12,11 +12,15 @@ Starting from EF 8, EF automatically stores a collection of primitive values dir
 To query data, the [OPENJSON](https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql) table-valued function is used.
 This creates a rowset view of the JSON data, which can be compared as a "normal" relational table, and can thus be queried as you're used to.
 
-Let's explore how this translates into code and SQL.
-
 :::note
 `OPENJSON` is more and more used in EF features to support more use-cases (or to improve the query performance). An example of this is the possibility to use inline collections while querying data, as mentioned in the [release announcement](https://devblogs.microsoft.com/dotnet/announcing-ef8-preview-4#and-one-last-thing-queryable-inline-collections).
 :::
+
+A use case for using primitive collection properties is to save a data collection that's retrieved via its parent.
+If you need to query this set, it's probably better to store the collection in a seperate table.
+This allows you to create indecies in order to optimize search-based scenarios, that otherwise isn't possible using a JSON column.
+
+Let's explore how this translates into code and SQL.
 
 :::code-group
 
