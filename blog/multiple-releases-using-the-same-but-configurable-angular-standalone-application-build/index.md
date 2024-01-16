@@ -125,6 +125,10 @@ The `environment-config.json` file is just a simple JSON file containing the env
 }
 ```
 
+:::tip
+Use Zod to [verify if the JSON adheres to the expected structure](../../bits/use-zod-to-parse-unknown-data/index.md).
+:::
+
 ### JavaScript Configuration
 
 An alternate solution relies on a JavaScript configuration instead of a JSON configuration file.

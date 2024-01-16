@@ -281,6 +281,7 @@ main > h6 {
 }
 
 body > div > main > pre,
+body > div > main > .code-group,
 body > div > main > iframe,
 body > div > main > figure,
 body > div > main > p:has(video),
@@ -484,7 +485,7 @@ code {
 
 code.dim > div:not(.highlight) {
 	opacity: 0.3;
-	filter: blur(0.3px);
+	filter: blur(.065rem);
 	transition: all 0.2s ease-in;
 }
 
