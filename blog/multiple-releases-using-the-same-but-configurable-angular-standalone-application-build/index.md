@@ -82,7 +82,7 @@ export const ENVIRONMENT_CONFIG = new InjectionToken<EnvironmentConfiguration>(
 );
 ```
 
-Next, the `EnvironmentConfiguration` is used to create the [`ApplicationConfig`](https://angular.dev/api/platform-browser/ApplicationConfig).
+Next, the `EnvironmentConfiguration` is used to create the [`ApplicationConfig`](https://angular.dev/api/core/ApplicationConfig).
 
 The `appConfig` isn't defined inline anymore, instead, a factory function is used to create the config. The factory function `createAppConfig` receives the environment configuration as an argument (how we get access to the config is discussed later).
 

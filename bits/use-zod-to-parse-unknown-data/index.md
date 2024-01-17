@@ -1,11 +1,11 @@
 ---
-title: Use zod to parse Unknown Data
+title: Use Zod to parse Unknown Data
 slug: use-zod-to-parse-unknown-data
 date: 2024-01-16
 tags: typescript, developer-experience, libraries
 ---
 
-# Use zod to parse unknown data
+# Use Zod to parse unknown data
 
 How many times was there an issue within your application because you trusted data that you don't control (e.g. incoming data), or worse, how many times did the application entirely crash because of it?
 Thinking back, was this easy to detect and could it have been prevented?
