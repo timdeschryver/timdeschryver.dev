@@ -35,7 +35,25 @@ To go over what .NET Aspire is and why it exists, I refer to the [.NET Aspire ov
 
 ## Adding An Angular Project to .NET Aspire Application Host
 
-While .NET Aspire has many built-in [components](https://learn.microsoft.com/en-us/dotnet/aspire/components-overview?tabs=dotnet-cli) available, a Node.js project isn't one of them (for now?).
+:::tip
+Starting from [.NET Aspire 8.0 Preview 2 (v8.0.0-preview.2.23619.3)](https://github.com/dotnet/aspire/releases/tag/v8.0.0-preview.2.23619.3) this section has become obsolete because it's integrated in .NET Aspire. Instead of a custom implementation, Node.js projects can easily be registered using the `AddNpmApp` function.
+
+```cs AngularAspire.AppHost/Program.cs {5-8}
+var builder = DistributedApplication.CreateBuilder(args);
+
+var weatherforecastApi = builder.AddProject<Projects.WeatherForecastAPI>("weatherforecastapi");
+
+builder
+    .AddNpmApp("AngularFrontEnd", "../AngularAspire.AngularFrontEnd")
+    .WithReference(weatherforecastApi)
+    .WithServiceBinding(hostPort: 4200, scheme: "http", env: "PORT");
+
+builder.Build().Run();
+```
+
+:::
+
+While .NET Aspire has many built-in [components](https://learn.microsoft.com/en-us/dotnet/aspire/components-overview?tabs=dotnet-cli) available, ~~a Node.js project isn't one of them (for now?)~~.
 But, the [samples](https://github.com/dotnet/aspire-samples/tree/main) provide some insights on how this task can be achieved.
 
 The result is an `AddNpmApp` extension method to register a Node.js project, in our case this will be an Angular project.
@@ -237,3 +255,4 @@ Observability is the biggest one, in my opinion.
 The traces and logs within the dashboard help to get a detailed overview of what the application is doing, this is a huge time saver when you need to debug an issue.
 
 You can find the example application my [GitHub](https://github.com/timdeschryver/AspireWithAngular).
+The .NET Aspire team also created a [sample application](https://github.com/dotnet/aspire-samples/tree/main/samples/AspireWithJavaScript) including all the popular front-end frameworks.
