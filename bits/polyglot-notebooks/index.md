@@ -2,7 +2,7 @@
 title: Polyglot Notebooks
 slug: polyglot-notebooks
 date: 2023-10-03
-tags: tools, developer-experience, vscode
+tags: devtools, developer-experience, vscode
 ---
 
 # Polyglot Notebooks

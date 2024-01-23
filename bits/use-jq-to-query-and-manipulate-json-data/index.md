@@ -2,7 +2,7 @@
 title: Use jq to query and manipulate JSON data
 slug: use-jq-to-query-and-manipulate-json-data
 date: 2023-11-28
-tags: tools, productivity
+tags: devtools, productivity
 ---
 
 # Using jq to work with JSON data

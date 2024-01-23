@@ -2,7 +2,7 @@
 title: How to quickly open a GitHub repository within an IDE
 slug: how-to-quickly-open-a-github-repository-within-an-ide
 date: 2023-10-17
-tags: tools
+tags: devtools
 ---
 
 # How to quickly open a GitHub repository within an IDE

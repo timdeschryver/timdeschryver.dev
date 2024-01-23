@@ -2,7 +2,7 @@
 title: Simplified Node.js Version Management with fnm
 slug: simplified-nodejs-version-management-with-fnm
 date: 2023-08-29
-tags: tools, nodejs
+tags: devtools, nodejs
 ---
 
 # Simplified Node.js Version Management with fnm

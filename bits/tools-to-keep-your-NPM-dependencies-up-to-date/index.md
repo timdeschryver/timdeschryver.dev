@@ -2,7 +2,7 @@
 title: Tools to keep your NPM dependencies up-to-date
 slug: tools-to-keep-your-npm-dependencies-up-to-date
 date: 2023-07-18
-tags: tools, vscode
+tags: devtools, vscode
 ---
 
 # Tools to keep your NPM dependencies up-to-date

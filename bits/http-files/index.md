@@ -2,7 +2,7 @@
 title: Http Files
 slug: http-files
 date: 2023-08-01
-tags: tools, developer-experience
+tags: devtools, developer-experience
 ---
 
 # HTTP Files
