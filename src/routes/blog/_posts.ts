@@ -164,6 +164,7 @@ export const TAG_COLORS = {
 	playwright: 'playwright',
 	rxjs: 'rxjs',
 	azure: 'azure',
+	'azure devops': 'azure',
 	zod: 'zod',
 	svelte: 'svelte',
 	cypress: 'cypress',

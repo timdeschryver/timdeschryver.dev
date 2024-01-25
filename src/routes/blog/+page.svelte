@@ -124,7 +124,7 @@
 
 <ul>
 	{#each filteredPosts as post}
-		<li class={post.tags.join(' ')}>
+		<li style:--accent-color={`var(--${post.color})`}>
 			<article>
 				<h2 style:--post-title="post-title-{post.slug}">
 					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover">
