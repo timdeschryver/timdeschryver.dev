@@ -227,7 +227,7 @@ The snippet below uses [run-script-os](https://www.npmjs.com/package/run-script-
 "scripts": {
     "start": "run-script-os",
     "start:win32": "ng serve --port %PORT%",
-    "start:default": "ng serve --port $PORT%"
+    "start:default": "ng serve --port $PORT"
 }
 ```
 
