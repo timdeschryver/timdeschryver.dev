@@ -332,7 +332,7 @@ On the HTML side, everything remains the same (the validation messages are left 
 
 :::code-group
 
-```ts {4-18} [title=TypeScript Form Definition]
+```ts {5-17} [title=TypeScript Form Definition]
 import { createFormField, createFormGroup, V } from 'ng-signal-forms';
 
 export class AppComponent {
@@ -376,7 +376,7 @@ To disable a validator, use the `disabled` property of the validator configurati
 
 :::code-group
 
-```ts {12, 18} [title=TypeScript Form Definition]
+```ts {13, 21} [title=TypeScript Form Definition]
 import { createFormField, createFormGroup, V } from 'ng-signal-forms';
 
 export class AppComponent {
@@ -446,7 +446,7 @@ Just like any other configuration, we can use signals to reactively hide the for
 
 :::code-group
 
-```ts {10, 17} [title=TypeScript Form Definition]
+```ts {10, 19} [title=TypeScript Form Definition]
 import { createFormField, createFormGroup, V } from 'ng-signal-forms';
 
 export class AppComponent {
@@ -560,7 +560,7 @@ export class AppComponent {
 
 While submitting the form, you can also check the valid state of the form fields and form groups using the `valid` signal.
 
-```ts {4-8}
+```ts {5-7}
 export class AppComponent {
     formModel = createFormGroup({...})
 
@@ -581,7 +581,7 @@ This is definitely an area that needs to be improved.
 Currently, it's not easy to update a form group... but you're able to set the value of an individual form field.
 Because we're working with signals we can use the methods `set` and `update` (of the signals) to update the value of the form field.
 
-```ts
+```ts {5-6}
 export class AppComponent {
     formModel = createFormGroup({...})
 
