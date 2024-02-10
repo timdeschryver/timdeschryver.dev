@@ -6,7 +6,7 @@
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/devcontainers/features/sshd:1": {}
+		"ghcr.io/devcontainers/features/sshd:1": {},
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -24,19 +24,19 @@
 			"settings": {
 				"[typescript]": {
 					"editor.defaultFormatter": "esbenp.prettier-vscode",
-					"editor.formatOnSave": true
+					"editor.formatOnSave": true,
 				},
 				"[md]": {
 					"editor.defaultFormatter": "esbenp.prettier-vscode",
-					"editor.formatOnSave": true
+					"editor.formatOnSave": true,
 				},
 				"[json]": {
 					"editor.defaultFormatter": "esbenp.prettier-vscode",
-					"editor.formatOnSave": true
-				}
+					"editor.formatOnSave": true,
+				},
 			},
 			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": ["svelte.svelte-vscode", "ms-playwright.playwright", "GitHub.copilot-nightly"]
-		}
-	}
+			"extensions": ["svelte.svelte-vscode", "ms-playwright.playwright", "GitHub.copilot-nightly"],
+		},
+	},
 }

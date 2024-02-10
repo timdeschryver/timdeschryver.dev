@@ -22,9 +22,9 @@ In the example, we see the following component, which makes use of a complete bl
 @Component({
 	template: `
 		@defer {
-		<p>Defer block content</p>
+			<p>Defer block content</p>
 		} @loading {
-		<p>Loading...</p>
+			<p>Loading...</p>
 		}
 	`,
 })

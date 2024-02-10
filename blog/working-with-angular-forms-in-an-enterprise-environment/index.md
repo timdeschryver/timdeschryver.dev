@@ -334,7 +334,7 @@ There was already a glance visible about validation in the previous code snippet
 	selector: 'error-message-container',
 	template: `
 		<div class="error-message" [style.visibility]="control.touched ? 'visible' : 'hidden'">
-			{{ control.errors | humanizeMessages : errorMessages }}
+			{{ control.errors | humanizeMessages: errorMessages }}
 		</div>
 	`,
 })
@@ -389,7 +389,10 @@ export class ChildFormComponent implements OnInit {
 		lastName: [null, [Validators.required]],
 	});
 
-	constructor(private parentForm: FormGroupDirective, private fb: FormBuilder) {}
+	constructor(
+		private parentForm: FormGroupDirective,
+		private fb: FormBuilder,
+	) {}
 
 	ngOnInit() {
 		this.parentForm.form.addControl('person', this.form);

@@ -30,6 +30,7 @@ tags: Angular, Signals, Forms
   - [Making use of the existing `NgModel`](#making-use-of-the-existing-ngmodel)
   - [Debugging](#debugging)
 - [Conclusion](#conclusion)
+- [Getting started](#getting-started)
 - [What's next](#what-and-39-s-next)
 <!-- TOC -->
 
@@ -867,6 +868,14 @@ export class AppComponent {
 :::
 
 For more examples, see the examples of [Signal Forms](https://github.com/timdeschryver/ng-signal-forms/tree/main/apps/example/src/app)
+
+## Getting started
+
+To use Signal Forms in your project, run the following command.
+
+```bash
+npm install ng-signal-forms
+```
 
 ## What's next
 

@@ -2,7 +2,6 @@
 @import './dark.theme.css';
 /* @import './tweet-preview.css'; */
 
-
 @import url('https://fonts.googleapis.com/css2?family=Trispace:wght@100;200;300;400;500;600;700;800&family=Oxygen:wght@300;400;700&family=Fira+Code:wght@300;400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 :root {
@@ -12,7 +11,7 @@
 	--font-size: calc(1rem + 0.23dvw);
 	--line-height: 1.876;
 	--spacing: 1.74em;
-	--spacing-half: calc(1.74em/2);
+	--spacing-half: calc(1.74em / 2);
 	--spacing-small: 0.5em;
 	--spacing-large: 3.2em;
 	--header-height: 5em;
@@ -211,7 +210,7 @@ ol ol {
 
 input {
 	border: 1px solid;
-	padding: 0.75rem 1.25rem;;
+	padding: 0.75rem 1.25rem;
 	margin: 0 0 0.5rem 0;
 	border-radius: 2px;
 	display: block;
@@ -428,8 +427,8 @@ a[data-with-favicon]:before {
 
 code,
 pre {
-	font-family: 'Fira Code', 'JetBrains Mono', 'Ligconsolata', 'MonoLisa', 'Cartograph CF', 'Cascadia Code', 'Dank Mono',
-		'Operator Mono Lig', 'Operator Mono Lig', 'Cascadia Mono',
+	font-family: 'Fira Code', 'JetBrains Mono', 'Ligconsolata', 'MonoLisa', 'Cartograph CF',
+		'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Cascadia Mono',
 		'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
 	direction: ltr;
@@ -485,7 +484,7 @@ code {
 
 code.dim > div:not(.highlight) {
 	opacity: 0.3;
-	filter: blur(.065rem);
+	filter: blur(0.065rem);
 	transition: all 0.2s ease-in;
 }
 
@@ -576,11 +575,12 @@ pre > .code-heading > a {
 	font-family: 'Material Symbols Outlined';
 	font-size: 1.2rem;
 	animation: pulse 3s infinite;
-	margin-right: .5em;
+	margin-right: 0.5em;
 	vertical-align: middle;
- }
+}
 
-.custom-block.success, .custom-block.tip {
+.custom-block.success,
+.custom-block.tip {
 	--background-color: hsla(135, 59%, 49%, 0.1);
 	--border-color: hsla(135, 59%, 49%, 0.8);
 	--title-color: hsla(135, 59%, 49%, 1);
@@ -599,7 +599,8 @@ pre > .code-heading > a {
 .custom-block.danger .custom-block-title::before {
 	content: 'priority_high';
 }
-.custom-block.info, .custom-block.info-ai {
+.custom-block.info,
+.custom-block.info-ai {
 	--background-color: hsla(233, 82%, 69%, 0.1);
 	--border-color: hsla(233, 82%, 69%, 0.8);
 	--title-color: hsla(233, 82%, 69%, 1);

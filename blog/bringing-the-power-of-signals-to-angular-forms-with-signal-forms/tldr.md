@@ -1,3 +1,9 @@
+To use Signal Forms in your project, run the following command.
+
+```bash
+npm install ng-signal-forms
+```
+
 This is an example on how to build a form with Signal Forms.
 If you want to play around with this example, take a look at [GitHub repository](https://github.com/timdeschryver/spartan-signal-forms).
 

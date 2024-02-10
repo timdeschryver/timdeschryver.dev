@@ -19,7 +19,7 @@ const config: PlaywrightTestConfig = {
 					port: 5173,
 					reuseExistingServer: !process.env.CI,
 				},
-		  }),
+			}),
 	projects: [
 		{
 			name: 'chromium',
