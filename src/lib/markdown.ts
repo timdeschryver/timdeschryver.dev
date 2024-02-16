@@ -15,11 +15,9 @@ import iconCsharp from '../../static/images/languages/csharp.svg?raw';
 import iconSvelte from '../../static/images/languages/svelte.svg?raw';
 import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
 import * as shiki from 'shiki';
-import type { IThemedToken } from 'shiki';
-// @ts-ignore
-import pallete from 'shiki/themes/rose-pine.json';
-// @ts-ignore
-import palleteDawn from 'shiki/themes/rose-pine-dawn.json';
+import type { BundledLanguage, ThemedToken } from 'shiki';
+import pallete from 'shiki/themes/rose-pine.mjs';
+import palleteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
@@ -27,17 +25,34 @@ import { customBlock } from './custom-block';
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
 
-marked.setOptions({
-	mangle: false,
-	headerIds: false,
-});
 marked.use({
 	extensions: [codeGroup, customBlock],
 });
 const renderer = new marked.Renderer();
 
 const highlighter = await shiki.getHighlighter({
-	theme: 'rose-pine',
+	themes: ['rose-pine', 'rose-pine-dawn'],
+	langs: [
+		'razor',
+		'json',
+		'typescript',
+		'javascript',
+		'html',
+		'css',
+		'xml',
+		'shell',
+		'yaml',
+		'yml',
+		'cs',
+		'csharp',
+		'svelte',
+		'powershell',
+		'http',
+		'diff',
+		'sql',
+		'angular-html',
+		'angular-ts',
+	],
 });
 
 const langToIcon = {
@@ -193,15 +208,9 @@ export function parseFileToHtmlAndMeta(file): {
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
 			: '';
 
-		let shikiLang = language.trim();
-		if (shikiLang === 'cs') {
-			shikiLang = 'csharp';
-		}
-		if (shikiLang === 'yml') {
-			shikiLang = 'yaml';
-		}
+		const shikiLang = language.trim();
 
-		function generateHTMLFromTokens(tokens: IThemedToken[][]): string {
+		function generateHTMLFromTokens(tokens: ThemedToken[][]): string {
 			const codeClass = linesHighlight.length ? 'dim' : '';
 			let html = `<code class="${codeClass}">`;
 
@@ -235,14 +244,16 @@ export function parseFileToHtmlAndMeta(file): {
 			return html;
 
 			function replaceColorToCSSVariable(color: string) {
-				const scopeColors = pallete.tokenColors.map((tc) => {
-					return {
-						scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) =>
-							c.replace(/\./g, '-'),
-						),
-						color: tc.settings.foreground,
-					};
-				});
+				const scopeColors = pallete.tokenColors
+					.filter((p) => p.scope)
+					.map((tc) => {
+						return {
+							scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) =>
+								c.replace(/\./g, '-'),
+							),
+							color: tc.settings.foreground,
+						};
+					});
 
 				const key = scopeColors.find((c) => c.color?.toLowerCase() === color?.toLowerCase());
 				if (!key) {
@@ -252,10 +263,11 @@ export function parseFileToHtmlAndMeta(file): {
 			}
 		}
 
-		const tokens = highlighter.codeToThemedTokens(source, shikiLang, 'rose-pine', {
-			includeExplanation: false,
+		const tokens = highlighter.codeToTokens(source, {
+			lang: shikiLang as BundledLanguage,
+			theme: pallete,
 		});
-		const codeblock = generateHTMLFromTokens(tokens);
+		const codeblock = generateHTMLFromTokens(tokens.tokens);
 		return `<pre id="${id}" aria-hidden="true" tabindex="-1">${heading}${codeblock}</pre>`;
 	};
 
@@ -405,12 +417,14 @@ function appendCreatorId(link: string) {
 }
 
 function createStyle(scope: string, theme) {
-	const scopeColors = theme.tokenColors.map((tc) => {
-		return {
-			scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) => c.replace(/\./g, '-')),
-			color: tc.settings.foreground,
-		};
-	});
+	const scopeColors = theme.tokenColors
+		.filter((p) => p.scope)
+		.map((tc) => {
+			return {
+				scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) => c.replace(/\./g, '-')),
+				color: tc.settings.foreground,
+			};
+		});
 
 	let style = `html.${scope} {`;
 
