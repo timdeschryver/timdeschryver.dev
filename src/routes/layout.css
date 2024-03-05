@@ -353,6 +353,7 @@ td,
 th {
 	padding: 4px 7px;
 	width: 100%;
+	text-wrap: pretty;
 }
 
 thead {
