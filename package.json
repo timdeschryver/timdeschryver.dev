@@ -34,7 +34,7 @@
 		"prepare": "git config core.hookspath .githooks"
 	},
 	"devDependencies": {
-		"@azure/static-web-apps-cli": "1.1.6",
+		"@azure/static-web-apps-cli": "1.1.7",
 		"@playwright/test": "1.41.2",
 		"@squoosh/lib": "0.5.3",
 		"@sveltejs/adapter-auto": "3.1.1",
@@ -57,7 +57,7 @@
 		"front-matter": "4.0.2",
 		"jsdom": "24.0.0",
 		"lint-staged": "15.2.2",
-		"marked": "12.0.0",
+		"marked": "12.0.1",
 		"node-fetch": "3.3.2",
 		"playwright": "1.41.2",
 		"prettier": "3.2.5",
@@ -67,8 +67,8 @@
 		"svelte": "4.2.12",
 		"svelte-check": "3.6.6",
 		"tslib": "2.6.2",
-		"typescript": "5.3.3",
-		"vite": "5.1.4",
+		"typescript": "5.4.2",
+		"vite": "5.1.5",
 		"vite-plugin-restart": "0.4.0",
 		"vite-svg-loader": "5.1.0",
 		"vitest": "1.2.2"
