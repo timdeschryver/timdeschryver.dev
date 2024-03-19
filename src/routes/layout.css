@@ -308,8 +308,7 @@ iframe {
 }
 
 blockquote {
-	border-left: 6px solid hsla(var(--accent-color), 1);
-	background: var(--background-color-transparent);
+	color: var(--text-color-light);
 	padding: 1em 2em;
 }
 blockquote > p {
