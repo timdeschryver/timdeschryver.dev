@@ -3,7 +3,7 @@ title: Multiple releases using the same, but configurable, Angular Standalone Ap
 slug: multiple-releases-using-the-same-but-configurable-angular-standalone-application-build
 description: Configuring an Angular standalone application to be flexible enough to be released in different environments.
 date: 2024-01-11
-tags: Angular, DevOps
+tags: Angular, DevOps, CI/CD
 ---
 
 In an older post [Build once deploy to multiple environments](../angular-build-once-deploy-to-multiple-environments/index.md), I've already written on how to build an Angular application so it can be released in different environments.
