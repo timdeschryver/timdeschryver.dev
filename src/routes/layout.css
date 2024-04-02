@@ -377,7 +377,7 @@ thead {
 	margin-top: 0;
 }
 
-a[data-with-favicon]:before {
+a[data-with-favicon]:hover:before {
 	content: '';
 	display: inline-block;
 	width: 1em;
