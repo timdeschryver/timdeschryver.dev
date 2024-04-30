@@ -632,14 +632,23 @@ pre > .code-heading > a {
 
 .code-group-tab {
 	margin-top: 0;
+	padding: 0.2em 0.8em;
+	margin-right: 0.1rem;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
 }
-
+.code-group-tab:not(.active) {
+	background-color: hsla(var(--accent-color), .05);
+	color: hsla(var(--accent-color), .4);
+}
 .code-group-tab.active {
 	border-bottom: 1px solid hsla(var(--accent-color));
+	background-color: hsla(var(--accent-color), .1);
+	font-weight: 900;
 }
 
 .code-group-code {
-	margin-top: var(--spacing-small);
+	margin-top: 0;
 }
 
 .material-symbols-outlined {
