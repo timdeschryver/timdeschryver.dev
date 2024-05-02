@@ -22,6 +22,7 @@
 		.map((tag) => {
 			switch (tag.toLowerCase()) {
 				case 'dotnet':
+				case '.net':
 					return { src: 'dotnet.svg', alt: 'The .NET logo' };
 				case 'angular':
 					return { src: 'angular.png', alt: 'The Angular logo' };
