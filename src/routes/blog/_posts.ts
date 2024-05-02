@@ -63,7 +63,6 @@ export async function readPosts(): Promise<
 
 			const { html, metadata } = parseFileToHtmlAndMeta(postPath);
 			const { html: tldr } = tldrPath ? parseFileToHtmlAndMeta(tldrPath) : { html: null };
-
 			const tags = metadata.tags;
 			const banner = path
 				.normalize(path.join(variables.basePath, 'blog', metadata.slug, 'images', 'banner.png'))
