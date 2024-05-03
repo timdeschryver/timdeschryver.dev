@@ -63,7 +63,7 @@ it('renders the greeting name', async () => {
 :::
 
 :::tip
-If you're using Jest, you need to upgrade Jest to v29.5 (or higher) and jest-angular-preset v14.0.1 (or higher) to be able to set the Signal properties within the test setups.
+If you're using Jest, you need to upgrade Jest to v29.5 (or higher) and jest-preset-angular v14.0.1 (or higher) to be able to set the Signal properties within the test setups.
 :::
 
 For input properties (and output) that have an alias, you can use the alias to set the input property. You won't have IntelliSense for the property name, but you can still set the property using the alias. This is also how inputs are set when using the `@Input()` decorator.

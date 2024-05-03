@@ -51,7 +51,7 @@ Injection tokens that are provided at the component level are automatically take
 Registering a token globally is done by adding the token to the global test setup file:
 
 - if you're using Karma, you're looking for the `test.ts` file.
-- if you're using Jest, more specifically `jest-angular-preset`, this is usually the `setup-test.ts` file. (If you don't know which file this is for your project, you can find this in the `setupFilesAfterEnv` property of the jest config file)
+- if you're using Jest, more specifically `jest-preset-angular`, this is usually the `setup-test.ts` file. (If you don't know which file this is for your project, you can find this in the `setupFilesAfterEnv` property of the jest config file)
 
 Using `TestBed.overrideProvider` it's possible to set a value for the injection token.
 Because we want to set the value once for all tests, we need to wrap this in a `beforeEach` hook:
