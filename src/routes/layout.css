@@ -629,7 +629,9 @@ pre > .code-heading > a {
 	flex-direction: row;
 	overflow: auto;
 }
-
+.code-group-tabs > button {
+	margin-bottom: 0;
+}
 .code-group-tab {
 	margin-top: 0;
 	padding: 0.2em 0.8em;
@@ -642,7 +644,7 @@ pre > .code-heading > a {
 	color: hsla(var(--accent-color), .4);
 }
 .code-group-tab.active {
-	border-bottom: 1px solid hsla(var(--accent-color));
+	border-top: 1px solid hsla(var(--accent-color));
 	background-color: hsla(var(--accent-color), .1);
 	font-weight: 900;
 }
