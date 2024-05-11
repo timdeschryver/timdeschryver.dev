@@ -2,11 +2,10 @@
 @import './dark.theme.css';
 /* @import './tweet-preview.css'; */
 
-@import url('https://fonts.googleapis.com/css2?family=Trispace:wght@100;200;300;400;500;600;700;800&family=Oxygen:wght@300;400;700&family=Fira+Code:wght@300;400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Teachers:ital,wght@0,400..800;1,400..800&family=Victor+Mono:ital,wght@0,100..700;1,100..700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 :root {
-	--head-font: 'Trispace', sans-serif;
-	--text-font: 'Oxygen', sans-serif;
+	--head-font: 'Teachers', sans-serif;
+	--text-font: 'Noto Sans', sans-serif;
 
 	--font-size: calc(1rem + 0.23dvw);
 	--line-height: 1.876;
@@ -36,14 +35,14 @@ html.light {
 	--base-color: 0, 0%, 0%;
 	--background-color: hsla(0, 0%, 100%, 0.9);
 	--background-color-transparent: hsla(0, 0%, 0%, 0.03);
-	--text-color: hsla(0, 0%, 0%, 0.95);
+	--text-color: hsla(0, 0%, 0%, 0.90);
 	--text-color-light: hsla(0, 0%, 0%, 0.7);
 	--text-color-subtle: hsla(0, 0%, 0%, 0.4);
 }
 
 html.dark {
 	--base-color: 0, 0%, 100%;
-	--background-color: hsla(0, 0%, 0%, 0.95);
+	--background-color: hsla(0, 0%, 0%, 0.90);
 	--background-color-transparent: hsla(0, 0%, 100%, 0.1);
 	--text-color: hsla(0, 0%, 100%, 0.9);
 	--text-color-light: hsla(0, 0%, 100%, 0.7);
@@ -90,6 +89,7 @@ body {
 	font-size: 17px;
 	line-height: var(--line-height);
 	padding-bottom: 1em;
+	font-optical-sizing: auto;
 }
 
 ::selection {
@@ -180,7 +180,7 @@ h6:hover > .material-symbols-outlined {
 p {
 	font-size: var(--font-size);
 	line-height: var(--line-height);
-	font-weight: lighter;
+	font-weight: 300;
 }
 
 @media (max-width: 480px) {
@@ -195,7 +195,7 @@ ol {
 	line-height: var(--line-height);
 	margin-top: var(--spacing-half);
 	list-style-position: inside;
-	font-weight: lighter;
+	font-weight: 300;
 }
 
 li + li,
@@ -427,7 +427,7 @@ a[data-with-favicon]:hover:before {
 
 code,
 pre {
-	font-family: 'Fira Code', 'JetBrains Mono', 'Ligconsolata', 'MonoLisa', 'Cartograph CF',
+	font-family: 'Victor Mono', 'JetBrains Mono',  'Fira Code', 'Ligconsolata', 'MonoLisa', 'Cartograph CF',
 		'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Cascadia Mono',
 		'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
