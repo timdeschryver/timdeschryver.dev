@@ -638,14 +638,15 @@ pre > .code-heading > a {
 	margin-right: 0.1rem;
 	border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
+	transition: .2s ease-in-out;
 }
 .code-group-tab:not(.active) {
-	background-color: hsla(var(--accent-color), .05);
+	background-color: var(--tab-activeBackground);
 	color: hsla(var(--accent-color), .4);
 }
 .code-group-tab.active {
 	border-top: 1px solid hsla(var(--accent-color));
-	background-color: hsla(var(--accent-color), .1);
+	background-color: var(--tab-activeBackground);
 	font-weight: 900;
 }
 

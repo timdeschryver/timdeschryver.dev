@@ -24,17 +24,13 @@ Let's see how we can use ngxtension to migrate towards "modern" Angular with som
 
 :::code-group
 
-```ts [title=Before]
+```angular-ts [title=Before]
 @Component({
 	template: `
-		   
-		@if (showTitle) {
-			     
-			<h1>{{ title }}</h1>
-			   
-		}
-		    <button (click)="onClick()">Click me!</button>
-		 
+        @if (showTitle) {  
+            <h1>{{ title }}</h1>
+        }
+        <button (click)="onClick()">Click me!</button> 
 	`,
 })
 export class AwesomeComponent {
@@ -50,17 +46,13 @@ export class AwesomeComponent {
 }
 ```
 
-```ts [title=After]
+```angular-ts [title=After]
 @Component({
 	template: `
-		   
-		@if (showTitle()) {
-			     
-			<h1>{{ title() }}</h1>
-			   
-		}
-		    <button (click)="onClick()">Click me!</button>
-		 
+        @if (showTitle()) {
+            <h1>{{ title() }}</h1>
+        }
+        <button (click)="onClick()">Click me!</button>
 	`,
 })
 export class AwesomeComponent {
@@ -82,14 +74,14 @@ export class AwesomeComponent {
 
 :::code-group
 
-```ts [title=Before]
+```angular-ts [title=Before]
 @Component()
 export class AwesomeComponent {
   contructor(private service: AwesomeService) {}
 }
 ```
 
-```ts [title=After]
+```angular-ts [title=After]
 @Component()
 export class AwesomeComponent {
 	private service = inject(AwesomeService);
@@ -102,7 +94,7 @@ export class AwesomeComponent {
 
 :::code-group
 
-```ts [title=Before]
+```angular-ts [title=Before]
 @Component()
 export class AwesomeComponent {
 	@Input({ required: true }) title: string = '';
@@ -112,7 +104,7 @@ export class AwesomeComponent {
 }
 ```
 
-```ts [title=After]
+```angular-ts [title=After]
 @Component()
 export class AwesomeComponent {
 	title = input.required<string>();
@@ -128,7 +120,7 @@ export class AwesomeComponent {
 
 :::code-group
 
-```ts [title=Before]
+```angular-ts [title=Before]
 @Component()
 export class AwesomeComponent {
 	@Output() logOutpout = new EventEmitter<string>();
@@ -138,7 +130,7 @@ export class AwesomeComponent {
 }
 ```
 
-```ts [title=After]
+```angular-ts [title=After]
 @Component()
 export class AwesomeComponent {
 	logOutpout = output<string>();
