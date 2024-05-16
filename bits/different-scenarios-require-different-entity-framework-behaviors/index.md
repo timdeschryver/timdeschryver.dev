@@ -44,3 +44,9 @@ var customers = await context.Set<Customer>()
 ```
 
 :::
+
+To be complete, the following variations are also possible:
+
+- `context.Database.SqlQuery<Customer>` doesn't track changes;
+- `context.Customers.FromSql` does track changes;
+- `context.Set<Customer>.FromSql` does track changes;
