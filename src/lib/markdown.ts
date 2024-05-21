@@ -84,7 +84,6 @@ export function parseFileToHtmlAndMeta(file): {
 		slug: string;
 		date: string;
 		tags: string[];
-		no_banner?: boolean;
 	};
 	assetsSrc: string;
 } {

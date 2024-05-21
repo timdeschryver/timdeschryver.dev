@@ -42,33 +42,29 @@
 	<meta name="og:description" content={bit.metadata.description} />
 	<meta name="og:type" content="article" />
 
-	{#if bit.metadata.no_banner === false}
-		<meta name="image" content={bit.metadata.banner} />
-		<meta name="twitter:image" content={bit.metadata.banner} />
-		<meta name="og:image" content={bit.metadata.banner} />
-	{/if}
+	<meta name="image" content={bit.metadata.banner} />
+	<meta name="twitter:image" content={bit.metadata.banner} />
+	<meta name="og:image" content={bit.metadata.banner} />
 </svelte:head>
 
 <svelte:window bind:scrollY />
 
 <div></div>
 <h1 style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
-{#if bit.metadata.no_banner === false}
-	<img
-		src={bit.metadata.banner}
-		alt="banner"
-		style="--scroll: {(scrollY ?? 0) <= 150
-			? 1
-			: scrollY <= 200
-				? 0.75
-				: scrollY <= 300
-					? 0.5
-					: scrollY <= 500
-						? 0.25
-						: 0}"
-		loading="lazy"
-	/>
-{/if}
+<img
+	src={bit.metadata.banner}
+	alt="banner"
+	style="--scroll: {(scrollY ?? 0) <= 150
+		? 1
+		: scrollY <= 200
+			? 0.75
+			: scrollY <= 300
+				? 0.5
+				: scrollY <= 500
+					? 0.25
+					: 0}"
+	loading="lazy"
+/>
 
 {@html bit.html}
 

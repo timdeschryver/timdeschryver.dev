@@ -86,20 +86,35 @@
 
 {#each bits as bit, i}
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
-		<h2>
-			{bits.length - i}.
-			<a
-				href="/bits/{bit.metadata.slug}"
-				class="mark-hover"
-				data-sveltekit-preload-data="hover"
-				style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
-			>
-		</h2>
-		{@html bit.html}
+		<div class="bit">
+			<h2>
+				{bits.length - i}.
+				<a
+					href="/bits/{bit.metadata.slug}"
+					class="mark-hover"
+					data-sveltekit-preload-data="hover"
+					style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
+				>
+			</h2>
+			{@html bit.html}
+
+			<hr />
+		</div>
 	{/if}
 {/each}
 
 <style>
+	hr {
+		border: none;
+		border-top: solid 2px var(--text-color);
+		margin: 4rem -2rem;
+	}
+	.bit:nth-child(even) hr {
+		transform: rotate(2deg);
+	}
+	.bit:nth-child(odd) hr {
+		transform: rotate(-2deg);
+	}
 	button {
 		color: var(--text-color-light);
 		transition: color 0.2s ease;

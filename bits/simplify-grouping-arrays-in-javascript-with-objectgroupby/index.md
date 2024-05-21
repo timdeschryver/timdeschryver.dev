@@ -2,7 +2,7 @@
 title: Simplify Grouping Arrays in JavaScript with Object.groupBy()
 slug: simplify-grouping-arrays-in-javascript-with-objectgroupby
 date: 2024-02-13
-tags: TypeScript, JavaScript
+tags: TypeScript
 ---
 
 # Simplify Grouping Arrays in JavaScript with Object.groupBy()
