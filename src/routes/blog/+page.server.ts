@@ -11,11 +11,6 @@ export async function load() {
 		date: p.metadata.date,
 		tags: p.metadata.tags,
 		color: p.metadata.tags
-			.sort((a, b) => {
-				const aIndex = p.metadata.tags.indexOf(a);
-				const bIndex = p.metadata.tags.indexOf(b);
-				return bIndex - aIndex;
-			})
 			.map((t) => TAG_COLORS[t.toLowerCase()])
 			.find(Boolean)
 			?.toLowerCase(),
