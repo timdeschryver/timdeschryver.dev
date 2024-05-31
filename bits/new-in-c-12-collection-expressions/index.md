@@ -11,12 +11,12 @@ Creating collections becomes simpler in C# 12 using collection expressions.
 We can also make use of the spread operator `..` to copy the values from a collection.
 
 ```diff
--Log(new[] { "one", "two", "three" });
+- Log(new[] { "one", "two", "three" });
 
-+Log(["one", "two", "three"]);
++ Log(["one", "two", "three"]);
 
-+string[] values = ["one", "two", "three"];
-+Log([.. values, "four", .. (string[])["five", "six"]]);
++ string[] values = ["one", "two", "three"];
++ Log([.. values, "four", .. (string[])["five", "six"]]);
 
 void Log(string[] values) {}
 ```

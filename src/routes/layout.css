@@ -497,6 +497,16 @@ code > div {
 	margin-top: 0;
 }
 
+code .line.addition::before {
+	content: '+';
+	color: var(--syntax-entity-name-section)
+}
+
+code .line.removal::before {
+	content: '-';
+	color: var(--syntax-invalid)
+}
+
 /* pre .highlight {
 	background: var(--editor-selectionHighlightBackground);
 	border-left: 0.3em solid var(--editor-selectionForeground);

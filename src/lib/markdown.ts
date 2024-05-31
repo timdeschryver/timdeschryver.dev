@@ -217,26 +217,38 @@ export function parseFileToHtmlAndMeta(file): {
 				const lineClass = [
 					linesHighlight.includes(line + 1) ? 'highlight' : '',
 					token.length ? '' : 'empty',
-				]
-					.filter(Boolean)
-					.join(' ');
-				html += `<div class="${lineClass}">`;
+				];
 
+				let lineContent = '';
 				if (token.length) {
-					token.forEach((innertoken) => {
+					token.forEach((innertoken, index) => {
 						const cssVar = replaceColorToCSSVariable(innertoken.color);
-						const escaped = innertoken.content
+						let escaped = innertoken.content
 							.replace(/&/g, '&amp;')
 							.replace(/</g, '&lt;')
 							.replace(/>/g, '&gt;')
 							.replace(/"/g, '&quot;');
-						html += `<span style="color: ${cssVar}">${escaped}</span>`;
+
+						if (index === 0) {
+							if (escaped[0] === '+') {
+								lineClass.push('addition');
+								lineClass.push('addition');
+
+								escaped = escaped.substring(1).trim();
+							} else if (escaped[0] === '-') {
+								lineClass.push('removal');
+								escaped = escaped.substring(1).trim();
+							}
+						}
+
+						lineContent += `<span style="color: ${cssVar}">${escaped}</span>`;
 					});
 				} else {
-					html += `<span> </span>`;
+					lineContent += `<span> </span>`;
 				}
 
-				html += `</div>`;
+				const clazz = lineClass.filter(Boolean).join(' ');
+				html += `<div class="line ${clazz}">${lineContent}</div>`;
 			});
 
 			html += '</code>';
