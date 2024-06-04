@@ -499,12 +499,14 @@ code > div {
 
 code .line.addition::before {
 	content: '+';
-	color: var(--syntax-entity-name-section)
+	color: var(--syntax-entity-name-section);
+	font-size: .8rem;
 }
 
 code .line.removal::before {
 	content: '-';
-	color: var(--syntax-invalid)
+	color: var(--syntax-invalid);
+	font-size: .8rem;
 }
 
 /* pre .highlight {
