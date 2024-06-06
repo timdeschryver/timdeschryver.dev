@@ -568,6 +568,7 @@ pre > .code-heading > a {
 	border: 1px solid var(--border-color);
 	border-radius: 3px;
 	padding: 0.5em 1em;
+	overflow: auto;
 }
 .custom-block > p,
 .custom-block > p,

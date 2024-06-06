@@ -109,6 +109,9 @@
 		border-top: solid 2px var(--text-color);
 		margin: 4rem -2rem;
 	}
+	.bit {
+		overflow: auto;
+	}
 	.bit:nth-child(even) hr {
 		transform: rotate(2deg);
 	}
