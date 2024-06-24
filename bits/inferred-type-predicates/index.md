@@ -37,7 +37,7 @@ const personNames = persons
 
 Take a look at the following TypeScript playground examples to see the difference between [TypeScript 5.5.0-beta](https://www.typescriptlang.org/play/?ts=5.5.0-beta#code/C4TwDgpgBAChBOBnA9gOygXigb1QQwFsIAuRYeAS1QHMBfAbgCgBjNMqSJN4qACji6oAPqgCuAG3EBKANoBdTFHmMWbYBwQpUAOUIREizlsSMoUAHQAzCuOAJeRtJgB8UAIRvHqKaYsE8YA6aThiuXub4RD5mMbFxMQD0CVAAegD8KoxJUAC0eTkqoJBQAGIUiAAWithQiADuFAQ8vFIuUABuyBQAJrSMRdAAQhTw3dVQluIgza2hHV29KtmAvBuA4jtQACrg0GDwEN0UzHh2UOVQqMjqewCOoiP7UHioIATIe4yWoqjMwBRO5WVKkFgDxAVUhFBhqNWgkAFQ8SDqM5gqCw5LYXx7YCieDoADk9UaeNO6ERTD6jHEEHUiNB5QqQihYyw2FojwMXwA1hc6ug8AYwYyRt0mFBGBRLHwAfTgVJWhizIjzISCC1yVAIOJENAFRpgFYpmrGH0gA) and [TypeScript 5.4.5](https://www.typescriptlang.org/play/?ts=5.4.5#code/C4TwDgpgBAChBOBnA9gOygXigb1QQwFsIAuRYeAS1QHMBfAbgCgBjNMqSJN4qACji6oAPqgCuAG3EBKANoBdTFHmMWbYBwQpUAOUIREizlsSMoUAHQAzCuOAJeRtJgB8UAIRvHqKaYsE8YA6aThiuXub4RD5mMbFxMQD0CVAAegD8Kqyo7F66RIgAYhQAHhAAJobB2b5WNnbwvEGCUjxeUBQGAlou7p5V0X4BTd2hGoIRegPx02ZJqRmMcwC0K0sqoJBQRYgAForYUIgA7hQEPLxSPQBuyBRltIwb0ABCFPAVWAeW4iDnl6M3O4PRbJQC8G4BxHagAFk8ABrfRQUSIaDISxQPBQJ4ceDlCjMPB2EyWUSoZjAChODrbHZBYA8alQIRQV7vFoadQdLYdPbYXw44CieDoADkx1Owva6EgwCYwPEEHU0vp3KELI+OFo6IMJNhqGQR3QeAM1NVbzKTCgjAoaN4VO5tKkl15Zml5jFBAusqgEHEyJwvld3xAnsYDyAA).
 
-## Further reading
+## Additional resources
 
 - [Announcing TypeScript 5.5 RC](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5-rc/#inferred-type-predicates) by [Daniel Rosenwasser](https://x.com/drosenwasser) - the official announcement of the feature
 - [The Making of a TypeScript Feature: Inferring Type Predicates](https://effectivetypescript.com/2024/04/16/inferring-a-type-predicate/) by [Dan Vanderkam](https://x.com/danvdk) - why and how Dan implemented this feature

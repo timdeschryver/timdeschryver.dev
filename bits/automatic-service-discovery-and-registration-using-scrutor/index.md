@@ -49,7 +49,7 @@ builder.Services.AddScoped<IBaz, BazImpl>();
 
 :::
 
-## Further reading
+## Additional resources
 
 - [Using Scrutor to automatically register your services with the ASP.NET Core DI container](https://andrewlock.net/using-scrutor-to-automatically-register-your-services-with-the-asp-net-core-di-container/) by Andrew Lock
 - [Improving ASP.NET Core Dependency Injection With Scrutor](https://www.milanjovanovic.tech/blog/improving-aspnetcore-dependency-injection-with-scrutor) by Milan Jovanović

@@ -3,7 +3,7 @@ title: Signals in Angular Auth OIDC Client
 slug: signals-in-angular-auth-oidc-client
 description: Version 18 of the angular-auth-oidc-client library adds Signal support to access the authenticated state and user data.
 date: 2024-06-13
-tags: Angular
+tags: Angular, Angular Auth OIDC Client, authentication
 ---
 
 Version 18 of the [Angular Auth OIDC Client (angular-auth-oidc-client)](https://angular-auth-oidc-client.com/) library adds Signal support to access the authenticated state and user data.

@@ -116,7 +116,7 @@ $: if (query) {
 }
 ```
 
-## Further reading
+## Additional resources
 
 - [URLSearchParams MDN web docs](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 - [Easy URL Manipulation with URLSearchParams](https://developers.google.com/web/updates/2016/01/urlsearchparams)
