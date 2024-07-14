@@ -188,7 +188,7 @@ charactersWithRetry$ = this.getCharacters(0).pipe(
   expand((result: any) => {
     const retry = result.state === 'error' && result.retryCount < 3
     if (retry) {
-      return timer(result.retryCount + 1 * 1000).pipe(
+      return timer((result.retryCount + 1) * 1000).pipe(
         concatMap(() => this.getCharacters(result.retryCount + 1)),
       )
     }
