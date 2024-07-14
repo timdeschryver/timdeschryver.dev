@@ -18,6 +18,7 @@ I was also positively surprised that Azure DevOps also improved its experience s
   - [Format](#format)
 - [Pull request comments](#pull-request-comments)
 - [Enforcing a minimum code coverage](#enforcing-a-minimum-code-coverage)
+- [Code Coverage for different kinds of tests](#code-coverage-for-different-kinds-of-tests)
 - [Conclusion](#conclusion)
 
 ## Creating a pipeline
@@ -110,7 +111,7 @@ When a pull request is created, the pipeline is triggered and the changes are va
 
 ## Adding code coverage
 
-As it turns out, adding code coverage to the pipeline is not as hard as I remembered it to be.
+As it turns out, adding code coverage to the pipeline is not as hard as I reminded it to be.
 To collect the code coverage, add the [`--collect` argument](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test#arguments) to the `test` command. This argument accepts a data collector, which can be `Code Coverage` or `XPlat Code Coverage`. Both have the same result, but there are some nuances between their behavior.
 
 I prefer to use the `Code Coverage` data collector because I think it's more straightforward.
@@ -160,7 +161,7 @@ Create a file called `coverage.runsettings` in the root of your repository with 
 To keep things simple, I'm only excluding the modules that end with `Tests.dll`.
 
 :::tip
-For more information about the `.runsettings` file, see the [The \*.runsettings file documentation](https://learn.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file#the-runsettings-file).
+For more information about the `.runsettings` file, see the [\*.runsettings file documentation](https://learn.microsoft.com/en-us/visualstudio/test/configure-unit-tests-by-using-a-dot-runsettings-file#the-runsettings-file).
 :::
 
 ```xml{8-12}:coverage.runsettings
@@ -318,10 +319,19 @@ To strictly enforce the code coverage, you can install and use the [`Build Quali
     coverageThreshold: 70
 ```
 
+## Code Coverage for different kinds of tests
+
+The setup discussed in this post, works for unit and integration tests.
+Personally, I [prefer](../why-writing-integration-tests-on-a-csharp-api-is-a-productivity-booster/index.md) the latter because I think they provide more value than unit tests.
+
+If you're looking into writing integration tests for a Web API, you invoke the API endpoints and validate the response within the test cases.
+But... this can be challenging if the API expects an authenticated user.
+[Stephan van Rooij](https://x.com/svrooij) wrote the following blog post [Integration tests on protected API](https://svrooij.io/2024/07/10/integration-tests-protected-api/) that explains in depth how to write integration tests for a protected API.
+
 ## Conclusion
 
 To be honest with you, I'm not a big fan of code coverage as a metric to measure the quality of a codebase.
-However, I do like the Pull Request comments feature, because it can help to review the code during a pull request and it can indicate a missing part.
+However, I do like the Pull Request comments feature, as it helps find uncovered paths during a code review.
 I believe that it raises awareness about the importance of adding proper tests, and reminds the team that some tests are in fact important.
 
-To accomplish this, I've shown you how to include code coverage to your Azure DevOps pipeline, and how to integrate it with the pull request comments feature.
+To achieve this, I've shown you how to include code coverage to your Azure DevOps pipeline, and how to integrate it with the pull request comments feature.

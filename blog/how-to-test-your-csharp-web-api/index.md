@@ -15,7 +15,34 @@ In my experience, integration tests [are also easier and faster to write](../why
 
 With an integration test, we test the API from the outside out by spinning up the (in-memory) API client and making an actual HTTP request. I get confidence out of it because I mock as little as possible, and I will consume my API in the same way as an application (or user) would.
 
-> The following tests are written in .NET 5 (but this also applies to .NET Core 3) and are using [xUnit](https://xunit.net/) as test the runner. For .NET 6 with minimal APIs you have to make a small tweak, which you can read about [here](../refactor-functional-tests-to-support-minimal-web-apis/index.md).
+:::note
+The following tests are written in .NET 5, and are using [xUnit](https://xunit.net/) as testrunner.
+For .NET 6 with minimal APIs you have to make a small tweak, which you can read in my blog post [Functional Tests to support Minimal Web APIs](../refactor-functional-tests-to-support-minimal-web-apis/index.md).
+:::
+
+## Table of Contests
+
+<!-- TOC -->
+
+- [A simple test](#a-simple-test)
+- [A simple test using xUnit's Fixtures](#a-simple-test-using-xunits-fixtures)
+- [Writing your own `WebApplicationFactory`](#writing-your-own-webapplicationfactory)
+  - [Override Injected Instances of the DI Container](#override-injected-instances-of-the-di-container)
+  - [Test specific appsettings](#test-specific-appsettings)
+  - [Using the `ApiWebApplicationFactory` in tests](#using-the-apiwebapplicationfactory-in-tests)
+- [A custom and reusable xUnit fixture](#a-custom-and-reusable-xunit-fixture)
+- [One-off test setups](#one-off-test-setups)
+- [Testing endpoints behind an authentication wall](#testing-endpoints-behind-an-authentication-wall)
+  - [Using a real token](#using-a-real-token)
+  - [AllowAnonymousFilter](#allowanonymousfilter)
+  - [AuthenticationHandler](#authenticationhandler)
+- [Useful utilities](#useful-utilities)
+  - [Testing multiple endpoints at once parameterized xUnit tests](#testing-multiple-endpoints-at-once-parameterized-xunit-tests)
+  - [Keep test cases short and readable with extension methods](#keep-test-cases-short-and-readable-with-extension-methods)
+    - [Parallel tests](#parallel-tests)
+- [Conclusion](#conclusion)
+- [More resources](#more-resources)
+<!-- TOC -->
 
 ## A simple test
 
@@ -26,7 +53,9 @@ You can install this package with the following command.
 dotnet add package Microsoft.AspNetCore.Mvc.Testing
 ```
 
-> TIP: I also use `FluentAssertions` to write my assertions because it contains some useful and readable utility methods to assert that the response is correct. I also recommend `AutoFixture` to [stop worrying about test setups](../why-i-stopped-worrying-about-test-setups-by-using-autofixture/index.md).
+:::tip
+I also use `FluentAssertions` to write my assertions because it contains some useful and readable utility methods to assert that the response is correct. I also recommend `AutoFixture` to [stop worrying about test setups](../why-i-stopped-worrying-about-test-setups-by-using-autofixture/index.md).
+:::
 
 The `Microsoft.AspNetCore.Mvc.Testing` packages include a `WebApplicationFactory<TEntryPoint>` class that spawns a TestServer instance, which runs the API in-memory during a test. This is convenient because we don't need to have the API running before we run these integration tests.
 
@@ -89,7 +118,9 @@ But I do suggest keeping as many as possible real instances of dependencies that
 For the dependencies that are out of your reach, mostly 3rd-party driven-ports, there's a need to create mocked instances.
 This allows you to return expected data and prevents that test data is created in a 3rd party service.
 
-> [Jimmy Bogard](https://twitter.com/jbogard) explains why you should avoid in-memory databases for your tests in his blog post ["Avoid In-Memory Databases for Tests"](https://jimmybogard.com/avoid-in-memory-databases-for-tests/)
+:::note
+[Jimmy Bogard](https://twitter.com/jbogard) explains why you should avoid in-memory databases for your tests in his blog post ["Avoid In-Memory Databases for Tests"](https://jimmybogard.com/avoid-in-memory-databases-for-tests/)
+:::
 
 **The `WebApplicationFactory` allows you to alter the internals of the application, intervene with the pipeline of a request, or to replace objects in the Dependency Injection (DI) container.**
 
@@ -225,7 +256,9 @@ What I like to do is make each test independent of the other.
 This has as benefit that the test cases don't interfere with each other and that each case can be written or debugged on its own.
 To be able to do this, we have to perform a reseed of the database before each test is run.
 
-> To reseed my databases I'm using the [Respawn](https://github.com/jbogard/Respawn) package
+:::tip
+To reseed the database I'm working with I use the [Respawn](https://github.com/jbogard/Respawn) package
+:::
 
 Ideally, we don't want this code to leak through the test cases, these should remain compact and focused.
 To hide common logic (for example, clearing a database) and to keep things DRY, I create an abstraction layer.
@@ -333,7 +366,12 @@ We need to have a way to make an authenticated request in order to test endpoint
 
 The first option is to not touch anything and to authenticate the test user before firing an HTTP request to the application.
 Once the token is generated it can be put aside, so you don't have to generate a token for each test case.
-I'm not a big fan of this method because it slows down the execution of the tests, and more importantly, these integration tests are not responsible to test the authentication nor the authorization behavior of your application. You can have a handful of tests for this, but not it shouldn't intrude in every test case.
+I'm not a big fan of this method because it slows down the execution of the tests, and more importantly, these integration tests are not responsible to test the authentication nor the authorization behavior of your application.
+You can have a handful of tests for this, but it shouldn't intrude in every test case.
+
+:::tip
+Be sure so also check out [Stephan van Rooij](https://x.com/svrooij)'s blog post on this topic [Integration tests on protected API](https://svrooij.io/2024/07/10/integration-tests-protected-api/), which utilitizes [Testcontainers](https://testcontainers.com/) and the `SvRooij.Testcontainers.IdentityProxy` package.
+:::
 
 ### AllowAnonymousFilter
 
@@ -544,3 +582,4 @@ The full example can be found on [GitHub](https://github.com/timdeschryver/HowTo
 - [The official docs about integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests)
 - [Easier functional and integration testing of ASP.NET Core applications](https://www.hanselman.com/blog/EasierFunctionalAndIntegrationTestingOfASPNETCoreApplications.aspx) by [Scott Hanselman](https://twitter.com/shanselman)
 - [Avoid In-Memory Databases for Tests](https://jimmybogard.com/avoid-in-memory-databases-for-tests/) by [Jimmy Bogard](https://twitter.com/jbogard)
+- [Integration tests on protected API](https://svrooij.io/2024/07/10/integration-tests-protected-api/) by [Stephan van Rooij](https://x.com/svrooij)
