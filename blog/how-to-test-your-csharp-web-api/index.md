@@ -25,7 +25,7 @@ For .NET 6 with minimal APIs you have to make a small tweak, which you can read 
 <!-- TOC -->
 
 - [A simple test](#a-simple-test)
-- [A simple test using xUnit's Fixtures](#a-simple-test-using-xunits-fixtures)
+- [A simple test using xUnit's Fixtures](#a-simple-test-using-xunit-and-39-s-fixtures)
 - [Writing your own `WebApplicationFactory`](#writing-your-own-webapplicationfactory)
   - [Override Injected Instances of the DI Container](#override-injected-instances-of-the-di-container)
   - [Test specific appsettings](#test-specific-appsettings)
