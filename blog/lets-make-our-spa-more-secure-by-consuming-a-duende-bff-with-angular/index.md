@@ -22,7 +22,7 @@ This has a big impact on the current flow because many implementations of the Im
 As a counter, we're starting to move away from the Implicit flow and are starting to move the authentication process to the backend using the more secure [PKCE flow](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow).
 In this post, let's take a look at how this affects our Angular applications.
 
-## Responibilities
+## Responsibilities
 
 Before we get into the details we first need to take a look at the impact when we shift the responsibility from the front-end to the backend.
 When the backend is in charge of the authentication process and its state, the front-end doesn't need to retrieve, store, and refresh the access token.
