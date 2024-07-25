@@ -209,4 +209,8 @@
 			view-transition-name: var(--post-title);
 		}
 	}
+
+	a {
+		font-weight: bold;
+	}
 </style>

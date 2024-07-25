@@ -254,6 +254,7 @@
 	nav a:hover {
 		color: var(--text-color);
 		text-decoration: underline;
+		font-weight: bold;
 	}
 
 	header button {
