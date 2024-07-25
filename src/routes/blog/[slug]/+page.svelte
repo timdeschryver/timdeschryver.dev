@@ -113,10 +113,13 @@
 
 	<meta name="author" content={post.metadata.author} />
 	<meta name="copyright" content={post.metadata.author} />
-	<meta name="title" content={post.metadata.title} />
-	<meta name="description" content={post.metadata.description} />
 	<meta name="keywords" content={post.metadata.tags.join(',')} />
-	<meta name="image" content={post.metadata.banner} />
+	<meta name="title" property="og:title" content={post.metadata.title} />
+	<meta name="description" property="og:description" content={post.metadata.description} />
+	<meta name="image" property="og:image" content={post.metadata.banner} />
+	<meta name="publish_date" property="og:publish_date" content={humanDate(post.metadata.date)} />
+	<meta name="og:type" property="og:type" content="article" />
+	<meta name="og:url" property="og:url" content={post.metadata.canonical} />
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content={post.metadata.banner} />
@@ -127,12 +130,6 @@
 	<meta name="twitter:data1" content={post.metadata.author} />
 	<meta name="twitter:label2" content="Published on" />
 	<meta name="twitter:data2" content={humanDate(post.metadata.date)} />
-
-	<meta name="og:url" content={post.metadata.canonical} />
-	<meta name="og:title" content={post.metadata.title} />
-	<meta name="og:description" content={post.metadata.description} />
-	<meta name="og:type" content="article" />
-	<meta name="og:image" content={post.metadata.banner} />
 </svelte:head>
 
 <svelte:window bind:scrollY />
