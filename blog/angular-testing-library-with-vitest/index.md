@@ -16,6 +16,7 @@ The short and simple answer is, that it just works.
 - [Why Vitest](#why-vitest)
 - [How to use Vitest in Angular](#how-to-use-vitest-in-angular)
 - [Bringing in Angular Testing Library](#bringing-in-angular-testing-library)
+  - [Add the jest-dom matchers](#add-the-jest-dom-matchers)
 - [Conclusion](#conclusion)
 
 ## What is Angular Testing Library
@@ -100,6 +101,26 @@ test('counter click increments the count', async () => {
 ```
 
 That's it! You can now use Angular Testing Library with Vitest to test your Angular components.
+
+### Add the jest-dom matchers
+
+To use the `jest-dom` matchers, include an import to `@testing-library/jest-dom/vitest` to the test setup file.
+
+```ts{2}:test-setup.ts
+import '@analogjs/vitest-angular/setup-zone';
+import '@testing-library/jest-dom/vitest';
+
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
+import { getTestBed } from '@angular/core/testing';
+
+getTestBed().initTestEnvironment(
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting()
+);
+```
 
 ## Conclusion
 
