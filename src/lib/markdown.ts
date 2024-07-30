@@ -296,7 +296,7 @@ export function parseFileToHtmlAndMeta(file): {
 		const anchorOverwrite = anchorRegExp.exec(rawtext);
 		const fragment = anchorOverwrite
 			? anchorOverwrite[0].substring(2, anchorOverwrite[0].length - 1)
-			: slugify(text);
+			: slugify(rawtext);
 
 		if (!fragment || level === 1) {
 			return `<h${level}>${headingText}</h${level}>`;
@@ -384,6 +384,9 @@ function slugify(string) {
 		.toLowerCase()
 		.replace(/,/g, '') // Remove commas
 		.replace(/\./g, '') // Remove dots
+		.replace(/'/g, '') // Remove single quote
+		.replace(/&#39;/g, '') // Remove single quote
+		.replace(/"/g, '') // Remove double quote
 		.replace(/\s+/g, '-') // Replace spaces with -
 		.replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
 		.replace(/&/g, '-and-') // Replace & with 'and'

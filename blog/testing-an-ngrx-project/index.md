@@ -12,6 +12,8 @@ Each section includes a code snippet of the relevant part of the application, fo
 
 <!-- TOC -->
 
+## Table of Contests <!-- omit from toc -->
+
 - [Actions](#actions)
 - [Reducers](#reducers)
 - [Selectors](#selectors)
@@ -19,7 +21,7 @@ Each section includes a code snippet of the relevant part of the application, fo
   - [Effects that use Actions and Services](#effects-that-use-actions-and-services)
   - [Effect tests rewritten with observer-spy](#effect-tests-rewritten-with-observer-spy)
   - [Effect tests and fake timers](#effect-tests-and-fake-timers)
-  - [Effects that don't dispatch actions](#effects-that-don-and-39-t-dispatch-actions)
+  - [Effects that don't dispatch actions](#effects-that-dont-dispatch-actions)
   - [Effects that use the NgRx Global Store](#effects-that-use-the-ngrx-global-store)
   - [Effects that use the Angular Router](#effects-that-use-the-angular-router)
 - [Components With Global Store](#components-with-global-store)
