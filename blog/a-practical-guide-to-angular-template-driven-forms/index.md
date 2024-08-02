@@ -7,18 +7,6 @@ date: 2021-03-10
 tags: Angular, Guide, Forms, Template Driven
 ---
 
-## What you'll learn
-
-- [Creating a Template-Driven Form](#creating-a-template-driven-form)
-- [Validators](#validators)
-- [Form Errors](#form-errors)
-- [Dynamic Forms](#dynamic-forms)
-- [Sub-Form Components](#sub-form-components)
-- [Testing Template-Driven Forms](#testing-template-driven-forms)
-- [Conclusion](#conclusion)
-
-> Didn't find what you're looking for? Feel free to reach out to me on [Twitter](https://twitter.com/tim_deschryver)
-
 ## Intro
 
 In Angular, we have two ways to build forms, which are template-driven and reactive.

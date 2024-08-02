@@ -7,7 +7,7 @@
 	<a href="https://ko-fi.com/W7W579HXS" target="_blank" rel="noreferrer" class="support mt-0"
 		><img
 			height="36"
-			style="border:0px;height:36px;"
+			style="border:0px;"
 			src="/images/kofi.webp"
 			alt="Buy Me a Coffee at ko-fi.com"
 		/></a

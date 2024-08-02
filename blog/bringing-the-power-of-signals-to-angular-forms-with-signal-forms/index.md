@@ -6,31 +6,6 @@ date: 2024-02-08
 tags: Angular, Signals, Forms
 ---
 
-## Table of contents <!-- omit from toc -->
-
-- [`FormField<T>`](#formfieldt)
-  - [`FormField<T>` States](#formfieldt-states)
-- [`FormGroup<T>`](#formgroupt)
-  - [Nested form groups](#nested-form-groups)
-  - [Collections](#collections)
-  - [`FormGroup<T>` States](#formgroupt-states)
-- [Validators](#validators)
-  - [Validation messages](#validation-messages)
-  - [Validation based on other fields](#validation-based-on-other-fields)
-  - [Disable validators](#disable-validators)
-- [Additional States](#additional-states)
-  - [`hidden` state](#hidden-state)
-  - [`disabled` and `readonly` states](#disabled-and-readonly-states)
-- [Form values](#form-values)
-  - [Read](#read)
-  - [Write](#write)
-- [Good to know](#good-to-know)
-  - [Making use of the existing `NgModel`](#making-use-of-the-existing-ngmodel)
-  - [Debugging](#debugging)
-- [Conclusion](#conclusion)
-- [Getting started](#getting-started)
-- [What's next](#whats-next)
-
 When the Angular teams introduced [signals](https://angular.dev/guide/signals) I needed a playing ground to get familiar with it, so I decided to use signals internally to build a new API for Angular forms.
 It was then that I realized that using signals to create forms is a good fit that provides plenty of flexibility and a good experience.
 These signal driven forms, take the best out of Template Driven Forms and Reactive Forms with a sprinkle of signals on top of it.

@@ -20,30 +20,6 @@ The following tests are written in .NET 5, and are using [xUnit](https://xunit.n
 For .NET 6 with minimal APIs you have to make a small tweak, which you can read in my blog post [Functional Tests to support Minimal Web APIs](../refactor-functional-tests-to-support-minimal-web-apis/index.md).
 :::
 
-## Table of Contests <!-- omit from toc -->
-
-<!-- TOC -->
-
-- [A simple test](#a-simple-test)
-- [A simple test using xUnit's Fixtures](#a-simple-test-using-xunits-fixtures)
-- [Writing your own `WebApplicationFactory`](#writing-your-own-webapplicationfactory)
-  - [Override Injected Instances of the DI Container](#override-injected-instances-of-the-di-container)
-  - [Test specific appsettings](#test-specific-appsettings)
-  - [Using the `ApiWebApplicationFactory` in tests](#using-the-apiwebapplicationfactory-in-tests)
-- [A custom and reusable xUnit fixture](#a-custom-and-reusable-xunit-fixture)
-- [One-off test setups](#one-off-test-setups)
-- [Testing endpoints behind an authentication wall](#testing-endpoints-behind-an-authentication-wall)
-  - [Using a real token](#using-a-real-token)
-  - [AllowAnonymousFilter](#allowanonymousfilter)
-  - [AuthenticationHandler](#authenticationhandler)
-- [Useful utilities](#useful-utilities)
-  - [Testing multiple endpoints at once parameterized xUnit tests](#testing-multiple-endpoints-at-once-parameterized-xunit-tests)
-  - [Keep test cases short and readable with extension methods](#keep-test-cases-short-and-readable-with-extension-methods)
-    - [Parallel tests](#parallel-tests)
-- [Conclusion](#conclusion)
-- [More resources](#more-resources)
-<!-- TOC -->
-
 ## A simple test
 
 The only requirement to write an integration test is to use the `Microsoft.AspNetCore.Mvc.Testing` NuGet package.

@@ -44,11 +44,21 @@
 
 	let scrollY;
 
-	let pres: HTMLElement[] = [];
+	function headerClick(evt: MouseEvent) {
+		evt.preventDefault();
+		gotoHeader(evt.currentTarget as HTMLElement);
+	}
 
-	onDestroy(() => {
-		blog.reset();
-	});
+	function tocClick(evt: MouseEvent) {
+		evt.preventDefault();
+		const element = document.querySelector((evt.currentTarget as HTMLElement).getAttribute('href'));
+		gotoHeader(element as HTMLElement);
+	}
+
+	function gotoHeader(header: HTMLElement) {
+		const y = header.getBoundingClientRect().top + window.scrollY - 100;
+		window.scrollTo({ top: y, behavior: 'smooth' });
+	}
 
 	$: htmlStyle = `<style> 
 		main {
@@ -68,30 +78,50 @@
 	</style>`;
 
 	let headings = null;
+	let pres: HTMLElement[] = [];
+
 	afterUpdate(async () => {
 		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
 		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
 		headings = hasTldr
 			? null
 			: headings || window.history.pushState
-				? [...document.querySelectorAll('main h2,h3')].reverse()
+				? [...document.querySelectorAll('main > h2,h3')].reverse()
 				: [];
 
 		await tick();
 		pres = [...document.querySelectorAll('pre')];
-		pres.forEach((pre) => pre.addEventListener('click', copyLinkToCodeBlock));
+		pres.forEach((pre) => {
+			pre.removeEventListener('click', copyLinkToCodeBlock);
+			pre.addEventListener('click', copyLinkToCodeBlock);
+		});
+		headings?.forEach((h) => {
+			h.removeEventListener('click', headerClick);
+			h.addEventListener('click', headerClick);
+		});
 	});
 
-	let lastHeading = null;
+	onDestroy(() => {
+		blog.reset();
+
+		pres?.forEach((pre) => {
+			pre.removeEventListener('click', copyLinkToCodeBlock);
+		});
+		headings?.forEach((h) => {
+			h.removeEventListener('click', headerClick);
+		});
+	});
+
+	let lastHeadingId = null;
 	$: {
 		if (typeof window !== 'undefined') {
-			if ($blog?.state === 'tldr' && lastHeading) {
-				lastHeading = null;
+			if ($blog?.state === 'tldr' && lastHeadingId) {
+				lastHeadingId = null;
 				window.history.replaceState(window.history.state, '', ' ');
 			} else if ($blog?.state !== 'tldr' && headings) {
-				const heading = headings.find((h) => h.offsetTop <= scrollY);
-				if (lastHeading !== heading) {
-					lastHeading = heading;
+				const heading = headings.find((h) => h.offsetTop <= scrollY + 110);
+				if (lastHeadingId !== heading?.id) {
+					lastHeadingId = heading?.id;
 					window.history.replaceState(window.history.state, '', heading ? `#${heading?.id}` : ' ');
 				}
 			}
@@ -166,25 +196,41 @@
 	</div>
 </header>
 
-<div class="side-actions" hidden={(scrollY || 0) < 1000}>
-	{#if post.metadata.translations}
-		<div>Translations</div>
-		{#each post.metadata.translations as translation}
-			<a href={translation.url} rel="external">{translation.language}</a>
-		{/each}
+<div class="side-actions" hidden={(scrollY || 0) < 900}>
+	{#if post.metadata.toc.length > 1}
+		<div class="toc" hidden={$blog?.state === 'tldr'}>
+			<h3>On this page</h3>
+			<ul>
+				{#each post.metadata.toc as { slug, description, level }}
+					<li class:active={lastHeadingId === slug} style={`--level:${level - 2}`}>
+						<a href={`#${slug}`} on:click={tocClick}>{description}</a>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	{/if}
+
+	{#if post.metadata.translations}
+		<div>
+			<h4>Read this post in</h4>
+			{#each post.metadata.translations as translation}
+				<a href={translation.url} rel="external" class="mark">{translation.language}</a>
+			{/each}
+		</div>
+	{/if}
+
 	<Share title="Share this post on" text={post.metadata.title} url={post.metadata.canonical} />
 </div>
 
 {#if post.metadata.translations}
 	<div class="translations">
 		<hr />
-		<p>This post is also available in:</p>
+		<p>Thanks to the ❤️ community you can also read this post in:</p>
 		<ul>
 			{#each post.metadata.translations as translation}
 				<li>
-					<a href={translation.url} rel="external">{translation.language}</a> by
-					<a href={translation.profile} rel="external">{translation.author}</a>
+					<a href={translation.url} rel="external" class="mark">{translation.language}</a> thanks to
+					<a href={translation.profile} rel="external" class="mark">{translation.author}</a>
 				</li>
 			{/each}
 		</ul>
@@ -255,7 +301,6 @@
 		border: none;
 		text-align: center;
 		font-weight: bolder;
-		margin-top: var(--spacing);
 	}
 
 	.side-actions {
@@ -263,25 +308,59 @@
 		position: fixed;
 		margin-top: var(--header-height);
 		top: 20px;
-		left: 100px;
+		left: 2.3em;
+		width: 25em;
 	}
 
 	.side-actions div {
-		border: none;
 		margin-top: var(--spacing);
 	}
 
 	.side-actions > * {
 		padding: 4px;
 		display: block;
-		text-align: center;
-		border: 1px solid;
 		background: none;
 		width: 100%;
 		cursor: pointer;
 		color: var(--text-color-light);
 		margin-top: 3px;
 		margin-bottom: 0;
+	}
+
+	.toc {
+		text-align: left;
+		padding-left: 0;
+		padding-right: 1em;
+		padding-bottom: 1em;
+		max-height: 65vh;
+		overflow: auto;
+	}
+
+	.toc ul {
+		list-style: none;
+		font-size: 1rem;
+		color: var(--text-color-light-subtle);
+		transition: all 0.25s;
+	}
+
+	.toc ul li.active {
+		color: var(--text-color);
+		font-weight: 600;
+	}
+
+	.toc ul li.active::first-letter {
+		font-size: 1.5rem;
+		line-height: 1;
+		font-weight: 900;
+	}
+
+	.toc ul li:hover {
+		color: var(--text-color);
+		font-weight: 600;
+	}
+
+	.toc ul li {
+		margin-left: calc((var(--level)) * 1em);
 	}
 
 	:global(body > div > main) > header {
@@ -375,6 +454,16 @@
 		.side-actions {
 			display: none;
 		}
+	}
+
+	@media (max-width: 1800px) {
+		.toc {
+			display: none;
+		}
+	}
+
+	.translations {
+		margin-bottom: 2em;
 	}
 
 	.translations ul {

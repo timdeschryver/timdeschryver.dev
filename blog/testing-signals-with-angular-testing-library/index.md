@@ -15,16 +15,6 @@ The philosophy behind Angular Testing Library is to test your components the way
 
 Let's take a look at some simple examples.
 
-## Table of Contents <!-- omit from toc -->
-
-<!-- TOC -->
-
-- [Testing input properties](#testing-input-properties)
-- [Testing output properties](#testing-output-properties)
-- [Testing model properties](#testing-model-properties)
-- [Access the Signal properties](#access-the-signal-properties)
-- [Conclusion](#conclusion)
-
 ## Testing input properties
 
 Just as with the "traditional" `@Input()` properties, you can test Signal input properties by setting the input properties in the `componentInputs` object when calling the `render` function. You will have Intellisense to autocomplete the property names, but you will be able to pass invalid property values (this can be improved in the future). While setting the input use the inner value of the Signal, not the Signal itself.

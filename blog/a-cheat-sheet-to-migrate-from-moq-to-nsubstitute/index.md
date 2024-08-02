@@ -6,33 +6,6 @@ date: 2023-08-14
 tags: dotNET, NSubstitute, Moq, Testing
 ---
 
-## Table of Contents <!-- omit from toc -->
-
-- [Initialization: `new Mock<T>()` =\> `Substitute.For<T>()`](#initialization-new-mockt--substitutefort)
-- [Argument matchers](#argument-matchers)
-  - [Matches any value: `It.IsAny<T>()` =\> `Arg.Any<T>()`](#matches-any-value-itisanyt--arganyt)
-  - [Matches a specific value: `It.Is<T>()` =\> `Arg.Is<T>()`](#matches-a-specific-value-itist--argist)
-  - [Matches a generic type: `It.IsAnyType()` =\> `TBD`](#matches-a-generic-type-itisanytype--tbd)
-- [Testing method invocations: `Verify()` =\> `Received()`](#testing-method-invocations-verify--received)
-  - [Method without arguments](#method-without-arguments)
-  - [Method invoked with any arguments](#method-invoked-with-any-arguments)
-  - [Method invoked with specific arguments](#method-invoked-with-specific-arguments)
-  - [Number of invocations: `Times.Exactly(N)` =\> `Received(N)`](#number-of-invocations-timesexactlyn--receivedn)
-  - [Is not invoked: `Times.Never()` =\> `DidNotReceive()`](#is-not-invoked-timesnever--didnotreceive)
-  - [Reset invocations: `Reset()` =\> `ClearReceivedCalls()`](#reset-invocations-reset--clearreceivedcalls)
-  - [Task invocation](#task-invocation)
-- [Setting the return value](#setting-the-return-value)
-  - [Static return value: `Setup().Returns()` =\> `Returns()`](#static-return-value-setupreturns--returns)
-  - [Return value based on input: `method arguments` =\> `callInfo`](#return-value-based-on-input-method-arguments--callinfo)
-  - [Fine grained control over return value based on input](#fine-grained-control-over-return-value-based-on-input)
-  - [Async (Task) return value: `ReturnsAsync()` =\> `Returns()`](#async-task-return-value-returnsasync--returns)
-  - [Multiple return values: `SetupSequence().Returns()` =\> `Returns()`](#multiple-return-values-setupsequencereturns--returns)
-- [Callbacks: `Callback()` =\> `AndDoes()`](#callbacks-callback--anddoes)
-  - [Callback for void methods (or methods without a defined result): `Callback()` =\> `When().Do()`](#callback-for-void-methods-or-methods-without-a-defined-result-callback--whendo)
-- [Throwing Exceptions: `Throws()` =\> `When().Do(() => throw)`](#throwing-exceptions-throws--whendo--throw)
-- [Automate Migration](#automate-migration)
-- [Conclusion](#conclusion)
-
 ## Initialization: `new Mock<T>()` => `Substitute.For<T>()`
 
 ```csharp{1}:Moq.cs

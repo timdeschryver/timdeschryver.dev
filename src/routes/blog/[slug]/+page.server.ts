@@ -64,6 +64,9 @@ export async function load({ params }): Promise<PageServerLoad> {
 			html,
 			metadata: {
 				...post.metadata,
+				toc: post.metadata.toc.filter(
+					({ level, description }) => level < 4 && !description.includes('omit from toc'),
+				),
 				color: post.metadata.tags
 					.sort((a, b) => {
 						const aIndex = tags.indexOf(a);

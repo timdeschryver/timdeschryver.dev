@@ -21,6 +21,7 @@ import palleteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
+import type { TOC } from './models';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
@@ -78,18 +79,20 @@ const langToIcon = {
 };
 export function parseFileToHtmlAndMeta(file): {
 	html: string;
-	metadata: unknown & {
+	metadata: {
 		outgoingSlugs: string[];
 		title: string;
 		slug: string;
 		date: string;
 		tags: string[];
+		toc: TOC[];
 	};
 	assetsSrc: string;
 } {
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
 	metadata.outgoingSlugs = [] as string[];
+	metadata.toc = [] as TOC[];
 	const assetsSrc = path.dirname(file);
 
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
@@ -291,7 +294,6 @@ export function parseFileToHtmlAndMeta(file): {
 
 	renderer.heading = (text, level, rawtext) => {
 		const headingText = text.includes('{') ? text.substring(0, text.indexOf('{') - 1) : text;
-
 		const anchorRegExp = /{([^}]+)}/g;
 		const anchorOverwrite = anchorRegExp.exec(rawtext);
 		const fragment = anchorOverwrite
@@ -301,6 +303,8 @@ export function parseFileToHtmlAndMeta(file): {
 		if (!fragment || level === 1) {
 			return `<h${level}>${headingText}</h${level}>`;
 		}
+
+		metadata.toc.push({ description: rawtext, level, slug: fragment });
 
 		return `
 		<h${level} id="${fragment}">
@@ -337,7 +341,7 @@ export function* traverseFolder(
 	}
 }
 
-function extractFrontmatter(markdown): { content: string; metadata: unknown } {
+function extractFrontmatter(markdown): { content: string; metadata: Record<string, unknown> } {
 	const result = frontmatter<{ tags: string | string[]; translations?: Record<string, string> }>(
 		markdown,
 	);

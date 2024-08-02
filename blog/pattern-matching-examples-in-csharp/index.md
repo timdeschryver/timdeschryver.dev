@@ -11,26 +11,6 @@ My first experience with pattern matching was a few years ago when I was fiddlin
 
 I was happy to see that C# 7 introduced [the first version of pattern matching](https://devblogs.microsoft.com/dotnet/new-features-in-c-7-0/#pattern-matching), which was supporting the bare minimum. Because of my previous encounters with pattern matching, this was a bit of a let-down because it didn't have all the possibilities I was used to. Luckily, the release of C# 8 extended the pattern match syntax by supporting more features, which were further enhanced in C# 9, and it also seems like this trend is continuing in the upcoming versions of C#.
 
-<!-- TOC -->
-
-**Table of contents**
-
-- [Why pattern matching](#why-pattern-matching)
-- [A simple example](#a-simple-example)
-- [Constant Patterns](#constant-patterns)
-- [Discard Patterns](#discard-patterns)
-- [Variable Patterns](#variable-patterns)
-- [Relational Patterns](#relational-patterns)
-- [Multiple Patterns](#multiple-patterns)
-- [Tuple Patterns](#tuple-patterns)
-- [Property Patterns](#property-patterns)
-- [Nested Properties Patterns](#nested-properties-patterns)
-- [Type Patterns](#type-patterns)
-- [Examples](#examples)
-- [Official documentation](#official-documentation)
-
-<!-- /TOC -->
-
 ### Why pattern matching
 
 So why am I excited about this?

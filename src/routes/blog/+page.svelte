@@ -125,27 +125,23 @@
 <ul>
 	{#each filteredPosts as post}
 		<li style:--accent-color={`var(--${post.color})`}>
-			<article>
-				<h2 style:--post-title="post-title-{post.slug}">
-					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover">
-						{post.title}
-					</a>
-				</h2>
-				<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
-				<div>{post.description}</div>
-				<div>
-					<a href={`/blog/${post.slug}`} class="mark-hover" data-sveltekit-preload-data="hover"
-						>Read more</a
-					>
-					{#if post.tldr}
-						| <a
-							href={`/blog/${post.slug}?tldr=true`}
-							class="mark-hover"
-							data-sveltekit-preload-data="hover">Read TLDR</a
-						>
-					{/if}
-				</div>
-			</article>
+			<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
+				<article>
+					<h2 style:--post-title="post-title-{post.slug}">
+						<a href={`/blog/${post.slug}`} class="mark-hover">
+							{post.title}
+						</a>
+					</h2>
+					<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
+					<div>{post.description}</div>
+					<div>
+						<a href={`/blog/${post.slug}`} class="mark-hover">Read more</a>
+						{#if post.tldr}
+							| <a href={`/blog/${post.slug}?tldr=true`} class="mark-hover">Read TLDR</a>
+						{/if}
+					</div>
+				</article>
+			</a>
 		</li>
 	{:else}Sorry, no posts matched your criteria...
 	{/each}
@@ -202,6 +198,10 @@
 	.search-info {
 		color: var(--text-color-light);
 		text-align: right;
+	}
+
+	article {
+		font-weight: 300;
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

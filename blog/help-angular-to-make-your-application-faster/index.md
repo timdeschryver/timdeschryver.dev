@@ -24,7 +24,7 @@ It's here, that at a later phase during development when all different items wer
 
 In this article, we'll take a look at the changes we made to keep the view snappy.
 
-## Root cause <!-- omit in toc -->
+## Root cause
 
 After a few `console.log` statements inside the [`OnChanges` lifecycle hook](https://angular.io/api/core/OnChanges) of the main components, we noticed that most of the components were rendering too many times. This had a ripple effect, and thus some of the heavier functions were executed too many times. Our main job was to lower the number of change detection cycles, by a lot.
 
@@ -34,17 +34,6 @@ These good practices took us far, but not far enough later on in the development
 :::info
 If you don't know how Change Detection in Angular works, [this video explains it in 5 minutes](https://blog.simplified.courses/angular-change-detection-explained-in-5-minutes/)
 :::
-
-## Solutions <!-- omit in toc -->
-
-- [@HostListener runs the change detection cycle](#hostlistener-runs-a-new-change-detection-cycle)
-- [Do heavy lifting up front (and only once)](#do-heavy-lifting-upfront-and-only-once)
-- [Pure pipes to prevent method calls](#pure-pipes-to-prevent-method-calls)
-- [trackBy to decrease the number of DOM mutations](#trackby-to-decrease-the-number-of-dom-mutations)
-- [Virtual scrolling for large lists](#virtual-scrolling-for-large-lists)
-- [Referential checks (NgRx)](#referential-checks-ngrx)
-- [Preventing selector executions (NgRx)](#preventing-selector-executions-ngrx)
-- [Detach components from the change detection](#detach-components-from-the-change-detection)
 
 ### @HostListener runs a new change detection cycle
 

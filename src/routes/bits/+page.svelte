@@ -107,7 +107,7 @@
 	hr {
 		border: none;
 		border-top: solid 2px var(--text-color);
-		margin: 4rem -2rem;
+		margin: 4rem 1rem;
 	}
 	.bit {
 		overflow: auto;

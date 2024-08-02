@@ -656,7 +656,8 @@ pre > .code-heading > a {
 }
 .code-group-tab:not(.active) {
 	background-color: var(--tab-activeBackground);
-	color: hsla(var(--accent-color), .4);
+	color: var(--text-color-light);
+	font-weight: 300;
 }
 .code-group-tab.active {
 	border-top: 1px solid hsla(var(--accent-color));

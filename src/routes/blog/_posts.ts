@@ -4,6 +4,7 @@ import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
 import { execSync } from 'child_process';
 import { dev } from '$app/environment';
+import type { TOC } from '$lib/models';
 
 const blogPath = 'blog';
 
@@ -21,6 +22,7 @@ const posts: {
 		outgoingLinks: { slug: string; title: string }[];
 		incomingLinks: { slug: string; title: string }[];
 		translations: { url: string; author: string; profile: string }[];
+		toc: TOC[];
 	};
 }[] = [];
 
@@ -39,6 +41,7 @@ export async function readPosts(): Promise<
 			outgoingLinks: { slug: string; title: string }[];
 			incomingLinks: { slug: string; title: string }[];
 			translations: { url: string; author: string; profile: string }[];
+			toc: TOC[];
 		};
 	}[]
 > {
@@ -87,6 +90,7 @@ export async function readPosts(): Promise<
 					canonical,
 					outgoingLinks: [],
 					incomingLinks: [],
+					toc: metadata.toc,
 				},
 			};
 		})

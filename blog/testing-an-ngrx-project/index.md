@@ -10,30 +10,6 @@ tags: Angular, NgRx, Testing
 No intro needed, let's directly dive into some code snippets for each part of the Angular application!
 Each section includes a code snippet of the relevant part of the application, followed by one or more code snippets to see how we can test it efficiently. Some snippets also put a line in a spotlight (🔦) to showcase best practices.
 
-<!-- TOC -->
-
-## Table of Contests <!-- omit from toc -->
-
-- [Actions](#actions)
-- [Reducers](#reducers)
-- [Selectors](#selectors)
-- [Effects](#effects)
-  - [Effects that use Actions and Services](#effects-that-use-actions-and-services)
-  - [Effect tests rewritten with observer-spy](#effect-tests-rewritten-with-observer-spy)
-  - [Effect tests and fake timers](#effect-tests-and-fake-timers)
-  - [Effects that don't dispatch actions](#effects-that-dont-dispatch-actions)
-  - [Effects that use the NgRx Global Store](#effects-that-use-the-ngrx-global-store)
-  - [Effects that use the Angular Router](#effects-that-use-the-angular-router)
-- [Components With Global Store](#components-with-global-store)
-- [Component Store](#component-store)
-  - [Integration tests](#integration-tests)
-  - [Unit tests](#unit-tests)
-    - [Component store unit tests](#component-store-unit-tests)
-    - [Component unit tests that use the component store](#component-unit-tests-that-use-the-component-store)
-- [Conclusion](#conclusion)
-
-<!-- /TOC -->
-
 ## Actions
 
 Let's start with the easiest one, which are the NgRx actions.

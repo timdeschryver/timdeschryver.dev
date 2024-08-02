@@ -10,15 +10,6 @@ Because I got asked about it a few times, I decided to write a short article abo
 The short and simple answer is, that it just works.
 **_You can use Angular Testing Library with Vitest without any issues._**
 
-## Table of Contents  <!-- omit from toc -->
-
-- [What is Angular Testing Library](#what-is-angular-testing-library)
-- [Why Vitest](#why-vitest)
-- [How to use Vitest in Angular](#how-to-use-vitest-in-angular)
-- [Bringing in Angular Testing Library](#bringing-in-angular-testing-library)
-  - [Add the jest-dom matchers](#add-the-jest-dom-matchers)
-- [Conclusion](#conclusion)
-
 ## What is Angular Testing Library
 
 If you are not familiar with Angular Testing Library, here is a short introduction:
