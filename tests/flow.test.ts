@@ -34,5 +34,5 @@ test('flow test', async ({ page }) => {
 	await Promise.all([page.waitForNavigation(), page.click('text=Testing an NgRx project')]);
 
 	// Click text=Actions
-	await Promise.all([page.waitForNavigation(), page.click('text=Actions')]);
+	await Promise.all([page.waitForNavigation(), page.getByRole('heading', { name: 'Actions' })]);
 });
