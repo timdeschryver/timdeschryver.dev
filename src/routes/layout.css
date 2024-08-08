@@ -34,7 +34,8 @@
 html.light {
 	--base-color: 0, 0%, 0%;
 	--background-color: hsla(0, 0%, 100%, 0.9);
-	--background-color-transparent: hsla(0, 0%, 0%, 0.03);
+	--background-color-subtle: rgba(0,0,0,0.025);
+	--background-color-transparent: hsla(0, 0%, 0%, 0.07);
 	--text-color: hsla(0, 0%, 0%, 0.90);
 	--text-color-light: hsla(0, 0%, 0%, 0.7);
 	--text-color-subtle: hsla(0, 0%, 0%, 0.4);
@@ -43,6 +44,7 @@ html.light {
 html.dark {
 	--base-color: 0, 0%, 100%;
 	--background-color: hsla(0, 0%, 0%, 0.90);
+	--background-color-subtle: rgba(0,0,0, 0.08);
 	--background-color-transparent: hsla(0, 0%, 100%, 0.1);
 	--text-color: hsla(0, 0%, 100%, 0.9);
 	--text-color-light: hsla(0, 0%, 100%, 0.7);
@@ -267,18 +269,6 @@ body > div > * > * {
 	grid-column: 2;
 }
 
-main > h1 {
-	margin-top: var(--spacing);
-}
-
-main > h2,
-main > h3,
-main > h4,
-main > h5,
-main > h6 {
-	text-transform: uppercase;
-}
-
 body > div > main > pre,
 body > div > main > .code-group,
 body > div > main > iframe,
@@ -292,8 +282,16 @@ body > div > main > .wide {
 	justify-self: center;
 }
 
-body > div > main > iframe {
-	max-width: 95%;
+main > h1 {
+	margin-top: var(--spacing);
+}
+
+main > h2,
+main > h3,
+main > h4,
+main > h5,
+main > h6 {
+	text-transform: uppercase;
 }
 
 figure > figcaption {
@@ -714,6 +712,7 @@ pre > .code-heading > a {
 	transform-origin: 70% 70%;
 	display: inline-block;
 }
+
 
 @keyframes wave-animation {
 	0% {

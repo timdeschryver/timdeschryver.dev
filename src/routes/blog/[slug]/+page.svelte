@@ -10,6 +10,7 @@
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
 	import copyLifeCycle from '$lib/copy-lifecycle';
 	import Newsletter from '$lib/Newsletter.svelte';
+	import Ad from '$lib/Ad.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -43,6 +44,11 @@
 		.filter(Boolean);
 
 	let scrollY;
+	let header: HTMLElement | null;
+	$: sideNavsVisible =
+		scrollY &&
+		header &&
+		header.getBoundingClientRect().bottom + header.offsetHeight - 120 < scrollY;
 
 	function headerClick(evt: MouseEvent) {
 		evt.preventDefault();
@@ -164,7 +170,7 @@
 
 <svelte:window bind:scrollY />
 
-<header style:--post-title="post-title-{post.metadata.slug}">
+<header bind:this={header} style:--post-title="post-title-{post.metadata.slug}">
 	<h1>{post.metadata.title}</h1>
 	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
@@ -196,7 +202,7 @@
 	</div>
 </header>
 
-<div class="side-actions" hidden={(scrollY || 0) < 900}>
+<aside class="left-nav" hidden={!sideNavsVisible}>
 	{#if post.metadata.toc.length > 1}
 		<div class="toc" hidden={$blog?.state === 'tldr'}>
 			<h3>On this page</h3>
@@ -210,17 +216,21 @@
 		</div>
 	{/if}
 
+	<div>
+		<Ad />
+	</div>
+
 	{#if post.metadata.translations}
 		<div>
 			<h4>Read this post in</h4>
 			{#each post.metadata.translations as translation}
-				<a href={translation.url} rel="external" class="mark">{translation.language}</a>
+				<a href={translation.url} rel="external">{translation.language}</a>
 			{/each}
 		</div>
 	{/if}
 
 	<Share title="Share this post on" text={post.metadata.title} url={post.metadata.canonical} />
-</div>
+</aside>
 
 {#if post.metadata.translations}
 	<div class="translations">
@@ -301,39 +311,95 @@
 		border: none;
 		text-align: center;
 		font-weight: bolder;
+		margin-bottom: var(--spacing);
 	}
 
-	.side-actions {
+	:global(main > p:first-of-type) {
+		margin-top: 0;
+	}
+
+	.left-nav {
 		display: block;
 		position: fixed;
-		margin-top: var(--header-height);
-		top: 20px;
-		left: 2.3em;
+		padding-top: 2.5em;
+		padding-right: 2.5em;
+		padding-left: 3em;
+		text-align: left;
 		width: 25em;
+		transition: all 0.2s;
+		background-color: var(--background-color-subtle);
+		height: 100%;
+		margin-top: 0;
+		border-right: 1px solid rgba(255, 255, 255, 0.1);
+		overflow: auto;
 	}
 
-	.side-actions div {
-		margin-top: var(--spacing);
-	}
-
-	.side-actions > * {
-		padding: 4px;
+	.left-nav > * {
 		display: block;
 		background: none;
-		width: 100%;
 		cursor: pointer;
 		color: var(--text-color-light);
 		margin-top: 3px;
 		margin-bottom: 0;
 	}
 
+	.left-nav > div + div {
+		margin-top: var(--spacing);
+	}
+
 	.toc {
-		text-align: left;
-		padding-left: 0;
-		padding-right: 1em;
-		padding-bottom: 1em;
-		max-height: 65vh;
+		max-height: 75vh;
+		margin-top: 0;
 		overflow: auto;
+	}
+
+	@media (max-width: 1950px) {
+		.left-nav {
+			width: 23em;
+		}
+	}
+	@media (max-width: 1850px) {
+		.left-nav {
+			width: 18.5em;
+			padding-left: 3em;
+		}
+		.left-nav .toc {
+			font-size: 0.9rem;
+		}
+	}
+	@media (max-width: 1730px) {
+		.left-nav {
+			width: 14.5em;
+			padding-left: 3em;
+			padding-right: 0;
+		}
+		.left-nav .toc {
+			font-size: 0.9rem;
+		}
+	}
+	@media (max-width: 1630px) {
+		.left-nav {
+			width: 12.5em;
+			padding-left: 2em;
+		}
+		.left-nav .toc {
+			font-size: 0.8rem;
+		}
+	}
+	@media (max-width: 1530px) {
+		.left-nav {
+			width: 12.5em;
+			padding-left: 1em;
+		}
+		.left-nav .toc {
+			font-size: 0.8rem;
+		}
+	}
+
+	@media (max-width: 1480px) {
+		.left-nav {
+			display: none;
+		}
 	}
 
 	.toc ul {
@@ -441,24 +507,6 @@
 		.logo {
 			width: 48px;
 			height: 48px;
-		}
-	}
-
-	@media (max-width: 1450px) {
-		.side-actions {
-			width: 130px;
-		}
-	}
-
-	@media (max-width: 1380px) {
-		.side-actions {
-			display: none;
-		}
-	}
-
-	@media (max-width: 1800px) {
-		.toc {
-			display: none;
 		}
 	}
 
