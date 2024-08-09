@@ -5,8 +5,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Teachers:ital,wght@0,400..800;1,400..800&family=Victor+Mono:ital,wght@0,100..700;1,100..700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 :root {
-	--head-font: 'Teachers', "Helvetica",  sans-serif;
-	--text-font: 'Noto Sans', "Helvetica",  sans-serif;
+	--head-font: 'Teachers', 'Helvetica', sans-serif;
+	--text-font: 'Noto Sans', 'Helvetica', sans-serif;
 	--font-size: calc(1rem + 0.18dvw);
 	--line-height: 1.876;
 	--spacing: 1.74em;
@@ -34,17 +34,17 @@
 html.light {
 	--base-color: 0, 0%, 0%;
 	--background-color: hsla(0, 0%, 100%, 0.9);
-	--background-color-subtle: rgba(0,0,0,0.025);
+	--background-color-subtle: rgba(0, 0, 0, 0.025);
 	--background-color-transparent: hsla(0, 0%, 0%, 0.07);
-	--text-color: hsla(0, 0%, 0%, 0.90);
+	--text-color: hsla(0, 0%, 0%, 0.9);
 	--text-color-light: hsla(0, 0%, 0%, 0.7);
 	--text-color-subtle: hsla(0, 0%, 0%, 0.4);
 }
 
 html.dark {
 	--base-color: 0, 0%, 100%;
-	--background-color: hsla(0, 0%, 0%, 0.90);
-	--background-color-subtle: rgba(0,0,0, 0.08);
+	--background-color: hsla(0, 0%, 0%, 0.9);
+	--background-color-subtle: rgba(0, 0, 0, 0.08);
 	--background-color-transparent: hsla(0, 0%, 100%, 0.1);
 	--text-color: hsla(0, 0%, 100%, 0.9);
 	--text-color-light: hsla(0, 0%, 100%, 0.7);
@@ -140,7 +140,7 @@ a {
 	text-decoration-line: none;
 	font-size: inherit;
 	line-height: inherit;
-    font-weight: inherit;
+	font-weight: inherit;
 }
 
 p > a,
@@ -282,6 +282,71 @@ body > div > main > .wide {
 	justify-self: center;
 }
 
+@media (max-width: 1799px) {
+	body > div > main[data-segment*='blog/'] > div,
+	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > h1,
+	body > div > main[data-segment*='blog/'] > h2,
+	body > div > main[data-segment*='blog/'] > h3,
+	body > div > main[data-segment*='blog/'] > h4,
+	body > div > main[data-segment*='blog/'] > h5,
+	body > div > main[data-segment*='blog/'] > h6 {
+		transform: translateX(17.5%);
+	}
+
+	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > .code-group,
+	body > div > main[data-segment*='blog/'] > iframe,
+	body > div > main[data-segment*='blog/'] > figure,
+	body > div > main[data-segment*='blog/'] > p:has(video),
+	body > div > main[data-segment*='blog/'] > table,
+	body > div > main[data-segment*='blog/'] > .wide {
+		width: 70%;
+	}
+}
+
+
+@media (max-width: 1199px) {
+	body > div > main[data-segment*='blog/'] > div,
+	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > h1,
+	body > div > main[data-segment*='blog/'] > h2,
+	body > div > main[data-segment*='blog/'] > h3,
+	body > div > main[data-segment*='blog/'] > h4,
+	body > div > main[data-segment*='blog/'] > h5,
+	body > div > main[data-segment*='blog/'] > h6 {
+		transform: translateX(25%);
+		width: 80%;
+	}
+
+	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > .code-group,
+	body > div > main[data-segment*='blog/'] > iframe,
+	body > div > main[data-segment*='blog/'] > figure,
+	body > div > main[data-segment*='blog/'] > p:has(video),
+	body > div > main[data-segment*='blog/'] > table,
+	body > div > main[data-segment*='blog/'] > .wide {
+		transform: translateX(17%);
+		width: 73%;
+	}
+}
+
+@media (max-width: 1022px) {
+	body > div > main[data-segment*='blog/'] > div,
+	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > h1,
+	body > div > main[data-segment*='blog/'] > h2,
+	body > div > main[data-segment*='blog/'] > h3,
+	body > div > main[data-segment*='blog/'] > h4,
+	body > div > main[data-segment*='blog/'] > h5,
+	body > div > main[data-segment*='blog/'] > h6 {
+		transform: translateX(0);
+	}
+}
+
 main > h1 {
 	margin-top: var(--spacing);
 }
@@ -363,12 +428,21 @@ thead {
 	visibility: hidden;
 }
 
+.m-auto {
+	margin: auto;
+}
+
 .mt-0 {
 	margin-top: 0;
 }
 
 .mt-normal {
 	margin-top: var(--spacing);
+}
+
+
+.mb-normal {
+	margin-bottom: var(--spacing);
 }
 
 [id*='kofi-widget-overlay'] {
@@ -378,9 +452,9 @@ thead {
 a[data-with-favicon]:hover:after {
 	content: '';
 	display: inline-block;
-	width: .8em;
-	height: .8em;
-	transform: translateY(-.8em) translateX(.2em);;
+	width: 0.8em;
+	height: 0.8em;
+	transform: translateY(-0.8em) translateX(0.2em);
 	background-size: contain;
 	background-image: var(--favicon);
 }
@@ -425,9 +499,9 @@ a[data-with-favicon]:hover:after {
 
 code,
 pre {
-	font-family: 'Victor Mono', 'JetBrains Mono',  'Fira Code', 'Ligconsolata', 'MonoLisa', 'Cartograph CF',
-		'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Cascadia Mono',
-		'Victor Mono', Consolas, monospace;
+	font-family: 'Victor Mono', 'JetBrains Mono', 'Fira Code', 'Ligconsolata', 'MonoLisa',
+		'Cartograph CF', 'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig',
+		'Cascadia Mono', 'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
 	direction: ltr;
 	text-align: left;
@@ -499,13 +573,13 @@ code > div {
 code .line.addition::before {
 	content: '+';
 	color: var(--syntax-entity-name-section);
-	font-size: .8rem;
+	font-size: 0.8rem;
 }
 
 code .line.removal::before {
 	content: '-';
 	color: var(--syntax-invalid);
-	font-size: .8rem;
+	font-size: 0.8rem;
 }
 
 /* pre .highlight {
@@ -650,7 +724,7 @@ pre > .code-heading > a {
 	margin-right: 0.1rem;
 	border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
-	transition: .2s ease-in-out;
+	transition: 0.2s ease-in-out;
 }
 .code-group-tab:not(.active) {
 	background-color: var(--tab-activeBackground);
@@ -712,7 +786,6 @@ pre > .code-heading > a {
 	transform-origin: 70% 70%;
 	display: inline-block;
 }
-
 
 @keyframes wave-animation {
 	0% {

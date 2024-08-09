@@ -229,7 +229,7 @@
 		</div>
 	{/if}
 
-	<Share title="Share this post on" text={post.metadata.title} url={post.metadata.canonical} />
+	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
 </aside>
 
 {#if post.metadata.translations}
@@ -301,7 +301,7 @@
 
 <Support />
 
-<Share title="Share this post on" text={post.metadata.title} url={post.metadata.canonical} />
+<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
 
 <Comments />
 
@@ -325,7 +325,7 @@
 		padding-right: 2.5em;
 		padding-left: 3em;
 		text-align: left;
-		width: 25em;
+		width: 20%;
 		transition: all 0.2s;
 		background-color: var(--background-color-subtle);
 		height: 100%;
@@ -353,50 +353,13 @@
 		overflow: auto;
 	}
 
-	@media (max-width: 1950px) {
+	@media (max-width: 1799px) {
 		.left-nav {
-			width: 23em;
-		}
-	}
-	@media (max-width: 1850px) {
-		.left-nav {
-			width: 18.5em;
-			padding-left: 3em;
-		}
-		.left-nav .toc {
-			font-size: 0.9rem;
-		}
-	}
-	@media (max-width: 1730px) {
-		.left-nav {
-			width: 14.5em;
-			padding-left: 3em;
-			padding-right: 0;
-		}
-		.left-nav .toc {
-			font-size: 0.9rem;
-		}
-	}
-	@media (max-width: 1630px) {
-		.left-nav {
-			width: 12.5em;
-			padding-left: 2em;
-		}
-		.left-nav .toc {
-			font-size: 0.8rem;
-		}
-	}
-	@media (max-width: 1530px) {
-		.left-nav {
-			width: 12.5em;
-			padding-left: 1em;
-		}
-		.left-nav .toc {
-			font-size: 0.8rem;
+			width: 25%;
 		}
 	}
 
-	@media (max-width: 1480px) {
+	@media (max-width: 1022px) {
 		.left-nav {
 			display: none;
 		}
