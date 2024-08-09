@@ -105,8 +105,7 @@
 
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-	<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js">
-	</script>
+	<script async src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
 </svelte:head>
 
 <svelte:window bind:scrollY={y} />

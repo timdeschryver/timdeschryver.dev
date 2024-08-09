@@ -7,6 +7,7 @@
 	import copyLifeCycle from '$lib/copy-lifecycle';
 	import Comments from '$lib/Comments.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
+	import Ad from '$lib/Ad.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -65,6 +66,10 @@
 					: 0}"
 	loading="lazy"
 />
+
+<div class="m-auto mt-0 mb-normal">
+	<Ad />
+</div>
 
 {@html bit.html}
 
