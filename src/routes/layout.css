@@ -344,6 +344,7 @@ body > div > main > .wide {
 	body > div > main[data-segment*='blog/'] > h5,
 	body > div > main[data-segment*='blog/'] > h6 {
 		transform: translateX(0);
+		width: 100%;
 	}
 }
 
