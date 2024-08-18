@@ -113,6 +113,12 @@ getTestBed().initTestEnvironment(
 );
 ```
 
+## What about NX?
+
+For now, you can apply the same steps to an Angular project that's using [NX](https://nx.dev/).
+
+In the future, this will become easier because [Younes Jaaidi](https://x.com/yjaaidi) has cooked up a [Pull Request](https://github.com/nrwl/nx/pull/27311) to add support for Vitest. This will make the manual steps that we've covered unnecessary, as it will set up Vitest automatically for you using its schematics.
+
 ## Conclusion
 
 In this article we've seen that it just takes a few steps to integrate Vitest in your Angular project.
