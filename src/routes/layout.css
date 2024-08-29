@@ -285,6 +285,8 @@ body > div > main > .wide {
 @media (max-width: 1799px) {
 	body > div > main[data-segment*='blog/'] > div,
 	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > ol,
+	body > div > main[data-segment*='blog/'] > ul,
 	body > div > main[data-segment*='blog/'] > pre,
 	body > div > main[data-segment*='blog/'] > h1,
 	body > div > main[data-segment*='blog/'] > h2,
@@ -310,6 +312,8 @@ body > div > main > .wide {
 @media (max-width: 1199px) {
 	body > div > main[data-segment*='blog/'] > div,
 	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > ol,
+	body > div > main[data-segment*='blog/'] > ul,
 	body > div > main[data-segment*='blog/'] > pre,
 	body > div > main[data-segment*='blog/'] > h1,
 	body > div > main[data-segment*='blog/'] > h2,
@@ -336,6 +340,8 @@ body > div > main > .wide {
 @media (max-width: 1022px) {
 	body > div > main[data-segment*='blog/'] > div,
 	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > ol,
+	body > div > main[data-segment*='blog/'] > ul,
 	body > div > main[data-segment*='blog/'] > pre,
 	body > div > main[data-segment*='blog/'] > h1,
 	body > div > main[data-segment*='blog/'] > h2,
