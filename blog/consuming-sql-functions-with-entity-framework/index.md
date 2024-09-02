@@ -6,18 +6,25 @@ date: 2023-01-09
 tags: .NET, SQL, Entity Framework
 ---
 
-SQL Server (or another database) has many built-in functions that can be used in queries.
-But when you use Entity Framework, these functions can't be used in your Entity Framework queries.
+A programming language contains built-in functions that can be used to perform specific tasks easily.
+Just like any other language, all the different SQL dialicts has built-in functions.
+Within SQL Server you can make use of the T-SQL functions, such as `DATEADD`, `SOUNDEX`, `GETDATE`, and many more.
 
-Some of the functions have a .NET counterpart, for example, to add days to a date you use `DATEADD` in TSQL, and in C# this becomes `DateTime.AddDays`.
-But some of them don't, for example [`SOUNDEX` in TSQL (to find similar strings instead of a full-match)](https://learn.microsoft.com/en-us/sql/t-sql/functions/soundex-transact-sql) does not have a C# version.
-This is done to keep the Entity Framework API consistent across different database providers.
+Ofcourse when you're Entity Framework you will be using C# to write your queries.
+Doing so, you'll notice that not all these functions are available in the C# or Entity Framework API.
 
-As a workaround, you can write your own C# version of the missing behavior, or you can make it yourself easy and register these SQL functions within the `DBContext`.
+Some of the build-in SQL functions have a .NET counterpart, for example, to add days to a date you use `DATEADD` in TSQL, and in C# this becomes `DateTime.AddDays`.
+But some of them don't, for example [`SOUNDEX` in TSQL](https://learn.microsoft.com/en-us/sql/t-sql/functions/soundex-transact-sql)(to find similar strings instead of a full-match) does not have a C# version.
+The reason that some methods do not have a method with Entity Framework is done to keep the Entity Framework API consistent across different database providers.
+
+To leverage the built-in methods, it's possible to register these SQL functions within the `DBContext`.
 Once a function is registered you can use it in your Entity Framework queries in a database provider-agnostic way.
 
-For example, let's register the `SOUNDEX` function.
-To do this, create a new method in the `DbContext`, and annotate it with the [`DbFunction` attribute](TK).
+As an example in this blogpost, let's see how to use the `SOUNDEX` function in Entity Framework.
+
+## Adding the SOUNDEX function to Entity Framework
+
+To do this, create a new method in the `DbContext`, and annotate it with the [`DbFunction` attribute](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbfunctionattribute).
 
 ```cs{8-12}:MyDbContext.cs
 public class MyDbContext : DbContext
@@ -57,7 +64,8 @@ app.MapGet("/customers", ([FromQuery] customerName, MyDbContext ctx) => {
 app.Run();
 ```
 
-When the query is executed this generates the following SQL statement. To give you an idea, if we search for customers with the name "Timothy", this also matches the following names "Timmothy", "Timoteo", or "Timotheo".
+When the query is executed this generates the following SQL statement.
+To give you an idea, if we search for customers with the name "Timothy", this also matches the following names "Timmothy", "Timoteo", or "Timotheo".
 
 ```sql:customers.sql
 SELECT [c].[Id], [c].[Name]
@@ -65,7 +73,8 @@ FROM [Customers] AS [c]
 WHERE SoundEx([c].[Name]) = SoundEx(N'Timothy') OR ((SoundEx([c].[Name]) IS NULL) AND (SoundEx(N'Timothy') IS NULL))
 ```
 
-Or, to clean up the SQL statement, we can set the `IsNullable` property of the `DbFunction` attribute to `false`.
+In the query, you see that the `SoundEx` method is used in the `WHERE` clause.
+To remove the `NULL` checks in the SQL statement, we can set the `IsNullable` property of the `DbFunction` attribute to `false`.
 
 ```cs{8}:MyDbContext.cs
 public class MyDbContext : DbContext
@@ -83,7 +92,7 @@ public class MyDbContext : DbContext
 }
 ```
 
-Resulting in a cleaner SQL statement.
+This results in a cleaner SQL statement.
 
 ```sql:customers.sql
 SELECT [c].[Id], [c].[Name]
@@ -91,10 +100,12 @@ FROM [Customers] AS [c]
 WHERE SoundEx([c].[Name]) = SoundEx(N'Timothy')
 ```
 
+## Implementing your own SQL functions
+
 Besides the built-in functions, you can also create your own SQL functions and add them to the `DbContext` in a similar way.
 For your custom functions, set the `IsBuiltIn` property to `false` and you can also define the function's schema.
 
-I wouldn't recommend creating your own SQL functions, but registering existing functions can be useful while porting an existing codebase to a newer version.
+I don't recommend creating your own SQL functions, but registering existing functions can be useful while porting an existing codebase to a newer version.
 
 ```cs{14-18}:MyDbContext.cs
 public class MyDbContext : DbContext
