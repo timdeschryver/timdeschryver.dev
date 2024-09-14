@@ -13,6 +13,10 @@ Reflecting back, this was due to my lack of understanding of how policy-based au
 Instead of getting a deep understanding of the topic, I made some assumptions, which were wrong (don't just assume, but test and verify!).
 The [Policy Authorization documentation](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies?view=aspnetcore-8.0) does a good job explaining the concepts, and covers most of the scenarios you might encounter. I recommend you read it before writing your own policies so you don't make the same mistakes I did.
 
+Getting this right is critical, as it's the first line of defense against unauthorized access to your application.
+What's why it's ranked first on the OWASP TOP 10 list, [A01:2021 – Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
+[A01 Broken Access Control](https://cheatsheetseries.owasp.org/cheatsheets/DotNet_Security_Cheat_Sheet.html#a01-broken-access-control).
+
 ## Recap: Policies in ASP.NET
 
 In ASP.NET, policies are used to define requirements that must be met in order to give a user the authorization to access an endpoint.
