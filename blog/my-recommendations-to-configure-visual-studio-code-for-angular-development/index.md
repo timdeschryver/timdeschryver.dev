@@ -1,7 +1,7 @@
 ---
 title: My recommendations to configure Visual Studio Code for Angular Development
 slug: my-recommendations-to-configure-visual-studio-code-for-angular-development
-description: Enhance your development experience by installing (the right) extensions and settings to help you write consistent code in a pleasant way.
+description: Enhance your Angular development experience by installing the extensions mentioned in this article. We'll also modify a couple of settings in Visual Studio Code to make it easier to work with.
 date: 2024-09-12
 tags: Angular, VSCode, developer-experience
 ---
@@ -22,7 +22,7 @@ Then, search for the extension by name and click the install button.
 
 ### Angular Language Service
 
-The Angular Language Service is the most important extension because it provides a rich editing experience for Angular templates.
+The Angular Language Service is the most important extension because it provides a rich editing experience for Angular templates. As result, the HTML template gets to know the Angular and TypeScript context of the component. This helps to drastically improve the development experience by reducing the feedback loop.
 
 _[Marketplace](https://marketplace.visualstudio.com/items?itemName=Angular.ng-template)_
 
@@ -33,10 +33,12 @@ The ESLint extension also works with Typescript ESLint and Angular ESLint, the r
 
 _[Marketplace](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)_
 
+To integrate ESLint with Angular, I refer you to the [Angular ESLint](https://github.com/angular-eslint/angular-eslint) project.
+
 ### Prettier
 
 Many teams use [Prettier](https://prettier.io) to enforce a consistent code style.
-Use this extension to format your code automatically.
+Install this extension to format your code using the Prettier code formatter. Within the next section, I'll show you how to configure VSCode to format your code automatically when a file is saved.
 
 _[Marketplace](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)_
 
@@ -180,3 +182,7 @@ Other shortcuts that are worthy of mentioning while editing code:
 In this article, I showed you how to configure Visual Studio Code for optimal (imho) Angular development.
 By installing the recommended extensions and tweaking a few settings you can enhance your workflow, making it more efficient and enjoyable.
 I find this important because we spend a lot of time in our editor(s), so it's in your best interest to make it as comfortable as possible.
+
+:::tip
+After publishing this article, [Aristeidis Bampakos](https://x.com/abampakos) pointed out that there's also an official [Angular Profile](https://code.visualstudio.com/docs/editor/profiles#_angular-profile-template) maintained by the VSCode team. The profile includes a set of recommended extensions and settings for Angular development. Make sure to check it out as well as it includes some additional recommendations, which are not particularly bound to Angular development.
+:::

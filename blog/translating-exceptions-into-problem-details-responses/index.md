@@ -11,7 +11,7 @@ In this post, we'll take a look at the new `IExceptionHandler` interface, which 
 
 - [Default API behavior](#default-api-behavior)
 - [Problem Details](#problem-details)
-- [Problem Details with ASP.NET](#problem-details-with-aspnet)
+- [Problem Details in ASP.NET](#problem-details-in-aspnet)
 - [Exception Handler](#exception-handler)
   - [Exception Handler using `IProblemDetailsService`](#exception-handler-using-iproblemdetailsservice)
   - [Default Problem Detail Extensions](#default-problem-detail-extensions)
@@ -35,7 +35,7 @@ Alt-Svc: h3=":5099"; ma=86400
 ```
 
 This is different when the exception is caught, and handled by the developer.
-An example of this is that the logic within the endpoint is wrapped in a try-catch block, and the catch block returns a Bad Request (`Results.BadRequest()`).
+An example of this is that the logic within the endpoint is wrapped in a try-catch block, which returns a Bad Request (`Results.BadRequest()`) when an exception is catched.
 This results in a 400 Bad Request response.
 
 ```txt
@@ -47,18 +47,19 @@ Server: Kestrel
 Alt-Svc: h3=":5099"; ma=86400
 ```
 
-These responses are not very helpful for the consumer of the API.
+While we understand what's happening, the response doesn't provide any information about the error.
+This isn't very helpful to the consumer(s) of the API.
 
 ## Problem Details
 
 [Problem Details](https://tools.ietf.org/html/rfc7807) is a described format for returning error information in HTTP API responses.
 While it's still in the "Proposed Standard" status, it's already widely used in the industry and built into ASP.NET Core.
 
-> Problem Details for HTTP APIs defines a "problem detail" as a way to carry machine-
-> readable details of errors in an HTTP response to avoid the need to
-> define new error response formats for HTTP APIs.
+:::note
+Problem Details for HTTP APIs defines a "problem detail" as a way to carry machine-readable details of errors in an HTTP response to avoid the need to define new error response formats for HTTP APIs.
+:::
 
-The Problem Details format looks like this:
+The Problem Details format looks as follows:
 
 ```json:problem-details.json
 {
@@ -82,24 +83,27 @@ The Problem Details format looks like this:
 }
 ```
 
-Besides the described format, this object can also be extended with additional members to provide more information, these are called "Extension Members".
+Besides the described format, this object can also be extended with additional members to provide more information, these are called [Extension Members](https://www.rfc-editor.org/rfc/rfc9457.html#name-extension-members).
 
-## Problem Details with ASP.NET
+## Problem Details in ASP.NET
 
 ASP.NET Core already has built-in support for Problem Details.
-To enable it, you need to invoke the `IServiceCollection.AddProblemDetails()` extension method and the `IApplicationBuilder.UseStatusCodePages()` extension method.
+To enable it, you need to invoke the [`IServiceCollection.AddProblemDetails()` extension method](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.problemdetailsservicecollectionextensions.addproblemdetails?view=aspnetcore-8.0) and the [`IApplicationBuilder.UseStatusCodePages()` extension method](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.statuscodepagesextensions.usestatuscodepages?view=aspnetcore-8.0).
 
-```cs{2, 5}:Program.cs
+```cs{2-3, 6-8}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
+// Return the Problem Details format for non-successful responses
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+// Return the body of the response when the status code is not successful
+// (the default behavior is to return an empty body with a Status Code)
 app.UseStatusCodePages();
 
 app.Run();
 ```
 
-Now, when we invoke an endpoint that returns a non-successful status code, we get a Problem Details response, including a response body.
+Now, when we invoke an endpoint that returns a non-successful status code, we get to see a Problem Details response, including a helpful response body.
 
 ```txt{1, 9-13}
 HTTP/1.1 400 Bad Request
@@ -117,7 +121,8 @@ Transfer-Encoding: chunked
 }
 ```
 
-To have the same behavior for exceptions, you also need to call the `IApplicationBuilder.UseExceptionHandler()` extension method.
+This only works for status codes that are returned by the application.
+To have the same behavior for exceptions, you also need to call the [`IApplicationBuilder.UseExceptionHandler()` extension method](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.exceptionhandlerextensions.useexceptionhandler?view=aspnetcore-8.0).
 
 ```cs{2, 5-6}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
@@ -130,6 +135,7 @@ app.UseExceptionHandler();
 app.Run();
 ```
 
+This will translate the unhandled exception into a Problem Detail, and returns a 500 Internal Server Error response.
 Resulting in the following response when the application throws an unhandled exception.
 
 ```txt{1, 12-16}
@@ -151,35 +157,24 @@ Transfer-Encoding: chunked
 }
 ```
 
-The result is already better than the default behavior, but we can improve this.
+We already have something better than the default behavior, but we can further improve this.
 
 ## Exception Handler
 
-Before the addition of [`IExceptionHandler` exception handler](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-8.0#iexceptionhandler), we could make use of a [Exception Handler Page](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-7.0#exception-handler-page) or a [Exception Handler Lambda](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-7.0#exception-handler-lambda). Both of these options are still available, but the new `IExceptionHandler` interface provides a more clean and flexible way of handling exceptions in my opinion.
+Before the addition of [`IExceptionHandler` exception handler](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-8.0#iexceptionhandler), we could make use of a [Exception Handler Page](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-7.0#exception-handler-page) or a [Exception Handler Lambda](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-7.0#exception-handler-lambda). Both of these options are still available, but the new `IExceptionHandler` interface provides a clean and flexible way of handling exceptions in my opinion.
 
-An exception handler is a class that implements the `IExceptionHandler` interface, and is registered by using `IServiceCollection.AddExceptionHandler()`.
+An exception handler is a class that implements the `IExceptionHandler` interface, and is registered by using `IServiceCollection.AddExceptionHandler()` to the DI container.
+
 The reasons why I find this better than the other options are that it's more explicit.
-It can also inject dependencies, short-circuit the pipeline or it can create a chain of multiple exception handlers, and the handler has access to the exception (previously you could get ahold of the exception with `HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error`).
+It also provides more features such as injecting dependencies, short-circuiting the pipeline, and it can add multiple exception handlers to the middleware pipeline. Lastly, our handler receives the exception, which makes it easy to write logic based on it. This was also possible before, but to get ahold of the exception you had to grab the exception from the `IExceptionHandlerFeature` feature using `HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error`.
 
-To write your own exception handler, you need to implement the `IExceptionHandler` interface, which looks as follows:
+To write your own exception handler, create a new class that implements the [`IExceptionHandler` interface](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.diagnostics.iexceptionhandler?view=aspnetcore-8.0).
 
-```csharp:IExceptionHandler.cs
-namespace Microsoft.AspNetCore.Diagnostics;
-
-public interface IExceptionHandler
-{
-    ValueTask<bool> TryHandleAsync(
-        HttpContext httpContext,
-        Exception exception,
-        CancellationToken cancellationToken);
-}
-```
-
-Your custom `TryHandleAsync` implementation receives the `HttpContext` and the `Exception`, and needs to return a `ValueTask<bool>`.
+Your `IExceptionHandler` implementation receives the `HttpContext` and the `Exception` as arguments in the `TryHandleAsync` method that you need to implement, and needs to return a `ValueTask<bool>`.
 If the handler returns `true`, the exception is considered handled, and the request pipeline is short-circuited.
-When the value `false` is returned, the default flow continues and a possible next exception handler will be invoked.
+When the value `false` is returned, the default flow continues and the next middleware in the pipeline is invoked.
 
-A simple implementation of an exception handler that returns a Problem Details response based on the thrown exception could look like this.
+A simple exception handler that returns a Problem Details response based on the thrown exception has the following implementation.
 
 ```csharp:ExceptionToProblemDetailsHandler.cs
 public class ExceptionToProblemDetailsHandler : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
@@ -200,14 +195,14 @@ public class ExceptionToProblemDetailsHandler : Microsoft.AspNetCore.Diagnostics
 }
 ```
 
-For all exceptions that are thrown within the application, this handler will be invoked.
+For all exceptions that are thrown within the application, the above handler will be invoked.
 
 Let's go over it to see what it does.
 The handler sets the HTTP response status code, and creates and writes a Problem Details response object directly to the response using the information from the exception.
 
-A more advanced implementation would use the exception type to return a different Problem Details response (and status code) for specific exception types.
+A more advanced implementation could use the exception type to return a different Problem Details response (including a different status code).
 
-The last step before this handler can be used is to register the exception handler using the `IServiceCollection.AddExceptionHandler()` extension method.
+The last step is to register the exception handler using the [`IServiceCollection.AddExceptionHandler()` extension method](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.exceptionhandlerservicecollectionextensions.addexceptionhandler?view=aspnetcore-8.0).
 
 ```cs{3}:Program.cs
 var builder = WebApplication.CreateBuilder(args);
@@ -221,7 +216,8 @@ app.UseExceptionHandler();
 app.Run();
 ```
 
-When we invoke an endpoint that throws an exception, we get a Problem Details response containing more information about the exception.
+Now when an exception is thrown from an endpoint, we get a Problem Details response containing more information about the exception.
+This is because we append the exception message to the response as the detail of the Problem Details object.
 
 :::warning
 An important detail to note is that you should be careful with the information you return in the response. You don't want to leak sensitive information to the consumer of the API. This can be in the form of technical information, or business information.
@@ -250,15 +246,17 @@ Transfer-Encoding: chunked
 ### Exception Handler using `IProblemDetailsService`
 
 In the previous example, we created a Problem Details response manually.
-While this works, there's a more suffocated solution available to return a Problem Details response.
+While this works, there's a more sophisticated solution available to return a Problem Details response.
 
 Do you remember that I mentioned that ASP.NET has built-in support for Problem Details?
+
 It doesn't only mean that problem details are returned for non-successful responses, nor does it mean that the `ProblemDetails` class exists in the framework.
+It also means that there's the `IProblemDetailsService` service to our availability, which creates a Problem Details response object more easily.
 
-It also means that there's the `IProblemDetailsService` service, which is available and can be used to create a Problem Details response object.
-The service is provided when the `IServiceCollection.AddProblemDetails()` method is invoked.
+Keep in mind that the `IProblemDetailsService` service is available (and can be injected) because the `IServiceCollection.AddProblemDetails()` method is invoked, which registers the service to the DI container.
 
-This means that we can refactor our exception handler to use the `IProblemDetailsService` service to create the Problem Details response.
+This means that we can use this to refactor our exception handler to use the `IProblemDetailsService` service!
+Instead of manually creating the problem details, we can do this by taking advantage of the service.
 The cleaned-up version of the exception handler looks like this.
 
 ```csharp{12-23}:ExceptionToProblemDetailsHandler.cs
