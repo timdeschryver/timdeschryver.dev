@@ -30,7 +30,7 @@ public class ExceptionToProblemDetailsHandler : Microsoft.AspNetCore.Diagnostics
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,

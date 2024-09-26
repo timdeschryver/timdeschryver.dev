@@ -3,7 +3,7 @@ title: Translating Exceptions into Problem Details Responses
 slug: translating-exceptions-into-problem-details-responses
 description: In this post, we'll take a look at the newly introduced IExceptionHandler in ASP.NET Core 8. We'll implement an exception handler that translates exceptions into Problem Details using the Problem Details Service. The result is a standardized and better experience for your API consumers.
 date: 2023-07-24
-tags: .NET
+tags: .NET, ASP.NET, Problem Details
 ---
 
 Because (ASP).NET 8 is in preview it doesn't mean we can't start trying out some of the new features.
@@ -181,13 +181,13 @@ public class ExceptionToProblemDetailsHandler : Microsoft.AspNetCore.Diagnostics
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
         {
             Title = "An error occurred",
             Detail = exception.Message,
             Type = exception.GetType().Name,
-            Status = (int)HttpStatusCode.BadRequest
+            Status = StatusCodes.Status400BadRequest
         }, cancellationToken: cancellationToken);
 
         return true;
@@ -271,7 +271,7 @@ public class ExceptionToProblemDetailsHandler: Microsoft.AspNetCore.Diagnostics.
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,
