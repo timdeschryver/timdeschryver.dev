@@ -34,6 +34,8 @@ tags:
 ---
 `,
 	);
+
+	console.log(`Post created at ${path}.md`);
 }
 
 const [slug] = process.argv.slice(2);
