@@ -3,7 +3,7 @@ title: Create a custom SQL expression with Entity Framework, or how to make EF i
 slug: create-a-custom-sql-expression-with-entity-framework-or-how-to-make-ef-interpret-your-value-types
 description: A deep-dive at the internals of Entity Framework to come up with a solution to make EF interpret your value types, in this particular case a strongly-typed ID (of the StronglyTypedId NuGet Package).
 date: 2024-10-10
-tags: .NET, SQL
+tags: .NET, SQL, Entity Framework
 ---
 
 ## The problem
@@ -37,7 +37,7 @@ In practice, this results in the following code:
 
 :::code-group
 
-```cs{1-2, 6, 18} [title=Strongly-typed ID]
+```cs{1-2, 6, 18}:Person.cs [title=Strongly-typed ID]
 [StronglyTypedId(Template.Guid, "guid-efcore")]
 public readonly partial struct PersonId { }
 
@@ -62,7 +62,7 @@ public class PersonService
 }
 ```
 
-```diff [title=Compare]
+```diff:Person.cs [title=Comparison primitive type vs strongly-typed ID]
 public class Person
 {
 -   public Guid Id { get; }
@@ -114,8 +114,11 @@ At least, that's what we thought...
 In practice, when we run this code, we get the following exception:
 
 ```txt
-Unhandled exception. System.InvalidOperationException: The LINQ expression 'DbSet<Person>()
- .Where(p => p.Id.Value.ToString().Contains("3FE8DBB6"))' could not be translated. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information.
+System.InvalidOperationException: The LINQ expression 'DbSet<Person>()
+ .Where(p => p.Id.Value.ToString().Contains("3FE8DBB6"))' could not be translated.
+Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly
+by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'.
+See https://go.microsoft.com/fwlink/?linkid=2101038 for more information.
 ```
 
 We were surprised by this exception, as accessing `.Value` just works for nullable types.
@@ -185,12 +188,12 @@ public class ApplicationDb : DbContext
         modelBuilder
             .HasDbFunction(() => typeof(PersonId).GetMember(nameof(PersonId.Value)))
             .HasTranslation(args => new SqlFunctionExpression(
-            functionName: "",
-            arguments: args,
-            nullable: false,
-            argumentsPropagateNullability: [false],
-            type: typeof(string),
-            typeMapping: null));
+                functionName: "",
+                arguments: args,
+                nullable: false,
+                argumentsPropagateNullability: [false],
+                type: typeof(string),
+                typeMapping: null));
     }
 }
 ```
@@ -198,7 +201,9 @@ public class ApplicationDb : DbContext
 When we run the query again, we see that the exception is gone, but that it now throws a different exception:
 
 ```txt
-Unhandled exception. System.ArgumentException: The DbFunction 'Type.GetMember' defined on type 'Type' must be either a static method or an instance method defined on a DbContext subclass. Instance methods on other types are not supported.
+System.ArgumentException: The DbFunction 'Type.GetMember' defined on type 'Type'
+must be either a static method or an instance method defined on a DbContext subclass.
+Instance methods on other types are not supported.
 ```
 
 Luckily, the exception provides us with a clear message on how it can be resolved.
@@ -229,7 +234,6 @@ Lastly, this change also impacts the `DdFunction`.
 The `DdFunction` method also needs to be updated to use the `InnerValue()` method:
 
 ```cs{10-18}:ApplicationDb.cs
-
 public class ApplicationDb : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -242,12 +246,12 @@ public class ApplicationDb : DbContext
         modelBuilder
             .HasDbFunction(() => StronglyTypedIdValue.InnerValue(default))
             .HasTranslation(args => new SqlFunctionExpression(
-            functionName: "",
-            arguments: args,
-            nullable: false,
-            argumentsPropagateNullability: [false],
-            type: typeof(string),
-            typeMapping: null));
+                functionName: "",
+                arguments: args,
+                nullable: false,
+                argumentsPropagateNullability: [false],
+                type: typeof(string),
+                typeMapping: null));
     }
 }
 ```
@@ -255,14 +259,14 @@ public class ApplicationDb : DbContext
 When we run the query again, we see that a new exception is thrown:
 
 ```txt
-Unhandled exception. System.InvalidOperationException: The parameter 'value' for the DbFunction 'StronglyTypedIdValue.InnerValue(PersonId)' has an invalid type 'PersonId'. Ensure the parameter type can be mapped by the current provider.
+System.InvalidOperationException: The parameter 'value' for the DbFunction 'StronglyTypedIdValue.InnerValue(PersonId)' has an invalid type 'PersonId'.
+Ensure the parameter type can be mapped by the current provider.
 ```
 
 This exception is thrown because the `PersonId` type cannot be mapped to a SQL type.
 To fix this issue, we provide the correct SQL type via the `HasStoreType` (and `HasParameter`) method.
 
-```cs{10-18}:ApplicationDb.cs
-
+```cs{10-20}:ApplicationDb.cs
 public class ApplicationDb : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -275,12 +279,12 @@ public class ApplicationDb : DbContext
         modelBuilder
             .HasDbFunction(() => StronglyTypedIdValue.InnerValue(default))
             .HasTranslation(args => new SqlFunctionExpression(
-            functionName: "",
-            arguments: args,
-            nullable: false,
-            argumentsPropagateNullability: [false],
-            type: typeof(string),
-            typeMapping: null))
+                functionName: "",
+                arguments: args,
+                nullable: false,
+                argumentsPropagateNullability: [false],
+                type: typeof(string),
+                typeMapping: null))
             .HasParameter("value")
             .HasStoreType("NVARCHAR(255)");
     }
@@ -299,17 +303,18 @@ WHERE ([p].[Id]) LIKE N'%3FE8DBB6%'
 ## Going over the solution in detail
 
 We went over the solution very quickly, so let's explain it in more detail.
-We need to give the compiler a little hand of how it can translate a C# expression into a valid SQL expression.
-In our case this meant that it should be able to translate a member access of a value type (a strongly-typed ID).
 
-To do this, we created a `DbFunction` to map the `Value` property of the strongly-typed ID to a `SqlFunctionExpression`.
-Because Entity Framework only supports static methods or methods within the `DbContext` class, we created a static method that receives the strongly-typed ID as an argument and returns a string.
+We need to give the compiler a little hand of how it can translate a C# expression into a valid SQL expression.
+In our case this means that it should be able to translate a member access of a value type (a strongly-typed ID).
+
+To do this, we create a `DbFunction` to map the `Value` property of the strongly-typed ID to a `SqlFunctionExpression`.
+Because Entity Framework only supports static methods or methods within the `DbContext` class, we also introduced a static method that receives the strongly-typed ID as an argument and returns a string. This method is not required to have an implementation, as it's not invoked at runtime, but is used to translate the C# expression to a SQL expression.
+
 To make the previous solution more generic, we can replace the StronglyTypedId `PersonId` with the `object` type.
 
 :::code-group
 
-```cs{10-18}:ApplicationDb.cs [title=ApplicationDb]
-
+```cs{10-20}:ApplicationDb.cs [title=ApplicationDb]
 public class ApplicationDb : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -322,12 +327,12 @@ public class ApplicationDb : DbContext
         modelBuilder
             .HasDbFunction(() => StronglyTypedIdValue.InnerValue(default))
             .HasTranslation(args => new SqlFunctionExpression(
-            functionName: "",
-            arguments: args,
-            nullable: false,
-            argumentsPropagateNullability: [false],
-            type: typeof(string),
-            typeMapping: null))
+                functionName: "",
+                arguments: args,
+                nullable: false,
+                argumentsPropagateNullability: [false],
+                type: typeof(string),
+                typeMapping: null))
             .HasParameter("value")
             .HasStoreType("NVARCHAR(255)");
     }
@@ -378,12 +383,12 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder
         .HasDbFunction(() => StronglyTypedIdValue.InnerValue(default))
         .HasTranslation(args => new SqlFunctionExpression(
-        functionName: "CONVERT",
-        arguments: args.Prepend(new SqlFragmentExpression("nvarchar(255)")),
-        nullable: false,
-        argumentsPropagateNullability: [false, false],
-        type: typeof(string),
-        typeMapping: null))
+            functionName: "CONVERT",
+            arguments: args.Prepend(new SqlFragmentExpression("nvarchar(255)")),
+            nullable: false,
+            argumentsPropagateNullability: [false, false],
+            type: typeof(string),
+            typeMapping: null))
         .HasParameter("value")
         .HasStoreType("NVARCHAR(255)");
 }
@@ -419,6 +424,7 @@ To create a valid hook that Entity Framework can use, we created a static method
 
 Most of the information to come up with this solution was found in the Entity Framework GitHub issues.
 
-- [GH issue: EF Translators](https://github.com/dotnet/efcore/issues/28111#issuecomment-1139451586)
-- [GH Issue: EF configure proper type mapping](https://github.com/dotnet/efcore/issues/28393#issuecomment-1181498610)
+- [GitHub issue: EF Translators](https://github.com/dotnet/efcore/issues/28111#issuecomment-1139451586)
+- [GitHub Issue: EF configure proper type mapping](https://github.com/dotnet/efcore/issues/28393#issuecomment-1181498610)
+- [Learn DBFunction documentation](https://learn.microsoft.com/en-us/ef/core/querying/user-defined-function-mapping#mapping-a-method-to-a-custom-sql)
 - [Blog: Going down the rabbit hole of EF Core and converting strings to dates](https://dasith.me/2022/01/23/ef-core-datetime-conversion-rabbit-hole/)
