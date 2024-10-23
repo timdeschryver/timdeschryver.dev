@@ -345,6 +345,7 @@ body > div > main > .wide {
 	body > div > main[data-segment*='blog/'] > ol,
 	body > div > main[data-segment*='blog/'] > ul,
 	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > .code-group,
 	body > div > main[data-segment*='blog/'] > blockquote,
 	body > div > main[data-segment*='blog/'] > h1,
 	body > div > main[data-segment*='blog/'] > h2,
