@@ -1,5 +1,3 @@
-import type { marked } from 'marked';
-
 const admonitionTypes = ['danger', 'warning', 'info', 'success', 'note', 'ai', 'tip'];
 const startReg = new RegExp(`^:::(${admonitionTypes.join('|')})$`);
 const endReg = /^:::$/;
@@ -7,11 +5,11 @@ const endReg = /^:::$/;
 export const customBlock = {
 	name: 'customBlock',
 	level: 'block',
-	start(this: marked.TokenizerThis, src: string) {
+	start(this, src: string) {
 		const index = src.match(new RegExp(`(^|[\\r\\n]):::(${admonitionTypes.join('|')})`))?.index;
 		return index;
 	},
-	tokenizer(src: string, _tokens): marked.Tokens.Generic | void {
+	tokenizer(src: string, _tokens) {
 		const lines = src.split(/\n/);
 		if (startReg.test(lines[0])) {
 			const section = { x: -1, y: -1 };
@@ -48,7 +46,7 @@ export const customBlock = {
 			}
 		}
 	},
-	renderer(this: marked.RendererThis, token) {
+	renderer(this, token) {
 		const [clazz, title] = {
 			danger: ['danger', 'Alert'],
 			warning: ['warning', 'Warning'],
@@ -60,7 +58,7 @@ export const customBlock = {
 		}[token.icon];
 		return `<div class="custom-block ${clazz}">
 			<div class="custom-block-title">${title}</div>
-			${this.parser.parse(token.tokens!)}
+			${this.parser.parse(token.tokens)}
 		</div>`;
 	},
 };

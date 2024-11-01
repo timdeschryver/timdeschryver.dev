@@ -5,7 +5,10 @@
 	import Newsletter from '$lib/Newsletter.svelte';
 
 	let lastConfetti = 0;
-	function fireConfetti(evt: MouseEvent): void {
+	function fireConfetti(evt: MouseEvent | FocusEvent): void {
+		if (evt instanceof FocusEvent) {
+			return;
+		}
 		if (lastConfetti + 1_111 > Date.now()) return;
 
 		lastConfetti = Date.now();
@@ -58,17 +61,17 @@
 
 	<p>
 		A software engineer from Belgium who enjoys to <strong
-			on:mouseover={fireConfetti}
-			on:focus={fireConfetti}><a class="mark mark-hover" href="/blog">blog</a></strong
+			onmouseover={fireConfetti}
+			onfocus={fireConfetti}><a class="mark mark-hover" href="/blog">blog</a></strong
 		>
 		about my experiences with the aim to help others and my future self, primarily on
-		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>Angular</strong>
+		<strong onmouseover={fireConfetti} onfocus={fireConfetti}>Angular</strong>
 		and
-		<strong on:mouseover={fireConfetti} on:focus={fireConfetti}>.NET</strong>.
+		<strong onmouseover={fireConfetti} onfocus={fireConfetti}>.NET</strong>.
 	</p>
 
 	<p>
-		Lifelong learner and <strong on:mouseover={fireConfetti} on:focus={fireConfetti}
+		Lifelong learner and <strong onmouseover={fireConfetti} onfocus={fireConfetti}
 			><a class="mark mark-hover" href="https://github.com/timdeschryver" rel="external"
 				>open-source enthusiast</a
 			></strong
@@ -80,7 +83,7 @@
 	</p>
 
 	<p>
-		Recognized by Microsoft as a <strong on:mouseover={fireConfetti} on:focus={fireConfetti}
+		Recognized by Microsoft as a <strong onmouseover={fireConfetti} onfocus={fireConfetti}
 			><a
 				class="mark mark-hover"
 				href="https://mvp.microsoft.com/en-us/PublicProfile/5004452?fullName=Tim%20Deschryver"
@@ -90,7 +93,7 @@
 	</p>
 
 	<p>
-		Also a hobby <strong on:mouseover={fireConfetti} on:focus={fireConfetti}>runner</strong>.
+		Also a hobby <strong onmouseover={fireConfetti} onfocus={fireConfetti}>runner</strong>.
 	</p>
 
 	<p>

@@ -40,8 +40,10 @@ export async function readPosts(): Promise<
 			canonical: string;
 			outgoingLinks: { slug: string; title: string }[];
 			incomingLinks: { slug: string; title: string }[];
-			translations: { url: string; author: string; profile: string }[];
+			translations: { url: string; author: string; profile: string; language: string }[];
 			toc: TOC[];
+			author: string;
+			banner: string;
 		};
 	}[]
 > {
@@ -56,7 +58,7 @@ export async function readPosts(): Promise<
 			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
 			return dirs;
 		},
-		{} as { [directory: string]: { file: string; path: string }[] },
+		{} as Record<string, { file: string; path: string }[]>,
 	);
 
 	const postsSorted = Object.values(directories)
@@ -150,7 +152,7 @@ export function orderTags(tags: string[]) {
 					acc[tag] = (acc[tag] || 0) + 1;
 					return acc;
 				},
-				{} as { [tag: string]: number },
+				{} as Record<string, number>,
 			),
 	)
 		.sort(([v1, c1], [v2, c2]) => c2 - c1 || v2.localeCompare(v1))

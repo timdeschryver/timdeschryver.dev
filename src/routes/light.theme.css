@@ -13,6 +13,7 @@ html.light {
 	--syntax-invalid: #b4637a;
 	--syntax-invalid-deprecated: #797593;
 	--syntax-keyword: #286983;
+	--syntax-variable-language-this: #286983;
 	--syntax-markup-inserted-diff: #56949f;
 	--syntax-markup-deleted-diff: #b4637a;
 	--syntax-markup-heading: undefined;
@@ -110,8 +111,11 @@ html.light {
 	--dropdown-foreground: #575279;
 	--dropdown-listBackground: #fffaf3;
 	--editor-background: #faf4ed;
-	--editor-findMatchBackground: #6e6a8626;
+	--editor-findMatchBackground: #ea9d3433;
+	--editor-findMatchBorder: #ea9d3480;
+	--editor-findMatchForeground: #575279;
 	--editor-findMatchHighlightBackground: #6e6a8626;
+	--editor-findMatchHighlightForeground: #575279;
 	--editor-findRangeHighlightBackground: #6e6a8626;
 	--editor-findRangeHighlightBorder: #0000;
 	--editor-focusedStackFrameHighlightBackground: #6e6a8614;
@@ -175,7 +179,7 @@ html.light {
 	--editorGroupHeader-tabsBorder: #0000;
 	--editorGutter-addedBackground: #56949f;
 	--editorGutter-background: #faf4ed;
-	--editorGutter-commentRangeForeground: #797593;
+	--editorGutter-commentRangeForeground: #f2e9e1;
 	--editorGutter-deletedBackground: #b4637a;
 	--editorGutter-foldingControlForeground: #907aa9;
 	--editorGutter-modifiedBackground: #d7827e;
@@ -209,6 +213,8 @@ html.light {
 	--editorOverviewRuler-background: #faf4ed;
 	--editorOverviewRuler-border: #6e6a8626;
 	--editorOverviewRuler-bracketMatchForeground: #797593;
+	--editorOverviewRuler-commentForeground: #79759380;
+	--editorOverviewRuler-commentUnresolvedForeground: #ea9d3480;
 	--editorOverviewRuler-commonContentForeground: #6e6a860d;
 	--editorOverviewRuler-currentContentForeground: #6e6a8614;
 	--editorOverviewRuler-deletedForeground: #b4637a80;
@@ -268,6 +274,7 @@ html.light {
 	--input-foreground: #575279;
 	--input-placeholderForeground: #797593;
 	--inputOption-activeBackground: #d7827e26;
+	--inputOption-activeBorder: #0000;
 	--inputOption-activeForeground: #d7827e;
 	--inputValidation-errorBackground: #fffaf3;
 	--inputValidation-errorBorder: #6e6a8626;

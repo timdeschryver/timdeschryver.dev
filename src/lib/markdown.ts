@@ -53,6 +53,7 @@ const highlighter = await shiki.getHighlighter({
 		'sql',
 		'angular-html',
 		'angular-ts',
+		'md',
 	],
 });
 
@@ -122,7 +123,7 @@ export function parseFileToHtmlAndMeta(file): {
 					new URL(link).origin,
 				)})'`;
 				attributes.push('data-with-favicon');
-			} catch (err) {
+			} catch {
 				// noop
 			}
 		}

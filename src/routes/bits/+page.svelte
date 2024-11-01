@@ -1,20 +1,25 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import Head from '$lib/Head.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
-	import copyLifeCycle from '$lib/copy-lifecycle';
+	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
+	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
+	interface Props {
+		data: import('./$types').PageData;
+	}
+
+	let { data }: Props = $props();
 	const { bits, tags } = data;
 
 	codeBlockLifeCycle();
 	copyLifeCycle();
 
-	let query: string;
-	let params: URLSearchParams;
+	let query: string = $state();
+	let params: URLSearchParams = $state();
 
 	onMount(async () => {
 		params = new URLSearchParams(window.location.search);
@@ -22,17 +27,19 @@
 		query = $page.url.searchParams.get('q') || params.get('q') || '';
 	});
 
-	$: if (params) {
-		if (query) {
-			params.set('q', query);
-			window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
-		} else {
-			params.delete('q');
-			window.history.replaceState(window.history.state, '', location.pathname);
+	run(() => {
+		if (params) {
+			if (query) {
+				params.set('q', query);
+				window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
+			} else {
+				params.delete('q');
+				window.history.replaceState(window.history.state, '', location.pathname);
+			}
 		}
-	}
+	});
 
-	$: queryParts = (query || '').split(' ').filter(Boolean);
+	let queryParts = $derived((query || '').split(' ').filter(Boolean));
 
 	function tagClicked(tag) {
 		if (queryParts.includes(tag)) {
@@ -77,7 +84,7 @@
 
 	<div class="mt-normal">
 		{#each tags as tag}
-			<button class:active={queryParts && tagSelected(tag)} on:click={() => tagClicked(tag)}>
+			<button class:active={queryParts && tagSelected(tag)} onclick={() => tagClicked(tag)}>
 				# {tag}
 			</button>
 		{/each}

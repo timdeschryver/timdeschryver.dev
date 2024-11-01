@@ -1,10 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { TAG_COLORS, orderTags, readPosts } from '../_posts';
-import type { PageServerLoad } from './$types';
 import * as fs from 'fs';
 
-// const twitterClient = new TwitterClient(variables.twitterBearerToken.replace('Bearer:', '').trim());
-export async function load({ params }): Promise<PageServerLoad> {
+export async function load({ params }) {
 	const posts = await readPosts();
 	const post = posts.find((p) => p.metadata.slug === params.slug);
 	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));

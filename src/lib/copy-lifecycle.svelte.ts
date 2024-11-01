@@ -1,9 +1,9 @@
-import { afterUpdate, onDestroy } from 'svelte';
+import { onDestroy } from 'svelte';
 
 export default function copyLifeCycle() {
 	let copyButtons: HTMLElement[] = [];
 
-	afterUpdate(async () => {
+	$effect(() => {
 		copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
 		copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
 		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));

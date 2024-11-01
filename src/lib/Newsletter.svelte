@@ -1,6 +1,12 @@
 <script>
-	export let beehiivId = '6e82f6ae-d456-4c88-8cda-8ceb01587e01';
-	export let hideTitle = false;
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [beehiivId]
+	 * @property {boolean} [hideTitle]
+	 */
+
+	/** @type {Props} */
+	let { beehiivId = '6e82f6ae-d456-4c88-8cda-8ceb01587e01', hideTitle = false } = $props();
 </script>
 
 <div style="padding: 1em; border: 1px solid; background: var(--background-color-transparent)">

@@ -18,12 +18,10 @@ function createBlog() {
 		toggleTldr: () =>
 			update((b) => {
 				const params = new URLSearchParams(window.location.search);
-
-				if (b.state === 'detailed') {
-					b.state = 'detailed';
+				const newState = b.state === 'tldr' ? 'detailed' : 'tldr';
+				if (newState === 'tldr') {
 					params.set('tldr', '1');
-				} else if (b.state === 'tldr') {
-					b.state = 'tldr';
+				} else if (newState === 'detailed') {
 					params.delete('tldr');
 				}
 
@@ -38,7 +36,10 @@ function createBlog() {
 					window.history.replaceState(window.history.state, '', `${location.pathname}`);
 				}
 
-				return b;
+				return {
+					...b,
+					state: newState,
+				};
 			}),
 		reset: () => set(null),
 	};

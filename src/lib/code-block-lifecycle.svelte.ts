@@ -1,9 +1,9 @@
-import { afterUpdate, onDestroy } from 'svelte';
+import { onDestroy } from 'svelte';
 
 export default function codeBlockLifeCycle() {
 	let codeTabs: Element[] = [];
 
-	afterUpdate(() => {
+	$effect(() => {
 		codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
 		codeTabs = [...document.querySelectorAll('.code-group-tab')];
 		codeTabs.forEach((pre) => pre.addEventListener('click', codeTabClick));

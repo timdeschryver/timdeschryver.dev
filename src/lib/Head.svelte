@@ -1,6 +1,5 @@
 <script lang="ts">
-	export let title;
-	export let details = true;
+	let { title = '', details = true } = $props();
 </script>
 
 <svelte:head>

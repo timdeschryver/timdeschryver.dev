@@ -1,5 +1,11 @@
 <script>
-	export let editUrl = '';
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [editUrl]
+	 */
+
+	/** @type {Props} */
+	let { editUrl = '' } = $props();
 </script>
 
 <p>

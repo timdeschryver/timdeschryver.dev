@@ -1,6 +1,5 @@
 import { TAG_COLORS, orderTags, readPosts } from './_posts';
 
-/** @type {import('./$types').PageLoad} */
 export async function load() {
 	const posts = await readPosts();
 	const metadata = posts.map((p) => ({

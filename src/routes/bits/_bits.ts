@@ -36,7 +36,7 @@ export async function readBits(): Promise<
 			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
 			return dirs;
 		},
-		{} as { [directory: string]: { file: string; path: string }[] },
+		{} as Record<string, { file: string; path: string }[]>,
 	);
 
 	const bitsSorted = Object.values(directories)
