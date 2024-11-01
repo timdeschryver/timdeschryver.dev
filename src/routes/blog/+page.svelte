@@ -42,13 +42,10 @@
 		}
 	});
 
-	const queryParts = $derived(() => {
-		return (filter.query || '').split(' ');
-	});
+	const queryParts = $derived(() => (filter.query || '').split(' '));
 
 	const filteredPosts = $derived(() => {
 		let filteredPosts = posts;
-		console.log(posts);
 		if (filter.query) {
 			filteredPosts = posts.filter((p) => {
 				return queryParts().every(
@@ -133,18 +130,26 @@
 		<li style:--accent-color={`var(--${post.color})`}>
 			<article>
 				<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
-					<h2 style:--post-title="post-title-{post.slug}">
-						<p class="mark-hover">
-							{post.title}
-						</p>
+					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
+						{post.title}
 					</h2>
 					<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 					<div>{post.description}</div>
 				</a>
 				<div>
-					<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover"> Read more</a>
+					<a
+						href={`/blog/${post.slug}`}
+						data-sveltekit-preload-data="hover"
+						class="bold mark-hover"
+					>
+						Read more</a
+					>
 					{#if post.tldr}
-						| <a href={`/blog/${post.slug}?tldr=true`} class="mark-hover">Read TLDR</a>
+						| <a
+							href={`/blog/${post.slug}?tldr=true`}
+							data-sveltekit-preload-data="hover"
+							class="bold mark-hover">Read TLDR</a
+						>
 					{/if}
 				</div>
 			</article>
@@ -214,9 +219,5 @@
 		h2 {
 			view-transition-name: var(--post-title);
 		}
-	}
-
-	a {
-		font-weight: bold;
 	}
 </style>

@@ -6,7 +6,7 @@
 	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { variables } from '$lib/variables';
 	import Host from '$lib/Host.svelte';
-	import { blog } from '$lib/current-blog.store';
+	import { blog } from '$lib/current-blog.svelte';
 	import { theme } from '$lib/theme.store';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
@@ -17,8 +17,8 @@
 	let { children }: Props = $props();
 
 	let segment = $derived($page.url.pathname.substring(1));
-	let support = $state();
-	let y = $state();
+	let support = $state<HTMLElement | null>();
+	let scrollY = $state(0);
 
 	onMount(() => {
 		if (typeof kofiWidgetOverlay !== 'undefined') {
@@ -65,7 +65,7 @@
 
 	run(() => {
 		if (support) {
-			if (segment.startsWith('blog/') && y > 1000) {
+			if (segment.startsWith('blog/') && scrollY > 1000) {
 				support.style.display = 'block';
 			} else {
 				support.style.display = 'none';
@@ -119,7 +119,7 @@
 	<script async src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
 </svelte:head>
 
-<svelte:window bind:scrollY={y} />
+<svelte:window bind:scrollY />
 
 <header>
 	<div>
@@ -150,7 +150,7 @@
 			{/if}
 		</nav>
 
-		{#if $blog}
+		{#if blog.blog}
 			<div
 				class="current-details title"
 				onclick={() =>
@@ -161,14 +161,14 @@
 				tabindex="0"
 			>
 				<span class="material-symbols-outlined"> link </span>
-				{$blog.title}
+				{blog.blog.title}
 			</div>
 		{/if}
 
-		{#if $blog && $blog.state !== 'single'}
+		{#if blog.blog && blog.blog.state !== 'single'}
 			<div class="current-details">
 				<button onclick={blog.toggleTldr}
-					>{$blog.state === 'detailed'
+					>{blog.blog.state === 'detailed'
 						? 'Switch to TLDR version'
 						: 'Switch to detailed version'}</button
 				>

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Comments from '$lib/Comments.svelte';
-	import { blog } from '$lib/current-blog.store';
+	import { blog } from '$lib/current-blog.svelte';
 	import Share from '$lib/Share.svelte';
 	import Actions from '$lib/Actions.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
@@ -46,16 +46,7 @@
 	onMount(() => {
 		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
 		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
-	});
-
-	onDestroy(() => {
-		blog.reset();
-		pres().forEach((pre) => {
-			pre.removeEventListener('click', copyLinkToCodeBlock);
-		});
-		headings().forEach((h) => {
-			h.removeEventListener('click', headerClick);
-		});
+		return () => blog.reset();
 	});
 
 	let scrollY = $state(0);
@@ -114,6 +105,11 @@
 			h.removeEventListener('click', headerClick);
 			h.addEventListener('click', headerClick);
 		});
+		return () => {
+			headings().forEach((h) => {
+				h.removeEventListener('click', headerClick);
+			});
+		};
 	});
 
 	const pres = $derived(() => {
@@ -124,15 +120,20 @@
 			pre.removeEventListener('click', copyLinkToCodeBlock);
 			pre.addEventListener('click', copyLinkToCodeBlock);
 		});
+		return () => {
+			pres().forEach((pre) => {
+				pre.removeEventListener('click', copyLinkToCodeBlock);
+			});
+		};
 	});
 
 	let lastHeadingId = $state(null);
 	$effect(() => {
 		if (browser) {
-			if ($blog?.state === 'tldr' && lastHeadingId) {
+			if (blog.blog?.state === 'tldr' && lastHeadingId) {
 				lastHeadingId = null;
 				window.history.replaceState(window.history.state, '', ' ');
-			} else if ($blog?.state !== 'tldr' && headings()) {
+			} else if (blog.blog?.state !== 'tldr' && headings()) {
 				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
 					lastHeadingId = heading?.id;
@@ -216,7 +217,7 @@
 
 <aside class="left-nav" hidden={!sideNavsVisible()}>
 	{#if post.metadata.toc.length > 1}
-		<div class="toc" hidden={$blog?.state === 'tldr'}>
+		<div class="toc" hidden={blog.blog?.state === 'tldr'}>
 			<h3>On this page</h3>
 			<ul>
 				{#each post.metadata.toc as { slug, description, level }}
@@ -262,16 +263,18 @@
 
 {#if post.tldr}
 	<button class="tldr" onclick={blog.toggleTldr}>
-		👀 {$blog?.state === 'tldr'
+		👀 {blog.blog?.state === 'tldr'
 			? 'I want to read the blog post'
 			: 'Just show me the code already'}</button
 	>
 {/if}
 
-{#if $blog?.state === 'tldr' && post.tldr}
-	{@html htmlStyle + post.tldr}
+{@html htmlStyle}
+
+{#if blog.blog?.state === 'tldr' && post.tldr}
+	{@html post.tldr}
 {:else}
-	{@html htmlStyle + post.html}
+	{@html post.html}
 
 	{#if post.contributors.length}
 		<h4>A warm thank you to the contributors of this blog post</h4>

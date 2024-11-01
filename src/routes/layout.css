@@ -445,6 +445,10 @@ thead {
 	visibility: hidden;
 }
 
+.bold {
+	font-weight: bold;
+}
+
 .m-auto {
 	margin: auto;
 }
