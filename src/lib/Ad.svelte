@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	let ad: HTMLDivElement;
+	import { dev } from '$app/environment';
+	let ad: HTMLDivElement = $state();
 
 	onMount(() => {
+		if (dev) {
+			return;
+		}
 		const script = document.createElement('script');
 		script.async = true;
 		script.type = 'text/javascript';

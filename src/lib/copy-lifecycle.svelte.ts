@@ -1,16 +1,17 @@
-import { afterUpdate, onDestroy } from 'svelte';
+import { blog } from './current-blog.svelte';
 
 export default function copyLifeCycle() {
 	let copyButtons: HTMLElement[] = [];
 
-	afterUpdate(async () => {
+	$effect(() => {
 		copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
-		copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
-		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
-	});
-
-	onDestroy(() => {
-		copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
+		if (blog.blog?.state) {
+			copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
+			copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
+		}
+		return () => {
+			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
+		};
 	});
 
 	function copyCodeOnClick(e: PointerEvent) {

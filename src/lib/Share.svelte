@@ -1,7 +1,13 @@
 <script>
-	export let text = '';
-	export let url = '';
-	export let title = '';
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [text]
+	 * @property {string} [url]
+	 * @property {string} [title]
+	 */
+
+	/** @type {Props} */
+	let { text = '', url = '', title = '' } = $props();
 </script>
 
 <h4>{title}</h4>

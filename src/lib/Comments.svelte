@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { theme } from './theme.store';
 
-	let divElement: HTMLElement;
+	let divElement: HTMLElement = $state();
 
 	onMount(() => {
 		const scriptElm = document.createElement('script');
@@ -34,4 +34,4 @@
 	});
 </script>
 
-<div bind:this={divElement} class="mt-0" />
+<div bind:this={divElement} class="mt-0"></div>

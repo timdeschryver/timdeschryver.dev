@@ -285,6 +285,7 @@ body > div > main > .wide {
 @media (max-width: 1799px) {
 	body > div > main[data-segment*='blog/'] > div,
 	body > div > main[data-segment*='blog/'] > p,
+	body > div > main[data-segment*='blog/'] > button,
 	body > div > main[data-segment*='blog/'] > ol,
 	body > div > main[data-segment*='blog/'] > ul,
 	body > div > main[data-segment*='blog/'] > pre,
@@ -344,6 +345,7 @@ body > div > main > .wide {
 
 @media (max-width: 1022px) {
 	body > div > main[data-segment*='blog/'] > div,
+	body > div > main[data-segment*='blog/'] > button,
 	body > div > main[data-segment*='blog/'] > p,
 	body > div > main[data-segment*='blog/'] > ol,
 	body > div > main[data-segment*='blog/'] > ul,
@@ -441,6 +443,10 @@ thead {
 [hidden] {
 	display: none !important;
 	visibility: hidden;
+}
+
+.bold {
+	font-weight: bold;
 }
 
 .m-auto {

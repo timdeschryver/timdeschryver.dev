@@ -43,7 +43,6 @@ async function getContributors(slug) {
 			return;
 		}
 
-		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			if (visited.includes(page.url())) {
 				// we ended up in a loop

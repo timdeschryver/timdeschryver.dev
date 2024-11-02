@@ -3,17 +3,20 @@
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Share from '$lib/Share.svelte';
-	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
-	import copyLifeCycle from '$lib/copy-lifecycle';
+	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
+	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Comments from '$lib/Comments.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
+	interface Props {
+		data: import('./$types').PageData;
+	}
+
+	let { data }: Props = $props();
 	const { bit } = data;
 
-	let scrollY;
+	let scrollY = $state();
 	codeBlockLifeCycle();
 	copyLifeCycle();
 </script>

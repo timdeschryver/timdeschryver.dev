@@ -1,17 +1,24 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
 	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { variables } from '$lib/variables';
 	import Host from '$lib/Host.svelte';
-	import { blog } from '$lib/current-blog.store';
+	import { blog } from '$lib/current-blog.svelte';
 	import { theme } from '$lib/theme.store';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
 
-	$: segment = $page.url.pathname.substring(1);
-	let support;
-	let y;
+	let { children }: Props = $props();
+
+	let segment = $derived($page.url.pathname.substring(1));
+	let support = $state<HTMLElement | null>();
+	let scrollY = $state(0);
 
 	onMount(() => {
 		if (typeof kofiWidgetOverlay !== 'undefined') {
@@ -56,13 +63,15 @@
 		}
 	});
 
-	$: if (support) {
-		if (segment.startsWith('blog/') && y > 1000) {
-			support.style.display = 'block';
-		} else {
-			support.style.display = 'none';
+	run(() => {
+		if (support) {
+			if (segment.startsWith('blog/') && scrollY > 1000) {
+				support.style.display = 'block';
+			} else {
+				support.style.display = 'none';
+			}
 		}
-	}
+	});
 
 	function toggleTheme(event: MouseEvent, newTheme: string) {
 		// Credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
@@ -98,9 +107,11 @@
 		});
 	}
 
-	$: if (typeof document !== 'undefined') {
-		document.documentElement.className = $theme;
-	}
+	run(() => {
+		if (typeof document !== 'undefined') {
+			document.documentElement.className = $theme;
+		}
+	});
 </script>
 
 <svelte:head>
@@ -108,7 +119,7 @@
 	<script async src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
 </svelte:head>
 
-<svelte:window bind:scrollY={y} />
+<svelte:window bind:scrollY />
 
 <header>
 	<div>
@@ -124,7 +135,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to light theme"
-					on:click={(evt) => toggleTheme(evt, 'light')}
+					onclick={(evt) => toggleTheme(evt, 'light')}
 				>
 					<span class="material-symbols-outlined"> light_mode </span>
 				</button>
@@ -132,32 +143,32 @@
 				<button
 					class="theme-switch"
 					title="Switch to dark theme"
-					on:click={(evt) => toggleTheme(evt, 'dark')}
+					onclick={(evt) => toggleTheme(evt, 'dark')}
 				>
 					<span class="material-symbols-outlined"> dark_mode </span>
 				</button>
 			{/if}
 		</nav>
 
-		{#if $blog}
+		{#if blog.blog}
 			<div
 				class="current-details title"
-				on:click={() =>
+				onclick={() =>
 					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
-				on:keydown={() =>
+				onkeydown={() =>
 					navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}`)}
 				role="button"
 				tabindex="0"
 			>
 				<span class="material-symbols-outlined"> link </span>
-				{$blog.title}
+				{blog.blog.title}
 			</div>
 		{/if}
 
-		{#if $blog && $blog.state !== 'single'}
+		{#if blog.blog && blog.blog.state !== 'single'}
 			<div class="current-details">
-				<button on:click={blog.toggleTldr}
-					>{$blog.state === 'detailed'
+				<button onclick={blog.toggleTldr}
+					>{blog.blog.state === 'detailed'
 						? 'Switch to TLDR version'
 						: 'Switch to detailed version'}</button
 				>
@@ -167,7 +178,7 @@
 </header>
 
 <main style={segment?.startsWith('bit') ? '	perspective: 2000px;' : ''} data-segment={segment}>
-	<slot />
+	{@render children?.()}
 </main>
 
 {#if segment}

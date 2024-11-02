@@ -1,16 +1,17 @@
-import { afterUpdate, onDestroy } from 'svelte';
+import { blog } from './current-blog.svelte';
 
 export default function codeBlockLifeCycle() {
 	let codeTabs: Element[] = [];
 
-	afterUpdate(() => {
+	$effect(() => {
 		codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
-		codeTabs = [...document.querySelectorAll('.code-group-tab')];
-		codeTabs.forEach((pre) => pre.addEventListener('click', codeTabClick));
-	});
-
-	onDestroy(() => {
-		codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
+		if (blog.blog?.state) {
+			codeTabs = [...document.querySelectorAll('.code-group-tab')];
+			codeTabs.forEach((pre) => pre.addEventListener('click', codeTabClick));
+			return () => {
+				codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
+			};
+		}
 	});
 
 	function codeTabClick(e: PointerEvent) {

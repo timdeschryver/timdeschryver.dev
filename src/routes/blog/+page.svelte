@@ -4,15 +4,14 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
+	const { data } = $props();
 	const { posts, tags } = data;
 
-	let filter = {
+	let filter = $state({
 		query: '',
 		from: null,
 		to: null,
-	};
+	});
 
 	let params;
 
@@ -30,29 +29,29 @@
 		filter.to = $page.url.searchParams.get('to') || params.get('to');
 	});
 
-	$: if (params) {
-		if (filter.query) {
-			params.set('q', filter.query);
-		} else {
-			params.delete('q');
+	$effect(() => {
+		if (params) {
+			if (filter.query) {
+				params.set('q', filter.query);
+			} else {
+				params.delete('q');
+			}
+
+			const paramsParts = [location.pathname, params.size ? params : null].filter(Boolean);
+			window.history.replaceState(window.history.state, '', `${paramsParts.join('?')}`);
 		}
+	});
 
-		const paramsParts = [location.pathname, params.size ? params : null].filter(Boolean);
-		window.history.replaceState(window.history.state, '', `${paramsParts.join('?')}`);
-	}
+	const queryParts = $derived(() => (filter.query || '').split(' '));
 
-	$: queryParts = (filter.query || '').split(' ');
-
-	let filteredPosts = [];
-	$: {
+	const filteredPosts = $derived(() => {
+		let filteredPosts = posts;
 		if (filter.query) {
 			filteredPosts = posts.filter((p) => {
-				return queryParts.every(
+				return queryParts().every(
 					(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q),
 				);
 			});
-		} else {
-			filteredPosts = posts;
 		}
 
 		if (filter.from) {
@@ -62,13 +61,17 @@
 		if (filter.to) {
 			filteredPosts = filteredPosts.filter((p) => new Date(p.date) <= new Date(filter.to));
 		}
-	}
+
+		return filteredPosts;
+	});
 
 	function tagClicked(tag) {
 		if (filter.query === tag) {
 			filter.query = '';
-		} else if (queryParts.includes(tag)) {
-			filter.query = queryParts.filter((q) => q !== tag).join(' ');
+		} else if (queryParts().includes(tag)) {
+			filter.query = queryParts()
+				.filter((q) => q !== tag)
+				.join(' ');
 		} else {
 			filter.query = filter.query ? `${filter.query.trim()} ${tag}` : tag;
 		}
@@ -109,13 +112,13 @@
 		aria-label="Search"
 	/>
 	<div class="mt-0 search-info">
-		<small>found {filteredPosts.length} posts out of {posts.length} posts</small>
+		<small>found {filteredPosts().length} posts out of {posts.length} posts</small>
 	</div>
 	{#each tags as tag}
 		<button
 			class={tag}
-			class:active={queryParts.some((q) => match(q, tag)) || filter.query === tag}
-			on:click={() => tagClicked(tag)}
+			class:active={queryParts().some((q) => match(q, tag)) || filter.query === tag}
+			onclick={() => tagClicked(tag)}
 		>
 			{tag}
 		</button>
@@ -123,25 +126,33 @@
 </div>
 
 <ul>
-	{#each filteredPosts as post}
+	{#each filteredPosts() as post}
 		<li style:--accent-color={`var(--${post.color})`}>
-			<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
-				<article>
-					<h2 style:--post-title="post-title-{post.slug}">
-						<a href={`/blog/${post.slug}`} class="mark-hover">
-							{post.title}
-						</a>
+			<article>
+				<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
+					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
+						{post.title}
 					</h2>
 					<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 					<div>{post.description}</div>
-					<div>
-						<a href={`/blog/${post.slug}`} class="mark-hover">Read more</a>
-						{#if post.tldr}
-							| <a href={`/blog/${post.slug}?tldr=true`} class="mark-hover">Read TLDR</a>
-						{/if}
-					</div>
-				</article>
-			</a>
+				</a>
+				<div>
+					<a
+						href={`/blog/${post.slug}`}
+						data-sveltekit-preload-data="hover"
+						class="bold mark-hover"
+					>
+						Read more</a
+					>
+					{#if post.tldr}
+						| <a
+							href={`/blog/${post.slug}?tldr=true`}
+							data-sveltekit-preload-data="hover"
+							class="bold mark-hover">Read TLDR</a
+						>
+					{/if}
+				</div>
+			</article>
 		</li>
 	{:else}Sorry, no posts matched your criteria...
 	{/each}
@@ -208,9 +219,5 @@
 		h2 {
 			view-transition-name: var(--post-title);
 		}
-	}
-
-	a {
-		font-weight: bold;
 	}
 </style>

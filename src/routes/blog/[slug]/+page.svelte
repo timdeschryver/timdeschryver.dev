@@ -1,23 +1,20 @@
 <script lang="ts">
-	import { onDestroy, afterUpdate, tick } from 'svelte';
+	import { onMount } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Comments from '$lib/Comments.svelte';
-	import { blog } from '$lib/current-blog.store';
+	import { blog } from '$lib/current-blog.svelte';
 	import Share from '$lib/Share.svelte';
 	import Actions from '$lib/Actions.svelte';
-	import codeBlockLifeCycle from '$lib/code-block-lifecycle';
-	import copyLifeCycle from '$lib/copy-lifecycle';
+	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
+	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
+	import { browser } from '$app/environment';
 
-	/** @type {import('./$types').PageData} */
-	export let data;
+	const { data } = $props();
 	const { post } = data;
-
-	codeBlockLifeCycle();
-	copyLifeCycle();
 
 	const logos = post.metadata.tags
 		.map((tag) => {
@@ -43,12 +40,23 @@
 		})
 		.filter(Boolean);
 
-	let scrollY;
-	let header: HTMLElement | null;
-	$: sideNavsVisible =
-		scrollY &&
-		header &&
-		header.getBoundingClientRect().bottom + header.offsetHeight - 120 < scrollY;
+	codeBlockLifeCycle();
+	copyLifeCycle();
+
+	onMount(() => {
+		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
+		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
+		return () => blog.reset();
+	});
+
+	let scrollY = $state(0);
+	let header: HTMLElement | null = $state(null);
+	const sideNavsVisible = $derived(
+		() =>
+			scrollY &&
+			header &&
+			header.getBoundingClientRect().bottom + header.offsetHeight - 120 < scrollY,
+	);
 
 	function headerClick(evt: MouseEvent) {
 		evt.preventDefault();
@@ -66,7 +74,7 @@
 		window.scrollTo({ top: y, behavior: 'smooth' });
 	}
 
-	$: htmlStyle = `<style> 
+	const htmlStyle = `<style> 
 		main {
 			--accent-color: var(--${post.metadata.color});
 		}
@@ -83,56 +91,61 @@
 		}
 	</style>`;
 
-	let headings = null;
-	let pres: HTMLElement[] = [];
-
-	afterUpdate(async () => {
+	const headings = $derived(() => {
+		if (!browser) {
+			return [];
+		}
 		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
-		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
-		headings = hasTldr
-			? null
-			: headings || window.history.pushState
-				? [...document.querySelectorAll('main > h2,h3')].reverse()
-				: [];
-
-		await tick();
-		pres = [...document.querySelectorAll('pre')];
-		pres.forEach((pre) => {
-			pre.removeEventListener('click', copyLinkToCodeBlock);
-			pre.addEventListener('click', copyLinkToCodeBlock);
-		});
-		headings?.forEach((h) => {
+		return hasTldr
+			? []
+			: ([...document.querySelectorAll('main > h2,h3')].reverse() as HTMLElement[]);
+	});
+	$effect(() => {
+		headings().forEach((h) => {
 			h.removeEventListener('click', headerClick);
 			h.addEventListener('click', headerClick);
 		});
+		return () => {
+			headings().forEach((h) => {
+				h.removeEventListener('click', headerClick);
+			});
+		};
 	});
 
-	onDestroy(() => {
-		blog.reset();
-
-		pres?.forEach((pre) => {
+	const pres = $derived(() => {
+		return browser ? [...document.querySelectorAll('pre')] : [];
+	});
+	$effect(() => {
+		pres().forEach((pre) => {
 			pre.removeEventListener('click', copyLinkToCodeBlock);
+			pre.addEventListener('click', copyLinkToCodeBlock);
 		});
-		headings?.forEach((h) => {
-			h.removeEventListener('click', headerClick);
-		});
+		return () => {
+			pres().forEach((pre) => {
+				pre.removeEventListener('click', copyLinkToCodeBlock);
+			});
+		};
 	});
 
-	let lastHeadingId = null;
-	$: {
-		if (typeof window !== 'undefined') {
-			if ($blog?.state === 'tldr' && lastHeadingId) {
+	let lastHeadingId = $state(null);
+	$effect(() => {
+		if (browser) {
+			if (blog.blog?.state === 'tldr' && lastHeadingId) {
 				lastHeadingId = null;
 				window.history.replaceState(window.history.state, '', ' ');
-			} else if ($blog?.state !== 'tldr' && headings) {
-				const heading = headings.find((h) => h.offsetTop <= scrollY + 110);
+			} else if (blog.blog?.state !== 'tldr' && headings()) {
+				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
 					lastHeadingId = heading?.id;
-					window.history.replaceState(window.history.state, '', heading ? `#${heading?.id}` : ' ');
+					window.history.replaceState(
+						window.history.state,
+						'',
+						heading?.id ? `#${heading.id}` : ' ',
+					);
 				}
 			}
 		}
-	}
+	});
 
 	function copyLinkToCodeBlock(e: PointerEvent) {
 		if (e.ctrlKey && navigator.clipboard && navigator.clipboard.writeText) {
@@ -202,14 +215,14 @@
 	</div>
 </header>
 
-<aside class="left-nav" hidden={!sideNavsVisible}>
+<aside class="left-nav" hidden={!sideNavsVisible()}>
 	{#if post.metadata.toc.length > 1}
-		<div class="toc" hidden={$blog?.state === 'tldr'}>
+		<div class="toc" hidden={blog.blog?.state === 'tldr'}>
 			<h3>On this page</h3>
 			<ul>
 				{#each post.metadata.toc as { slug, description, level }}
 					<li class:active={lastHeadingId === slug} style={`--level:${level - 2}`}>
-						<a href={`#${slug}`} on:click={tocClick}>{description}</a>
+						<a href={`#${slug}`} onclick={tocClick}>{description}</a>
 					</li>
 				{/each}
 			</ul>
@@ -249,17 +262,19 @@
 {/if}
 
 {#if post.tldr}
-	<button class="tldr" on:click={blog.toggleTldr}>
-		👀 {$blog?.state === 'tldr'
+	<button class="tldr" onclick={blog.toggleTldr}>
+		👀 {blog.blog?.state === 'tldr'
 			? 'I want to read the blog post'
 			: 'Just show me the code already'}</button
 	>
 {/if}
 
-{#if $blog?.state === 'tldr' && post.tldr}
-	{@html htmlStyle + post.tldr}
+{@html htmlStyle}
+
+{#if blog.blog?.state === 'tldr' && post.tldr}
+	{@html post.tldr}
 {:else}
-	{@html htmlStyle + post.html}
+	{@html post.html}
 
 	{#if post.contributors.length}
 		<h4>A warm thank you to the contributors of this blog post</h4>
