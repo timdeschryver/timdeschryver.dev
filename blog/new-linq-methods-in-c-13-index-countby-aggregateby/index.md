@@ -135,4 +135,4 @@ Students with a B-score: Bob, David
 Students with a C-score: Charlie
 ```
 
-`CountAggregateByBy()` can also accept a comparer (`IEqualityComparer<TKey>? keyComparer`) as the last argument.
+`AggregateBy()` can also accept a comparer (`IEqualityComparer<TKey>? keyComparer`) as the last argument.
