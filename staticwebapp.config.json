@@ -51,6 +51,11 @@
 			"statusCode": 302
 		},
 		{
+			"route": "/bluesky",
+			"redirect": "https://bsky.app/profile/timdeschryver.dev",
+			"statusCode": 302
+		},
+		{
 			"route": "/support",
 			"redirect": "https://www.paypal.com/donate?hosted_button_id=59M5TFPQJS8SQ",
 			"statusCode": 302
