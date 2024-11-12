@@ -425,7 +425,7 @@ tr:last-child {
 }
 
 th {
-	background-color: var(--text-color-subtle);
+	background-color: var(--background-color-subtle);
 }
 
 td,
