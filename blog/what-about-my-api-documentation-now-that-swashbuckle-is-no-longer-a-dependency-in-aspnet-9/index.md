@@ -90,7 +90,7 @@ Because OpenAPI is an established and thus well-known specification, there are p
 If you prefer, you can still resort to Swagger UI, but as you will see, there are more tools that can efficiently render the OpenAPI document.
 These new(er) tools are more flexible and provide more features compared to Swagger UI, so I think it's worth considering them now that you have the opportunity.
 
-### Swagger UI
+### Swashbuckle Swagger UI
 
 If you still want to use [Swagger UI](https://swagger.io/tools/swagger-ui/), you can add the following code to your project.
 
@@ -99,8 +99,6 @@ Instead of adding the full-blown Swashbuckle package, you can just use the `Swas
 ```bash
 dotnet add package Swashbuckle.AspNetCore.SwaggerUI
 ```
-
-Alternatively, you can use NSwag's version with the `NSwag.AspNetCore` package (note that the implementation is slightly different).
 
 After adding the package, you can use `UseSwaggerUI()` to render the OpenAPI document using Swagger UI.
 Because the OpenAPI document is now available at `/openapi/v1.json`, you need to define the document path in the Swagger UI options.
@@ -144,8 +142,6 @@ To use Redoc, install the `Swashbuckle.AspNetCore.ReDoc` package.
 dotnet add package Swashbuckle.AspNetCore.ReDoc
 ```
 
-Alternatively, you can use NSwag's version with the `NSwag.AspNetCore` package (note that the implementation is slightly different).
-
 After installing the package, use the `UseReDoc()` method to render the OpenAPI document using Redoc. Because the OpenAPI document is now available at `/openapi/v1.json`, you need to specify the document path in the ReDoc options.
 
 ```cs{10-13}:Program.cs
@@ -174,6 +170,72 @@ After this, when you go to `https://localhost:{port}/api-docs` you will see the 
 ![The Redoc interface](./images/redoc.png)
 
 The advantage of using Redoc is that it provides a more clean and modern interface compared to Swagger UI, in my opinion. This makes it easier to navigate and read the OpenAPI document.
+
+### NSwag
+
+Swashbuckle is probably the most popular tool to render the OpenAPI document, as it was included in the project template by default in previous .NET versions.
+But, Swashbuckle is not the only tool that can render a Swagger UI (or Redoc) interface.
+
+[NSwag](https://github.com/RicoSuter/NSwag), which is probably most-known for its code-generation capabilities, also provides a middleware to render a UI interface to display the OpenAPI document.
+You have the option to choose between Swagger UI and ReDoc.
+
+To use NSwag, install the `NSwag.AspNetCore` package.
+
+```bash
+dotnet add package NSwag.AspNetCore
+```
+
+Then, you can use the `UseSwaggerUi()` method to render the OpenAPI document using Swagger UI.
+By default this also uses the `swagger.json` generated file, but because we're using the new OpenAPI this needs to be modified to the OpenAPI generated file.
+
+```cs{10-13}:Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.UseSwaggerUi(options =>
+    {
+        options.DocumentPath = "/openapi/v1.json";
+    });
+}
+
+app.UseHttpsRedirection();
+
+app.Run();
+```
+
+When you navigate to `https://localhost:{port}/swagger`, you will see the same Swagger UI interface as in [Swashbuckle Swagger UI](#swashbuckle-swagger-ui).
+
+If you want to use the NSwag version of ReDoc, you can use the `UseReDoc()` method to render the OpenAPI document using ReDoc.
+Just as before with Swagger UI, you the document path needs to be reassigned to the OpenAPI generated file.
+
+```cs{10-13}:Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.UseReDoc(options =>
+    {
+        options.DocumentPath = "/openapi/v1.json";
+    });
+}
+
+app.UseHttpsRedirection();
+
+app.Run();
+```
+
+When you navigate to `https://localhost:{port}/swagger` (yes, it's not a typo, the path is swagger), you will see the same Redoc interface as in [Redoc](#redoc).
 
 ### Scalar
 
