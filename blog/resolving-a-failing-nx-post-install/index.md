@@ -33,11 +33,21 @@ Retriggering the build fixed the problem, but it was not a reliable solution and
 After browsing though the GitHub issues I noticed [we weren't the only ones experiencing this issue](https://github.com/nrwl/nx/issues?q=is:issue%20state:open%20%22Postinstall%20script%22).
 A popular workaround mentioned in the comments is to change the install script to skip the post-install step using the `--ignore-scripts` flag.
 
-```bash
-yarn --frozen-lockfile --ignore-scripts
+:::code-group
+
+```bash [title=npm]
 npm ci --ignore-scripts
-pnpm install --frozen-lockfile --ignore-scripts
 ```
+
+```bash [title=pnpm]
+pnpm install --ignore-scripts
+```
+
+```bash [title=yarn]
+yarn install --ignore-scripts
+```
+
+:::
 
 While this a solution, I don't like the idea of skipping the post-install step.
 In scenarios where a post-install step is crucial, this workaround is not be an option.
@@ -75,4 +85,16 @@ The [npm-ls](https://docs.npmjs.com/cli/v7/commands/npm-ls) command will print t
 ```
 
 After making sure our project and its dependencies were using the same version of `nx`, the problem disappeared.
+
+When re-exucuting the `ls` commandd, you should now see the same version of `nx` in the tree structure:
+
+```bash
++-- @nx/angular@20.1.2
+| `-- @nx/devkit@20.1.2
+|   `-- nx@20.1.2 deduped
++-- @nx/workspace@20.1.2
+| `-- nx@20.1.2 deduped
+`-- nx@20.1.2
+```
+
 I expect the issue was caused by the different versions of `nx` that started multiple concurrent processes to run the post-install step at the same time, which were locking each other up.
