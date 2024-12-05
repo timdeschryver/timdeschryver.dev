@@ -1,7 +1,7 @@
 ---
 title: Obfuscating data in SQL Server
 slug: obfuscating-data-in-sql-server
-description: Obfuscating data is a common practice to protect sensitive information, such as Personally identifiable information (PII). In this post, I will go over some techniques on how you can obfuscate data in SQL Server.
+description: Obfuscating data is a common practice to protect sensitive information, such as Personally identifiable information (PII). In this post, I will go over some techniques on how to obfuscate data in SQL Server.
 date: 2024-11-12
 tags: sqlserver, dotnet
 ---
@@ -101,12 +101,12 @@ The function retrieves the value, the length of the unmasked portion, and the po
 It then calculates the mask and the unmasked portion based on the input parameters and returns the masked value.
 Some examples of how to use the function are shown below.
 
-| Input Value   | Unmasked Length | Masked Position | Masked Value  |
-| ------------- | --------------- | --------------- | ------------- |
-| 1234567890    | 3               | start           | 123**\*\*\*** |
-| 1234567890    | 4               | end             | **\***7890    |
-| 1234567890    | 2               | middle          | 12**\*\***90  |
-| 1234567890    | 2               | full            | ****\*\*****  |
+| Input Value   | Unmasked Length | Masked Position | Masked Value     |
+| ------------- | --------------- | --------------- | ---------------- |
+| 1234567890    | 3               | start           | 123**\*\*\***    |
+| 1234567890    | 4               | end             | **\***7890       |
+| 1234567890    | 2               | middle          | 12**\*\***90     |
+| 1234567890    | 2               | full            | \***\*\*\*\*\*** |
 
 If you know your database schema in-depth, you can use the `dbo.MaskData` function within `UPDATE` statements to obfuscate sensitive data.
 Otherwise, you will need to inspect the schema for sensitive columns.
