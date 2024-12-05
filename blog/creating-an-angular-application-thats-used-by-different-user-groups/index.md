@@ -1,7 +1,7 @@
 ---
 title: "Creating an Angular application that's used by different user groups"
 slug: creating-an-angular-application-thats-used-by-different-user-groups
-description: Some guidelines on how to structure and secure your Angular application when it needs to be consumed by different user groups, e.g. by a public and a private portal.
+description: Some guidelines on how to structure and secure your Angular application when it needs to be consumed by different user groups, e.g. by a public and a private portal. You have multiple options to choose from, but my favorite is using an Angular (or NX) workspace, in this blog post I'll explain why.
 date: 2024-12-05
 tags: Angular, Security
 ---
