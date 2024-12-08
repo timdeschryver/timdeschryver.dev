@@ -73,6 +73,6 @@
 		"vite": "5.4.11",
 		"vite-plugin-restart": "0.4.1",
 		"vite-svg-loader": "5.1.0",
-		"vitest": "2.1.4"
+		"vitest": "2.1.8"
 	}
 }
