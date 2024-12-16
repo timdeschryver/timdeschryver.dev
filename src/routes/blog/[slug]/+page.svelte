@@ -372,11 +372,19 @@
 		.left-nav {
 			width: 25%;
 		}
+
+		:global(main[data-segment*='blog/'] ~ footer) {
+			padding-left: 25%;
+		}
 	}
 
 	@media (max-width: 1022px) {
 		.left-nav {
 			display: none;
+		}
+
+		:global(main[data-segment*='blog/'] ~ footer) {
+			padding-left: 0;
 		}
 	}
 

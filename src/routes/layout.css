@@ -283,20 +283,7 @@ body > div > main > .wide {
 }
 
 @media (max-width: 1799px) {
-	body > div > main[data-segment*='blog/'] > div,
-	body > div > main[data-segment*='blog/'] > p,
-	body > div > main[data-segment*='blog/'] > button,
-	body > div > main[data-segment*='blog/'] > ol,
-	body > div > main[data-segment*='blog/'] > ul,
-	body > div > main[data-segment*='blog/'] > pre,
-	body > div > main[data-segment*='blog/'] > blockquote,
-	body > div > main[data-segment*='blog/'] > figure,
-	body > div > main[data-segment*='blog/'] > h1,
-	body > div > main[data-segment*='blog/'] > h2,
-	body > div > main[data-segment*='blog/'] > h3,
-	body > div > main[data-segment*='blog/'] > h4,
-	body > div > main[data-segment*='blog/'] > h5,
-	body > div > main[data-segment*='blog/'] > h6 {
+	body > div > main[data-segment*='blog/'] > *:not(header, aside) {
 		transform: translateX(17.5%);
 	}
 
@@ -314,19 +301,7 @@ body > div > main > .wide {
 
 
 @media (max-width: 1199px) {
-	body > div > main[data-segment*='blog/'] > div,
-	body > div > main[data-segment*='blog/'] > p,
-	body > div > main[data-segment*='blog/'] > ol,
-	body > div > main[data-segment*='blog/'] > ul,
-	body > div > main[data-segment*='blog/'] > pre,
-	body > div > main[data-segment*='blog/'] > blockquote,
-	body > div > main[data-segment*='blog/'] > figure,
-	body > div > main[data-segment*='blog/'] > h1,
-	body > div > main[data-segment*='blog/'] > h2,
-	body > div > main[data-segment*='blog/'] > h3,
-	body > div > main[data-segment*='blog/'] > h4,
-	body > div > main[data-segment*='blog/'] > h5,
-	body > div > main[data-segment*='blog/'] > h6 {
+	body > div > main[data-segment*='blog/'] > *:not(header, aside) {
 		transform: translateX(25%);
 		width: 80%;
 	}
@@ -344,21 +319,7 @@ body > div > main > .wide {
 }
 
 @media (max-width: 1022px) {
-	body > div > main[data-segment*='blog/'] > div,
-	body > div > main[data-segment*='blog/'] > button,
-	body > div > main[data-segment*='blog/'] > p,
-	body > div > main[data-segment*='blog/'] > ol,
-	body > div > main[data-segment*='blog/'] > ul,
-	body > div > main[data-segment*='blog/'] > pre,
-	body > div > main[data-segment*='blog/'] > .code-group,
-	body > div > main[data-segment*='blog/'] > blockquote,
-	body > div > main[data-segment*='blog/'] > figure,
-	body > div > main[data-segment*='blog/'] > h1,
-	body > div > main[data-segment*='blog/'] > h2,
-	body > div > main[data-segment*='blog/'] > h3,
-	body > div > main[data-segment*='blog/'] > h4,
-	body > div > main[data-segment*='blog/'] > h5,
-	body > div > main[data-segment*='blog/'] > h6 {
+	body > div > main[data-segment*='blog/'] > *:not(header, aside) {
 		transform: translateX(0);
 		width: 100%;
 	}
