@@ -254,5 +254,5 @@ Because it uses CNCF standards you also get some useful features for free.
 Observability is the biggest one, in my opinion.
 The traces and logs within the dashboard help to get a detailed overview of what the application is doing, this is a huge time saver when you need to debug an issue.
 
-You can find the example application my [GitHub](https://github.com/timdeschryver/AspireWithAngular).
+You can find the example application on my [GitHub](https://github.com/timdeschryver/AspireWithAngular).
 The .NET Aspire team also created a [sample application](https://github.com/dotnet/aspire-samples/tree/main/samples/AspireWithJavaScript) including all the popular front-end frameworks.

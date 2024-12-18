@@ -9,7 +9,7 @@ tags: GitHub Actions, DevOps, Azure
 
 While migrating my [blog](https://timdeschryver.dev/) to an [Azure Static Web App](https://docs.microsoft.com/en-us/azure/static-web-apps/), I encountered a minor issue that occured during the build process within the GitHub workflow.
 
-I created the Azure Static Web App via the Azure Portal (you can also use the [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps), or the [Azure CLI](https://docs.microsoft.com/en-us/azure/static-web-apps/get-started-cli?tabs=vanilla-javascript)), which automatically created a [GitHub workflow (azure-static-web-apps-salmon-rock-0fb035b03.yml)](https://github.com/timdeschryver/timdeschryver.dev/blob/main/.github/workflows/azure-static-web-apps-salmon-rock-0fb035b03.yml) in my GitHub repository.
+I created the Azure Static Web App via the Azure Portal (you can also use the [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurestaticwebapps), or the [Azure CLI](https://docs.microsoft.com/en-us/azure/static-web-apps/get-started-cli?tabs=vanilla-javascript)), which automatically created a [GitHub workflow (azure-static-web-apps-salmon-rock-0fb035b03.yml)](https://github.com/timdeschryver/timdeschryver.dev/blob/main/.github/workflows/azure-static-web-apps-salmon-rock-0fb035b03.yml) on my GitHub repository.
 
 The worflow uses the [Azure/static-web-apps-deploy](https://github.com/Azure/static-web-apps-deploy) GitHub action to build and deploy the application, and was already [pre-configured](https://docs.microsoft.com/en-us/azure/static-web-apps/configuration).
 
