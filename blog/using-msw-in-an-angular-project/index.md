@@ -307,4 +307,4 @@ MSW also provides a way to share a server across multiple layers of the testing 
 
 The code from this post can be found on [GitHub](https://github.com/timdeschryver/ng-msw).
 
-> Edit 2020-08-11: there's now an official [MSW Angular REST example](https://github.com/mswjs/examples/tree/master/examples/rest-angular)
+> Edit 2020-08-11: there's now an official [MSW Angular REST example](https://github.com/mswjs/examples/tree/main/examples/with-angular)
