@@ -270,12 +270,12 @@ body > div > * > * {
 }
 
 body > div > main > pre,
-body > div > main > .code-group,
+body > div > main > div.code-group,
 body > div > main > iframe,
 body > div > main > figure,
 body > div > main > p:has(video),
 body > div > main > table,
-body > div > main > .wide {
+body > div > main > div.wide {
 	grid-column: 1 / 4;
 	width: 100%;
 	max-width: 95ch;
@@ -288,13 +288,13 @@ body > div > main > .wide {
 	}
 
 	body > div > main[data-segment*='blog/'] > pre,
-	body > div > main[data-segment*='blog/'] > .code-group,
+	body > div > main[data-segment*='blog/'] > div.code-group,
 	body > div > main[data-segment*='blog/'] > figure,
 	body > div > main[data-segment*='blog/'] > iframe,
 	body > div > main[data-segment*='blog/'] > figure,
 	body > div > main[data-segment*='blog/'] > p:has(video),
 	body > div > main[data-segment*='blog/'] > table,
-	body > div > main[data-segment*='blog/'] > .wide {
+	body > div > main[data-segment*='blog/'] > div.wide {
 		width: 70%;
 	}
 }
@@ -307,19 +307,20 @@ body > div > main > .wide {
 	}
 
 	body > div > main[data-segment*='blog/'] > pre,
-	body > div > main[data-segment*='blog/'] > .code-group,
+	body > div > main[data-segment*='blog/'] > div.code-group,
 	body > div > main[data-segment*='blog/'] > figure,
 	body > div > main[data-segment*='blog/'] > iframe,
 	body > div > main[data-segment*='blog/'] > p:has(video),
 	body > div > main[data-segment*='blog/'] > table,
-	body > div > main[data-segment*='blog/'] > .wide {
+	body > div > main[data-segment*='blog/'] > div.wide {
 		transform: translateX(17%);
 		width: 73%;
 	}
 }
 
 @media (max-width: 1022px) {
-	body > div > main[data-segment*='blog/'] > *:not(header, aside) {
+	body > div > main[data-segment*='blog/'] > *:not(header, aside),
+	body > div > main[data-segment*='blog/'] > div.code-group {
 		transform: translateX(0);
 		width: 100%;
 	}
@@ -544,7 +545,7 @@ code > div.line:first-child {
 }
 
 code > div.line:last-child {
-	margin-bottom: .8em;
+	margin-bottom: 1em;
 }
 
 code.dim > div:not(.highlight) {
@@ -579,14 +580,6 @@ code.diff > div.line.removal {
 	border-left: 3px solid hsl(var(--syntax-invalid));
 	background: hsla(var(--syntax-invalid), 8%);
 }
-
-/* pre .highlight {
-	background: var(--editor-selectionHighlightBackground);
-	border-left: 0.3em solid var(--editor-selectionForeground);
-	display: block;
-	margin: 0px -1em;
-	padding: 0px 0.7em;
-} */
 
 pre > .code-heading {
 	background: var(--tab-activeBackground);

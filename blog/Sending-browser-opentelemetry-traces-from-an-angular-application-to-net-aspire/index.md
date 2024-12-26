@@ -84,7 +84,7 @@ This action also configures the CORS settings for the Aspire Dashboard. By defau
 
 :::code-group
 
-```json{13}:AppHost/Properties/launchSettings.json [title=launchSettingsjson"]
+```json{13}:AppHost/Properties/launchSettings.json [title=launchSettings.json]
 {
 	"$schema": "https://json.schemastore.org/launchsettings.json",
 	"profiles": {
