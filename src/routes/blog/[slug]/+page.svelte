@@ -12,39 +12,21 @@
 	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	const { data } = $props();
 	const { post } = data;
 
-	const logos = post.metadata.tags
-		.map((tag) => {
-			switch (tag.toLowerCase()) {
-				case 'dotnet':
-				case '.net':
-					return { src: 'dotnet.svg', alt: 'The .NET logo' };
-				case 'angular':
-					return { src: 'angular.png', alt: 'The Angular logo' };
-				case 'playwright':
-					return { src: 'playwright.svg', alt: 'The Playwright logo' };
-				case 'ngrx':
-					return { src: 'ngrx.svg', alt: 'The NgRx logo' };
-				case 'azure':
-					return { src: 'azure.svg', alt: 'The Azure logo' };
-				case 'zod':
-					return { src: 'zod.svg', alt: 'The zod logo' };
-				case 'angular testing library':
-					return { src: 'atl.svg', alt: 'The Angular Testing Library logo' };
-				default:
-					return null;
-			}
-		})
-		.filter(Boolean);
+	const tldr = $derived(() => post.tldr && $page.url.searchParams.get('tldr') === 'true');
 
-	codeBlockLifeCycle();
+	// svelte-ignore state_referenced_locally
+	codeBlockLifeCycle(tldr);
+
 	copyLifeCycle();
 
 	onMount(() => {
-		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
+		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
 		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
 		return () => blog.reset();
 	});
@@ -55,7 +37,7 @@
 		() =>
 			scrollY &&
 			header &&
-			header.getBoundingClientRect().bottom + header.offsetHeight - 120 < scrollY,
+			header.getBoundingClientRect().bottom + header.offsetHeight - 220 < scrollY,
 	);
 
 	function headerClick(evt: MouseEvent) {
@@ -95,11 +77,12 @@
 		if (!browser) {
 			return [];
 		}
-		const hasTldr = post.tldr && new URLSearchParams(window.location.search).get('tldr') !== null;
+		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
 		return hasTldr
 			? []
-			: ([...document.querySelectorAll('main > h2,h3')].reverse() as HTMLElement[]);
+			: ([...document.querySelectorAll('main > .blog-content > h2,h3')].reverse() as HTMLElement[]);
 	});
+
 	$effect(() => {
 		headings().forEach((h) => {
 			h.removeEventListener('click', headerClick);
@@ -115,6 +98,7 @@
 	const pres = $derived(() => {
 		return browser ? [...document.querySelectorAll('pre')] : [];
 	});
+
 	$effect(() => {
 		pres().forEach((pre) => {
 			pre.removeEventListener('click', copyLinkToCodeBlock);
@@ -132,16 +116,18 @@
 		if (browser) {
 			if (blog.blog?.state === 'tldr' && lastHeadingId) {
 				lastHeadingId = null;
-				window.history.replaceState(window.history.state, '', ' ');
+				goto(blog.tldrQueryString(), {
+					noScroll: true,
+					replaceState: true,
+				});
 			} else if (blog.blog?.state !== 'tldr' && headings()) {
 				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
 					lastHeadingId = heading?.id;
-					window.history.replaceState(
-						window.history.state,
-						'',
-						heading?.id ? `#${heading.id}` : ' ',
-					);
+					goto(heading ? `#${heading.id}${blog.tldrQueryString()}` : blog.tldrQueryString(), {
+						noScroll: true,
+						replaceState: true,
+					});
 				}
 			}
 		}
@@ -200,7 +186,7 @@
 		</div>
 
 		<div class="logos">
-			{#each logos as logo}
+			{#each post.metadata.logos as logo}
 				<img class="mt-0 logo" src="/images/{logo.src}" alt={logo.alt} />
 			{/each}
 		</div>
@@ -271,7 +257,7 @@
 
 {@html htmlStyle}
 
-{#if blog.blog?.state === 'tldr' && post.tldr}
+{#if tldr()}
 	{@html post.tldr}
 {:else}
 	{@html post.html}

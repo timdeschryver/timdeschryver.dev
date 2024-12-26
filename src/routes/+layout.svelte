@@ -10,11 +10,8 @@
 	import { theme } from '$lib/theme.store';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
-	interface Props {
-		children?: import('svelte').Snippet;
-	}
 
-	let { children }: Props = $props();
+	let { children } = $props();
 
 	let segment = $derived($page.url.pathname.substring(1));
 	let support = $state<HTMLElement | null>();

@@ -1,42 +1,21 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import Head from '$lib/Head.svelte';
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
+	import { goto } from '$app/navigation';
 
-	interface Props {
-		data: import('./$types').PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 	const { bits, tags } = data;
 
 	codeBlockLifeCycle();
 	copyLifeCycle();
 
-	let query: string = $state();
-	let params: URLSearchParams = $state();
+	let query = $state($page.url.searchParams.get('q') ?? '');
 
-	onMount(async () => {
-		params = new URLSearchParams(window.location.search);
-		// fallback, sometimes `query` seems to be undefined
-		query = $page.url.searchParams.get('q') || params.get('q') || '';
-	});
-
-	run(() => {
-		if (params) {
-			if (query) {
-				params.set('q', query);
-				window.history.replaceState(window.history.state, '', `${location.pathname}?${params}`);
-			} else {
-				params.delete('q');
-				window.history.replaceState(window.history.state, '', location.pathname);
-			}
-		}
+	$effect(() => {
+		goto(query ? `?q=${query}` : '?', { noScroll: true, replaceState: true, keepFocus: true });
 	});
 
 	let queryParts = $derived((query || '').split(' ').filter(Boolean));

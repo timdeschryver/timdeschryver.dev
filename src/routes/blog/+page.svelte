@@ -2,18 +2,16 @@
 	import Head from '$lib/Head.svelte';
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	const { data } = $props();
 	const { posts, tags } = data;
 
 	let filter = $state({
-		query: '',
-		from: null,
-		to: null,
+		query: $page.url.searchParams.get('q'),
+		from: $page.url.searchParams.get('from'),
+		to: $page.url.searchParams.get('to'),
 	});
-
-	let params;
 
 	let meta = {
 		canonical: 'https://timdeschryver.dev/blog',
@@ -21,34 +19,23 @@
 		description: `${posts.length} notes, mainly about Angular and .NET`,
 	};
 
-	onMount(() => {
-		params = new URLSearchParams(window.location.search);
-		// fallback, sometimes `query` seems to be undefined
-		filter.query = $page.url.searchParams.get('q') || params.get('q') || '';
-		filter.from = $page.url.searchParams.get('from') || params.get('from');
-		filter.to = $page.url.searchParams.get('to') || params.get('to');
-	});
-
 	$effect(() => {
-		if (params) {
-			if (filter.query) {
-				params.set('q', filter.query);
-			} else {
-				params.delete('q');
-			}
-
-			const paramsParts = [location.pathname, params.size ? params : null].filter(Boolean);
-			window.history.replaceState(window.history.state, '', `${paramsParts.join('?')}`);
-		}
+		goto(filter.query ? `?q=${filter.query}` : '?', {
+			noScroll: true,
+			replaceState: true,
+			keepFocus: true,
+		});
 	});
 
 	const queryParts = $derived(() => (filter.query || '').split(' '));
 
 	const filteredPosts = $derived(() => {
 		let filteredPosts = posts;
+
 		if (filter.query) {
+			const parts = queryParts();
 			filteredPosts = posts.filter((p) => {
-				return queryParts().every(
+				return parts.every(
 					(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q),
 				);
 			});
@@ -72,6 +59,8 @@
 			filter.query = queryParts()
 				.filter((q) => q !== tag)
 				.join(' ');
+		} else if (queryParts().join(' ').includes(tag)) {
+			filter.query = `${filter.query.replaceAll(tag, '').trim()}`;
 		} else {
 			filter.query = filter.query ? `${filter.query.trim()} ${tag}` : tag;
 		}
@@ -117,7 +106,9 @@
 	{#each tags as tag}
 		<button
 			class={tag}
-			class:active={queryParts().some((q) => match(q, tag)) || filter.query === tag}
+			class:active={filter.query === tag ||
+				queryParts().join(' ').includes(tag) ||
+				queryParts().some((q) => match(q, tag))}
 			onclick={() => tagClicked(tag)}
 		>
 			{tag}

@@ -1,3 +1,5 @@
+import { goto } from '$app/navigation';
+
 interface Blog {
 	title: string;
 	state: 'tldr' | 'detailed' | 'single';
@@ -6,6 +8,7 @@ interface Blog {
 function createBlog() {
 	let blog = $state<Blog | null>(null);
 
+	const tldrQueryString = () => (blog.state === 'tldr' ? '?tldr=true' : '?');
 	return {
 		get blog() {
 			return blog;
@@ -17,25 +20,13 @@ function createBlog() {
 			};
 		},
 		toggleTldr: () => {
-			const params = new URLSearchParams(window.location.search);
 			blog.state = blog.state === 'tldr' ? 'detailed' : 'tldr';
-			if (blog.state === 'tldr') {
-				params.set('tldr', '1');
-			} else if (blog.state === 'detailed') {
-				params.delete('tldr');
-			}
-
-			const paramsAsString = params.toString();
-			if (paramsAsString) {
-				window.history.replaceState(
-					window.history.state,
-					'',
-					`${location.pathname}?${paramsAsString}`,
-				);
-			} else {
-				window.history.replaceState(window.history.state, '', `${location.pathname}`);
-			}
+			goto(tldrQueryString(), {
+				noScroll: true,
+				replaceState: true,
+			});
 		},
+		tldrQueryString,
 		reset: () => {
 			blog = null;
 		},

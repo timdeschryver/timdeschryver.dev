@@ -39,7 +39,7 @@ Because the application uses a backend API, we add a reference to the API projec
 
 :::code-group
 
-```cs{6-10}:AppHost/Program.cs [title=Programcs"]
+```cs{6-10}:AppHost/Program.cs [title=Program.cs]
 var builder = DistributedApplication.CreateBuilder(args);
 
 var weatherforecastApi = builder

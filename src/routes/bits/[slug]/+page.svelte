@@ -9,14 +9,10 @@
 	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
 
-	interface Props {
-		data: import('./$types').PageData;
-	}
-
-	let { data }: Props = $props();
+	let { data } = $props();
 	const { bit } = data;
 
-	let scrollY = $state();
+	let scrollY = $state<number>();
 	codeBlockLifeCycle();
 	copyLifeCycle();
 </script>

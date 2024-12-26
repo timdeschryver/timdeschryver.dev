@@ -1,17 +1,13 @@
-import { blog } from './current-blog.svelte';
-
-export default function codeBlockLifeCycle() {
+export default function codeBlockLifeCycle(trigger?: () => unknown) {
 	let codeTabs: Element[] = [];
 
 	$effect(() => {
-		codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
-		if (blog.blog?.state) {
-			codeTabs = [...document.querySelectorAll('.code-group-tab')];
-			codeTabs.forEach((pre) => pre.addEventListener('click', codeTabClick));
-			return () => {
-				codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
-			};
-		}
+		trigger?.();
+		codeTabs = [...document.querySelectorAll('.code-group-tab')];
+		codeTabs.forEach((pre) => pre.addEventListener('click', codeTabClick));
+		return () => {
+			codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
+		};
 	});
 
 	function codeTabClick(e: PointerEvent) {
