@@ -3,14 +3,15 @@
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	const { data } = $props();
 	const { posts, tags } = data;
 
 	let filter = $state({
-		query: $page.url.searchParams.get('q'),
-		from: $page.url.searchParams.get('from'),
-		to: $page.url.searchParams.get('to'),
+		query: null,
+		from: null,
+		to: null,
 	});
 
 	let meta = {
@@ -19,8 +20,23 @@
 		description: `${posts.length} notes, mainly about Angular and .NET`,
 	};
 
+	onMount(() => {
+		filter = {
+			query: $page.url.searchParams.get('q'),
+			from: $page.url.searchParams.get('from'),
+			to: $page.url.searchParams.get('to'),
+		};
+	});
+
 	$effect(() => {
-		goto(filter.query ? `?q=${filter.query}` : '?', {
+		const params = new URLSearchParams(window.location.search);
+		if (filter.query) {
+			params.set('q', filter.query);
+		} else {
+			params.delete('q');
+		}
+
+		goto(params.size ? `?${params.toString()}` : '?', {
 			noScroll: true,
 			replaceState: true,
 			keepFocus: true,
@@ -59,8 +75,8 @@
 			filter.query = queryParts()
 				.filter((q) => q !== tag)
 				.join(' ');
-		} else if (queryParts().join(' ').includes(tag)) {
-			filter.query = `${filter.query.replaceAll(tag, '').trim()}`;
+		} else if (queryParts().join(' ').toLowerCase().includes(tag.toLowerCase())) {
+			filter.query = `${filter.query.replace(new RegExp(tag, 'ig'), '').trim()}`;
 		} else {
 			filter.query = filter.query ? `${filter.query.trim()} ${tag}` : tag;
 		}
@@ -101,7 +117,14 @@
 		aria-label="Search"
 	/>
 	<div class="mt-0 search-info">
-		<small>found {filteredPosts().length} posts out of {posts.length} posts</small>
+		<div><small>Found {filteredPosts().length} posts out of {posts.length} posts</small></div>
+		{#if filter.from}
+			<div class="mt-0"><small>From {filter.from}</small></div>
+		{/if}
+		{#if filter.to}
+			<div class="mt-0"><small>To {filter.to}</small></div>
+		{/if}
+		<small></small>
 	</div>
 	{#each tags as tag}
 		<button

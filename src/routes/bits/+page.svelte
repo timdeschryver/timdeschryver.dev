@@ -5,6 +5,7 @@
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	let { data } = $props();
 	const { bits, tags } = data;
@@ -12,7 +13,11 @@
 	codeBlockLifeCycle();
 	copyLifeCycle();
 
-	let query = $state($page.url.searchParams.get('q') ?? '');
+	let query = $state(null);
+
+	onMount(() => {
+		query = $page.url.searchParams.get('q') ?? '';
+	});
 
 	$effect(() => {
 		goto(query ? `?q=${query}` : '?', { noScroll: true, replaceState: true, keepFocus: true });

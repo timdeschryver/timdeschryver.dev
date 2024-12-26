@@ -18,7 +18,7 @@
 	const { data } = $props();
 	const { post } = data;
 
-	const tldr = $derived(() => post.tldr && $page.url.searchParams.get('tldr') === 'true');
+	const tldr = $derived(() => blog.blog?.state === 'tldr');
 
 	// svelte-ignore state_referenced_locally
 	codeBlockLifeCycle(tldr);
@@ -113,9 +113,17 @@
 	let lastHeadingId = $state(null);
 	$effect(() => {
 		if (browser) {
+			const queryParams = new URLSearchParams(location.search);
+			if (blog.blog.state === 'tldr') {
+				queryParams.set('tldr', 'true');
+			} else {
+				queryParams.delete('tldr');
+			}
+
+			const queryParamsString = queryParams.size ? `?${queryParams.toString()}` : '?';
 			if (blog.blog?.state === 'tldr' && lastHeadingId) {
 				lastHeadingId = null;
-				goto(blog.tldrQueryString(), {
+				goto(queryParamsString, {
 					noScroll: true,
 					replaceState: true,
 				});
@@ -123,7 +131,7 @@
 				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
 					lastHeadingId = heading?.id;
-					goto(heading ? `#${heading.id}${blog.tldrQueryString()}` : blog.tldrQueryString(), {
+					goto(heading ? `#${heading.id}${queryParamsString}` : queryParamsString, {
 						noScroll: true,
 						replaceState: true,
 					});
