@@ -22,7 +22,6 @@
 
 	// svelte-ignore state_referenced_locally
 	codeBlockLifeCycle(tldr);
-
 	copyLifeCycle();
 
 	onMount(() => {
@@ -80,7 +79,7 @@
 		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
 		return hasTldr
 			? []
-			: ([...document.querySelectorAll('main > .blog-content > h2,h3')].reverse() as HTMLElement[]);
+			: ([...document.querySelectorAll('main > h2,h3')].reverse() as HTMLElement[]);
 	});
 
 	$effect(() => {

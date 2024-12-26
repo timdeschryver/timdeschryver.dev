@@ -215,7 +215,7 @@ export function parseFileToHtmlAndMeta(file): {
 
 		function generateHTMLFromTokens(tokens: ThemedToken[][]): string {
 			const codeClass = linesHighlight.length ? 'dim' : '';
-			let html = `<code class="${codeClass}">`;
+			let html = `<code class="${shikiLang} ${codeClass}">`;
 
 			tokens.forEach((token, line) => {
 				const lineClass = [
@@ -236,8 +236,6 @@ export function parseFileToHtmlAndMeta(file): {
 						if (index === 0) {
 							if (escaped[0] === '+') {
 								lineClass.push('addition');
-								lineClass.push('addition');
-
 								escaped = escaped.substring(1).trim();
 							} else if (escaped[0] === '-') {
 								lineClass.push('removal');
@@ -245,7 +243,7 @@ export function parseFileToHtmlAndMeta(file): {
 							}
 						}
 
-						lineContent += `<span style="color: ${cssVar}">${escaped}</span>`;
+						lineContent += `<span style="color: hsl(${cssVar})">${escaped}</span>`;
 					});
 				} else {
 					lineContent += `<span> </span>`;
@@ -449,7 +447,7 @@ function createStyle(scope: string, theme) {
 
 	for (const color of scopeColors) {
 		for (const scope of color.scope) {
-			style += '\n\t' + `--syntax-${scope}: ${color.color};`;
+			style += '\n\t' + `--syntax-${scope}: ${hexToHSL(color.color)};`;
 		}
 	}
 
@@ -460,4 +458,50 @@ function createStyle(scope: string, theme) {
 	style += '\n' + `}`;
 
 	return style;
+}
+
+// https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
+function hexToHSL(H: string | null | undefined): string {
+	if (!H) {
+		return '';
+	}
+	// Convert hex to RGB first
+	let r = 0,
+		g = 0,
+		b = 0;
+	if (H.length == 4) {
+		r = parseInt('0x' + H[1] + H[1]);
+		g = parseInt('0x' + H[2] + H[2]);
+		b = parseInt('0x' + H[3] + H[3]);
+	} else if (H.length == 7) {
+		r = parseInt('0x' + H[1] + H[2]);
+		g = parseInt('0x' + H[3] + H[4]);
+		b = parseInt('0x' + H[5] + H[6]);
+	}
+	// Then to HSL
+	r /= 255;
+	g /= 255;
+	b /= 255;
+	const cmin = Math.min(r, g, b),
+		cmax = Math.max(r, g, b),
+		delta = cmax - cmin;
+	let h = 0,
+		s = 0,
+		l = 0;
+
+	if (delta == 0) h = 0;
+	else if (cmax == r) h = ((g - b) / delta) % 6;
+	else if (cmax == g) h = (b - r) / delta + 2;
+	else h = (r - g) / delta + 4;
+
+	h = Math.round(h * 60);
+
+	if (h < 0) h += 360;
+
+	l = (cmax + cmin) / 2;
+	s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+	s = +(s * 100).toFixed(1);
+	l = +(l * 100).toFixed(1);
+
+	return h + ',' + s + '%,' + l + '%';
 }

@@ -527,13 +527,24 @@ pre > code {
 	overflow: auto;
 }
 
-pre > .code-heading + code {
-	padding: 3em 1em 0.5em 1.2em;
-}
 
 code {
 	word-break: break-word;
 	border: 1px solid var(--input-border);
+}
+
+code > div.line {
+	margin: 0;
+	padding-left: 1.5em;
+	padding-right: .75em;
+}
+
+code > div.line:first-child {
+	margin-top: 3em;
+}
+
+code > div.line:last-child {
+	margin-bottom: .8em;
 }
 
 code.dim > div:not(.highlight) {
@@ -547,20 +558,26 @@ code.dim:hover > div:not(.highlight) {
 	opacity: 1;
 }
 
-code > div {
-	margin-top: 0;
-}
-
-code .line.addition::before {
+code.diff > div.line.addition::before {
 	content: '+';
-	color: var(--syntax-entity-name-section);
+	color: hsl(var(--syntax-entity-name-section));
 	font-size: 0.8rem;
 }
 
-code .line.removal::before {
+code.diff > div.line.addition {
+	border-left: 3px solid hsl(var(--syntax-entity-name-section));
+	background: hsla(var(--syntax-entity-name-section), 8%);
+}
+
+code.diff > div.line.removal::before {
 	content: '-';
-	color: var(--syntax-invalid);
+	color: hsl(var(--syntax-invalid));
 	font-size: 0.8rem;
+}
+
+code.diff > div.line.removal {
+	border-left: 3px solid hsl(var(--syntax-invalid));
+	background: hsla(var(--syntax-invalid), 8%);
 }
 
 /* pre .highlight {
