@@ -35,6 +35,7 @@
 		"prepare": "git config core.hookspath .githooks"
 	},
 	"devDependencies": {
+		"@azure/microsoft-playwright-testing": "^1.0.0-beta.6",
 		"@azure/static-web-apps-cli": "^2.0.1",
 		"@playwright/test": "1.48.2",
 		"@squoosh/lib": "0.5.3",
