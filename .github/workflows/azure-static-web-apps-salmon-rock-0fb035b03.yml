@@ -10,6 +10,10 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -33,8 +37,8 @@ jobs:
       - name: 🧪 Unit Test
         run: npm run test:unit
 
-      - name: 🎭 Install Playwright
-        run: npx playwright install --with-deps
+      # - name: 🎭 Install Playwright
+      #   run: npx playwright install --with-deps
 
       # - name: 🧑‍🤝‍🧑 Fetching Contributors
       #   run: npm run contributors
@@ -62,14 +66,17 @@ jobs:
     name: ☁️ Smoke test
     needs: build_and_deploy
     runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_TEST_BASE_URL: ${{ needs.build_and_deploy.outputs.swa_url }}
-      PLAYWRIGHT_SERVICE_ACCESS_TOKEN: ${{ secrets.PLAYWRIGHT_SERVICE_ACCESS_TOKEN }}
-      PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
-      PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
     steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v3
+
+      - name: OIDC Login to Azure Public Cloud
+        uses: azure/login@v2
+        with: 
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true 
 
       - name: 🛠️ Use Node.js
         uses: actions/setup-node@v3
@@ -83,8 +90,12 @@ jobs:
       # - name: 🎭 Install Playwright
       #   run: npx playwright install --with-deps
 
-      - name: 🧪 Run Playwright Tests
+      - name: 🧪 Run Playwright Tests on ${{ needs.build_and_deploy.outputs.swa_url }}
         run: npx playwright test --config=playwright.service.config.ts
+        env:
+          PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
+          PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
+          PLAYWRIGHT_TEST_BASE_URL: ${{ needs.build_and_deploy.outputs.swa_url }}
 
       - name: 📦 Upload Test Results Artifact
         uses: actions/upload-artifact@v4

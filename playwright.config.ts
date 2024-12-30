@@ -10,6 +10,8 @@ const config: PlaywrightTestConfig = {
 	reporter: 'html',
 	use: {
 		trace: 'on-first-retry',
+		video: 'retain-on-failure',
+		screenshot: 'on',
 	},
 	...(process.env.CI
 		? {}
