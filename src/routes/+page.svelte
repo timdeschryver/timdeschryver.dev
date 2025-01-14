@@ -110,7 +110,6 @@
 
 <style>
 	section {
-		text-align: center;
 		font-size: 1.25rem;
 		margin-top: 2em;
 	}

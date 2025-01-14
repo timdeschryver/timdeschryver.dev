@@ -57,7 +57,7 @@
 
 	const htmlStyle = `<style> 
 		main {
-			--accent-color: var(--${post.metadata.color});
+			--accent-color: var(--${post.metadata.color ?? 'base-color'});
 		}
 
 		main h1, 
@@ -65,9 +65,7 @@
 		main h3, 
 		main h4,
 		main h5, 
-		main h6,
-		strong,
-		b {
+		main h6 {
 			color: hsla(var(--accent-color), 1);
 		}
 	</style>`;
