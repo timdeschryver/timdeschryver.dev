@@ -1,8 +1,7 @@
 ---
 title: Improve the user experience of your application using (rx)resource
 slug: improve-the-user-experience-of-your-application-using-rxresource
-description: Don't just replace observable steams with the `value()` signal of the `Resource` object, but also take advantage of the built-in properties to improve the user experience of your application. Learn how you can use the new `resource` API to improve the user experience of your application.
-date: 2025-01-14
+description: Don't just replace observable streams with the `value()` signal of a resource, but also take advantage of its built-in additional properties to improve the user experience of your application.
 tags: Angular
 ---
 
@@ -34,7 +33,7 @@ Via the `loader` option, you tell the resource how to fetch the data from the se
 Once the resource is instantiated, it immediately invokes the `loader` method.
 This means your data will be fetched when the component is created.
 
-The `resource` method returns a [`Resource`](https://angular.dev/api/core/Resource) object, which we will cover later in this article.
+The `resource` method returns a [`ResourceRef`](https://angular.dev/api/core/ResourceRef) object, which we will cover later in this article.
 
 ```ts:weather-forecast.component.ts
 import { Component, inject } from '@angular/core';
@@ -73,17 +72,17 @@ All of this leads to a bad experience, in the worst case, this leads to frustrat
 
 ### Why `resource` provides a solution
 
-As I've mentioned before, the `resource` method just doesn't simply return the data from the server, instead, the `resource` method returns an [`Resource` object](https://angular.dev/api/core/Resource).
+As I've mentioned before, the `resource` method just doesn't simply return the data from the server, instead, the `resource` method returns a [`ResourceRef` object](https://angular.dev/api/core/ResourceRef).
 This object contains details about the request and the response in a single object.
 
 To read the response, you can use the `value()` Signal.
-Additionally, `Resource` also provides properties to create a good UI, such as the request state ([`ResourceStatus`](https://angular.dev/api/core/ResourceStatus)) and the error when the request has failed. It also adds useful methods to access all of this information, which makes it developer-friendly.
+Additionally, `ResourceRef` also provides properties to create a good UI, such as the request state ([`ResourceStatus`](https://angular.dev/api/core/ResourceStatus)) and the error when the request has failed. It also adds useful methods to access all of this information, which makes it developer-friendly.
 
 ### How you can use `resource` to improve the user experience
 
 Now that we have an understanding of how to fetch data using the `resource` method, let's see how it can improve the user experience of your application.
 
-Using the `Resource` object, you can easily show the user what's happening (or what has happened) with the request.
+Using the properties of the `ResourceRef` object, you can easily show the user what's happening (or what has happened) with the request.
 In the example below:
 
 - the user sees when a request is loading using the `isLoading()` method;
@@ -138,7 +137,8 @@ Lastly, to show the user the data, you can use the `value()` method to display t
 In this article, I've shown you how you leverage the new `resource` API to improve the user experience of your application.
 To do this, I highlighted the importance of handling the request state properly, and how `resource` can help you with that.
 
-Instead of having your users stare at a blank screen, `resource` makes it easier to show a loading indicator, an error message, and even a retry mechanism to the user, by using the built-in properties of the `Resource` object.
+Instead of having your users stare at a blank screen, `resource` makes it simpler to show a loading indicator, an error message, and even a retry mechanism to the user.
+For these tasks I used the built-in properties of a `ResourceRef`.
 
 Not only does this improve the user experience of your application, it also increases the developer experience and productivity.
 Having a built-in way to handle requests within the Angular framework makes it easier to enforce a consistent way of handling requests throughout your codebase.
@@ -146,4 +146,4 @@ Having a built-in way to handle requests within the Angular framework makes it e
 I recommend reading the articles I mentioned at the beginning of this article, as they provide a good overview of the technical aspects of the `resource` API.
 These articles also provide an in-depth explanation of how to make full use of the `resource` API using examples.
 
-The takeaway of this article is that you should not just simply replace observable steams with the `value()` signal, but also take advantage of the other built-in methods.
+The takeaway of this article is that you should not just simply replace observable streams with the `value()` signal, but also take advantage of the other built-in methods.
