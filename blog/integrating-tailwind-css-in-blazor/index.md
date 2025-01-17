@@ -247,11 +247,11 @@ With this approach, the output CSS file is minified when you build the applicati
     <Exec Command="npx tailwindcss -i ./Styles/tailwind.css -o ./wwwroot/styles.css" />
   </Target>
 
-  <Target Name="Tailwind" BeforeTargets="Compile" Condition="'$(Configuration)' == 'Debug'">
+  <Target Name="TailwindDebug" BeforeTargets="Compile" Condition="'$(Configuration)' == 'Debug'">
     <Exec Command="npx tailwindcss -i ./Styles/tailwind.css -o ./wwwroot/tailwind.css --minify" />
   </Target>
 
-  <Target Name="Tailwind" BeforeTargets="Compile" Condition="'$(Configuration)' == 'Release'">
+  <Target Name="TailwindRelease" BeforeTargets="Compile" Condition="'$(Configuration)' == 'Release'">
     <Exec EnvironmentVariables="NODE_ENV=production" Command="npx tailwindcss -i ./Styles/tailwind.css -o ./wwwroot/tailwind.css --minify" />
   </Target>
 </Project>
