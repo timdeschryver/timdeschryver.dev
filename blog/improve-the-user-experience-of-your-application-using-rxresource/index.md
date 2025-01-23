@@ -2,6 +2,7 @@
 title: Improve the user experience of your application using (rx)resource
 slug: improve-the-user-experience-of-your-application-using-rxresource
 description: Don't just replace observable streams with the `value()` signal of a resource, but also take advantage of its built-in additional properties to improve the user experience of your application.
+date: 2025-01-14
 tags: Angular
 ---
 
