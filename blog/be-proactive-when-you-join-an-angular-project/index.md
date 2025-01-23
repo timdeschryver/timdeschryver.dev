@@ -7,22 +7,6 @@ date: 2022-02-15
 tags: Angular
 ---
 
-- [Tune up the strictness](#tune-up-the-strictness)
-  - [TypeScript](#typescript)
-  - [Angular templates](#angular-templates)
-  - [Enable strict mode](#enable-strict-mode)
-- [Betterer](#betterer)
-- [Update Angular](#update-angular)
-- [ESLint](#eslint)
-- [Prettier](#prettier)
-  - [Prettier with ESLint](#prettier-with-eslint)
-- [Unifying libraries](#unifying-libraries)
-- [Writing Tests](#writing-tests)
-- [Git hooks](#git-hooks)
-- [Detect and remove unused objects](#detect-and-remove-unused-objects)
-- [NX](#nx)
-- [Conclusion](#conclusion)
-
 As developers, we're always using analogies to explain our work to non-developers.
 We do this to give an idea of what it's like without using too much of our technical jargon.
 In this intro, I'm doing the same.
