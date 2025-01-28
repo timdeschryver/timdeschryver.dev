@@ -12,7 +12,6 @@
 	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
 	const { data } = $props();
@@ -111,28 +110,12 @@
 	let lastHeadingId = $state(null);
 	$effect(() => {
 		if (browser) {
-			const queryParams = new URLSearchParams(location.search);
-			if (blog.blog.state === 'tldr') {
-				queryParams.set('tldr', 'true');
-			} else {
-				queryParams.delete('tldr');
-			}
-
-			const queryParamsString = queryParams.size ? `?${queryParams.toString()}` : '?';
 			if (blog.blog?.state === 'tldr' && lastHeadingId) {
 				lastHeadingId = null;
-				goto(queryParamsString, {
-					noScroll: true,
-					replaceState: true,
-				});
 			} else if (blog.blog?.state !== 'tldr' && headings()) {
 				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
 					lastHeadingId = heading?.id;
-					goto(heading ? `#${heading.id}${queryParamsString}` : queryParamsString, {
-						noScroll: true,
-						replaceState: true,
-					});
 				}
 			}
 		}
