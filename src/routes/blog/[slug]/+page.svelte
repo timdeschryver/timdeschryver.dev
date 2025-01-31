@@ -39,7 +39,6 @@
 	);
 
 	function headerClick(evt: MouseEvent) {
-		evt.preventDefault();
 		gotoHeader(evt.currentTarget as HTMLElement);
 	}
 
