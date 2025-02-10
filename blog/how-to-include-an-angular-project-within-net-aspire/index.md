@@ -35,7 +35,7 @@ To go over what .NET Aspire is and why it exists, I refer to the [.NET Aspire ov
 
 ## Adding An Angular Project to .NET Aspire Application Host
 
-:::tip
+:::warning
 Starting from [.NET Aspire 8.0 Preview 2 (v8.0.0-preview.2.23619.3)](https://github.com/dotnet/aspire/releases/tag/v8.0.0-preview.2.23619.3) this section has become obsolete because it's integrated in .NET Aspire. Instead of a custom implementation, Node.js projects can easily be registered using the `AddNpmApp` function.
 
 ```cs AngularAspire.AppHost/Program.cs {5-8}

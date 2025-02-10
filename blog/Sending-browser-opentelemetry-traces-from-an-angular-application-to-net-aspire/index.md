@@ -49,7 +49,7 @@ builder.AddNpmApp("AngularFrontEnd", "../AngularAspire.AngularFrontEnd")
  .WithHttpEndpoint(env: "PORT", port: 4200)
  .WithReference(weatherforecastApi)
  .WaitFor(weatherforecastApi)
- .WithExternalHttpEndpoints();
+ .WithExternalHttpEndpoints(); // allow the application to be externally accessed when deployed
 
 builder.Build().Run();
 ```
@@ -80,11 +80,11 @@ This problem has been solved in .NET 9.0.
 
 To enable the Aspire Dashboard to receive traces from the browser, set the [`DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL` environment variable](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/dashboard/configuration?tabs=bash#common-configuration). This changes how the telemetry data is received by the Aspire Dashboard, instead of using gRPC it now uses Protobuf over HTTP.
 
-This action also configures the CORS settings for the Aspire Dashboard. By default, it adds all registered origins to the CORS settings. In this case, the Angular Application and the .NET WeatherForecast API are registered as origins, `https://localhost:7234,http://localhost:5187,http://localhost:4200`
+This action also configures the CORS settings for the Aspire Dashboard. By default, it adds all registered origins to the CORS settings. In this case, the Angular Application (`http://localhost:4200`) and the .NET WeatherForecast API 9 (`https://localhost:7234,http://localhost:5187`) are registered as allowed origins.
 
 :::code-group
 
-```json{13}:AppHost/Properties/launchSettings.json [title=launchSettings.json]
+```json{12}:AppHost/Properties/launchSettings.json [title=launchSettings.json]
 {
 	"$schema": "https://json.schemastore.org/launchsettings.json",
 	"profiles": {
@@ -138,7 +138,7 @@ This action also configures the CORS settings for the Aspire Dashboard. By defau
 To record and send telemetry data from the Angular application to the Aspire Dashboard, you need to install the following packages.
 
 ```bash
-npm install @opentelemetry/auto-instrumentations-web @opentelemetry/context-zone @opentelemetry/exporter-trace-otlp-proto @opentelemetry/instrumentation @opentelemetry/sdk-trace-web
+npm install @opentelemetry/sdk-trace-base @opentelemetry/sdk-trace-web @opentelemetry/context-zone @opentelemetry/instrumentation @opentelemetry/exporter-trace-otlp-proto @opentelemetry/resources @opentelemetry/semantic-conventions @opentelemetry/auto-instrumentations-web
 ```
 
 ### Automatically register and and traces
