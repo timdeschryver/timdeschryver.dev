@@ -4,7 +4,7 @@ import { devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 1,
-	timeout: 60_000,
+	timeout: 30_000,
 	outputDir: 'test-results',
 	testDir: 'tests',
 	reporter: 'html',

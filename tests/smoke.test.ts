@@ -53,12 +53,14 @@ test('contributors works ', async ({ page }) => {
 	await page.goto(
 		'/blog/configuring-azure-application-insights-in-an-angular-application#sending-custom-events-and-traces-to-application-insights',
 	);
-	expect(page.locator('text=A warm thank you to the contributors of this blog post')).toBeTruthy();
-	expect(page.locator('text=Dzhavat Ushev')).toBeTruthy();
+	await expect(
+		page.getByText('A warm thank you to the contributors of this blog post'),
+	).toBeDefined();
+	await expect(page.getByText('Dzhavat Ushev')).toBeDefined();
 });
 
 test('translations works ', async ({ page }) => {
 	await page.goto('/blog/single-component-angular-modules-and-component-tests-go-hand-in-hand');
-	expect(page.locator('text=This article is also available in')).toBeTruthy();
-	expect(page.locator('text=Español by Dany Paredes')).toBeTruthy();
+	await expect(page.getByText('This article is also available in')).toBeDefined();
+	await expect(page.getByText('Español by Dany Paredes')).toBeDefined();
 });

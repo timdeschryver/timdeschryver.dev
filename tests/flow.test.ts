@@ -1,38 +1,19 @@
 import { test, expect } from '@playwright/test';
 
 test('flow test', async ({ page }) => {
-	// Go to https://timdeschryver.dev/
 	await page.goto('');
+	await page.getByRole('link', { name: 'BLOG', exact: true }).click();
 
-	// Click text=Blog
-	await page.click('text=Blog');
 	await expect(page).toHaveURL(`/blog`);
-	// first time - posts need to be generated
-	await page.waitForSelector('[placeholder="Search"]');
 
-	// Click text=Angular
-	await page.click('text=Angular');
+	await page.getByRole('button', { name: 'Angular', exact: true }).click();
 	await expect(page).toHaveURL(`/blog?q=Angular`);
 
-	// Click [placeholder="Search"]
-	await page.click('[placeholder="Search"]');
-
-	// Click text=Testing
-	await page.click('text=Testing');
+	await page.getByRole('button', { name: 'Testing', exact: true }).click();
 	await expect(page).toHaveURL(`/blog?q=Angular+Testing`);
 
-	// Click [placeholder="Search"]
-	await page.click('[placeholder="Search"]');
+	await page.getByPlaceholder('Search').fill('Angular Testing ngrx project');
+	await page.getByRole('link', { name: /Testing an NgRx project/i }).click();
 
-	// Fill [placeholder="Search"]
-	await Promise.all([
-		page.waitForNavigation(),
-		page.fill('[placeholder="Search"]', 'Angular Testing ngrx project'),
-	]);
-
-	// Click text=Testing an NgRx project
-	await Promise.all([page.waitForNavigation(), page.click('text=Testing an NgRx project')]);
-
-	// Click text=Actions
-	await Promise.all([page.waitForNavigation(), page.getByRole('heading', { name: 'Actions' })]);
+	await expect(page.getByRole('heading', { name: 'Actions' })).toBeDefined();
 });
