@@ -25,10 +25,10 @@ At some point, arranging a test might even be the trickiest part of the test.
 Worse, when the requirements change, we might lose the confidence the tests were giving us previously because they're not kept up to date.  
 The team is forced to change the application's code and the test code in one single go. When this point is reached, it's usually too late and the team wonders when things were starting to go downhill.
 
-From my experience, a good test setup is a crucial factor that makes a test easy and fast to write (and to maintain), otherwise, a bad test setup makes the tests feel like an unpleasant chore to maintain which is a loss of time. This is caused because the tests are too much coupled to the application's codebase.
+From my experience, a good test setup is a crucial factor that makes a test easy and fast to write (and to maintain), otherwise, a bad test setup makes the tests feel like an unpleasant chore to maintain which is a loss of time. This is caused because the tests are too tightly coupled to the application's codebase.
 Another point that makes unit tests hard to maintain are those tests that are testing implementation details, which is why I prefer to write [integration tests](/blog/how-to-test-your-csharp-web-api) but that's not what this blog post is about.
 
-Since a model is always changing, ideally want our test setups (fixtures) to be up-to-date at all times, but that shouldn't be the concern of the tests. As a remedy, we can use the [AutoFixture library](https://github.com/AutoFixture/AutoFixture).
+Since a model is always changing, ideally, we want our test setups (fixtures) to be up-to-date at all times, but that shouldn't be the concern of the tests. As a remedy, we can use the [AutoFixture library](https://github.com/AutoFixture/AutoFixture).
 
 > Write maintainable unit tests, faster.
 > AutoFixture makes it easier for developers to do Test-Driven Development by automating non-relevant Test Fixture Setup, allowing the Test Developer to focus on the essentials of each test case.
