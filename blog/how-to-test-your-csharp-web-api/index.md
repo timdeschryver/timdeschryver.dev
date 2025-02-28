@@ -546,7 +546,7 @@ No, it does not, but I write them less than before.
 I only write unit tests for real business logic that don't require dependencies, just input in and output out (a pure method).
 
 Yes, it's true that integration tests might take a bit longer to run, but it's worth it in my opinion.
-It also isn't that bad, we now have faster machines and a better a infratructure as before, so it isn't a big problem.
+It also isn't that bad, we now have faster machines and a better a infrastructure as before, so it isn't a big problem.
 
 In short, I like that integration tests give me more confidence that the code we ship, is actually working the way it's intended to work.
 We're not mocking important parts of the application, we're testing the application as a whole.
