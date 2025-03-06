@@ -44,7 +44,7 @@ This looks like this:
     "github.copilot.chat.commitMessageGeneration.instructions": [
         "Follow the conventional commit message format.",
         "Limit the first line to 72 characters or less."
- ]
+    ]
 }
 ```
 
@@ -53,10 +53,10 @@ Which is identical to the following setup using a markdown file containing the i
 ```json:.vscode/settings.json
 {
     "github.copilot.chat.commitMessageGeneration.instructions": [
- {
-            "file": ".github/commit-instructions.md"
- }
- ]
+      {
+         "file": ".github/commit-instructions.md"
+      }
+    ]
 }
 ```
 
