@@ -193,7 +193,6 @@
 	li {
 		list-style: none;
 		padding: 1em;
-		transition: all 0.2s ease;
 		border: 1px solid;
 		border-left-width: 8px;
 		border-radius: 3px;
@@ -201,6 +200,9 @@
 	}
 
 	li:hover {
+		transition-property: background-color, border-color, border-width, transform;
+		transition-duration: 0.2s;
+		transition-timing-function: ease-out;
 		transform: scale(1.05);
 		background-color: hsla(var(--accent-color), 0.1);
 		border-color: hsla(var(--accent-color), 0.8);
