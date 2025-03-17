@@ -7,11 +7,14 @@ tags: dotnet
 ---
 
 Hi all, in [Feature Flags in .NET, from simple to more advanced](../feature-flags-in-net-from-simple-to-more-advanced/index.md) we've touched on implementing Feature Flags within .NET applications.
-At the time of writing that blog post, it was required to add code within the route handlers of an ASP.NET Minimal API to verify if a feature is enabled.
-This was a bit cumbersome.
-It was harder to reuse this logic, and it added noise to the route handlers.
+At the time of writing that blog post, we were required to implement such logic within route handlers of an ASP.NET Minimal API to verify if a feature is enabled.
+This was a bit cumbersome, as it added additional noise to the route handlers, and the logic was not reusable.
 
-To refresh your mind, the next snippet shows that the `IFeatureManager` is injected within the route handler, and it's used to verify if a feature is enabled.
+:::tip
+This feature is currently also [implemented](https://github.com/microsoft/FeatureManagement-Dotnet/pull/524) in the [Microsoft.FeatureManagement.AspNetCore NuGet package](https://www.nuget.org/packages/Microsoft.FeatureManagement.AspNetCore), and provides more advanced feature flag capabilities such as configuring multiple feature flags, negating feature flags, and more.
+:::
+
+To refresh your memory, the next snippet shows that the `IFeatureManager` is injected in the route handler, and is used to verify if a feature is enabled.
 When the feature is disabled, then a `NotFound` result is returned.
 Otherwise, if the feature is enabled, then the route handler continues to execute and returns the weather forecast.
 
@@ -36,7 +39,7 @@ app.MapGet("/weatherforecast", async (IFeatureManager manager) =>
 });
 ```
 
-What I don't like about this implementation is that we're required to repeat this code within all of the route handlers that need to be toggled on or off.
+What I don't like about this implementation is that we're required to copy this logic within all of the route handlers that need to be toggled on or off.
 Luckily, with the addition of the `EndpointFilter`s in ASP.NET 7, we can refactor it.
 
 In this blog post, we'll extract this logic to end up with a reusable custom endpoint filter.
@@ -102,7 +105,8 @@ public abstract class FeatureFilter : IEndpointFilter
         _featureManager = featureManager;
     }
 
-    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context,
+    public async ValueTask<object?> InvokeAsync(
+        EndpointFilterInvocationContext context,
         EndpointFilterDelegate next)
     {
         var isEnabled = await _featureManager.IsEnabledAsync(FeatureFlag);
@@ -158,15 +162,72 @@ app.MapGet("/weatherforecast", () =>
 app.Run();
 ```
 
+## A reusable filter
+
+In the previous example, we had to create a new class for each feature flag.
+This is not a big deal, but it's possible to make it more reusable.
+
+To do this, we can create a generic filter that takes the feature flag name as an argument.
+We'll also have to change the implementation a bit to access the `IFeatureManager`.
+Instead of injecting the `IFeatureManager`, we grab it from the `HttpContext` using the `GetRequiredService<T>()` method.
+
+```cs
+public sealed class FeatureFilter(string FeatureFlag)
+{
+    public async ValueTask<object?> InvokeAsync(
+        EndpointFilterInvocationContext context,
+        EndpointFilterDelegate next)
+    {
+        var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManager>();
+        var isEnabled = await featureManager.IsEnabledAsync(FeatureFlag);
+        if (!isEnabled)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return await next(context);
+    }
+}
+```
+
+To guard a route handler with the feature flag filter, we still use the `AddEndpointFilter()` method on the route handler, but this time using the new `FeatureFilter` class, and passing the feature flag name as an argument.
+
+```cs
+app.MapGet("/reusable", () => "This works too.")
+    .AddEndpointFilter(new FeatureFilter("FeatureFlagName"));
+```
+
+To make this more readable, we can introduce an extension method on the `IEndpointRouteBuilder` interface.
+
+```cs
+public static class EndpointRouteBuilderExtensions
+{
+    public static IEndpointRouteBuilder WithEndpointFeatureFilter(this IEndpointRouteBuilder endpoint, string featureFlag)
+    {
+        endpoint.AddEndpointFilter(new FeatureFilter(featureFlag));
+        return endpoint;
+    }
+}
+```
+
+This extension method can then be used, which expresses the intent more clearly.
+
+```cs
+app.MapGet("/reusable", () => "This works as well.")
+    .WithEndpointFeatureFilter("FeatureFlagName");
+```
+
+Doing this, we don't have to create a new class for each feature flag.
+We can easily add the feature flag filter to any route handler.
+
 ## A more functional approach
 
 For a more functional approach, we can assign the route handler to a variable.
-This has its advantages and disadvantages, but I think it's more a matter of taste.
 
 ```cs
-Func<string, Func<EndpointFilterInvocationContext,EndpointFilterDelegate,ValueTask<object?>>> routeHandlerFilter = (string featureFlag) => async ( context,  next) =>
+Func<string, Func<EndpointFilterInvocationContext,EndpointFilterDelegate,ValueTask<object?>>> routeHandlerFilter = (string featureFlag) => async (context, next) =>
 {
-    var featureManager = context.HttpContext.RequestServices.GetService<IFeatureManager>();
+    var featureManager = context.HttpContext.RequestServices.GetRequiredService<IFeatureManager>();
     var isEnabled = await featureManager.IsEnabledAsync(featureFlag);
     if (!isEnabled)
     {
@@ -175,9 +236,13 @@ Func<string, Func<EndpointFilterInvocationContext,EndpointFilterDelegate,ValueTa
 
     return await next(context);
 };
+```
 
+To add the filter to a route, we can use the `routeHandlerFilter()` function on the route handler while calling `AddEndpointFilter()`, which takes the feature name as an argument.
+
+```cs
 app.MapGet("/functional", () => "This works too.")
-    .AddEndpointFilter(routeHandlerFilter("FunctionalFeatureFlag"));
+    .AddEndpointFilter(routeHandlerFilter("FunctionalFeatureFlagName"));
 ```
 
 ## Endpoint Groups
@@ -194,7 +259,10 @@ builder.Services
 var app = builder.Build();
 
 var weatherforecastGroup = app.MapGroup("/weatherforecast")
-    .AddEndpointFilter<WeatherforecastFeatureFilter>();
+    // Using AddEndpointFilter
+    .AddEndpointFilter<WeatherforecastFeatureFilter>()
+    // Or using our extension method
+    .WithEndpointFeatureFilter("WeatherforecastFeature");
 
 weatherforecastGroup.MapGet("", () =>
 {
@@ -216,6 +284,6 @@ app.Run();
 ## Conclusion
 
 In this post, we've seen how to implement an endpoint filter that verifies if a feature flag is enabled.
-Using this approach keeps the Minimal API route handlers clean and compact, and the feature flag logic is reusable.
+Instead of polluting the route handlers with this concern, configuring the filter on the route (or group) handler keeps the route handlers clean and compact.
 
-For now, we need to implement the endpoint filters ourselves, but it could be that this will be provided out-of-the-box in the future - for more info see this [GitHub issue](https://github.com/microsoft/FeatureManagement-Dotnet/issues/253).
+~For now, we need to implement the endpoint filters ourselves, but it could be that this will be provided out-of-the-box in the future - for more info see this [GitHub issue](https://github.com/microsoft/FeatureManagement-Dotnet/issues/253).~ The feature flag filter for Minimal API's is implemented in https://github.com/microsoft/FeatureManagement-Dotnet/pull/524.
