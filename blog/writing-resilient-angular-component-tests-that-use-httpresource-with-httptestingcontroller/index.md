@@ -87,7 +87,7 @@ it('renders customer details', async () => {
 	};
 
 	await render(CustomerDetailsComponent, {
-		componentInputs: {
+		inputs: {
 			customerId: 1,
 		},
 		providers: [
@@ -122,7 +122,7 @@ it('renders customer details', async () => {
 	};
 
 	await render(CustomerDetailsComponent, {
-		componentInputs: {
+		inputs: {
 			customerId: 1,
 		},
 		providers: [
@@ -186,7 +186,7 @@ This will intercept the HTTP request and allow us to mock the response using the
 ```ts{6,8,12}:customer-details.component.spec.ts
 it('renders customer details', async () => {
 	await render(CustomerDetailsComponent, {
-		componentInputs: {
+		inputs: {
 			customerId: 1,
 		},
 		providers: [provideHttpClient(), provideHttpClientTesting()],
@@ -243,7 +243,7 @@ If you'd like to see more test-cases, see [customer-details.component.spec.ts](h
 ```ts:customer-details.component.spec.ts [title=customer-details.component.spec.ts]
 it('renders customer details', async () => {
 	await render(CustomerDetailsComponent, {
-		componentInputs: {
+		inputs: {
 			customerId: 1,
 		},
 		providers: [provideHttpClient(), provideHttpClientTesting()],
