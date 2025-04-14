@@ -3,7 +3,7 @@
 ```ts:customer-details.component.spec.ts [title=customer-details.component.spec.ts]
 it('renders customer details', async () => {
 	await render(CustomerDetailsComponent, {
-		componentInputs: {
+		inputs: {
 			customerId: 1,
 		},
 		providers: [provideHttpClient(), provideHttpClientTesting()],
