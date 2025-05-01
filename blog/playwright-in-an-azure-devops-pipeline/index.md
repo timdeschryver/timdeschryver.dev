@@ -63,7 +63,7 @@ With Azure DevOps, the pipeline needs to first be manually created before it can
 To do so, go to the pipeline pages and create a new pipeline.
 On this page select "Azure Repos Git", then select your repository.
 
-![Starting page of the the wizard to create or import a pipeline.](./images/1.png)
+![Starting page of the wizard to create or import a pipeline.](./images/1.png)
 
 Next, select the "Existing Azure Pipelines YAML file" option and selected the above file if it's already pushed.
 Otherwise, select "Start pipeline" and copy-paste the above YAML into the editor.

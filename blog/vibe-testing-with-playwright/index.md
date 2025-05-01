@@ -221,7 +221,7 @@ test('filters blog posts by tag', async ({ page }) => {
 ```
 
 By looking at the failing test, can you spot the problem?
-Of course this is hard, so let me help you by providing you the the failure message.
+Of course this is hard, so let me help you by providing you the failure message.
 
 ```txt
 Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Angular' }) resolved to 2 elements:

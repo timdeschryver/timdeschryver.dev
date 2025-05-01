@@ -54,7 +54,7 @@ And the snapshot of the activated customers route looks empty by default.
 }
 ```
 
-Now, to access the parent id (`comanyId`) from the customers component, the code that I used to write, and have seen a lot, is the following one.
+Now, to access the parent id (`companyId`) from the customers component, the code that I used to write, and have seen a lot, is the following one.
 
 ```ts
 const companyId = activatedRoute.parent.parent.snapshot.params.companyId;

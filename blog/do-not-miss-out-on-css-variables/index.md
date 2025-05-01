@@ -130,7 +130,7 @@ The css of the selectbox uses the variables to know the four corners (based on t
 }
 ```
 
-Listen on the mouse events, and update the the mouse points accordingly:
+Listen on the mouse events, and update the mouse points accordingly:
 
 ```js
 document.documentElement.style.setProperty('--mouse-x1', ctx.selectArea.x1 + 'px');

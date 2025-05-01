@@ -61,7 +61,7 @@ To view the dashboard, run the AppHost project.
 
 ![The Aspire Graph containing two projects with a reference from the gateway to the apiservice.](./images/graph.webp)
 
-The newly created Gateway project should be empty for now, with the exception of adding Aspire's [service defaults](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/service-defaults). This is going to be important later on because it adds service discovery functionality. It adds more than this, such ass configuring OpenTelemetry, but that's not the focus of this article.
+The newly created Gateway project should be empty for now, with the exception of adding Aspire's [service defaults](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/service-defaults). This is going to be important later on because it adds service discovery functionality. It adds more than this, such as configuring OpenTelemetry, but that's not the focus of this article.
 
 ```cs{3}:Sandbox.Gateway/Program.cs
 var builder = WebApplication.CreateBuilder(args);
