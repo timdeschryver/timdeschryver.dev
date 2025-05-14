@@ -14,3 +14,4 @@ static/blog
 test-results/
 playwright-report/
 contributors.json
+.history
