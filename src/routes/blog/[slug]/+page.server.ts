@@ -1,11 +1,10 @@
 import { error } from '@sveltejs/kit';
-import { TAG_COLORS, orderTags, readPosts } from '../_posts';
+import { TAG_COLORS, readPosts } from '../_posts';
 import * as fs from 'fs';
 
 export async function load({ params }) {
 	const posts = await readPosts();
 	const post = posts.find((p) => p.metadata.slug === params.slug);
-	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
 	if (!post) {
 		error(404, `Blog ${params.slug} Not found`);
 	}
@@ -66,11 +65,6 @@ export async function load({ params }) {
 					({ level, description }) => level < 4 && !description.includes('omit from toc'),
 				),
 				color: post.metadata.tags
-					.sort((a, b) => {
-						const aIndex = tags.indexOf(a);
-						const bIndex = tags.indexOf(b);
-						return bIndex - aIndex;
-					})
 					.map((t) => TAG_COLORS[t.toLowerCase()])
 					.find(Boolean)
 					?.toLowerCase(),
