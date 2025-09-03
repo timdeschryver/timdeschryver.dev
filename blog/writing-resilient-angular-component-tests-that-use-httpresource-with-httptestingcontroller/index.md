@@ -236,7 +236,7 @@ But I want to encourage you to use the `HttpTestingController` to test your comp
 If you start doing that now, I'm confident that the migration to the `HttpResource` API will have less impact on your tests.
 
 In summary, here's how the test looks like.
-If you'd like to see more test-cases, see [customer-details.component.spec.ts](https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AngularWorkspace/projects/sandbox-app/src/app/customers/customer-details/customer-details.component.spec.ts) on GitHub.
+If you'd like to see more test-cases, see [customer-details.component.spec.ts](https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AngularWorkspace/projects/sandbox-app/src/app/customer-management/customer-details/customer-details.component.spec.ts) on GitHub.
 
 :::code-group
 
