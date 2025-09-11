@@ -155,7 +155,7 @@ To make the database useful, we can apply migrations and seed data during the se
 To apply EF migrations, I also configure the database context within the `ConfigureServices` method to include the migrations assembly (in my application, I have a separate project for the migrations that runs separately).
 After the container is started, the migrations are applied.
 
-```cs:CustomerApiWebApplicationFactory.cs{11-13,26-34}
+```cs:CustomerApiWebApplicationFactory.cs{11-13,26-36}
 public class CustomerApiWebApplicationFactory : WebApplicationFactory<Program>, IAsyncInitializer, IAsyncDisposable
 {
    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder().Build();
