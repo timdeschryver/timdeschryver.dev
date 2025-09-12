@@ -78,7 +78,7 @@ The next methods, `AddCookie` and `AddOpenIdConnect`, configures the respective 
 The configuration for the cookie scheme is straightforward, we set the cookie name, and configure the security settings.
 The OpenID Connect configuration is a bit more complex, as it requires multiple settings to be configured - you can find these within the settings of your identity provider -.
 
-```cs:Extensions.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Extensions.cs]
+```cs[filename=Extensions.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Extensions.cs]
 public static IServiceCollection AddAuthenticationSchemes(this IServiceCollection services, IConfiguration configuration)
 {
     services.AddAuthentication(options =>
@@ -145,7 +145,7 @@ Register the authorization middleware in the request pipeline by calling `AddAut
 Within the callback, set the default authorization policy to the cookie authentication scheme, and require an authenticated user.
 This ensures that all authorized endpoints are protected by default (if no policies are specified), and only authenticated users can access them.
 
-```cs{59-64}:Extensions.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Extensions.cs]
+```cs[linenumber=59-64][filename=Extensions.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Extensions.cs]
 public static IServiceCollection AddAuthenticationSchemes(this IServiceCollection services, IConfiguration configuration)
 {
     services.AddAuthentication(options =>
@@ -217,7 +217,7 @@ public static IServiceCollection AddAuthenticationSchemes(this IServiceCollectio
 
 Finally, enable the authentication and authorization middleware in the request pipeline, by calling `UseAuthentication` and `UseAuthorization`. Don't worry about the `MapUserEndpoints` method for now, this is covered in the next section.
 
-```cs:Program.cs{8,17-18,20-21} [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Prorgram.cs]
+```cs[filename=Program.cs][linenumber=10,18-19,21-22][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Prorgram.cs]
 using Sandbox.Gateway;
 using Sandbox.Gateway.UserModule;
 using Sandbox.ServiceDefaults;
@@ -255,7 +255,7 @@ The login endpoint returns a challenge result, which triggers the authentication
 
 The same applies to the logout endpoint, which instead returns a sign-out result, which signs the user out from both the cookie and OIDC schemes. Again, we provide a `redirectUrl` parameter to redirect the user back to a specific URL after a successful logout.
 
-```cs:User.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/UserModule/UserModule.cs]
+```cs[filename=User.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/UserModule/UserModule.cs]
 internal static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder builder)
 {
     builder.MapGet("login", (string? returnUrl, HttpContext context) =>
@@ -285,7 +285,7 @@ internal static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilde
 The third useful endpoint is the user endpoint that returns the current user information and claims.
 To retrieve the user information, we can use the `ClaimsPrincipal` provided by ASP.NET Core, which represents the current authenticated user (from the cookie). You can extend this to return more information for your use case, for example application-specific data.
 
-```cs:User.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/UserModule/UserModule.cs]
+```cs[filename=User.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/UserModule/UserModule.cs]
 builder.MapGet("user", (ClaimsPrincipal principal) =>
 {
     var user = principal switch

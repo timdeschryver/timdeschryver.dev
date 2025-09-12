@@ -30,7 +30,7 @@ If you need help setting up a new .NET Aspire project, please refer to the [Gett
 You should end up with a solution, in which a WebAPI project is added to the Aspire AppHost.
 In the example below the WebAPI project is referred to as `apiservice`.
 
-```cs{3}:Sandbox.AppHost/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AppHost/Program.cs]
+```cs[linenumber=3][filename=Sandbox.AppHost/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AppHost/Program.cs]
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddProject<Projects.Sandbox_ApiService>("apiservice");
@@ -46,7 +46,7 @@ Because there's no template for YARP, create a new Empty ASP.NET Core Web API pr
 If you're Visual Studio make sure that the "Enlist in Aspire orchestration" checkbox is checked (checked by default) in the wizard, so that the new project is added to the existing solution. This will automatically register the new project in the Aspire AppHost, and it will be available for orchestration.
 You can also do this manually by adding a project reference from the `AppHost` project to the new `Gateway` project, and registering the project to Aspire.
 
-```cs{4}:Sandbox.AppHost/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AppHost/Program.cs]
+```cs[linenumber=4][filename=Sandbox.AppHost/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AppHost/Program.cs]
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddProject<Projects.Sandbox_ApiService>("apiservice");
@@ -63,7 +63,7 @@ To view the dashboard, run the AppHost project.
 
 The newly created Gateway project should be empty for now, with the exception of adding Aspire's [service defaults](https://learn.microsoft.com/en-us/dotnet/aspire/fundamentals/service-defaults). This is going to be important later on because it adds service discovery functionality. It adds more than this, such as configuring OpenTelemetry, but that's not the focus of this article.
 
-```cs{3}:Sandbox.Gateway/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
+```cs [linenumber=3] [filename=Sandbox.Gateway/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -84,7 +84,7 @@ dotnet add package Microsoft.Extensions.ServiceDiscovery.Yarp
 
 When the packages are installed, update the `Program` file to add and use YARP:
 
-```cs{4,8}:Sandbox.Gateway/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
+```cs[linenumber=4,8][filename=Sandbox.Gateway/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -108,7 +108,7 @@ Aspire is responsible for orchestrating the different projects in the solution, 
 With Aspire we can "link" projects together, in our case the gateway (YARP) needs to be aware of the `apiservice` WebAPI project.
 To achieve this, we can use the `WithReference` method to add a reference to the `apiservice` project from the `gateway` project.
 
-```cs{3-7}:Sandbox.AppHost/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AppHost/Program.cs]
+```cs[linenumber=3-7][filename=Sandbox.AppHost/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AppHost/Program.cs]
 var builder = DistributedApplication.CreateBuilder(args);
 
 var api = builder.AddProject<Projects.Sandbox_ApiService>("apiservice");
@@ -141,7 +141,7 @@ The cluster contains a single destination, which is the address of the backend s
 
 This means that any requests to `/api` is going to be forwarded to the `apiservice` backend service.
 
-```json{8-31}:appsettings.json
+```json[linenumber=8-31][filename=appsettings.json]
 {
 	"Logging": {
 		"LogLevel": {
@@ -185,7 +185,7 @@ I like to add a prefix to the routes in the YARP project, so that I can easily d
 
 Lastly, the YARP configuration can be loaded from the `appsettings.json` file by using the `LoadFromConfig` method in the `Program.cs` file.
 
-```cs{4-6}:Sandbox.Gateway/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
+```cs[linenumber=4-6][filename=Sandbox.Gateway/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -217,7 +217,7 @@ http://apiservice/weatherforecast
 This happens because the `apiservice` is not discovered correctly, and thus isn't using the correct address.
 To resolve this, invoke the `AddServiceDiscoveryDestinationResolver` (coming from the `Microsoft.Extensions.ServiceDiscovery.Yarp` NuGet package) method in the `Program.cs` file of the YARP project.
 
-```cs{7}:Sandbox.Gateway/Program.cs [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
+```cs[linenumber=7][filename=Sandbox.Gateway/Program.cs][source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();

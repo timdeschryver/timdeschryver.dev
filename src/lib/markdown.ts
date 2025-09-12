@@ -171,6 +171,40 @@ export function parseFileToHtmlAndMeta(file): {
 	renderer.code = (source, lang) => {
 		lang = lang || 'txt';
 
+		let fileName = '';
+		let sourceLink = '';
+		const linesHighlight: number[] = [];
+
+		// Check for [source=link] syntax
+		const sourceMatch = lang.match(/\[source=([^\]]+)\]/);
+		if (sourceMatch) {
+			sourceLink = sourceMatch[1];
+			lang = lang.replace(/\[source=[^\]]+\]/, '').trim();
+		}
+
+		// Check for [filename=name] syntax
+		const filenameMatch = lang.match(/\[filename=([^\]]+)\]/);
+		if (filenameMatch) {
+			fileName = filenameMatch[1];
+			lang = lang.replace(/\[filename=[^\]]+\]/, '').trim();
+		}
+
+		// Check for [linenumber=1,2,3] syntax
+		const linenumberMatch = lang.match(/\[linenumber=([^\]]+)\]/);
+		if (linenumberMatch) {
+			const parts = linenumberMatch[1].split(',');
+			parts.forEach((p) => {
+				const range = p.trim().split('-').map(Number);
+				const min = range[0];
+				const max = range[1] || min;
+				for (let i = min; i <= max; i++) {
+					linesHighlight.push(i);
+				}
+			});
+			lang = lang.replace(/\[linenumber=[^\]]+\]/, '').trim();
+		}
+
+		// Backward compatibility: parse legacy syntax
 		const lineIndex = lang.indexOf('{');
 		const fileIndex = lang.indexOf(':') === -1 ? lang.indexOf(' ') : lang.indexOf(':');
 
@@ -179,10 +213,8 @@ export function parseFileToHtmlAndMeta(file): {
 				? lang.substring(0, Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1))).trim()
 				: lang;
 
-		let fileName = '';
-		let sourceLink = '';
-
-		if (fileIndex !== -1) {
+		// Legacy filename parsing (only if not already set by new syntax)
+		if (!fileName && fileIndex !== -1) {
 			const afterColon = lang
 				.substr(fileIndex + 1)
 				.trim()
@@ -198,36 +230,21 @@ export function parseFileToHtmlAndMeta(file): {
 			}
 		}
 
-		// Check for [source=link] syntax anywhere in the lang string
-		const sourceMatch = lang.match(/\[source=([^\]]+)\]/);
-		if (sourceMatch) {
-			sourceLink = sourceMatch[1];
-			// Remove the [source=...] part from the language string for further processing
-			lang = lang.replace(/\[source=[^\]]+\]/, '').trim();
-
-			// Re-parse after removing source syntax
-			const newFileIndex = lang.indexOf(':') === -1 ? lang.indexOf(' ') : lang.indexOf(':');
-
-			if (newFileIndex !== -1) {
-				fileName = lang
-					.substr(newFileIndex + 1)
-					.trim()
-					.replace(/\s?\{[^}]+\}/g, '');
+		// Legacy line number parsing (only if not already set by new syntax)
+		if (linesHighlight.length === 0) {
+			const lineNumberRegExp = /{([^}]+)}/g;
+			let curMatch;
+			while ((curMatch = lineNumberRegExp.exec(lang))) {
+				const parts = curMatch[1].split(',');
+				parts.forEach((p) => {
+					const range = p.trim().split('-').map(Number);
+					const min = range[0];
+					const max = range[1] || min;
+					for (let i = min; i <= max; i++) {
+						linesHighlight.push(i);
+					}
+				});
 			}
-		}
-
-		const linesHighlight: number[] = [];
-		const lineNumberRegExp = /{([^}]+)}/g;
-		let curMatch;
-		while ((curMatch = lineNumberRegExp.exec(lang))) {
-			const parts = curMatch[1].split(',');
-			parts.forEach((p) => {
-				let [min, max]: [number, number] = p.trim().split('-').map(Number);
-				max = max || min;
-				while (min <= max) {
-					linesHighlight.push(min++);
-				}
-			});
 		}
 
 		const id = createHash('md5').update(source).digest('hex');
