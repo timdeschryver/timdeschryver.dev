@@ -4,6 +4,8 @@ slug: secure-your-yarp-bff-with-cookie-based-authentication
 description: Learn how to implement a secure cookie-based authentication in a YARP (Yet Another Reverse Proxy) Project that acts as the Backend for Frontend (BFF) architecture within a .NET Aspire solution. We also cover why we should prefer cookies over tokens for authentication (spoiler, it's security related).
 date: 2025-09-11
 tags: .NET, YARP, BFF, Security, Aspire
+series:
+  name: 'Building a secure application'
 ---
 
 The first step towards building a secure system is a good authentication mechanism.

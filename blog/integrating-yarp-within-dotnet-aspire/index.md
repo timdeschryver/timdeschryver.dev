@@ -4,6 +4,8 @@ slug: integrating-yarp-within-dotnet-aspire
 description: This blog post is the first in a series of posts in which a YARP project is integrated within a .NET Aspire project, acting as a secure Backend for Frontend (BFF) for an Angular application.
 date: 2025-04-17
 tags: .NET, YARP, BFF, Aspire
+series:
+  name: 'Building a secure application'
 ---
 
 More projects are moving towards the Backend for Frontend (BFF) pattern to provide a more tailored and efficient interaction between a frontend application (e.g. an Angular application) and its backend services (e.g. a .NET WebAPI). This pattern has a couple of benefits:

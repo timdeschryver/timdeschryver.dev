@@ -4,7 +4,7 @@ import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
 import { execSync } from 'child_process';
 import { dev } from '$app/environment';
-import type { TOC } from '$lib/models';
+import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
 
 const blogPath = 'blog';
 
@@ -21,8 +21,12 @@ const posts: {
 		canonical: string;
 		outgoingLinks: { slug: string; title: string }[];
 		incomingLinks: { slug: string; title: string }[];
-		translations: { url: string; author: string; profile: string }[];
+		translations: { url: string; author: string; profile: string; language: string }[];
 		toc: TOC[];
+		author: string;
+		banner: string;
+		series?: BlogSeries;
+		seriesPosts?: SeriesPost[];
 	};
 }[] = [];
 
@@ -44,6 +48,8 @@ export async function readPosts(): Promise<
 			toc: TOC[];
 			author: string;
 			banner: string;
+			series?: BlogSeries;
+			seriesPosts?: SeriesPost[];
 		};
 	}[]
 > {
@@ -92,7 +98,10 @@ export async function readPosts(): Promise<
 					canonical,
 					outgoingLinks: [],
 					incomingLinks: [],
+					translations: metadata.translations || [],
 					toc: metadata.toc,
+					author: 'Tim Deschryver',
+					series: metadata.series,
 				},
 			};
 		})
@@ -119,6 +128,26 @@ export async function readPosts(): Promise<
 
 		post.metadata.incomingLinks.push(...incomingLinks);
 		post.metadata.outgoingLinks.push(...outgoingLinks);
+	}
+
+	// Add series information to posts
+	for (const post of postsSorted) {
+		if (post.metadata.series) {
+			const seriesPosts = postsSorted
+				.filter((p) => p.metadata.series?.name === post.metadata.series?.name)
+				.sort((a, b) => new Date(a.metadata.date).getTime() - new Date(b.metadata.date).getTime());
+
+			const metadataWithSeries = post.metadata as typeof post.metadata & {
+				seriesPosts: SeriesPost[];
+			};
+			metadataWithSeries.seriesPosts = seriesPosts.map((p, index) => ({
+				slug: p.metadata.slug,
+				title: p.metadata.title,
+				date: p.metadata.date,
+				order: index + 1,
+				current: p.metadata.slug === post.metadata.slug,
+			}));
+		}
 	}
 
 	posts.push(...postsSorted);

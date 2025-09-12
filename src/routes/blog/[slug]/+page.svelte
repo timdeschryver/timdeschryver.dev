@@ -7,6 +7,7 @@
 	import { blog } from '$lib/current-blog.svelte';
 	import Share from '$lib/Share.svelte';
 	import Actions from '$lib/Actions.svelte';
+	import BlogSeries from '$lib/BlogSeries.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
@@ -218,7 +219,7 @@
 	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
 </aside>
 
-{#if post.metadata.translations}
+{#if post.metadata.translations && post.metadata.translations.length > 0}
 	<div class="translations">
 		<hr />
 		<p>Thanks to the ❤️ community you can also read this post in:</p>
@@ -243,6 +244,10 @@
 {/if}
 
 {@html htmlStyle}
+
+{#if post.metadata.series && post.metadata.seriesPosts}
+	<BlogSeries series={post.metadata.series} seriesPosts={post.metadata.seriesPosts} />
+{/if}
 
 {#if tldr()}
 	{@html post.tldr}

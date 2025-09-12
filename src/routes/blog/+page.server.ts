@@ -13,6 +13,13 @@ export async function load() {
 			.map((t) => TAG_COLORS[t.toLowerCase()])
 			.find(Boolean)
 			?.toLowerCase(),
+		series: p.metadata.series
+			? {
+					name: p.metadata.series.name,
+					order: p.metadata.seriesPosts?.find((sp) => sp.current)?.order || 1,
+					total: p.metadata.seriesPosts?.length || 1,
+				}
+			: undefined,
 	}));
 	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
 	return { posts: metadata, tags };

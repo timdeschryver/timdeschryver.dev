@@ -147,6 +147,13 @@
 					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
 						{post.title}
 					</h2>
+					{#if post.series}
+						<div class="series-indicator">
+							<span class="series-label">Series:</span>
+							<span class="series-name">{post.series.name}</span>
+							<span class="series-progress">({post.series.order}/{post.series.total})</span>
+						</div>
+					{/if}
 					<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
 					<div>{post.description}</div>
 				</a>
@@ -225,6 +232,27 @@
 	.search-info {
 		color: var(--text-color-light);
 		text-align: right;
+	}
+
+	.series-indicator {
+		font-size: 0.875rem;
+		color: var(--text-color-light);
+		margin: var(--spacing-small) 0;
+		line-height: 1.4;
+	}
+
+	.series-label {
+		font-weight: 500;
+	}
+
+	.series-name {
+		color: var(--text-color);
+		font-weight: 400;
+	}
+
+	.series-progress {
+		opacity: 0.8;
+		font-weight: 300;
 	}
 
 	article {

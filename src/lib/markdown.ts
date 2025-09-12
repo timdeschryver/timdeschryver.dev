@@ -21,7 +21,7 @@ import palleteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
-import type { TOC } from './models';
+import type { TOC, BlogSeries } from './models';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
@@ -85,8 +85,11 @@ export function parseFileToHtmlAndMeta(file): {
 		title: string;
 		slug: string;
 		date: string;
+		description: string;
 		tags: string[];
 		toc: TOC[];
+		translations?: { url: string; author: string; profile: string; language: string }[];
+		series?: BlogSeries;
 	};
 	assetsSrc: string;
 } {
@@ -391,12 +394,42 @@ export function* traverseFolder(
 	}
 }
 
-function extractFrontmatter(markdown): { content: string; metadata: Record<string, unknown> } {
-	const result = frontmatter<{ tags: string | string[]; translations?: Record<string, string> }>(
-		markdown,
-	);
+function extractFrontmatter(markdown): {
+	content: string;
+	metadata: {
+		outgoingSlugs: string[];
+		title: string;
+		slug: string;
+		date: string;
+		description: string;
+		tags: string[];
+		toc: TOC[];
+		translations?: { url: string; author: string; profile: string; language: string }[];
+		series?: BlogSeries;
+		[key: string]: unknown;
+	};
+} {
+	const result = frontmatter<{
+		tags: string | string[];
+		translations?: { url: string; author: string; profile: string; language: string }[];
+		series?: {
+			name: string;
+			order: number;
+		};
+		title: string;
+		slug: string;
+		date: string;
+		description: string;
+	}>(markdown);
+	const metadata = {
+		...result.attributes,
+		outgoingSlugs: [] as string[],
+		toc: [] as TOC[],
+		tags: [] as string[],
+	};
+
 	if (typeof result.attributes.tags === 'string') {
-		result.attributes.tags = result.attributes.tags
+		metadata.tags = result.attributes.tags
 			.split(',')
 			.map((a) => (a ? a.trim().charAt(0).toUpperCase() + a.trim().slice(1) : a))
 			.map((a) => {
@@ -408,9 +441,10 @@ function extractFrontmatter(markdown): { content: string; metadata: Record<strin
 				}
 				return a;
 			});
-	} else {
-		result.attributes.tags = [];
+	} else if (Array.isArray(result.attributes.tags)) {
+		metadata.tags = result.attributes.tags;
 	}
+
 	if (Array.isArray(result.attributes.translations)) {
 		for (const translation of result.attributes.translations) {
 			const translationsMap = {
@@ -419,8 +453,15 @@ function extractFrontmatter(markdown): { content: string; metadata: Record<strin
 			};
 			translation.language = translationsMap[translation.language] ?? translation.language;
 		}
+		metadata.translations = result.attributes.translations;
 	}
-	return { metadata: result.attributes, content: result.body };
+
+	// Handle series metadata
+	if (result.attributes.series) {
+		metadata.series = result.attributes.series;
+	}
+
+	return { metadata, content: result.body };
 }
 
 function slugify(string) {
