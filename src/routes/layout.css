@@ -601,16 +601,19 @@ pre > .code-heading > .file-name {
 	width: 100%;
 }
 
-pre > .code-heading > .copy-code {
+pre > .code-heading > .icon {
 	margin-left: auto;
 	opacity: 0.3;
+	transition: opacity 0.2s ease-in;
+	font-size: 1.5rem;
 }
 
-pre:hover > .code-heading > .copy-code {
+
+pre:hover > .code-heading > .icon {
 	opacity: 1;
 }
 
-pre > .code-heading > .copy-code.success {
+pre > .code-heading > .icon.success {
 	animation: wiggle 1.5s linear;
 	color: hsla(135, 59%, 49%, 0.8);
 }

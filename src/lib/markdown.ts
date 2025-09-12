@@ -178,13 +178,44 @@ export function parseFileToHtmlAndMeta(file): {
 			lineIndex !== -1 || fileIndex !== -1
 				? lang.substring(0, Math.min(...[lineIndex, fileIndex].filter((i) => i !== -1))).trim()
 				: lang;
-		const fileName =
-			fileIndex !== -1
-				? lang
-						.substr(fileIndex + 1)
-						.trim()
-						.replace(/\s?\{[^}]+\}/g, '')
-				: '';
+
+		let fileName = '';
+		let sourceLink = '';
+
+		if (fileIndex !== -1) {
+			const afterColon = lang
+				.substr(fileIndex + 1)
+				.trim()
+				.replace(/\s?\{[^}]+\}/g, '');
+
+			// Check if it's an HTML link (legacy format)
+			const linkMatch = afterColon.match(/^<a\s+href="([^"]+)">([^<]+)<\/a>$/);
+			if (linkMatch) {
+				sourceLink = linkMatch[1];
+				fileName = linkMatch[2]; // Use link text as filename display
+			} else {
+				fileName = afterColon;
+			}
+		}
+
+		// Check for [source=link] syntax anywhere in the lang string
+		const sourceMatch = lang.match(/\[source=([^\]]+)\]/);
+		if (sourceMatch) {
+			sourceLink = sourceMatch[1];
+			// Remove the [source=...] part from the language string for further processing
+			lang = lang.replace(/\[source=[^\]]+\]/, '').trim();
+
+			// Re-parse after removing source syntax
+			const newFileIndex = lang.indexOf(':') === -1 ? lang.indexOf(' ') : lang.indexOf(':');
+
+			if (newFileIndex !== -1) {
+				fileName = lang
+					.substr(newFileIndex + 1)
+					.trim()
+					.replace(/\s?\{[^}]+\}/g, '');
+			}
+		}
+
 		const linesHighlight: number[] = [];
 		const lineNumberRegExp = /{([^}]+)}/g;
 		let curMatch;
@@ -205,7 +236,10 @@ export function parseFileToHtmlAndMeta(file): {
 		const headingParts = [
 			icon,
 			fileName ? `<span class="file-name">${fileName}</span>` : undefined,
-			`<button class="copy-code material-symbols-outlined" data-ref="${id}">content_paste</button>`,
+			sourceLink
+				? `<a href="${sourceLink}" class="icon material-symbols-outlined" target="_blank" rel="noopener noreferrer" title="View source">open_in_new</a>`
+				: undefined,
+			`<button class="copy-code icon material-symbols-outlined" data-ref="${id}">content_paste</button>`,
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
