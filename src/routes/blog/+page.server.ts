@@ -1,10 +1,10 @@
-import { TAG_COLORS, orderTags, readPosts } from './_posts';
+import { TAG_COLORS, orderTags, readPostsMetadata } from './_posts';
 
 export async function load() {
-	const posts = await readPosts();
-	const metadata = posts.map((p) => ({
+	const postsMetadata = await readPostsMetadata();
+	const metadata = postsMetadata.map((p) => ({
 		title: p.metadata.title,
-		tldr: Boolean(p.tldr),
+		tldr: p.tldr,
 		description: p.metadata.description,
 		slug: p.metadata.slug,
 		date: p.metadata.date,
@@ -21,6 +21,6 @@ export async function load() {
 				}
 			: undefined,
 	}));
-	const tags = orderTags(posts.flatMap((m) => m.metadata.tags));
+	const tags = orderTags(postsMetadata.flatMap((m) => m.metadata.tags));
 	return { posts: metadata, tags };
 }

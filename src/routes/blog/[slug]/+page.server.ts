@@ -1,10 +1,9 @@
 import { error } from '@sveltejs/kit';
-import { TAG_COLORS, readPosts } from '../_posts';
+import { TAG_COLORS, readPostBySlug } from '../_posts';
 import * as fs from 'fs';
 
 export async function load({ params }) {
-	const posts = await readPosts();
-	const post = posts.find((p) => p.metadata.slug === params.slug);
+	const post = await readPostBySlug(params.slug);
 	if (!post) {
 		error(404, `Blog ${params.slug} Not found`);
 	}
