@@ -309,7 +309,7 @@ builder.MapGet("user", (ClaimsPrincipal principal) =>
 });
 ```
 
-### Summary
+## Summary
 
 With the above code, we have successfully secured our YARP BFF application using cookie-based authentication.
 We chose the cookie authentication scheme for its security benefits, as well as a less complex implementation compared to token-based authentication.
@@ -317,6 +317,6 @@ This sets a solid security foundation to build upon, as the BFF now handles the 
 
 As the result we have the following endpoints, which can be consumed (in the next post) by the frontend application:
 
-`/bff/user`: Returns current user information and claims
-`/bff/login`: Initiates OIDC authentication flow
-`/bff/logout`: Signs out user from both cookie and OIDC schemes
+- `/bff/user`: Returns current user information and claims
+- `/bff/login`: Initiates OIDC authentication flow
+- `/bff/logout`: Signs out user from both cookie and OIDC schemes
