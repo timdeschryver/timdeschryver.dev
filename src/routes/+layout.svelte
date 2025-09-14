@@ -13,7 +13,7 @@
 
 	let { children } = $props();
 
-	let segment = $derived($page.url.pathname.substring(1));
+	let segment = $derived($page.url?.pathname.substring(1) ?? '');
 	let support = $state<HTMLElement | null>();
 	let scrollY = $state(0);
 

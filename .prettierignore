@@ -4,3 +4,4 @@ static/**/*.md
 build/**
 node_modules/**
 package-lock.json
+.blog-cache/**

@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
@@ -7,6 +8,7 @@ import { dev } from '$app/environment';
 import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
 
 const blogPath = 'blog';
+const cacheDir = '.blog-cache';
 
 // TypeScript types for blog posts
 export interface BlogPostMetadata {
@@ -34,19 +36,10 @@ export interface BlogPost {
 	metadata: BlogPostMetadata;
 }
 
-// Cache for full posts
-const postsCache = new Map<string, { post: BlogPost; lastModified: number }>();
-
-/**
- * Get file modification time for cache invalidation
- */
-function getFileModificationTime(filePath: string): number {
-	try {
-		const stats = fs.statSync(filePath);
-		return stats.mtime.getTime();
-	} catch {
-		return 0;
-	}
+interface CachedPost {
+	post: BlogPost;
+	lastModified: number;
+	cacheTimestamp: number;
 }
 
 /**
@@ -195,9 +188,11 @@ export async function readPosts(): Promise<BlogPost[]> {
 		{} as Record<string, { file: string; path: string }[]>,
 	);
 
-	if (postsCache.size === Object.keys(directories).length) {
+	// Check if we can use cached posts for all directories
+	const cachedPosts = getAllValidCachedPosts();
+	if (cachedPosts.length === Object.keys(directories).length) {
 		console.log('\x1b[35m[posts] using cached posts\x1b[0m');
-		return Array.from(postsCache.values()).map((entry) => entry.post);
+		return cachedPosts.sort(sortByDate);
 	}
 
 	const startTime = performance.now();
@@ -211,11 +206,11 @@ export async function readPosts(): Promise<BlogPost[]> {
 	addPostLinks(postsSorted);
 	addSeriesInformation(postsSorted);
 
-	// Populate cache with modification times
+	// Cache all posts to file system
 	for (const post of postsSorted) {
 		const postPath = `blog/${post.metadata.slug}/index.md`;
 		const lastModified = getFileModificationTime(postPath);
-		postsCache.set(post.metadata.slug, { post, lastModified });
+		writeCachedPost(post.metadata.slug, post, lastModified);
 	}
 
 	const endTime = performance.now();
@@ -228,18 +223,18 @@ export async function readPosts(): Promise<BlogPost[]> {
 
 // Optimized function to read a single post by slug with caching
 export async function readPostBySlug(slug: string): Promise<BlogPost | null> {
-	await readPosts();
-
 	const postPath = `blog/${slug}/index.md`;
 	const tldrPath = `blog/${slug}/tldr.md`;
 
 	const currentModified = getFileModificationTime(postPath);
 
 	// Check if we have a cached version and if it's still valid
-	const cached = postsCache.get(slug);
-	if (cached && cached.lastModified >= currentModified && currentModified > 0) {
-		console.log(`\x1b[35m[posts] using cached post: ${slug}\x1b[0m`);
-		return cached.post;
+	if (isCacheValid(slug, currentModified)) {
+		const cached = readCachedPost(slug);
+		if (cached) {
+			console.log(`\x1b[35m[posts] using cached post: ${slug}\x1b[0m`);
+			return cached.post;
+		}
 	}
 
 	const startTime = performance.now();
@@ -254,7 +249,7 @@ export async function readPostBySlug(slug: string): Promise<BlogPost | null> {
 	}
 
 	// Update cache with the new/updated post
-	postsCache.set(slug, { post: result, lastModified: currentModified });
+	writeCachedPost(slug, result, currentModified);
 
 	const endTime = performance.now();
 	console.log(
@@ -268,7 +263,14 @@ export async function readPostBySlug(slug: string): Promise<BlogPost | null> {
  * Clear the posts cache - useful for development or when posts are updated externally
  */
 export function clearPostsCache(): void {
-	postsCache.clear();
+	try {
+		if (fs.existsSync(cacheDir)) {
+			fs.rmSync(cacheDir, { recursive: true, force: true });
+			console.log('\x1b[35m[posts] cleared cache directory\x1b[0m');
+		}
+	} catch (error) {
+		console.warn('Failed to clear posts cache:', error);
+	}
 }
 
 function getLastModifiedDate(slug: string) {
@@ -279,6 +281,122 @@ function getLastModifiedDate(slug: string) {
 	if (!buffer) {
 		return null;
 	}
+}
+
+/**
+ * Get file modification time for cache invalidation
+ */
+function getFileModificationTime(filePath: string): number {
+	try {
+		const stats = fs.statSync(filePath);
+		return stats.mtime.getTime();
+	} catch {
+		return 0;
+	}
+}
+
+/**
+ * Get cache file path for a given slug
+ */
+function getCacheFilePath(slug: string): string {
+	return path.join(cacheDir, slug, 'cache.json');
+}
+
+/**
+ * Ensure cache directory exists for a given slug
+ */
+function ensureCacheDir(slug: string): void {
+	const cachePath = path.join(cacheDir, slug);
+	try {
+		fs.mkdirSync(cachePath, { recursive: true });
+	} catch (error) {
+		console.warn(`Failed to create cache directory for ${slug}:`, error);
+	}
+}
+
+/**
+ * Read cached post from file system
+ */
+function readCachedPost(slug: string): CachedPost | null {
+	try {
+		const cacheFilePath = getCacheFilePath(slug);
+		if (!fs.existsSync(cacheFilePath)) {
+			return null;
+		}
+
+		const cacheContent = fs.readFileSync(cacheFilePath, 'utf-8');
+		const cached: CachedPost = JSON.parse(cacheContent);
+		return cached;
+	} catch (error) {
+		console.warn(`Failed to read cache for ${slug}:`, error);
+		return null;
+	}
+}
+
+/**
+ * Write cached post to file system
+ */
+function writeCachedPost(slug: string, post: BlogPost, lastModified: number): void {
+	try {
+		ensureCacheDir(slug);
+		const cacheFilePath = getCacheFilePath(slug);
+		const cached: CachedPost = {
+			post,
+			lastModified,
+			cacheTimestamp: Date.now(),
+		};
+
+		fs.writeFileSync(cacheFilePath, JSON.stringify(cached, null, 2));
+	} catch (error) {
+		console.warn(`Failed to write cache for ${slug}:`, error);
+	}
+}
+
+/**
+ * Check if cached post is still valid
+ */
+function isCacheValid(slug: string, currentModified: number): boolean {
+	const cached = readCachedPost(slug);
+	if (!cached) {
+		return false;
+	}
+
+	// Check if the source file has been modified since the cache was created
+	return cached.lastModified >= currentModified && currentModified > 0;
+}
+
+/**
+ * Get all cached posts that are still valid
+ */
+function getAllValidCachedPosts(): BlogPost[] {
+	const cachedPosts: BlogPost[] = [];
+
+	try {
+		if (!fs.existsSync(cacheDir)) {
+			return cachedPosts;
+		}
+
+		const slugDirs = fs
+			.readdirSync(cacheDir, { withFileTypes: true })
+			.filter((dirent) => dirent.isDirectory())
+			.map((dirent) => dirent.name);
+
+		for (const slug of slugDirs) {
+			const postPath = `blog/${slug}/index.md`;
+			const currentModified = getFileModificationTime(postPath);
+
+			if (isCacheValid(slug, currentModified)) {
+				const cached = readCachedPost(slug);
+				if (cached) {
+					cachedPosts.push(cached.post);
+				}
+			}
+		}
+	} catch (error) {
+		console.warn('Failed to read cached posts:', error);
+	}
+
+	return cachedPosts;
 }
 
 export function orderTags(tags: string[]) {
