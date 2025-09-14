@@ -29,6 +29,10 @@ Because of these reasons, there's an increasing interest in the Vite ecosystem f
 
 ## How to use Vitest in Angular
 
+:::info
+Official (experimental) support for Vitest in Angular is [available](https://angular.dev/guide/testing/unit-tests) from version 20. This means you don't need to use AnalogJS as a bridge anymore.
+:::
+
 To use Vitest with Angular you can use [AnalogJS](https://analogjs.org/) as a bridge between Angular and Vitest.
 [Brandon Roberts](https://twitter.com/brandontroberts) already wrote a great article "Faster testing with Angular and Vitest ⚡️" about how to use AnalogJS with Angular and Vitest, so I won't go into the details here.
 You can find the article on [dev.to](https://dev.to/brandontroberts/faster-testing-with-angular-and-vitest-274n).
