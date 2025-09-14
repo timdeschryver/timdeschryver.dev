@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import frontmatter from 'front-matter';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
@@ -35,23 +34,20 @@ export interface BlogPost {
 	metadata: BlogPostMetadata;
 }
 
-export interface BlogPostMetadataOnly {
-	metadata: Omit<BlogPostMetadata, 'toc'>;
-	tldr: boolean;
-}
-
-interface FrontmatterAttributes {
-	title: string;
-	slug: string;
-	date: string;
-	description: string;
-	tags: string | string[];
-	translations?: { url: string; author: string; profile: string; language: string }[];
-	series?: BlogSeries;
-}
-
 // Cache for full posts
-const posts: BlogPost[] = [];
+const postsCache = new Map<string, { post: BlogPost; lastModified: number }>();
+
+/**
+ * Get file modification time for cache invalidation
+ */
+function getFileModificationTime(filePath: string): number {
+	try {
+		const stats = fs.statSync(filePath);
+		return stats.mtime.getTime();
+	} catch {
+		return 0;
+	}
+}
 
 /**
  * Process individual post files to extract full post data with HTML
@@ -64,10 +60,14 @@ async function processFullPost(files: { file: string; path: string }[]): Promise
 		return null;
 	}
 
-	// Full HTML processing
-	const result = parseFileToHtmlAndMeta(postPath);
+	// Parse main post and TLDR in parallel for better CI/CD performance
+	const [result, tldrResult] = await Promise.all([
+		Promise.resolve(parseFileToHtmlAndMeta(postPath)),
+		tldrPath ? Promise.resolve(parseFileToHtmlAndMeta(tldrPath)) : Promise.resolve(null),
+	]);
+
 	const html = result.html;
-	const tldr = tldrPath ? parseFileToHtmlAndMeta(tldrPath).html : '';
+	const tldr = tldrResult?.html || '';
 
 	const processedMetadata: ProcessedMetadata = {
 		title: result.metadata.title,
@@ -91,43 +91,6 @@ async function processFullPost(files: { file: string; path: string }[]): Promise
 			toc: result.metadata.toc || [],
 			outgoingSlugs: result.metadata.outgoingSlugs || [],
 		},
-	};
-}
-
-/**
- * Process individual post files to extract metadata only
- */
-async function processMetadataOnly(
-	files: { file: string; path: string }[],
-): Promise<BlogPostMetadataOnly | null> {
-	const postPath = files.find((f) => f.file === 'index.md')?.path;
-	const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
-
-	if (!postPath) {
-		return null;
-	}
-
-	// Metadata-only processing
-	const markdown = fs.readFileSync(postPath, 'utf-8');
-	const { attributes } = frontmatter<FrontmatterAttributes>(markdown);
-
-	const processedMetadata: ProcessedMetadata = {
-		title: attributes.title,
-		slug: attributes.slug,
-		description: attributes.description,
-		date: attributes.date,
-		tags: normalizeTagsFromFrontmatter(attributes.tags),
-		toc: [],
-		outgoingSlugs: [],
-		translations: attributes.translations,
-		series: attributes.series,
-	};
-
-	const finalMetadata = createPostMetadata(processedMetadata);
-
-	return {
-		metadata: finalMetadata,
-		tldr: Boolean(tldrPath),
 	};
 }
 
@@ -168,28 +131,6 @@ function createPostMetadata(metadata: ProcessedMetadata): BlogPostMetadata {
 		author: 'Tim Deschryver',
 		series: metadata.series,
 	};
-}
-
-/**
- * Normalize tags from frontmatter format
- */
-function normalizeTagsFromFrontmatter(tags: string | string[]): string[] {
-	const tagArray =
-		typeof tags === 'string'
-			? tags.split(',').map((a) => (a ? a.trim().charAt(0).toUpperCase() + a.trim().slice(1) : a))
-			: Array.isArray(tags)
-				? tags
-				: [];
-
-	return tagArray.map((a) => {
-		if (a.toLowerCase() === 'typescript') {
-			return 'TypeScript';
-		}
-		if (a.toLowerCase() === 'ngrx') {
-			return 'NgRx';
-		}
-		return a;
-	});
 }
 
 /**
@@ -245,11 +186,6 @@ function addPostLinks(posts: BlogPost[]): void {
 }
 
 export async function readPosts(): Promise<BlogPost[]> {
-	if (posts.length) {
-		return posts;
-	}
-	console.log('\x1b[35m[posts] generate\x1b[0m');
-
 	const folderContent = [...traverseFolder(blogPath, '.md')];
 	const directories = folderContent.reduce(
 		(dirs, file) => {
@@ -259,6 +195,13 @@ export async function readPosts(): Promise<BlogPost[]> {
 		{} as Record<string, { file: string; path: string }[]>,
 	);
 
+	if (postsCache.size === Object.keys(directories).length) {
+		console.log('\x1b[35m[posts] using cached posts\x1b[0m');
+		return Array.from(postsCache.values()).map((entry) => entry.post);
+	}
+
+	const startTime = performance.now();
+	console.log('\x1b[35m[posts] generate \x1b[0m');
 	const promises = Object.values(directories).map(processFullPost);
 	const results = await Promise.all(promises);
 	const postsSorted = results
@@ -268,128 +211,64 @@ export async function readPosts(): Promise<BlogPost[]> {
 	addPostLinks(postsSorted);
 	addSeriesInformation(postsSorted);
 
-	posts.push(...postsSorted);
+	// Populate cache with modification times
+	for (const post of postsSorted) {
+		const postPath = `blog/${post.metadata.slug}/index.md`;
+		const lastModified = getFileModificationTime(postPath);
+		postsCache.set(post.metadata.slug, { post, lastModified });
+	}
+
+	const endTime = performance.now();
+	console.log(
+		`\x1b[35m[posts] generated ${postsSorted.length} posts in ${Math.round(endTime - startTime)}ms\x1b[0m`,
+	);
+
 	return postsSorted;
 }
 
-// Optimized function to read only metadata without generating HTML
-export async function readPostsMetadata(): Promise<BlogPostMetadataOnly[]> {
-	console.log('\x1b[35m[posts] generate metadata only\x1b[0m');
-
-	const folderContent = [...traverseFolder(blogPath, '.md')];
-	const directories = folderContent.reduce(
-		(dirs, file) => {
-			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-			return dirs;
-		},
-		{} as Record<string, { file: string; path: string }[]>,
-	);
-
-	const promises = Object.values(directories).map(processMetadataOnly);
-	const results = await Promise.all(promises);
-	const postMetadata = results
-		.filter((result): result is BlogPostMetadataOnly => result !== null)
-		.sort(sortByDate);
-
-	addSeriesInformation(postMetadata);
-
-	return postMetadata;
-}
-
-// Optimized function to read a single post by slug
+// Optimized function to read a single post by slug with caching
 export async function readPostBySlug(slug: string): Promise<BlogPost | null> {
-	console.log(`\x1b[35m[post] generate single post: ${slug}\x1b[0m`);
+	await readPosts();
 
-	const folderContent = [...traverseFolder(blogPath, '.md')];
-	const directories: Record<string, { file: string; path: string }[]> = folderContent.reduce(
-		(dirs, file) => {
-			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-			return dirs;
-		},
-		{} as Record<string, { file: string; path: string }[]>,
-	);
+	const postPath = `blog/${slug}/index.md`;
+	const tldrPath = `blog/${slug}/tldr.md`;
 
-	// Find the directory containing the target slug
-	const targetDirectory = Object.values(directories).find((files) => {
-		const postPath = files.find((f) => f.file === 'index.md')?.path;
-		if (postPath) {
-			const markdown = fs.readFileSync(postPath, 'utf-8');
-			const { attributes } = frontmatter<{ slug: string }>(markdown);
-			return attributes.slug === slug;
-		}
-		return false;
-	});
+	const currentModified = getFileModificationTime(postPath);
 
-	if (!targetDirectory) {
-		return null;
+	// Check if we have a cached version and if it's still valid
+	const cached = postsCache.get(slug);
+	if (cached && cached.lastModified >= currentModified && currentModified > 0) {
+		console.log(`\x1b[35m[posts] using cached post: ${slug}\x1b[0m`);
+		return cached.post;
 	}
 
-	const result = await processFullPost(targetDirectory);
+	const startTime = performance.now();
+	console.log(`\x1b[35m[posts] generate single post: ${slug}\x1b[0m`);
+
+	const result = await processFullPost([
+		{ file: 'index.md', path: postPath },
+		{ file: 'tldr.md', path: tldrPath },
+	]);
 	if (!result) {
 		return null;
 	}
 
-	// If this post is part of a series, get all posts in the series for navigation
-	if (result.metadata.series) {
-		const allPosts = await readPostsMetadata();
-		const seriesPosts = allPosts
-			.filter((p) => p.metadata.series?.name === result.metadata.series?.name)
-			.sort((a, b) => new Date(a.metadata.date).getTime() - new Date(b.metadata.date).getTime());
+	// Update cache with the new/updated post
+	postsCache.set(slug, { post: result, lastModified: currentModified });
 
-		const metadataWithSeries = result.metadata as BlogPostMetadata & {
-			seriesPosts: SeriesPost[];
-		};
-		metadataWithSeries.seriesPosts = seriesPosts.map((p, index) => ({
-			slug: p.metadata.slug,
-			title: p.metadata.title,
-			date: p.metadata.date,
-			order: index + 1,
-			current: p.metadata.slug === result.metadata.slug,
-		}));
-	}
-
-	// Compute outgoing links for this single post (efficient - just lookup metadata)
-	if (result.metadata.outgoingSlugs && result.metadata.outgoingSlugs.length > 0) {
-		const allPostsMetadata = await readPostsMetadata();
-
-		const outgoingLinks = result.metadata.outgoingSlugs
-			.map((targetSlug) => {
-				const targetPost = allPostsMetadata.find((p) => p.metadata.slug === targetSlug);
-				return targetPost
-					? {
-							slug: targetPost.metadata.slug,
-							title: targetPost.metadata.title,
-						}
-					: null;
-			})
-			.filter((link): link is { slug: string; title: string } => link !== null);
-
-		result.metadata.outgoingLinks = outgoingLinks;
-	}
-
-	// Note: Incoming links are not computed for single posts for performance reasons
-	// They require parsing all other posts to check their outgoingSlugs
-	// If needed, they can be computed separately or cached
+	const endTime = performance.now();
+	console.log(
+		`\x1b[35m[posts] generated post '${slug}' in ${Math.round(endTime - startTime)}ms\x1b[0m`,
+	);
 
 	return result;
 }
 
 /**
- * Compute incoming links for a specific post (expensive operation)
- * This requires parsing all posts to check their outgoingSlugs
+ * Clear the posts cache - useful for development or when posts are updated externally
  */
-export async function getIncomingLinksForPost(
-	slug: string,
-): Promise<{ slug: string; title: string }[]> {
-	console.log(`\x1b[33m[links] computing incoming links for: ${slug}\x1b[0m`);
-
-	const allPosts = await readPosts();
-	return allPosts
-		.filter((p) => p.metadata.outgoingSlugs?.includes(slug))
-		.map((p) => ({
-			slug: p.metadata.slug,
-			title: p.metadata.title,
-		}));
+export function clearPostsCache(): void {
+	postsCache.clear();
 }
 
 function getLastModifiedDate(slug: string) {
@@ -400,8 +279,6 @@ function getLastModifiedDate(slug: string) {
 	if (!buffer) {
 		return null;
 	}
-
-	return buffer.toString().trim();
 }
 
 export function orderTags(tags: string[]) {

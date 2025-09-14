@@ -93,6 +93,9 @@ export function parseFileToHtmlAndMeta(file): {
 	};
 	assetsSrc: string;
 } {
+	if (!fs.existsSync(file)) {
+		return null;
+	}
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
 	metadata.outgoingSlugs = [] as string[];
