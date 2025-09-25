@@ -47,7 +47,7 @@ dotnet add package Duende.AccessTokenManagement.OpenIdConnect
 Next, register the access token management services using `AddOpenIdConnectAccessTokenManagement()` in your `Program.cs` file.
 Because it makes use of a cache to store the tokens, you might also need to add a cache implemention, the example below uses the distributed memory cache.
 
-```cs [filename=Program.cs] [linenumber=1,9-19] [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs#L13-L14]
+```cs [filename=Program.cs] [linenumber=1,10-11] [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Program.cs#L13-L14]
 using Duende.AccessTokenManagement.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -145,12 +145,12 @@ public static IServiceCollection AddReverseProxy(this IServiceCollection service
 }
 ```
 
-### Removing the cookie
+### Remove the cookie from the outgoing request
 
 After all previous steps, the outgoing request will contain both the Authorization header with the access token.
 This means we can remove the cookie from the outgoing request, which is done by adding a `RequestHeaderRemoveTransform` to the transforms collection.
 
-```cs [filename=Extensions.cs] [linenumber=16] [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Extensions.cs#L24-L34]
+```cs [filename=Extensions.cs] [linenumber=15] [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.Gateway/Extensions.cs#L24-L34]
 public static IServiceCollection AddReverseProxy(this IServiceCollection services, IConfiguration configuration)
 {
     services.AddSingleton<AddBearerTokenToHeadersTransform>();

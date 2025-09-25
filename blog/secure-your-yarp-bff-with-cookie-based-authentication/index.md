@@ -60,6 +60,10 @@ The way cookie-based authentication works, is that when a user successfully auth
 
 The authentication complexity moves from the client to the server, and is often also less complex to implement the whole authentication flow.
 
+:::info
+The cookie based authentication only is applicable for web applications within a browser context, as cookies are a browser feature. For mobile or desktop applications, token-based authentication (using the PKCE flow) is still the preferred way to go.
+:::
+
 ## Implementing cookie-based authentication within a YARP BFF
 
 In my previous post [Using YARP as BFF within .NET Aspire: Integrating YARP into .NET Aspire](../integrating-yarp-within-dotnet-aspire), we set up a YARP gateway as a BFF. We will continue building on top of that project, and add authentication to it.
