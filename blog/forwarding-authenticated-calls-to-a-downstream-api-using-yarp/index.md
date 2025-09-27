@@ -178,3 +178,5 @@ public static IServiceCollection AddReverseProxy(this IServiceCollection service
 In this post, we've explored how to forward authenticated calls to a downstream API using YARP in a BFF architecture. By leveraging the `Duende.AccessTokenManagement.OpenIdConnect` library, we simplified the process of managing access tokens and ensured that our backend services can securely authorize requests on behalf of the user.
 By simply configuring YARP to use a custom transformer, we can keep this logic encapsulated and reusable across different routes and services.
 This approach enhances the security of our application architecture.
+
+For the full source code, check out the [Sandbox repository](https://github.com/timdeschryver/Sandbox).

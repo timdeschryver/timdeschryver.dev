@@ -324,3 +324,5 @@ As the result we have the following endpoints, which can be consumed (in the nex
 - `/bff/user`: Returns current user information and claims
 - `/bff/login`: Initiates OIDC authentication flow
 - `/bff/logout`: Signs out user from both cookie and OIDC schemes
+
+For the full source code, check out the [Sandbox repository](https://github.com/timdeschryver/Sandbox).
