@@ -26,7 +26,13 @@
 		testMode: dev,
 	});
 
+	let lastPath: string | null = null;
+
 	afterNavigate(({ to }) => {
+		if (to.url.pathname === lastPath) {
+			return;
+		}
+		lastPath = to.url.pathname;
 		const payload = {
 			title: document.title,
 			url: location.href,
