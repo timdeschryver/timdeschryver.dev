@@ -10,6 +10,7 @@
 	import { theme } from '$lib/theme.store';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
+	import Analytics from '$lib/Analytics.svelte';
 
 	let { children } = $props();
 
@@ -117,6 +118,8 @@
 </svelte:head>
 
 <svelte:window bind:scrollY />
+
+<Analytics />
 
 <header>
 	<div>
