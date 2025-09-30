@@ -10,11 +10,11 @@
 		}
 
 		const storageKey = 'telemetry-client-user';
-		let clientUser = sessionStorage.getItem(storageKey);
+		let clientUser = localStorage.getItem(storageKey);
 
 		if (!clientUser) {
 			clientUser = crypto.randomUUID();
-			sessionStorage.setItem(storageKey, clientUser);
+			localStorage.setItem(storageKey, clientUser);
 		}
 
 		return clientUser;
@@ -39,7 +39,9 @@
 			path: to.url.pathname,
 			referrer: document.referrer,
 			locale: navigator.language,
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		};
+
 		td.signal('pageview', payload);
 	});
 </script>
