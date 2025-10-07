@@ -1,14 +1,10 @@
-import { blog } from './current-blog.svelte';
-
-export default function copyLifeCycle() {
+export default function copyLifeCycle(trigger?: () => unknown) {
 	let copyButtons: HTMLElement[] = [];
 
 	$effect(() => {
-		copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
-		if (blog.blog?.state) {
-			copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
-			copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
-		}
+		trigger?.();
+		copyButtons = [...(document.querySelectorAll('.copy-code') as unknown as HTMLElement[])];
+		copyButtons.forEach((pre) => pre.addEventListener('click', copyCodeOnClick));
 		return () => {
 			copyButtons.forEach((pre) => pre.removeEventListener('click', copyCodeOnClick));
 		};

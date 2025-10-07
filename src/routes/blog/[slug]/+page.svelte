@@ -22,7 +22,8 @@
 
 	// svelte-ignore state_referenced_locally
 	codeBlockLifeCycle(tldr);
-	copyLifeCycle();
+	// svelte-ignore state_referenced_locally
+	copyLifeCycle(tldr);
 
 	onMount(() => {
 		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
@@ -81,7 +82,6 @@
 
 	$effect(() => {
 		headings().forEach((h) => {
-			h.removeEventListener('click', headerClick);
 			h.addEventListener('click', headerClick);
 		});
 		return () => {
@@ -97,7 +97,6 @@
 
 	$effect(() => {
 		pres().forEach((pre) => {
-			pre.removeEventListener('click', copyLinkToCodeBlock);
 			pre.addEventListener('click', copyLinkToCodeBlock);
 		});
 		return () => {

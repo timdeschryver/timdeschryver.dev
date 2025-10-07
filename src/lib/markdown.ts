@@ -262,7 +262,7 @@ export function parseFileToHtmlAndMeta(file): {
 			sourceLink
 				? `<a href="${sourceLink}" class="icon material-symbols-outlined" target="_blank" rel="noopener noreferrer" title="View source">open_in_new</a>`
 				: undefined,
-			`<button class="copy-code icon material-symbols-outlined" data-ref="${id}">content_paste</button>`,
+			`<button class="copy-code icon material-symbols-outlined" data-ref="${id}" tabindex="-1">content_paste</button>`,
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
