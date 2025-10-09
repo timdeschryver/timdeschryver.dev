@@ -26,12 +26,12 @@ git log --since 6.months.ago --pretty=format: --name-only `
 ```
 
 ```bash [title=Bash Variant]
-git log --since 6.months.ago --pretty=format: --name-only  \
-    | sed '/^\s*$/'d \
-    | grep -v -E '*\.(json|lock)$' \
+git log --since=6.months.ago --pretty=format: --name-only \
+    | grep -v '^$' \
+    | grep -v '\.(json|lock)$' \
     | sort \
-    |  uniq -c \
-    |  sort -nr  \
+    | uniq -c \
+    | sort -rn \
     | head -n 25
 ```
 
