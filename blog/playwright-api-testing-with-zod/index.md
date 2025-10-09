@@ -38,7 +38,7 @@ This is fine, and it can be a valid requirement to verify the content.
 But, in most cases, I'm more interested in the shape of the response, and not particularly the content.
 These tests are more flexible, and less likely to break when the content changes (for example when you're running the same tests on multiple environments).
 
-But do these tests enough provide value?
+But do these tests provide enough value?
 Yes of course because it's your assurance that the contract between the front-end application and the API is kept up-to-date and is valid.
 
 ## Enter zod
