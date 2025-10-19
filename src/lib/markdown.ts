@@ -189,16 +189,16 @@ export function parseFileToHtmlAndMeta(file): {
 		}
 
 		// Check for [filename=name] syntax
-		const filenameMatch = lang.match(/\[filename=([^\]]+)\]/);
+		const filenameMatch = lang.match(/\[(filename|name)=([^\]]+)\]/);
 		if (filenameMatch) {
-			fileName = filenameMatch[1];
-			lang = lang.replace(/\[filename=[^\]]+\]/, '').trim();
+			fileName = filenameMatch[2];
+			lang = lang.replace(/\[(filename|name)=[^\]]+\]/, '').trim();
 		}
 
 		// Check for [linenumber=1,2,3] syntax
-		const linenumberMatch = lang.match(/\[linenumber=([^\]]+)\]/);
+		const linenumberMatch = lang.match(/\[(linenumber|highlight)=([^\]]+)\]/);
 		if (linenumberMatch) {
-			const parts = linenumberMatch[1].split(',');
+			const parts = linenumberMatch[2].split(',');
 			parts.forEach((p) => {
 				const range = p.trim().split('-').map(Number);
 				const min = range[0];
@@ -207,7 +207,7 @@ export function parseFileToHtmlAndMeta(file): {
 					linesHighlight.push(i);
 				}
 			});
-			lang = lang.replace(/\[linenumber=[^\]]+\]/, '').trim();
+			lang = lang.replace(/\[(linenumber|highlight)=[^\]]+\]/, '').trim();
 		}
 
 		// Backward compatibility: parse legacy syntax

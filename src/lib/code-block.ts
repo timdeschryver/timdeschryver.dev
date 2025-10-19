@@ -36,12 +36,14 @@ export const codeGroup = {
 					codeblocks: codeblocks.map((c) => {
 						const codeLines = c.split('\n');
 						const first = codeLines.shift().replace(/```/, '');
-						const lang = first.substr(0, first.indexOf('['));
-						const title = first.substring(first.indexOf('[title=') + 7, first.indexOf(']'));
+						const titleMatch = first.match(/\[title=([^\]]+)\]/);
+						const title = titleMatch ? titleMatch[1] : '';
+						const lang = first.replace(/\[title=[^\]]+\]/, '').trim();
 						const _last = codeLines.pop();
-						const text = codeLines.join('\n');
+						const formatted = this.lexer.options.renderer.code(codeLines.join('\n'), lang);
+
 						return {
-							formatted: this.lexer.options.renderer.code(text, lang),
+							formatted,
 							title,
 							id: codeBlockId++,
 						};
