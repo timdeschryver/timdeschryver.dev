@@ -6,6 +6,10 @@ date: 2024-02-08
 tags: Angular, Signals, Forms
 ---
 
+:::info
+Starting from Angular v21 there's an official Angular Signals Forms package, take a look at my blog post [Refactoring a form to a Signal Form](/blog/refactoring-a-form-to-a-signal-form/index.md) to learn how to refactor an existing form to `@angular/forms/signals`.
+:::
+
 When the Angular teams introduced [signals](https://angular.dev/guide/signals) I needed a playing ground to get familiar with it, so I decided to use signals internally to build a new API for Angular forms.
 It was then that I realized that using signals to create forms is a good fit that provides plenty of flexibility and a good experience.
 These signal driven forms, take the best out of Template Driven Forms and Reactive Forms with a sprinkle of signals on top of it.

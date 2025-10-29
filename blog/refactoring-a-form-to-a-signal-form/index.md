@@ -517,7 +517,7 @@ Just as with the errors of a field, the summary is a collection of `ValidationEr
 
 If you have payed close attention to the `submit` snippets you might have spotted the [`novalidate` attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/noValidate) on the form element, as well as the `event.preventDefault()` call in the submit handler.
 
-This is done to prevent the browser's built-in validation from interfering with Angular's validation. Because the validators are added as attributes to the input elements, the browser automatically validate the form before it can submit, which is not desired in this case.
+This is done to prevent the browser's built-in validation from interfering with Angular's validation. Because the validators are added as attributes to the input elements, the browser automatically validate the form before it can submit, which is not desired in this case. With template driven forms or reactive forms, Angular prevents this automatically.
 
 ## Additional notes
 
