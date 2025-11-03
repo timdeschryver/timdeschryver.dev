@@ -193,3 +193,5 @@ app.MapGet("/user-not-found-exception", () =>
 ```
 
 :::
+
+The code samples shown in this post can be found at my [Sandbox Project](https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.ApiService/Extensions.cs#L7).

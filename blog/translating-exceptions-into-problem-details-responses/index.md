@@ -377,6 +377,8 @@ The exception handler uses the Problem Details Service to translate thrown excep
 
 The result is a standardized and better experience for your API consumers when the request is invalid, or when something went wrong during the processing of the request.
 
+The code samples shown in this post can be found at my [Sandbox Project](https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.ApiService/ExceptionHandler.cs).
+
 :::info
 My [Microsoft Learn Collection](https://learn.microsoft.com/en-us/users/timdeschryver/collections/081tomkj67jdx) contains the resources that I used to learn these error handling features in ASP.NET. The resources also contain more information about the other error-handling features.
 :::

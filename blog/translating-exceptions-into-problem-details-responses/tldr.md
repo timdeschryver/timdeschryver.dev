@@ -69,3 +69,5 @@ Transfer-Encoding: chunked
   "instance": "GET /users/-5"
 }
 ```
+
+The code samples shown in this post can be found at my [Sandbox Project](https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.ApiService/ExceptionHandler.cs).
