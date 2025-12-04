@@ -523,7 +523,7 @@ This is done to prevent the browser's built-in validation from interfering with 
 
 Some extra thoughts while I was looking at the documentation and playing around with Signal Forms, but didn't fit in the previous sections.
 
-- In the form model you can see that every field is initialized with a default value, and not with `null` or `undefined`. This is is done on purpose, because otherwise the signal definitions are harder to type correctly. This keeps accessing the field values simple and type-safe.
+- In the form model you can see that every field is initialized with a default value, and not with `null` or `undefined`. This is is done on purpose, because otherwise the signal definitions are harder to type correctly. It can also act finicky, while binding it to a field. This keeps accessing the field values simple and type-safe.
 - Instead of creating a custom validator, it's possible to use the `error` function to define a custom validation rule directly within the form definition. This can be useful in scenarios where the validation logic is simple and doesn't need to be reused elsewhere.
 
 ```ts [name=customer-form.component.ts] [source=https://github.com/timdeschryver/Sandbox/blob/main/Sandbox.AngularWorkspace/projects/sandbox-app/src/app/customer-management/customer-form/customer-form.ts]
