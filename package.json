@@ -54,7 +54,7 @@
 		"canvas-confetti": "1.9.4",
 		"cpy-cli": "5.0.0",
 		"dotenv-extended": "2.9.0",
-		"eslint": "9.34.0",
+		"eslint": "9.39.2",
 		"eslint-config-prettier": "9.1.2",
 		"eslint-plugin-svelte": "2.46.1",
 		"front-matter": "4.0.2",
