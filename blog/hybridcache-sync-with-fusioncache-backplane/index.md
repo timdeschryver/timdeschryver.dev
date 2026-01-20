@@ -62,7 +62,7 @@ app.Run();
 
 `AddHybridCache()` can also take a callback action to customize the behavior of the cache by providing `HybridCacheOptions`. For example, to disable the local cache and set a custom expiration time for cache entries, you can do the following.
 
-```csharp [name=Program.cs] [highlight=3-9]
+```csharp [name=Program.cs] [highlight=3-10]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHybridCache(options =>
@@ -132,9 +132,9 @@ dotnet package add ZiggyCreatures.FusionCache.Serialization.SystemTextJson
 
 To register FusionCache in your application, use the `AddFusionCache()` method, which sets up FusionCache as an in-memory cache.
 To configure FusionCache to use a distributed cache (like Redis), you can use the `WithDistributedCache()` method, which requires you to also configure the serializer using the `WithSerializer()` method.
-Because we want it to act as a `HybridCache` wrapper, use the `AddFusionHybridCache()` method.
+Because we want it to act as a `HybridCache` wrapper, use the `AsHybridCache()` method.
 
-```csharp [name=Program.cs] [highlight=7-11]
+```csharp [name=Program.cs] [highlight=3-13]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddFusionCache()
@@ -158,9 +158,16 @@ The rest of the code remains the same, as you can keep using the `HybridCache` A
 
 ### Backplane support
 
-To add backplane support, you can use the `WithRedisBackplane()` method when configuring FusionCache.
+Backplane support can simply be activated using the `WithBackplane()` method while configuring FusionCache.
 
-```csharp [name=Program.cs] [highlight=7-14]
+Before using the backplane feature, you need to install the appropriate backplane package.
+In this case, we use the Redis backplane implementation, so install the following package:
+
+```bash
+dotnet package add ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis
+```
+
+```csharp [name=Program.cs] [highlight=13-15]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddFusionCache()
