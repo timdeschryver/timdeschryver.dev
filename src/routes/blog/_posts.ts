@@ -21,9 +21,9 @@ export interface BlogPostMetadata {
 	canonical: string;
 	outgoingLinks: { slug: string; title: string }[];
 	incomingLinks: { slug: string; title: string }[];
-	outgoingSlugs?: string[];
+	outgoingSlugs: string[];
 	translations: { url: string; author: string; profile: string; language: string }[];
-	toc?: TOC[];
+	toc: TOC[];
 	author: string;
 	banner: string;
 	series?: BlogSeries;
@@ -93,9 +93,9 @@ interface ProcessedMetadata {
 	description: string;
 	date: string;
 	tags: string[];
-	toc?: TOC[];
-	outgoingSlugs?: string[];
-	translations?: { url: string; author: string; profile: string; language: string }[];
+	toc: TOC[];
+	outgoingSlugs: string[];
+	translations: { url: string; author: string; profile: string; language: string }[];
 	series?: BlogSeries;
 }
 

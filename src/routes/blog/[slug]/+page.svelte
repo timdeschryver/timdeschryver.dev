@@ -206,7 +206,7 @@
 		<Ad />
 	</div>
 
-	{#if post.metadata.translations}
+	{#if post.metadata.translations.length > 0}
 		<div>
 			<h4>Read this post in</h4>
 			{#each post.metadata.translations as translation}
@@ -217,22 +217,6 @@
 
 	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
 </aside>
-
-{#if post.metadata.translations && post.metadata.translations.length > 0}
-	<div class="translations">
-		<hr />
-		<p>Thanks to the ❤️ community you can also read this post in:</p>
-		<ul>
-			{#each post.metadata.translations as translation}
-				<li>
-					<a href={translation.url} rel="external" class="mark">{translation.language}</a> thanks to
-					<a href={translation.profile} rel="external" class="mark">{translation.author}</a>
-				</li>
-			{/each}
-		</ul>
-		<hr />
-	</div>
-{/if}
 
 {#if post.tldr}
 	<button class="tldr" onclick={blog.toggleTldr}>
@@ -285,6 +269,22 @@
 			{/each}
 		</ul>
 	{/if}
+{/if}
+
+{#if post.metadata.translations.length > 0 && !sideNavsVisible()}
+	<div class="translations">
+		<hr />
+		<p>Thanks to the ❤️ community you can also read this post in:</p>
+		<ul>
+			{#each post.metadata.translations as translation}
+				<li>
+					<a href={translation.url} rel="external" class="mark">{translation.language}</a> thanks to
+					<a href={translation.profile} rel="external" class="mark">{translation.author}</a>
+				</li>
+			{/each}
+		</ul>
+		<hr />
+	</div>
 {/if}
 
 <Actions editUrl={post.metadata.edit} />
