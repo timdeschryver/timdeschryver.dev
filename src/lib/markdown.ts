@@ -188,11 +188,11 @@ export function parseFileToHtmlAndMeta(file): {
 			lang = lang.replace(/\[source=[^\]]+\]/, '').trim();
 		}
 
-		// Check for [filename=name] syntax
-		const filenameMatch = lang.match(/\[(filename|name)=([^\]]+)\]/);
+		// Check for [filename=name], [file=name], or [name=name] syntax
+		const filenameMatch = lang.match(/\[(filename|file|name)=([^\]]+)\]/);
 		if (filenameMatch) {
 			fileName = filenameMatch[2];
-			lang = lang.replace(/\[(filename|name)=[^\]]+\]/, '').trim();
+			lang = lang.replace(/\[(filename|file|name)=[^\]]+\]/, '').trim();
 		}
 
 		// Check for [linenumber=1,2,3] syntax
