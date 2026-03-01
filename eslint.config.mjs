@@ -35,7 +35,6 @@ export default tseslint.config(
 			sourceType: 'module',
 			parser: svelteParser,
 			globals: {
-				gtag: true,
 				kofiWidgetOverlay: true,
 				...globals.browser,
 				...globals.node,

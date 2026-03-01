@@ -2,7 +2,6 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 
-declare let gtag: (...args) => void;
 declare let kofiWidgetOverlay: {
 	draw: (name: string, config: Record<string, string>) => void;
 };

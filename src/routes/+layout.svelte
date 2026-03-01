@@ -3,14 +3,12 @@
 
 	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
-	import { afterNavigate, onNavigate } from '$app/navigation';
-	import { variables } from '$lib/variables';
+	import { onNavigate } from '$app/navigation';
 	import Host from '$lib/Host.svelte';
 	import { blog } from '$lib/current-blog.svelte';
 	import { theme } from '$lib/theme.store';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
-	import Analytics from '$lib/Analytics.svelte';
 
 	let { children } = $props();
 
@@ -35,10 +33,6 @@
 			});
 			support = document.querySelector('[id*=kofi-widget-overlay]');
 		}
-
-		if (variables && typeof gtag === 'function') {
-			gtag('config', variables.gtag_id);
-		}
 	});
 
 	onNavigate((navigation) => {
@@ -49,16 +43,6 @@
 				await navigation.complete;
 			});
 		});
-	});
-
-	afterNavigate(({ to }) => {
-		if (variables && typeof gtag === 'function') {
-			gtag('event', 'page_view', {
-				page_title: document.title,
-				page_location: location.href,
-				page_path: to.url.pathname,
-			});
-		}
 	});
 
 	run(() => {
@@ -118,8 +102,6 @@
 </svelte:head>
 
 <svelte:window bind:scrollY />
-
-<Analytics />
 
 <header>
 	<div>

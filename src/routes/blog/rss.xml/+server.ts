@@ -65,7 +65,6 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		<description><![CDATA[ Blog by Tim Deschryver ]]></description>
 		<lastBuildDate>${variables.timestamp.toISOString()}</lastBuildDate>
 		<ttl>60</ttl>
-		<webfeeds:analytics id="${variables.gtag_id}" engine="GoogleAnalytics"/>
 		<language>en-us</language>
 		${link}
 		${atom}
