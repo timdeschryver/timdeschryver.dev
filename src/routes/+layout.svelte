@@ -97,7 +97,6 @@
 </script>
 
 <svelte:head>
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 	<script async src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
 </svelte:head>
 
@@ -119,7 +118,7 @@
 					title="Switch to light theme"
 					onclick={(evt) => toggleTheme(evt, 'light')}
 				>
-					<span class="material-symbols-outlined"> light_mode </span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="align-text-top" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
 				</button>
 			{:else}
 				<button
@@ -127,7 +126,7 @@
 					title="Switch to dark theme"
 					onclick={(evt) => toggleTheme(evt, 'dark')}
 				>
-					<span class="material-symbols-outlined"> dark_mode </span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="align-text-top" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
 				</button>
 			{/if}
 		</nav>
@@ -142,7 +141,7 @@
 				role="button"
 				tabindex="0"
 			>
-				<span class="material-symbols-outlined"> link </span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="align-text-top" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
 				{blog.blog.title}
 			</div>
 		{/if}
@@ -268,7 +267,4 @@
 		color: var(--text-color-light);
 	}
 
-	.theme-switch > span:first-child {
-		vertical-align: text-top;
-	}
 </style>

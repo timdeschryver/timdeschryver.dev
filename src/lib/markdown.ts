@@ -198,7 +198,7 @@ export function parseFileToHtmlAndMeta(file): {
 		// Check for [linenumber=1,2,3] syntax
 		const linenumberMatch = lang.match(/\[(linenumber|highlight)=([^\]]+)\]/);
 		if (linenumberMatch) {
-			const parts = linenumberMatch[2].split(',');
+			const parts = linenumberMatch[2].replace(/^["']|["']$/g, '').split(',');
 			parts.forEach((p) => {
 				const range = p.trim().split('-').map(Number);
 				const min = range[0];
@@ -260,9 +260,9 @@ export function parseFileToHtmlAndMeta(file): {
 			icon,
 			fileName ? `<span class="file-name">${fileName}</span>` : undefined,
 			sourceLink
-				? `<a href="${sourceLink}" class="icon material-symbols-outlined" target="_blank" rel="noopener noreferrer" title="View source">open_in_new</a>`
+				? `<a href="${sourceLink}" class="icon align-text-top" target="_blank" rel="noopener noreferrer" title="View source"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>`
 				: undefined,
-			`<button class="copy-code icon material-symbols-outlined" data-ref="${id}" tabindex="-1">content_paste</button>`,
+			`<button class="copy-code icon align-text-top" data-ref="${id}" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></button>`,
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
@@ -345,7 +345,7 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<code>${source}</code>`;
 	};
 	renderer.blockquote = (source) => {
-		return `<blockquote><span class="material-symbols-outlined">format_quote</span>${source}</blockquote>`;
+		return `<blockquote><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg></span>${source}</blockquote>`;
 	};
 
 	renderer.heading = (text, level, rawtext) => {
@@ -365,9 +365,7 @@ export function parseFileToHtmlAndMeta(file): {
 		return `
 		<h${level} id="${fragment}">
 		  <a href="#${fragment}" class="anchor mark-hover" tabindex="-1">${headingText}</a>
-		  <span class="material-symbols-outlined">
-		  link
-		  </span>
+		  <span class="icon align-text-top"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
 		</h${level}>`;
 	};
 

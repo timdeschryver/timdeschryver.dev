@@ -1,8 +1,7 @@
 @import './light.theme.css';
 @import './dark.theme.css';
-/* @import './tweet-preview.css'; */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Teachers:ital,wght@0,400..800;1,400..800&family=Victor+Mono:ital,wght@0,100..700;1,100..700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Teachers:ital,wght@0,400..800;1,400..800&family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 :root {
 	--head-font: 'Teachers', 'Helvetica', sans-serif;
@@ -159,23 +158,22 @@ main a.mark-hover:hover {
 		box-shadow 0.2s ease-in-out;
 }
 
-h1 > .material-symbols-outlined,
-h2 > .material-symbols-outlined,
-h2 > .material-symbols-outlined,
-h3 > .material-symbols-outlined,
-h4 > .material-symbols-outlined,
-h5 > .material-symbols-outlined,
-h6 > .material-symbols-outlined {
+h1 > .icon,
+h2 > .icon,
+h3 > .icon,
+h4 > .icon,
+h5 > .icon,
+h6 > .icon {
 	opacity: 0;
 	transition: 0.2s ease-in-out;
 }
 
-h1:hover > .material-symbols-outlined,
-h2:hover > .material-symbols-outlined,
-h3:hover > .material-symbols-outlined,
-h4:hover > .material-symbols-outlined,
-h5:hover > .material-symbols-outlined,
-h6:hover > .material-symbols-outlined {
+h1:hover > .icon,
+h2:hover > .icon,
+h3:hover > .icon,
+h4:hover > .icon,
+h5:hover > .icon,
+h6:hover > .icon {
 	opacity: 1;
 }
 
@@ -299,7 +297,6 @@ body > div > main > div.wide {
 	}
 }
 
-
 @media (max-width: 1199px) {
 	body > div > main[data-segment*='blog/'] > *:not(header, aside) {
 		transform: translateX(25%);
@@ -358,10 +355,9 @@ blockquote > p {
 	margin-top: 0;
 	font-style: italic;
 }
-blockquote > span.material-symbols-outlined {
+blockquote > span.icon {
 	vertical-align: top;
 	margin-right: 0.5em;
-	font-size: 2.2rem;
 }
 small,
 time {
@@ -427,6 +423,11 @@ thead {
 	margin-bottom: var(--spacing);
 }
 
+.align-text-top {
+	vertical-align: text-top;
+}
+
+
 [id*='kofi-widget-overlay'] {
 	margin-top: 0;
 }
@@ -481,9 +482,10 @@ a[data-with-favicon]:hover:after {
 
 code,
 pre {
-	font-family: 'Victor Mono', 'JetBrains Mono', 'Fira Code', 'Ligconsolata', 'MonoLisa',
-		'Cartograph CF', 'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig',
-		'Cascadia Mono', 'Victor Mono', Consolas, monospace;
+	font-family:
+		'Victor Mono', 'JetBrains Mono', 'Fira Code', 'Ligconsolata', 'MonoLisa', 'Cartograph CF',
+		'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Cascadia Mono',
+		'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
 	direction: ltr;
 	text-align: left;
@@ -528,7 +530,6 @@ pre > code {
 	overflow: auto;
 }
 
-
 code {
 	word-break: break-word;
 	border: 1px solid var(--input-border);
@@ -537,7 +538,7 @@ code {
 code > div.line {
 	margin: 0;
 	padding-left: 1.5em;
-	padding-right: .75em;
+	padding-right: 0.75em;
 }
 
 code > div.line:first-child {
@@ -605,9 +606,7 @@ pre > .code-heading > .icon {
 	margin-left: auto;
 	opacity: 0.3;
 	transition: opacity 0.2s ease-in;
-	font-size: 1.5rem;
 }
-
 
 pre:hover > .code-heading > .icon {
 	opacity: 1;
@@ -735,12 +734,7 @@ pre > .code-heading > a {
 	margin-top: 0;
 }
 
-.material-symbols-outlined {
-	font-variation-settings:
-		'FILL' 0,
-		'wght' 100,
-		'GRAD' 200,
-		'opsz' 48;
+.icon {
 	vertical-align: middle;
 	display: inline;
 	margin-top: 0;
