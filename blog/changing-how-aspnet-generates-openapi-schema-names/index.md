@@ -12,7 +12,7 @@ By default, [ASP.NET generates OpenAPI](https://learn.microsoft.com/en-us/aspnet
 
 To enable OpenAPI in your ASP.NET application, you add the OpenAPI services and middleware using the `AddOpenApi` and `MapOpenApi` methods respectively:
 
-```cs [title="Program.cs"] [highlight="2,7"]
+```cs [name=Program.cs] [highlight="2,7"]
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
@@ -35,7 +35,7 @@ This creates ambiguity in the API documentation and breaks code generation tools
 
 As an example, take a look the following endpoints, which both return a `ResponseData` object from different namespaces:
 
-```cs [title="Endpoints.cs"] [highlight="10-11"]
+```cs [name=Program.cs] [highlight="10-11"]
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
@@ -45,8 +45,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapGet("/module-a", () => new Project.ModuleA.ResponseData("Hello from Module A", 100));
-app.MapGet("/module-b", () => new Project.ModuleB.ResponseData("Hello from Module B", "Success", 67));
+app.MapGet("/module-a", 
+    () => new Project.ModuleA.ResponseData("Hello from Module A", 100));
+app.MapGet("/module-b", 
+    () => new Project.ModuleB.ResponseData("Hello from Module B", "Success", 67));
 
 app.Run();
 ```
@@ -54,7 +56,7 @@ app.Run();
 The above endpoints generates an OpenAPI document similar to the following one.
 Within the `components/schemas` section, you'll notice that only the last occurence of the `ResponseData` model is documented, and both endpoints reference the same schema:
 
-```json [title="before.json"] [highlight="24,43,54-73"]
+```json [name=before.json] [highlight="22,39,50-63"]
 {
 	"openapi": "3.1.1",
 	"info": {
@@ -132,7 +134,7 @@ Within the `components/schemas` section, you'll notice that only the last occure
 
 This is not what we want. To resolve this, we can customize the schema naming strategy using the `CreateSchemaReferenceId` option when configuring OpenAPI in ASP.NET.
 
-```cs [title="Program.cs"]
+```cs [name=Program.cs]
 builder.Services.AddOpenApi(options =>
 {
     options.CreateSchemaReferenceId = (type) =>
@@ -152,7 +154,7 @@ builder.Services.AddOpenApi(options =>
 
 With this configuration, the `CreateSchemaReferenceId` method generates schema names that include the full namespace of the model, effectively avoiding naming conflicts. Once you apply this change, the generated OpenAPI document will look like this:
 
-```json [title="after.json"] [highlight="24,43,54-97"]
+```json [name=after.json] [highlight="24,43,50-80"]
 {
 	"openapi": "3.1.1",
 	"info": {
