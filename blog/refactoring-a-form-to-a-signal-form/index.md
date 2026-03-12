@@ -4,6 +4,8 @@ slug: refactoring-a-form-to-a-signal-form
 description: I jotted down some notes of my experiences and thoughts while refactoring an existing Angular form to use the new Signal Forms (experimental feature).
 date: 2025-10-16
 tags: Angular
+series:
+  name: 'Angular Signal Forms'
 ---
 
 In this blog post we will refactor an existing Angular form to use the new Signal Forms feature, which will be introduced in Angular 21 as an experimental feature. This won't be a detailed introduction to Signal Forms, for that I highly recommend looking at the [Extra Resources](#extra-resources) section at the end of this post, these resources have helped me during the refactoring process.
