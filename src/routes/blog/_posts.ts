@@ -3,7 +3,7 @@ import * as path from 'path';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { dev } from '$app/environment';
 import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
 
@@ -105,7 +105,7 @@ interface ProcessedMetadata {
 function createPostMetadata(metadata: ProcessedMetadata): BlogPostMetadata {
 	const banner = [variables.basePath, 'blog', metadata.slug, 'images', 'banner.png'].join('/');
 	const canonical = [variables.basePath, 'blog', metadata.slug].join('/');
-	const modified = getLastModifiedDate(metadata.slug);
+	const modified = getLastModifiedDate(metadata.slug, new Date(metadata.date));
 
 	return {
 		title: metadata.title,
@@ -273,12 +273,32 @@ export function clearPostsCache(): void {
 	}
 }
 
-function getLastModifiedDate(slug: string) {
+function getLastModifiedDate(slug: string, createdDate: Date): string | null {
 	if (dev) {
 		return null;
 	}
-	const buffer = execSync(`git log -1 --format=%ci ./blog/${slug}/index.md`);
-	if (!buffer) {
+
+	try {
+		const output = execFileSync(
+			'git',
+			['log', '--follow', '--format=%cI', '--', `blog/${slug}/index.md`],
+			{ encoding: 'utf-8' },
+		).trim();
+
+		if (!output) {
+			return null;
+		}
+
+		const [lastModifiedDate] = output.split(/\r?\n/);
+		if (!lastModifiedDate) {
+			return null;
+		}
+
+		const lastModifiedDay = ISODate(lastModifiedDate);
+		const createdDay = ISODate(createdDate);
+
+		return lastModifiedDay === createdDay ? null : lastModifiedDay;
+	} catch {
 		return null;
 	}
 }

@@ -15,8 +15,8 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 
-	const { data } = $props();
-	const { post } = data;
+	let { data } = $props();
+	const post = $derived(data.post);
 
 	const tldr = $derived(() => blog.blog?.state === 'tldr');
 
@@ -55,7 +55,7 @@
 		window.scrollTo({ top: y, behavior: 'smooth' });
 	}
 
-	const htmlStyle = `<style> 
+	const htmlStyle = $derived(`<style> 
 		main {
 			--accent-color: var(--${post.metadata.color ?? 'base-color'});
 		}
@@ -68,7 +68,7 @@
 		main h6 {
 			color: hsla(var(--accent-color), 1);
 		}
-	</style>`;
+	</style>`);
 
 	const headings = $derived(() => {
 		if (!browser) {
@@ -161,14 +161,10 @@
 	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
 		<div class="published-at">
-			{#if post.metadata.modified !== post.metadata.date}
-				<time datetime={humanDate(post.metadata.modified)}>
-					Modified {humanDate(post.metadata.modified)}</time
-				>
+			{#if post.metadata.modified && post.metadata.modified !== post.metadata.date}
+				<time datetime={post.metadata.modified}>Modified {humanDate(post.metadata.modified)}</time>
 			{:else}
-				<time datetime={humanDate(post.metadata.date)}
-					>Published {humanDate(post.metadata.date)}</time
-				>
+				<time datetime={post.metadata.date}>Published {humanDate(post.metadata.date)}</time>
 			{/if}
 		</div>
 

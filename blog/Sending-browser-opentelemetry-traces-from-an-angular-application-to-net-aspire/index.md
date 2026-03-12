@@ -1,6 +1,6 @@
 ---
 title: Sending (browser) OpenTelemetry traces from an Angular Application to .NET Aspire
-slug: Sending-browser-opentelemetry-traces-from-an-angular-application-to-net-aspire
+slug: sending-browser-opentelemetry-traces-from-an-angular-application-to-net-aspire
 description: How to configure .NET Aspire to enable browser OpenTelemetry data from an Angular application.
 date: 2024-12-17
 tags: .NET, Angular, OpenTelemetry
