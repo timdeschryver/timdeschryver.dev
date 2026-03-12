@@ -2,11 +2,9 @@
 	import Head from '$lib/Head.svelte';
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	const { data } = $props();
-	const { posts, tags } = data;
+	let { data } = $props();
 
 	let filter = $state({
 		query: null,
@@ -14,11 +12,23 @@
 		to: null,
 	});
 
-	let meta = {
+	const meta = $derived(() => ({
 		canonical: 'https://timdeschryver.dev/blog',
 		title: "Tim's Blog",
-		description: `${posts.length} notes, mainly about Angular and .NET`,
-	};
+		description: `${data.posts.length} notes, mainly about Angular and .NET`,
+	}));
+
+	const searchablePosts = $derived(() =>
+		data.posts.map((post) => ({
+			post,
+			dateValue: Date.parse(post.date),
+			titleLower: post.title.toLowerCase(),
+			descriptionLower: post.description.toLowerCase(),
+			tagsLower: post.tags.map((tag) => tag.toLowerCase()),
+		})),
+	);
+
+	let filterUrlSyncHandle: ReturnType<typeof setTimeout> | undefined;
 
 	onMount(() => {
 		filter = {
@@ -29,82 +39,139 @@
 	});
 
 	$effect(() => {
-		const params = new URLSearchParams(window.location.search);
-		if (filter.query) {
-			params.set('q', filter.query);
-		} else {
-			params.delete('q');
-		}
+		const query = filter.query?.trim();
+		const from = filter.from;
+		const to = filter.to;
 
-		goto(params.size ? `?${params.toString()}` : '?', {
-			noScroll: true,
-			replaceState: true,
-			keepFocus: true,
-		});
+		clearTimeout(filterUrlSyncHandle);
+
+		filterUrlSyncHandle = setTimeout(() => {
+			const params = new URLSearchParams(window.location.search);
+			setOrDeleteParam(params, 'q', query);
+			setOrDeleteParam(params, 'from', from);
+			setOrDeleteParam(params, 'to', to);
+
+			const nextSearch = params.toString();
+			const currentSearch = window.location.search.startsWith('?')
+				? window.location.search.slice(1)
+				: window.location.search;
+
+			if (nextSearch !== currentSearch) {
+				window.history.replaceState(
+					window.history.state,
+					'',
+					nextSearch ? `?${nextSearch}` : window.location.pathname,
+				);
+			}
+		}, 150);
+
+		return () => clearTimeout(filterUrlSyncHandle);
 	});
 
-	const queryParts = $derived(() => (filter.query || '').split(' '));
+	const rawQueryParts = $derived(() =>
+		(filter.query || '')
+			.split(/\s+/)
+			.map((part) => part.trim())
+			.filter(Boolean),
+	);
+
+	const queryParts = $derived(() => rawQueryParts().map((part) => part.toLowerCase()));
+	const normalizedQuery = $derived(() => queryParts().join(' '));
 
 	const filteredPosts = $derived(() => {
-		let filteredPosts = posts;
+		let filteredPosts = searchablePosts();
+		const parts = queryParts();
 
-		if (filter.query) {
-			const parts = queryParts();
-			filteredPosts = posts.filter((p) => {
+		if (parts.length) {
+			filteredPosts = searchablePosts().filter((p) => {
 				return parts.every(
-					(q) => p.tags.some((t) => match(t, q)) || like(p.title, q) || like(p.description, q),
+					(q) =>
+						p.tagsLower.some((t) => match(t, q)) ||
+						like(p.titleLower, q) ||
+						like(p.descriptionLower, q),
 				);
 			});
 		}
 
 		if (filter.from) {
-			filteredPosts = filteredPosts.filter((p) => new Date(p.date) >= new Date(filter.from));
+			const from = Date.parse(filter.from);
+
+			if (!Number.isNaN(from)) {
+				filteredPosts = filteredPosts.filter((p) => p.dateValue >= from);
+			}
 		}
 
 		if (filter.to) {
-			filteredPosts = filteredPosts.filter((p) => new Date(p.date) <= new Date(filter.to));
+			const to = Date.parse(filter.to);
+
+			if (!Number.isNaN(to)) {
+				filteredPosts = filteredPosts.filter((p) => p.dateValue <= to);
+			}
 		}
 
-		return filteredPosts;
+		return filteredPosts.map(({ post }) => post);
 	});
 
 	function tagClicked(tag) {
-		if (filter.query === tag) {
-			filter.query = '';
-		} else if (queryParts().includes(tag)) {
-			filter.query = queryParts()
-				.filter((q) => q !== tag)
+		const normalizedTag = tag.toLowerCase();
+
+		if (rawQueryParts().some((part) => part.toLowerCase() === normalizedTag)) {
+			filter.query = rawQueryParts()
+				.filter((part) => part.toLowerCase() !== normalizedTag)
 				.join(' ');
-		} else if (queryParts().join(' ').toLowerCase().includes(tag.toLowerCase())) {
-			filter.query = `${filter.query.replace(new RegExp(tag, 'ig'), '').trim()}`;
+		} else if (normalizedQuery().includes(normalizedTag)) {
+			filter.query = `${(filter.query || '')
+				.replace(new RegExp(escapeRegExp(tag), 'ig'), '')
+				.replace(/\s+/g, ' ')
+				.trim()}`;
 		} else {
 			filter.query = filter.query ? `${filter.query.trim()} ${tag}` : tag;
 		}
 	}
 
+	function isTagActive(tag) {
+		const normalizedTag = tag.toLowerCase();
+
+		return (
+			normalizedQuery().includes(normalizedTag) || queryParts().some((q) => match(q, normalizedTag))
+		);
+	}
+
+	function setOrDeleteParam(params, key, value) {
+		if (value) {
+			params.set(key, value);
+		} else {
+			params.delete(key);
+		}
+	}
+
+	function escapeRegExp(value) {
+		return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
 	function like(text, value) {
-		return text.match(new RegExp(value, 'i'));
+		return text.includes(value);
 	}
 
 	function match(text, value) {
-		return text.match(new RegExp(`^${value}$`, 'i'));
+		return text === value;
 	}
 </script>
 
 <Head title="Blog - Tim Deschryver" details={false} />
 
 <svelte:head>
-	<link rel="canonical" href={meta.canonical} />
+	<link rel="canonical" href={meta().canonical} />
 
-	<meta name="title" content={meta.title} />
-	<meta name="description" content={meta.description} />
+	<meta name="title" content={meta().title} />
+	<meta name="description" content={meta().description} />
 
-	<meta name="twitter:title" content={meta.title} />
-	<meta name="twitter:description" content={meta.description} />
+	<meta name="twitter:title" content={meta().title} />
+	<meta name="twitter:description" content={meta().description} />
 
-	<meta name="og:url" content={meta.canonical} />
-	<meta name="og:title" content={meta.title} />
-	<meta name="og:description" content={meta.description} />
+	<meta name="og:url" content={meta().canonical} />
+	<meta name="og:title" content={meta().title} />
+	<meta name="og:description" content={meta().description} />
 	<meta name="og:type" content="website" />
 </svelte:head>
 
@@ -117,7 +184,7 @@
 		aria-label="Search"
 	/>
 	<div class="mt-0 search-info">
-		<div><small>Found {filteredPosts().length} posts out of {posts.length} posts</small></div>
+		<div><small>Found {filteredPosts().length} posts out of {data.posts.length} posts</small></div>
 		{#if filter.from}
 			<div class="mt-0"><small>From {filter.from}</small></div>
 		{/if}
@@ -126,21 +193,15 @@
 		{/if}
 		<small></small>
 	</div>
-	{#each tags as tag}
-		<button
-			class={tag}
-			class:active={filter.query === tag ||
-				queryParts().join(' ').includes(tag) ||
-				queryParts().some((q) => match(q, tag))}
-			onclick={() => tagClicked(tag)}
-		>
+	{#each data.tags as tag}
+		<button class={tag} class:active={isTagActive(tag)} onclick={() => tagClicked(tag)}>
 			{tag}
 		</button>
 	{/each}
 </div>
 
 <ul>
-	{#each filteredPosts() as post}
+	{#each filteredPosts() as post (post.slug)}
 		<li style:--accent-color={`var(--${post.color})`}>
 			<article>
 				<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
