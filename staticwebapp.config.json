@@ -26,6 +26,11 @@
 			"statusCode": 301
 		},
 		{
+			"route": "/blog/Sending-browser-opentelemetry-traces-from-an-angular-application-to-net-aspire",
+			"redirect": "/blog/sending-browser-opentelemetry-traces-from-an-angular-application-to-net-aspire",
+			"statusCode": 301
+		},
+		{
 			"route": "/bits/http-file",
 			"redirect": "/bits/http-files",
 			"statusCode": 301
