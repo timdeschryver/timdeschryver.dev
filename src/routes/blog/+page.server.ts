@@ -1,10 +1,10 @@
-import { TAG_COLORS, orderTags, readPosts } from './_posts';
+import { TAG_COLORS, orderTags, readPostSummaries } from './_posts';
 
 export async function load() {
-	const posts = await readPosts();
+	const posts = await readPostSummaries();
 	const metadata = posts.map((p) => ({
 		title: p.metadata.title,
-		tldr: Boolean(p.tldr),
+		tldr: p.hasTldr,
 		description: p.metadata.description,
 		slug: p.metadata.slug,
 		date: p.metadata.date,

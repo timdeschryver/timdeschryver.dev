@@ -18,16 +18,6 @@
 		description: `${data.posts.length} notes, mainly about Angular and .NET`,
 	}));
 
-	const searchablePosts = $derived(() =>
-		data.posts.map((post) => ({
-			post,
-			dateValue: Date.parse(post.date),
-			titleLower: post.title.toLowerCase(),
-			descriptionLower: post.description.toLowerCase(),
-			tagsLower: post.tags.map((tag) => tag.toLowerCase()),
-		})),
-	);
-
 	let filterUrlSyncHandle: ReturnType<typeof setTimeout> | undefined;
 
 	onMount(() => {
@@ -79,16 +69,20 @@
 	const normalizedQuery = $derived(() => queryParts().join(' '));
 
 	const filteredPosts = $derived(() => {
-		let filteredPosts = searchablePosts();
+		let filteredPosts = data.posts;
 		const parts = queryParts();
 
 		if (parts.length) {
-			filteredPosts = searchablePosts().filter((p) => {
+			filteredPosts = data.posts.filter((post) => {
+				const titleLower = post.title.toLowerCase();
+				const descriptionLower = post.description.toLowerCase();
+				const tagsLower = post.tags.map((tag) => tag.toLowerCase());
+
 				return parts.every(
 					(q) =>
-						p.tagsLower.some((t) => match(t, q)) ||
-						like(p.titleLower, q) ||
-						like(p.descriptionLower, q),
+						tagsLower.some((tag) => match(tag, q)) ||
+						like(titleLower, q) ||
+						like(descriptionLower, q),
 				);
 			});
 		}
@@ -97,7 +91,7 @@
 			const from = Date.parse(filter.from);
 
 			if (!Number.isNaN(from)) {
-				filteredPosts = filteredPosts.filter((p) => p.dateValue >= from);
+				filteredPosts = filteredPosts.filter((post) => Date.parse(post.date) >= from);
 			}
 		}
 
@@ -105,11 +99,11 @@
 			const to = Date.parse(filter.to);
 
 			if (!Number.isNaN(to)) {
-				filteredPosts = filteredPosts.filter((p) => p.dateValue <= to);
+				filteredPosts = filteredPosts.filter((post) => Date.parse(post.date) <= to);
 			}
 		}
 
-		return filteredPosts.map(({ post }) => post);
+		return filteredPosts;
 	});
 
 	function tagClicked(tag) {

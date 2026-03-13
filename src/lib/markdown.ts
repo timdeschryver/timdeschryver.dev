@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as url from 'url';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
-import frontmatter from 'front-matter';
 import iconBracketsPurple from '../../static/images/languages/brackets-purple.svg?raw';
 import iconCodePurple from '../../static/images/languages/code-purple.svg?raw';
 import iconShell from '../../static/images/languages/shell.svg?raw';
@@ -22,6 +21,7 @@ import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
 import type { TOC, BlogSeries } from './models';
+export { extractFrontmatter, sortByDate, traverseFolder } from './content';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
@@ -369,100 +369,11 @@ export function parseFileToHtmlAndMeta(file): {
 		</h${level}>`;
 	};
 
-	const html = marked(
+	const html = marked.parse(
 		content.replace(/^\t+/gm, (match) => match.split('\t').join('  ')),
 		{ renderer },
-	);
+	) as string;
 	return { html, metadata, assetsSrc };
-}
-
-export function* traverseFolder(
-	folder: string,
-	extension = '.md',
-): Generator<{ folder: string; file: string; path: string }> {
-	const folders = fs.readdirSync(folder, { withFileTypes: true }) as fs.Dirent[];
-	for (const folderEntry of folders) {
-		if (folderEntry.name.includes('node_modules')) {
-			// ignore folder
-			continue;
-		}
-		const entryPath = path.resolve(folder, folderEntry.name);
-		if (folderEntry.isDirectory()) {
-			yield* traverseFolder(entryPath, extension);
-		} else if (path.extname(entryPath) === extension) {
-			yield { folder, file: folderEntry.name, path: entryPath };
-		}
-	}
-}
-
-function extractFrontmatter(markdown): {
-	content: string;
-	metadata: {
-		outgoingSlugs: string[];
-		title: string;
-		slug: string;
-		date: string;
-		description: string;
-		tags: string[];
-		toc: TOC[];
-		translations?: { url: string; author: string; profile: string; language: string }[];
-		series?: BlogSeries;
-		[key: string]: unknown;
-	};
-} {
-	const result = frontmatter<{
-		tags: string | string[];
-		translations?: { url: string; author: string; profile: string; language: string }[];
-		series?: {
-			name: string;
-			order: number;
-		};
-		title: string;
-		slug: string;
-		date: string;
-		description: string;
-	}>(markdown);
-	const metadata = {
-		...result.attributes,
-		outgoingSlugs: [] as string[],
-		toc: [] as TOC[],
-		tags: [] as string[],
-	};
-
-	if (typeof result.attributes.tags === 'string') {
-		metadata.tags = result.attributes.tags
-			.split(',')
-			.map((a) => (a ? a.trim().charAt(0).toUpperCase() + a.trim().slice(1) : a))
-			.map((a) => {
-				if (a.toLowerCase() === 'typescript') {
-					return 'TypeScript';
-				}
-				if (a.toLowerCase() === 'ngrx') {
-					return 'NgRx';
-				}
-				return a;
-			});
-	} else if (Array.isArray(result.attributes.tags)) {
-		metadata.tags = result.attributes.tags;
-	}
-
-	if (Array.isArray(result.attributes.translations)) {
-		for (const translation of result.attributes.translations) {
-			const translationsMap = {
-				es: 'Español',
-				ru: 'Russian',
-			};
-			translation.language = translationsMap[translation.language] ?? translation.language;
-		}
-		metadata.translations = result.attributes.translations;
-	}
-
-	// Handle series metadata
-	if (result.attributes.series) {
-		metadata.series = result.attributes.series;
-	}
-
-	return { metadata, content: result.body };
 }
 
 function slugify(string) {
@@ -490,10 +401,6 @@ function slugify(string) {
 		.replace(/--+/, '-') // Replace multiple - with single -
 		.replace(/^-+/, '') // Trim - from start of text
 		.replace(/-+$/, ''); // Trim - from end of text
-}
-
-export function sortByDate(a, b) {
-	return new Date(a.metadata.date) < new Date(b.metadata.date) ? 1 : -1;
 }
 
 function appendCreatorId(link: string) {

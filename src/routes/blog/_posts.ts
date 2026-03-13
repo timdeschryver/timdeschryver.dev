@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { readMarkdownMetadata, sortByDate, traverseFolder } from '$lib/content';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
-import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
 import { execFileSync } from 'child_process';
 import { dev } from '$app/environment';
 import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
@@ -36,16 +36,29 @@ export interface BlogPost {
 	metadata: BlogPostMetadata;
 }
 
+export interface BlogPostSummary {
+	hasTldr: boolean;
+	metadata: BlogPostMetadata;
+}
+
 interface CachedPost {
 	post: BlogPost;
 	lastModified: number;
 	cacheTimestamp: number;
 }
 
+let markdownModulePromise: Promise<typeof import('$lib/markdown')> | undefined;
+
+function getMarkdownModule() {
+	markdownModulePromise ??= import('$lib/markdown');
+	return markdownModulePromise;
+}
+
 /**
  * Process individual post files to extract full post data with HTML
  */
 async function processFullPost(files: { file: string; path: string }[]): Promise<BlogPost | null> {
+	const { parseFileToHtmlAndMeta } = await getMarkdownModule();
 	const postPath = files.find((f) => f.file === 'index.md')?.path;
 	const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
 
@@ -102,10 +115,16 @@ interface ProcessedMetadata {
 /**
  * Create standardized post metadata
  */
-function createPostMetadata(metadata: ProcessedMetadata): BlogPostMetadata {
+function createPostMetadata(
+	metadata: ProcessedMetadata,
+	options: { includeModified?: boolean } = {},
+): BlogPostMetadata {
 	const banner = [variables.basePath, 'blog', metadata.slug, 'images', 'banner.png'].join('/');
 	const canonical = [variables.basePath, 'blog', metadata.slug].join('/');
-	const modified = getLastModifiedDate(metadata.slug, new Date(metadata.date));
+	const modified =
+		options.includeModified === false
+			? null
+			: getLastModifiedDate(metadata.slug, new Date(metadata.date));
 
 	return {
 		title: metadata.title,
@@ -176,6 +195,56 @@ function addPostLinks(posts: BlogPost[]): void {
 		post.metadata.incomingLinks.push(...incomingLinks);
 		post.metadata.outgoingLinks.push(...outgoingLinks);
 	}
+}
+
+export async function readPostSummaries(): Promise<BlogPostSummary[]> {
+	const folderContent = [...traverseFolder(blogPath, '.md')];
+	const directories = folderContent.reduce(
+		(dirs, file) => {
+			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
+			return dirs;
+		},
+		{} as Record<string, { file: string; path: string }[]>,
+	);
+
+	const summaries = Object.values(directories)
+		.map((files) => {
+			const postPath = files.find((file) => file.file === 'index.md')?.path;
+			if (!postPath) {
+				return null;
+			}
+
+			const metadata = readMarkdownMetadata(postPath);
+			if (!metadata) {
+				return null;
+			}
+
+			const finalMetadata = createPostMetadata(
+				{
+					title: metadata.title,
+					slug: metadata.slug,
+					description: metadata.description,
+					date: metadata.date,
+					tags: metadata.tags,
+					toc: metadata.toc,
+					outgoingSlugs: metadata.outgoingSlugs,
+					translations: metadata.translations || [],
+					series: metadata.series,
+				},
+				{ includeModified: false },
+			);
+
+			return {
+				hasTldr: files.some((file) => file.file === 'tldr.md'),
+				metadata: finalMetadata,
+			};
+		})
+		.filter((summary): summary is BlogPostSummary => summary !== null)
+		.sort(sortByDate);
+
+	addSeriesInformation(summaries);
+
+	return summaries;
 }
 
 export async function readPosts(): Promise<BlogPost[]> {
