@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 
 	let { data } = $props();
+	// eslint-disable-next-line svelte/valid-compile
 	const { bits, tags } = data;
 
 	codeBlockLifeCycle();

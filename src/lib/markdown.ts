@@ -21,7 +21,7 @@ import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
 import type { TOC, BlogSeries } from './models';
-export { extractFrontmatter, sortByDate, traverseFolder } from './content';
+import { extractFrontmatter } from './content';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));

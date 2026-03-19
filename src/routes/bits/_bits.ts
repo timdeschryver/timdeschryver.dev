@@ -1,5 +1,6 @@
+import { sortByDate, traverseFolder } from '$lib/content';
 import { ISODate } from '$lib/formatters';
-import { parseFileToHtmlAndMeta, sortByDate, traverseFolder } from '$lib/markdown';
+import { parseFileToHtmlAndMeta } from '$lib/markdown';
 
 const bitsPath = 'bits';
 
