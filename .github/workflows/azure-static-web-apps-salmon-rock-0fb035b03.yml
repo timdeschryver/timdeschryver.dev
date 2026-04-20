@@ -31,11 +31,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: ⏳ Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🧪 Unit Test
-        run: npm run test:unit
+        run: pnpm test:unit
 
       # - name: 🎭 Install Playwright
       #   run: npx playwright install --with-deps
@@ -82,15 +85,18 @@ jobs:
         with:
           node-version-file: '.node-version'
 
+      - name: � Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: 🔎 Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       # Not needed because of Playwright Service
       # - name: 🎭 Install Playwright
       #   run: npx playwright install --with-deps
 
       - name: 🧪 Run Playwright Tests on ${{ needs.build_and_deploy.outputs.swa_url }}
-        run: npx playwright test --config=playwright.service.config.ts
+        run: pnpm exec playwright test --config=playwright.service.config.ts
         env:
           PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
           PLAYWRIGHT_SERVICE_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
