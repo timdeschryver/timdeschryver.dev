@@ -39,6 +39,9 @@ jobs:
 
       - name: 🧱 Build
         run: pnpm run build
+        env:
+          VITE_PUBLIC_HASH: ${{ github.sha }}
+          VITE_PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
 
       - name: 🧪 Unit Test
         run: pnpm test:unit
