@@ -65,6 +65,9 @@ importers:
       cpy-cli:
         specifier: 5.0.0
         version: 5.0.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       dotenv-extended:
         specifier: 2.9.0
         version: 2.9.0
@@ -80,6 +83,9 @@ importers:
       front-matter:
         specifier: 4.0.2
         version: 4.0.2
+      globals:
+        specifier: ^17.5.0
+        version: 17.5.0
       jsdom:
         specifier: 25.0.1
         version: 25.0.1
@@ -1812,6 +1818,10 @@ packages:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
 
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+    engines: {node: '>=12'}
+
   dotenv@8.6.0:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
     engines: {node: '>=10'}
@@ -2224,6 +2234,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@17.5.0:
+    resolution: {integrity: sha512-qoV+HK2yFl/366t2/Cb3+xxPUo5BuMynomoDmiaZBIdbs+0pYbjfZU+twLhGKp4uCZ/+NbtpVepH5bGCxRyy2g==}
     engines: {node: '>=18'}
 
   globby@13.2.2:
@@ -5573,6 +5587,8 @@ snapshots:
 
   dotenv@16.6.1: {}
 
+  dotenv@17.4.2: {}
+
   dotenv@8.6.0: {}
 
   dunder-proto@1.0.1:
@@ -6036,6 +6052,8 @@ snapshots:
       ini: 4.1.1
 
   globals@14.0.0: {}
+
+  globals@17.5.0: {}
 
   globby@13.2.2:
     dependencies:
