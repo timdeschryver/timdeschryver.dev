@@ -4,15 +4,14 @@ node_modules
 /.svelte-kit
 /build
 /functions
-/.vercel_build_output
 .env
 .env.local
 *.log
 .idea
 
 static/blog
+static/bits
 test-results/
 playwright-report/
 contributors.json
-.history
 .blog-cache/**
