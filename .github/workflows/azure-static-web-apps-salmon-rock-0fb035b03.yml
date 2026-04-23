@@ -106,7 +106,7 @@ jobs:
           PLAYWRIGHT_TEST_BASE_URL: ${{ needs.build_and_deploy.outputs.swa_url }}
 
       - name: 📦 Upload Test Results Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-test-results
