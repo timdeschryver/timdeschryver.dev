@@ -31,7 +31,7 @@ Disclaimer: I'm certainly not an AI-expert, but I wanted to share my successful 
 
 If you're already familiar with AI Agents, then the [AGENTS.md](https://agents.md/) file shouldn't be new to you. This file is always included in the Agent's context, and it contains the instructions that the agent follows while working on the project. Because it's included for every request it's a good practice to add the general guidelines, the structure of the project, and commands the agent can use in this document. Different tools might have their own version of this file, e.g. in GitHub Copilot it's called `instructions.md`, or claude uses `CLAUDE.md`, but the idea remains the same across the tools.
 
-Instead of different versions of this file, using the `AGENTS.md` naming is a standard, and is supported in most (all?) tools.
+Instead of different versions of this file, using the `AGENTS.md` naming is a standard, and is supported in most of the tools. However, CLAUDE code does not support this file, but it's possible to create a symlink or reference the `AGENTS.md` file using `@AGENTS.md`.
 This makes it easy to switch between tools, without having to change the instructions for the agent.
 
 You don't have to write the `AGENTS.md` file manually, you can also just let the agent generate it for you. In my case this file contains the technology stack, the commands to use (build, test, lint, etc.), the coding style and conventions, and the overall flow of the application. This way, the agent has a clear understanding of the project and its requirements, and uses this to generate code that is aligned with the overall direction of the project.
@@ -50,6 +50,8 @@ I do use [Agent Skills](https://agentskills.io/home) to extend the capabilities 
 The main differentiation between skills and `AGENTS.md`, is that the agent file is always included in the context, while skills are only included when they are relevent. This is important to keep the context window manageable, in order to get the best results.
 
 Another usage of a skill is that it's possible to invoke the skill on demand using a slash command. In this case the skills feature is the successor of slash commands or file instructions, and provides a standardized way to invoke repetitive tasks.
+
+Many tools add the skills to the `./agents/skills` folder, however CLAUDE uses `./claude/skills`. As a workaround you can create symlinks to cover both causes without duplicating the skills.
 
 There are plenty of good skills available. To search for skills, I recommend using [https://skills.sh](https://skills.sh).
 To install a skill in your project, you can use the following command. After the installation the skill is added to your project repository (or on your system), so it can be re-used by your team.
@@ -151,6 +153,8 @@ Because introducing AI can be overwhelming at first, atleast it was for me, I th
 
 By only using AI agents you will already see some results, but these probably won't impress your, nor be consistent in their output.
 I was impressed with the overall quality improvement with introducing the `AGENTS.MD` file and adding Agent Skills to the project. This resulted in major speed improvements by using AI in my development workflow. To prevent countless back-and-forth's between me and the model, a good specification with clear requirements helps to boost the productivity.
+
+To include these instructions across different tools you can use symbolic links to prevent the duplication, and the mess to keep the files the same. I prefer to keep the original files tools-agnostic and to stay close to standard, and create symlinks pointing to these locations to support the tools who defer from the standard.
 
 While this all sounds good, keep in mind that AI is not the silver bullet.
 AI can help you ship faster, but only if you stay in the driver's seat.
