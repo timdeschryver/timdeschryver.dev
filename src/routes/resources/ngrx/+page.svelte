@@ -133,28 +133,28 @@
 
 <svelte:head>
 	<meta name="description" content="NgRx Resources I share a lot" />
-	<meta name="image" content={`https://timdeschryver.dev/images/ngrx.png`} />
+	<meta name="image" content="https://timdeschryver.dev/images/ngrx.png" />
 
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content={`https://timdeschryver.dev/images/ngrx.png`} />
+	<meta name="twitter:image" content="https://timdeschryver.dev/images/ngrx.png" />
 	<meta name="twitter:image:alt" content="The NgRx Logo" />
 	<meta name="twitter:title" content="NgRx Resources" />
 	<meta name="twitter:description" content="NgRx Resources I share a lot" />
-	<meta name="og:url" content={`https://timdeschryver.dev/resources/ngrx`} />
+	<meta name="og:url" content="https://timdeschryver.dev/resources/ngrx" />
 	<meta name="og:title" content="Resources: NgRx" />
 	<meta name="og:description" content="NgRx Resources I share a lot" />
 	<meta name="og:type" content="article" />
-	<meta name="og:image" content={`https://timdeschryver.dev/images/ngrx.png`} />
+	<meta name="og:image" content="https://timdeschryver.dev/images/ngrx.png" />
 </svelte:head>
 
 <h1>NgRx Resources</h1>
 
-{#each resources as resource}
+{#each resources as resource (resource.title)}
 	<h2>{resource.title}</h2>
 
 	<ul>
-		{#each resource.links as link}
-			<li class="mt-0"><a href={link.link}>{link.category} {link.text}</a></li>
+		{#each resource.links as link (link.link)}
+			<li class="mt-0"><a href={link.link} rel="external">{link.category} {link.text}</a></li>
 		{/each}
 	</ul>
 {/each}

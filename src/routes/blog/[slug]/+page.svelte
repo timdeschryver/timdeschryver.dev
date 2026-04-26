@@ -14,6 +14,7 @@
 	import Ad from '$lib/Ad.svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -27,7 +28,11 @@
 
 	onMount(() => {
 		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
-		blog.loadBlog(post.metadata.title, hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single');
+		blog.loadBlog(
+			post.metadata.title,
+			post.metadata.slug,
+			hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single',
+		);
 		return () => blog.reset();
 	});
 
@@ -169,7 +174,7 @@
 		</div>
 
 		<div class="logos">
-			{#each post.metadata.logos as logo}
+			{#each post.metadata.logos as logo (logo.src)}
 				<img class="mt-0 logo" src="/images/{logo.src}" alt={logo.alt} />
 			{/each}
 		</div>
@@ -189,7 +194,7 @@
 		<div class="toc" hidden={blog.blog?.state === 'tldr'}>
 			<h3>On this page</h3>
 			<ul>
-				{#each post.metadata.toc as { slug, description, level }}
+				{#each post.metadata.toc as { slug, description, level } (slug)}
 					<li class:active={lastHeadingId === slug} style={`--level:${level - 2}`}>
 						<a href={`#${slug}`} onclick={tocClick}>{description}</a>
 					</li>
@@ -205,7 +210,7 @@
 	{#if post.metadata.translations.length > 0}
 		<div>
 			<h4>Read this post in</h4>
-			{#each post.metadata.translations as translation}
+			{#each post.metadata.translations as translation (translation.url)}
 				<a href={translation.url} rel="external">{translation.language}</a>
 			{/each}
 		</div>
@@ -236,7 +241,7 @@
 	{#if post.contributors.length}
 		<h4>A warm thank you to the contributors of this blog post</h4>
 		<ul class="mt-0">
-			{#each post.contributors as [login, name]}
+			{#each post.contributors as [login, name] (login)}
 				<li>
 					<a href={`https://github.com/${login}`} rel="external">{name ?? login}</a>
 				</li>
@@ -247,9 +252,9 @@
 	{#if post.metadata.incomingLinks.length}
 		<h4>Incoming links</h4>
 		<ul class="mt-0" data-sveltekit-reload>
-			{#each post.metadata.incomingLinks as link}
+			{#each post.metadata.incomingLinks as link (link.slug)}
 				<li>
-					<a href={`/blog/${link.slug}`} class="mark">{link.title}</a>
+					<a href={resolve('/blog/[slug]', { slug: link.slug })} class="mark">{link.title}</a>
 				</li>
 			{/each}
 		</ul>
@@ -258,9 +263,9 @@
 	{#if post.metadata.outgoingLinks.length}
 		<h4>Outgoing links</h4>
 		<ul class="mt-0" data-sveltekit-reload>
-			{#each post.metadata.outgoingLinks as link}
+			{#each post.metadata.outgoingLinks as link (link.slug)}
 				<li>
-					<a href={`/blog/${link.slug}`} class="mark">{link.title}</a>
+					<a href={resolve('/blog/[slug]', { slug: link.slug })} class="mark">{link.title}</a>
 				</li>
 			{/each}
 		</ul>
@@ -272,7 +277,7 @@
 		<hr />
 		<p>Thanks to the ❤️ community you can also read this post in:</p>
 		<ul>
-			{#each post.metadata.translations as translation}
+			{#each post.metadata.translations as translation (translation.url)}
 				<li>
 					<a href={translation.url} rel="external" class="mark">{translation.language}</a> thanks to
 					<a href={translation.profile} rel="external" class="mark">{translation.author}</a>

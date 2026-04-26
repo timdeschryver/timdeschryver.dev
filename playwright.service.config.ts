@@ -13,7 +13,7 @@ export default defineConfig(
 		exposeNetwork: '<loopback>',
 		connectTimeout: 30000,
 		os: ServiceOS.LINUX,
-		credential: new DefaultAzureCredential()
+		credential: new DefaultAzureCredential(),
 	}),
 	{
 		/* 
@@ -21,9 +21,6 @@ export default defineConfig(
 		This will override any reporter options specified in the base playwright config.
 		If you are using more reporters, please update your configuration accordingly.
 		*/
-		reporter: [
-			["html", { open: "never" }],
-			["@azure/playwright/reporter"]
-		],
+		reporter: [['html', { open: 'never' }], ['@azure/playwright/reporter']],
 	},
 );

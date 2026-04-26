@@ -48,7 +48,7 @@
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="SQL Resources" />
 	<meta name="twitter:description" content="SQL Resources that I use as a reference" />
-	<meta name="og:url" content={`https://timdeschryver.dev/resources/sql`} />
+	<meta name="og:url" content="https://timdeschryver.dev/resources/sql" />
 	<meta name="og:title" content="Resouces: SQL" />
 	<meta name="og:description" content="SQL Resources that I use as a reference" />
 	<meta name="og:type" content="article" />
@@ -56,12 +56,14 @@
 
 <h1>SQL Resources</h1>
 
-{#each resources as resource}
+{#each resources as resource (resource.title)}
 	<h2>{resource.title}</h2>
 
 	<ul>
-		{#each resource.links as link}
-			<li class="mt-0"><a href={link.link}>{link.category}: {link.description}</a></li>
+		{#each resource.links as link (link.link)}
+			<li class="mt-0">
+				<a href={link.link} rel="external">{link.category}: {link.description}</a>
+			</li>
 		{/each}
 	</ul>
 {/each}

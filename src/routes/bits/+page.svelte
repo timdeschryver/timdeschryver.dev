@@ -5,10 +5,12 @@
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 
 	let { data } = $props();
-	// eslint-disable-next-line svelte/valid-compile
+
+	// svelte-ignore state_referenced_locally
 	const { bits, tags } = data;
 
 	codeBlockLifeCycle();
@@ -21,7 +23,11 @@
 	});
 
 	$effect(() => {
-		goto(query ? `?q=${query}` : '?', { noScroll: true, replaceState: true, keepFocus: true });
+		goto(resolve(query ? `/bits?q=${encodeURIComponent(query)}` : '/bits'), {
+			noScroll: true,
+			replaceState: true,
+			keepFocus: true,
+		});
 	});
 
 	let queryParts = $derived((query || '').split(' ').filter(Boolean));
@@ -42,22 +48,22 @@
 <Head title="Bits - Tim Deschryver" details={false} />
 
 <svelte:head>
-	<meta name="title" content={"Tim's Bits"} />
+	<meta name="title" content="Tim's Bits" />
 	<meta
 		name="description"
-		content={"Tools || (new) features || blog posts in a bit format on topics that I'm excited about."}
+		content="Tools || (new) features || blog posts in a bit format on topics that I'm excited about."
 	/>
 
-	<meta name="twitter:title" content={"Tim's Bits"} />
+	<meta name="twitter:title" content="Tim's Bits" />
 	<meta
 		name="twitter:description"
-		content={"Tools || (new) features || blog posts in a bit format on topics that I'm excited about."}
+		content="Tools || (new) features || blog posts in a bit format on topics that I'm excited about."
 	/>
 
-	<meta name="og:title" content={"Tim's Bits"} />
+	<meta name="og:title" content="Tim's Bits" />
 	<meta
 		name="og:description"
-		content={"Tools || (new) features || blog posts in a bit format on topics that I'm excited about."}
+		content="Tools || (new) features || blog posts in a bit format on topics that I'm excited about."
 	/>
 	<meta name="og:type" content="website" />
 </svelte:head>
@@ -68,7 +74,7 @@
 	<Newsletter hideTitle={true} />
 
 	<div class="mt-normal">
-		{#each tags as tag}
+		{#each tags as tag (tag)}
 			<button class:active={queryParts && tagSelected(tag)} onclick={() => tagClicked(tag)}>
 				# {tag}
 			</button>
@@ -76,13 +82,13 @@
 	</div>
 </header>
 
-{#each bits as bit, i}
+{#each bits as bit, i (bit.metadata.slug)}
 	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
 		<div class="bit">
 			<h2>
 				{bits.length - i}.
 				<a
-					href="/bits/{bit.metadata.slug}"
+					href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
 					class="mark-hover"
 					data-sveltekit-preload-data="hover"
 					style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a

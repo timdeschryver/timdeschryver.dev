@@ -33,6 +33,7 @@ export const codeGroup = {
 					type: 'codeGroup',
 					raw,
 					text: text.trim(),
+					tokens: [],
 					codeblocks: codeblocks.map((c) => {
 						const codeLines = c.split('\n');
 						const first = codeLines.shift().replace(/```/, '');
