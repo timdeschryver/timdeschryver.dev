@@ -10,7 +10,8 @@
 	import Ad from '$lib/Ad.svelte';
 
 	let { data } = $props();
-	// eslint-disable-next-line svelte/valid-compile
+
+	// svelte-ignore state_referenced_locally
 	const { bit } = data;
 
 	let scrollY = $state<number>();

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import type { SeriesPost, BlogSeries } from './models';
 
 	interface Props {
@@ -26,12 +27,16 @@
 	</p>
 
 	<ol class="series-posts">
-		{#each seriesPosts as post}
+		{#each seriesPosts as post (post.slug)}
 			<li class="series-post" class:current={post.current}>
 				{#if post.current}
 					<span class="post-title current-post">{post.title}</span>
 				{:else}
-					<a href="/blog/{post.slug}" class="post-title mark mark-hover" data-sveltekit-reload>
+					<a
+						href={resolve('/blog/[slug]', { slug: post.slug })}
+						class="post-title mark mark-hover"
+						data-sveltekit-reload
+					>
 						{post.title}
 					</a>
 				{/if}

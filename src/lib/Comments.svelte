@@ -20,6 +20,7 @@
 		scriptElm.setAttribute('data-loading', 'lazy');
 
 		scriptElm.src = 'https://giscus.app/client.js';
+		// eslint-disable-next-line svelte/no-dom-manipulating -- Giscus requires injecting its script into the comments container.
 		divElement.appendChild(scriptElm);
 
 		theme.subscribe((theme) => {

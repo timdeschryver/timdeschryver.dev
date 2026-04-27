@@ -68,18 +68,18 @@
 
 <svelte:head>
 	<meta name="description" content="RxJS Resources I share a lot" />
-	<meta name="image" content={`https://timdeschryver.dev/images/rxjs.png`} />
+	<meta name="image" content="https://timdeschryver.dev/images/rxjs.png" />
 
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content={`https://timdeschryver.dev/images/rxjs.png`} />
+	<meta name="twitter:image" content="https://timdeschryver.dev/images/rxjs.png" />
 	<meta name="twitter:image:alt" content="The RxJS Logo" />
 	<meta name="twitter:title" content="RxJS Resources" />
 	<meta name="twitter:description" content="RxJS Resources I share a lot" />
-	<meta name="og:url" content={`https://timdeschryver.dev/resources/rxjs`} />
+	<meta name="og:url" content="https://timdeschryver.dev/resources/rxjs" />
 	<meta name="og:title" content="Resources: RxJS" />
 	<meta name="og:description" content="RxJS Resources I share a lot" />
 	<meta name="og:type" content="article" />
-	<meta name="og:image" content={`https://timdeschryver.dev/images/rxjs.png`} />
+	<meta name="og:image" content="https://timdeschryver.dev/images/rxjs.png" />
 </svelte:head>
 
 <h1>RxJS Resources</h1>
@@ -109,12 +109,12 @@
 	> in your project.
 </blockquote>
 
-{#each resources as resource}
+{#each resources as resource (resource.title)}
 	<h2>{resource.title}</h2>
 
 	<ul>
-		{#each resource.links as link}
-			<li class="mt-0"><a href={link.link}>{link.category} {link.text}</a></li>
+		{#each resource.links as link (link.link)}
+			<li class="mt-0"><a href={link.link} rel="external">{link.category} {link.text}</a></li>
 		{/each}
 	</ul>
 {/each}

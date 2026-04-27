@@ -27,10 +27,11 @@ Let's see how we can use ngxtension to migrate towards "modern" Angular with som
 ```angular-ts [title=Before]
 @Component({
 	template: `
-        @if (showTitle) {  
-            <h1>{{ title }}</h1>
-        }
-        <button (click)="onClick()">Click me!</button> 
+		@if (showTitle) {
+			 
+			<h1>{{ title }}</h1>
+		}
+		<button (click)="onClick()">Click me!</button> 
 	`,
 })
 export class AwesomeComponent {
@@ -49,10 +50,10 @@ export class AwesomeComponent {
 ```angular-ts [title=After]
 @Component({
 	template: `
-        @if (showTitle()) {
-            <h1>{{ title() }}</h1>
-        }
-        <button (click)="onClick()">Click me!</button>
+		@if (showTitle()) {
+			<h1>{{ title() }}</h1>
+		}
+		<button (click)="onClick()">Click me!</button>
 	`,
 })
 export class AwesomeComponent {

@@ -2,6 +2,7 @@
 	import Head from '$lib/Head.svelte';
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 
 	let { data } = $props();
@@ -187,7 +188,7 @@
 		{/if}
 		<small></small>
 	</div>
-	{#each data.tags as tag}
+	{#each data.tags as tag (tag)}
 		<button class={tag} class:active={isTagActive(tag)} onclick={() => tagClicked(tag)}>
 			{tag}
 		</button>
@@ -198,7 +199,7 @@
 	{#each filteredPosts() as post (post.slug)}
 		<li style:--accent-color={`var(--${post.color})`}>
 			<article>
-				<a href={`/blog/${post.slug}`} data-sveltekit-preload-data="hover">
+				<a href={resolve('/blog/[slug]', { slug: post.slug })} data-sveltekit-preload-data="hover">
 					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
 						{post.title}
 					</h2>
@@ -214,7 +215,7 @@
 				</a>
 				<div>
 					<a
-						href={`/blog/${post.slug}`}
+						href={resolve('/blog/[slug]', { slug: post.slug })}
 						data-sveltekit-preload-data="hover"
 						class="bold mark-hover"
 					>
@@ -222,7 +223,7 @@
 					>
 					{#if post.tldr}
 						| <a
-							href={`/blog/${post.slug}?tldr=true`}
+							href={resolve('/blog/[slug]?tldr=true', { slug: post.slug })}
 							data-sveltekit-preload-data="hover"
 							class="bold mark-hover">Read TLDR</a
 						>

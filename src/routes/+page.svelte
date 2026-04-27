@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Head from '$lib/Head.svelte';
 	import confetti from 'canvas-confetti';
 	import Socials from '$lib/Socials.svelte';
@@ -62,7 +63,7 @@
 	<p>
 		A software engineer from Belgium who enjoys to <strong
 			onmouseover={fireConfetti}
-			onfocus={fireConfetti}><a class="mark mark-hover" href="/blog">blog</a></strong
+			onfocus={fireConfetti}><a class="mark mark-hover" href={resolve('/blog')}>blog</a></strong
 		>
 		about my experiences with the aim to help others and my future self, primarily on
 		<strong onmouseover={fireConfetti} onfocus={fireConfetti}>Angular</strong>
@@ -97,8 +98,8 @@
 	</p>
 
 	<p>
-		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement
-		based on the idea that small, ongoing positive changes can reap significant improvements.
+		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement based
+		on the idea that small, ongoing positive changes can reap significant improvements.
 	</p>
 
 	<Newsletter />

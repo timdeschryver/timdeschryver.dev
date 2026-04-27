@@ -485,9 +485,7 @@ function hexToHSL(H: string | null | undefined): string {
 	const cmin = Math.min(r, g, b),
 		cmax = Math.max(r, g, b),
 		delta = cmax - cmin;
-	let h = 0,
-		s = 0,
-		l = 0;
+	let h: number;
 
 	if (delta == 0) h = 0;
 	else if (cmax == r) h = ((g - b) / delta) % 6;
@@ -498,10 +496,10 @@ function hexToHSL(H: string | null | undefined): string {
 
 	if (h < 0) h += 360;
 
-	l = (cmax + cmin) / 2;
-	s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-	s = +(s * 100).toFixed(1);
-	l = +(l * 100).toFixed(1);
+	const l = (cmax + cmin) / 2;
+	const s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+	const normalizedS = +(s * 100).toFixed(1);
+	const normalizedL = +(l * 100).toFixed(1);
 
-	return h + ',' + s + '%,' + l + '%';
+	return h + ',' + normalizedS + '%,' + normalizedL + '%';
 }

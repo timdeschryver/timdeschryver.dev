@@ -10,11 +10,11 @@ Over the past year, I changed my perspective on AI in software development. I us
 
 Over the last month I used Agentic AI to rewrite a project entirely from scratch, and the results are amazing. The speed boost is incredible, and the quality of the code is good, not perfect, but good enough in my opinion. In this blog post, I want to share my experience and thoughts on AI in software development, and why I think it's a game-changer for software development.
 
-No, I didn't vibe code the project, because while it's probably faster, I think this practice causes issues in the long term. Instead - and because we're currently in the classic cycling season I want to use a cycling metaphor -, I would say that I'm seeing AI as a (super-)domestique, while I was the team leader in the team.
+No, I didn't vibe code the project, because while it's could be faster, I think this practice causes issues in the long term. Instead - and because we're currently in the classic cycling season I want to use a cycling metaphor -, I would say that I'm seeing AI as a (super-)domestique, while I'm the team leader.
 
 > In road bicycle racing, a [domestique](https://en.wikipedia.org/wiki/Domestique) is a rider who works for the benefit of their team and leader, rather than trying to win the race. In French, domestique translates as "servant". The use of the term dates back to 1911, although such riders had existed before then.
 
-This allowed me to focus on the high-level design and architecture of the project, while I let the AI handle the implementation details and most of the work. In the end, you're still the leader who needs to cross first over the finish line, just as Wout van Aert won Paris Roubaix to raise the cobblestone. Just as pulling in an external dependency, we're still responsible for the overall direction and quality of the project, but we can leverage the power of AI to get there faster and more efficiently.
+This allowed me to focus on the high-level design and architecture of the project, while I let the AI handle the implementation details and most of the work. In the end, you're still the leader who needs to cross first over the finish line, just as Wout van Aert won Paris Roubaix to raise the cobblestone. A leader who thinks about the strategy, and can communicate this clearly to his team. Just as pulling in an external dependency, we're still responsible for the overall direction and quality of the project, but we can leverage the power of AI to get there faster and more efficiently.
 
 ## Overall architecture and design
 

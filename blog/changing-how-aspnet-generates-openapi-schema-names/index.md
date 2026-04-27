@@ -45,9 +45,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.MapGet("/module-a", 
+app.MapGet("/module-a",
     () => new Project.ModuleA.ResponseData("Hello from Module A", 100));
-app.MapGet("/module-b", 
+app.MapGet("/module-b",
     () => new Project.ModuleB.ResponseData("Hello from Module B", "Success", 67));
 
 app.Run();
