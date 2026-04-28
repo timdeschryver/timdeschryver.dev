@@ -1,11 +1,16 @@
 @import './light.theme.css';
 @import './dark.theme.css';
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Teachers:ital,wght@0,400..800;1,400..800&family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import '@fontsource-variable/mona-sans/wght.css';
+@import '@fontsource-variable/mona-sans/wght-italic.css';
+@import '@fontsource-variable/hubot-sans/wght.css';
+@import '@fontsource-variable/hubot-sans/wght-italic.css';
+@import '@fontsource-variable/victor-mono/wght.css';
+@import '@fontsource-variable/victor-mono/wght-italic.css';
 
 :root {
-	--head-font: 'Teachers', 'Helvetica', sans-serif;
-	--text-font: 'Noto Sans', 'Helvetica', sans-serif;
+	--head-font: 'Hubot Sans Variable', 'Helvetica', sans-serif;
+	--text-font: 'Mona Sans Variable', 'Helvetica', sans-serif;
 	--font-size: calc(1rem + 0.18dvw);
 	--line-height: 1.876;
 	--spacing: 1.74em;

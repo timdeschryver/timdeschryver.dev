@@ -53,7 +53,7 @@ var server = builder.AddProject<Projects.BffMicrosoftEntraID_Server>("bff-server
 
 Because the Angular project is served from the ASP.NET application, we need to configure the relationship between the two projects. We can do this by adding a reference to the Angular project in the ASP.NET project and configuring the ASP.NET project to serve the Angular application as static files.
 
-```cs [file=AppHost/AppHost.cs] [highlight="10-12"]
+```cs [file=AppHost/AppHost.cs] [highlight="9-10"]
 var builder = DistributedApplication.CreateBuilder(args);
 
 var ui = builder
@@ -128,7 +128,7 @@ services.AddReverseProxy()
 
 To render the Angular application, also update the `_Host.cshtml` file to load the index.html file from the Angular development server in development. Again, this uses the environment variable instead of the `UiDevServerUrl` configuration value that was previously hard coded.
 
-```cs [file=server/Pages/_Host.cshtml] [highlight="15-19"]
+```cs [file=server/Pages/_Host.cshtml] [highlight="14-18"]
 @page "/"
 @namespace BlazorBffAzureAD.Pages
 @using System.Net;

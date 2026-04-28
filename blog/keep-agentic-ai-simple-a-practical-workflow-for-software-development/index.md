@@ -53,6 +53,8 @@ Another usage of a skill is that it's possible to invoke the skill on demand usi
 
 Many tools add the skills to the `./agents/skills` folder, however CLAUDE uses `./claude/skills`. As a workaround you can create symlinks to cover both causes without duplicating the skills.
 
+Skills can also be picked up by different agents, this makes it easy to centralise and share the knowledge between different agents.
+
 There are plenty of good skills available. To search for skills, I recommend using [https://skills.sh](https://skills.sh).
 To install a skill in your project, you can use the following command. After the installation the skill is added to your project repository (or on your system), so it can be re-used by your team.
 
@@ -151,10 +153,13 @@ We can't ignore that our industry is changing. To stay relevant it's important t
 
 Because introducing AI can be overwhelming at first, atleast it was for me, I think it's a good idea to start simple and to not bring in all of features at once. The tools and techniques are also changing in a rapid pace, so it's a challenge to keep up with best practices, especially if it's not your main focus area. Using standardized tools and practices helps to keep everything manageable. While choosing tools, I also think it's important to think about a potential vendor lock-in.
 
-By only using AI agents you will already see some results, but these probably won't impress your, nor be consistent in their output.
-I was impressed with the overall quality improvement with introducing the `AGENTS.MD` file and adding Agent Skills to the project. This resulted in major speed improvements by using AI in my development workflow. To prevent countless back-and-forth's between me and the model, a good specification with clear requirements helps to boost the productivity.
+By only using the default AI coding agent you already see some positive results, but this probably won't impress you, nor be consistent in their output. My recommendation is to start with the bare minimum, and include the files we discusses when they are required. This can be done when you notice that the agent keeps making the same mistakes.
 
-To include these instructions across different tools you can use symbolic links to prevent the duplication, and the mess to keep the files the same. I prefer to keep the original files tools-agnostic and to stay close to standard, and create symlinks pointing to these locations to support the tools who defer from the standard.
+I was impressed with the overall quality improvement with introducing the `AGENTS.MD` file, and even more so by adding Agent Skills to the project. This resulted in major speed improvements by using AI in my development workflow. To prevent countless back-and-forth's between me and the model, a good specification with clear requirements helps to boost the productivity.
+
+To include these instructions across different tools you can use symbolic links to prevent the duplication, and the hassle to keep the files in sync. I prefer to keep the original files tools-agnostic and to stay close to standard, as a workaround create symlinks pointing to these locations to support the tools who defer from the standard. This practice makes it easier to try out new tools, or eventually switch between tools.
+
+Because AI is evolving in a fast pace this setup needs to be continuously re-evaluated, and keep re-iterating to see what works best for you and your setup.
 
 While this all sounds good, keep in mind that AI is not the silver bullet.
 AI can help you ship faster, but only if you stay in the driver's seat.
