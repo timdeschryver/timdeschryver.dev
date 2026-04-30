@@ -180,11 +180,14 @@
 	/>
 	<div class="mt-0 search-info">
 		<div><small>Found {filteredPosts().length} posts out of {data.posts.length} posts</small></div>
-		{#if filter.from}
-			<div class="mt-0"><small>From {filter.from}</small></div>
-		{/if}
-		{#if filter.to}
-			<div class="mt-0"><small>To {filter.to}</small></div>
+		{#if filter.from || filter.to}
+			<div class="mt-0">
+				<small
+					>{filter.from ? `From ${filter.from}` : ''}{filter.from && filter.to ? ' ' : ''}{filter.to
+						? `To ${filter.to}`
+						: ''}</small
+				>
+			</div>
 		{/if}
 		<small></small>
 	</div>
