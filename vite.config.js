@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
 		},
 		test: {
 			include: ['src/**/*.test.ts'],
-			environmentMatchGlobs: [['src/**/*.dom.test.ts', 'jsdom']],
 		},
 		resolve: {
 			conditions: mode === 'test' ? ['browser'] : [],
