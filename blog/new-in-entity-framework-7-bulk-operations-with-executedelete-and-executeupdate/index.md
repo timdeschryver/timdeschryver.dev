@@ -3,7 +3,7 @@ title: 'New in Entity Framework 7: Bulk Operations with ExecuteDelete and Execut
 slug: new-in-entity-framework-7-bulk-operations-with-executedelete-and-executeupdate
 description: Exploring the new `ExecuteDelete` and `ExecuteUpdate` methods that were introduced in Entity Framework.
 date: 2022-08-16
-tags: dotnet, entity framework, sql
+tags: .NET, entity framework, sql
 ---
 
 Version 7 of Entity Framework includes some popular features that have been asked for, one of which is Bulk Operations.

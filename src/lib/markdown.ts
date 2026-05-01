@@ -101,6 +101,7 @@ export function parseFileToHtmlAndMeta(file): {
 	metadata.outgoingSlugs = [] as string[];
 	metadata.toc = [] as TOC[];
 	const assetsSrc = path.dirname(file);
+	const fragmentCounts = new Map<string, number>();
 
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
@@ -359,12 +360,13 @@ export function parseFileToHtmlAndMeta(file): {
 		if (!fragment || level === 1) {
 			return `<h${level}>${headingText}</h${level}>`;
 		}
+		const uniqueFragment = getUniqueFragment(fragment, fragmentCounts);
 
-		metadata.toc.push({ description: rawtext, level, slug: fragment });
+		metadata.toc.push({ description: rawtext, level, slug: uniqueFragment });
 
 		return `
-		<h${level} id="${fragment}">
-		  <a href="#${fragment}" class="anchor mark-hover" tabindex="-1">${headingText}</a>
+		<h${level} id="${uniqueFragment}">
+		  <a href="#${uniqueFragment}" class="anchor mark-hover" tabindex="-1">${headingText}</a>
 		  <span class="icon align-text-top"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
 		</h${level}>`;
 	};
@@ -374,6 +376,13 @@ export function parseFileToHtmlAndMeta(file): {
 		{ renderer },
 	) as string;
 	return { html, metadata, assetsSrc };
+}
+
+function getUniqueFragment(fragment: string, fragmentCounts: Map<string, number>) {
+	const count = fragmentCounts.get(fragment) ?? 0;
+	fragmentCounts.set(fragment, count + 1);
+
+	return count ? `${fragment}-${count + 1}` : fragment;
 }
 
 function slugify(string) {

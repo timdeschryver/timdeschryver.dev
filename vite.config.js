@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 			sveltekit(),
 			svgLoader(),
 			VitePluginRestart({
-				restart: ['./blog/**', './bits/**', '!*.webp'],
+				restart: ['./blog/**', './bits/**', '!*.webp', '!banner.png'],
 			}),
 		],
 		server: {

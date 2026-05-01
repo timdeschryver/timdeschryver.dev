@@ -3,7 +3,7 @@ title: Refactoring a form to a Signal Form
 slug: refactoring-a-form-to-a-signal-form
 description: I jotted down some notes of my experiences and thoughts while refactoring an existing Angular form to use the new Signal Forms (experimental feature).
 date: 2025-10-16
-tags: Angular
+tags: Angular, Signal Form
 series:
   name: 'Angular Signal Forms'
 ---
