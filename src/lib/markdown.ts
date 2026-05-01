@@ -31,7 +31,7 @@ marked.use({
 });
 const renderer = new marked.Renderer();
 
-const highlighter = await shiki.getHighlighter({
+const highlighter = await shiki.createHighlighter({
 	themes: ['rose-pine', 'rose-pine-dawn'],
 	langs: [
 		'razor',
