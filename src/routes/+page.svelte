@@ -4,6 +4,16 @@
 	import confetti from 'canvas-confetti';
 	import Socials from '$lib/Socials.svelte';
 	import Newsletter from '$lib/Newsletter.svelte';
+	import StravaRunningWidget from '$lib/StravaRunningWidget.svelte';
+
+	type RunningStats = {
+		kilometers: number;
+		activityCount: number | null;
+		year: number;
+		updatedAt: string;
+	};
+
+	let { data }: { data: { stravaRunning: RunningStats | null } } = $props();
 
 	let lastConfetti = 0;
 	function fireConfetti(evt: MouseEvent | FocusEvent): void {
@@ -96,6 +106,10 @@
 	<p>
 		Also a hobby <strong onmouseover={fireConfetti} onfocus={fireConfetti}>runner</strong>.
 	</p>
+
+	{#if data.stravaRunning}
+		<StravaRunningWidget stats={data.stravaRunning} />
+	{/if}
 
 	<p>
 		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement based

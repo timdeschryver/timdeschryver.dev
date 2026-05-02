@@ -194,6 +194,10 @@ p {
 	}
 }
 
+strong {
+	font-weight: bold;
+}
+
 ul,
 ol {
 	font-size: var(--font-size);
