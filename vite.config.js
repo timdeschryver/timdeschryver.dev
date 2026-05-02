@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config';
 import VitePluginRestart from 'vite-plugin-restart';
 import svgLoader from 'vite-svg-loader';
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
 	return {
 		plugins: [
 			sveltekit(),
@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
 			include: ['src/**/*.test.ts'],
 		},
 		resolve: {
-			conditions: mode === 'test' ? ['browser'] : [],
+			conditions: ['browser'],
 		},
 	};
 });

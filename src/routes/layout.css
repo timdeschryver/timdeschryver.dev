@@ -47,7 +47,7 @@ html.light {
 
 html.dark {
 	--base-color: 0, 0%, 100%;
-	--background-color: hsla(0, 0%, 0%, 0.9);
+	--background-color: hsla(0, 0%, 0%, 0.95);
 	--background-color-subtle: rgba(0, 0, 0, 0.08);
 	--background-color-transparent: hsla(0, 0%, 100%, 0.1);
 	--text-color: hsla(0, 0%, 100%, 0.9);
@@ -99,8 +99,8 @@ body {
 }
 
 ::selection {
-	color: var(--background-color);
-	background: var(--text-color);
+	background: highlight;
+	color: highlighttext;
 }
 
 ::view-transition-old(root),

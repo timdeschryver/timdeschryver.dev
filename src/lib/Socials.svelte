@@ -59,5 +59,6 @@
 
 	a {
 		font-weight: bold;
+		text-decoration: underline;
 	}
 </style>

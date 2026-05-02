@@ -90,7 +90,7 @@
 		});
 	}
 
-	run(() => {
+	$effect.pre(() => {
 		if (typeof document !== 'undefined') {
 			document.documentElement.className = $theme;
 		}

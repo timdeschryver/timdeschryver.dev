@@ -1,32 +1,42 @@
-import { writeFile, readFile } from 'fs/promises';
-import { ImagePool } from '@squoosh/lib';
-import { cpus } from 'os';
 import { existsSync } from 'fs';
+import { rename, unlink } from 'fs/promises';
+import sharp from 'sharp';
+
+const supportedImageExtensions = /\.(png|jpe?g|webp)$/i;
 
 export async function optimizeImage(img) {
 	if (!existsSync(img)) {
 		return;
 	}
 
-	const imagePool = new ImagePool(cpus().length);
-	const file = await readFile(img);
-	const image = imagePool.ingestImage(file);
-	await image.encode({
-		mozjpeg: {
-			quality: 100,
-		},
-		webp: {
-			quality: 100,
-		},
-	});
-
-	if (!img.endsWith('.webp')) {
-		const mozjpeg = await image.encodedWith.mozjpeg;
-		await writeFile(img, mozjpeg.binary);
+	if (!supportedImageExtensions.test(img)) {
+		return;
 	}
 
-	const webp = await image.encodedWith.webp;
-	await writeFile(img.replace(/\.(png|jpg|jpeg|jpeg)$/, '.webp'), webp.binary);
+	const extension = img.split('.').at(-1).toLowerCase();
+	const optimizedImage = sharp(img);
 
-	await imagePool.close();
+	if (extension === 'jpg' || extension === 'jpeg') {
+		await writeOptimizedImage(img, optimizedImage.jpeg({ quality: 100, mozjpeg: true }), extension);
+	} else if (extension === 'png') {
+		await writeOptimizedImage(img, optimizedImage.png({ compressionLevel: 9 }), extension);
+	} else if (extension === 'webp') {
+		await writeOptimizedImage(img, optimizedImage.webp({ quality: 100 }), extension);
+	}
+
+	if (extension !== 'webp') {
+		await sharp(img).webp({ quality: 100 }).toFile(img.replace(supportedImageExtensions, '.webp'));
+	}
+}
+
+async function writeOptimizedImage(img, transformer, extension) {
+	const temporaryFile = `${img}.${process.pid}.${Date.now()}.tmp.${extension}`;
+
+	try {
+		await transformer.toFile(temporaryFile);
+		await rename(temporaryFile, img);
+	} catch (error) {
+		await unlink(temporaryFile).catch(() => {});
+		throw error;
+	}
 }

@@ -16,3 +16,9 @@
 	>
 	({variables.timestamp.toISOString()})
 </div>
+
+<style>
+	a {
+		text-decoration: underline;
+	}
+</style>
