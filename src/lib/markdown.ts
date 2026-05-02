@@ -105,12 +105,11 @@ export function parseFileToHtmlAndMeta(file): {
 
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
-	renderer.link = function ({ href, title, tokens }) {
+	renderer.link = function (href, title, text) {
 		// if (text === href && tweetRegexp.test(href)) {
 		// 	return `::${href}::`;
 		// }
 
-		const text = this.parser.parseInline(tokens);
 		const link = href.replace('../', '/blog/').replace('/index.md', '');
 		const href_attr = `href="${appendCreatorId(link)}"`;
 		const title_attr = title ? `title="${title}"` : '';
@@ -140,7 +139,7 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<a class="mark mark-hover" ${attributesString} ${style}>${text}</a>`;
 	};
 
-	renderer.image = function ({ href, title: _title, text }) {
+	renderer.image = function (href, _title, text) {
 		const src = href.startsWith('http')
 			? href
 			: `/` +
@@ -166,8 +165,7 @@ export function parseFileToHtmlAndMeta(file): {
 		`;
 	};
 
-	renderer.paragraph = function ({ tokens }) {
-		const text = this.parser.parseInline(tokens);
+	renderer.paragraph = function (text) {
 		const trimmed = text.replace('👋', `<span class="wave">👋</span>`).trim();
 
 		if (trimmed.startsWith('<figure>')) {
@@ -177,7 +175,7 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<p>${trimmed}</p>`;
 	};
 
-	renderer.code = function ({ text: source, lang }) {
+	renderer.code = function (source, lang) {
 		lang = lang || 'txt';
 
 		let fileName = '';
@@ -344,16 +342,14 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<pre id="${id}" aria-hidden="true" tabindex="-1">${heading}${codeblock}</pre>`;
 	};
 
-	renderer.codespan = function ({ text: source }) {
+	renderer.codespan = function (source) {
 		return `<code>${source}</code>`;
 	};
-	renderer.blockquote = function ({ tokens }) {
-		const source = this.parser.parse(tokens);
+	renderer.blockquote = function (source) {
 		return `<blockquote><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg></span>${source}</blockquote>`;
 	};
 
-	renderer.heading = function ({ tokens, depth: level, text: rawtext }) {
-		const text = this.parser.parseInline(tokens);
+	renderer.heading = function (text, level, rawtext) {
 		const headingText = text.includes('{') ? text.substring(0, text.indexOf('{') - 1) : text;
 		const anchorRegExp = /{([^}]+)}/g;
 		const anchorOverwrite = anchorRegExp.exec(rawtext);

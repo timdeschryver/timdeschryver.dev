@@ -41,10 +41,7 @@ export const codeGroup = {
 						const title = titleMatch ? titleMatch[1] : '';
 						const lang = first.replace(/\[title=[^\]]+\]/, '').trim();
 						const _last = codeLines.pop();
-						const formatted = this.lexer.options.renderer.code({
-							text: codeLines.join('\n'),
-							lang,
-						});
+						const formatted = this.lexer.options.renderer.code(codeLines.join('\n'), lang, false);
 
 						return {
 							formatted,
