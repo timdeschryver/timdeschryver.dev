@@ -3,8 +3,7 @@
 	import Head from '$lib/Head.svelte';
 	import confetti from 'canvas-confetti';
 	import Socials from '$lib/Socials.svelte';
-	import Newsletter from '$lib/Newsletter.svelte';
-	import StravaRunningWidget from '$lib/StravaRunningWidget.svelte';
+	import YearProgression from '$lib/YearProgression.svelte';
 
 	type RunningStats = {
 		kilometers: number;
@@ -13,7 +12,22 @@
 		updatedAt: string;
 	};
 
-	let { data }: { data: { stravaRunning: RunningStats | null } } = $props();
+	type GitHubStats = {
+		totalCommits: number;
+		repositoryCount: number | null;
+		year: number;
+	};
+
+	let {
+		data,
+	}: {
+		data: {
+			stravaRunning: RunningStats | null;
+			githubStats: GitHubStats | null;
+			blogPostsThisYear: number;
+			blogReadingMinutes: number;
+		};
+	} = $props();
 
 	let lastConfetti = 0;
 	function fireConfetti(evt: MouseEvent | FocusEvent): void {
@@ -108,15 +122,18 @@
 	</p>
 
 	{#if data.stravaRunning}
-		<StravaRunningWidget stats={data.stravaRunning} />
+		<YearProgression
+			stats={data.stravaRunning}
+			githubStats={data.githubStats}
+			blogPostsThisYear={data.blogPostsThisYear}
+			blogReadingMinutes={data.blogReadingMinutes}
+		/>
 	{/if}
 
 	<p>
 		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement based
 		on the idea that small, ongoing positive changes can reap significant improvements.
 	</p>
-
-	<Newsletter />
 
 	<p>
 		<Socials />

@@ -51,6 +51,7 @@ jobs:
           STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
           STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
           STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+          GH_PERSONAL_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
 
       - name: 🧪 Unit Test
         run: pnpm test:unit
