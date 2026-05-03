@@ -105,10 +105,9 @@ export function parseFileToHtmlAndMeta(file): {
 
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
-	renderer.link = function (href, title, text) {
-		// if (text === href && tweetRegexp.test(href)) {
-		// 	return `::${href}::`;
-		// }
+	renderer.link = function (token) {
+		const { href, title } = token;
+		const text = this.parser.parseInline(token.tokens);
 
 		const link = href.replace('../', '/blog/').replace('/index.md', '');
 		const href_attr = `href="${appendCreatorId(link)}"`;
@@ -139,7 +138,8 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<a class="mark mark-hover" ${attributesString} ${style}>${text}</a>`;
 	};
 
-	renderer.image = function (href, _title, text) {
+	renderer.image = function (token) {
+		const { href, text } = token;
 		const src = href.startsWith('http')
 			? href
 			: `/` +
@@ -165,7 +165,8 @@ export function parseFileToHtmlAndMeta(file): {
 		`;
 	};
 
-	renderer.paragraph = function (text) {
+	renderer.paragraph = function (token) {
+		const text = this.parser.parseInline(token.tokens);
 		const trimmed = text.replace('👋', `<span class="wave">👋</span>`).trim();
 
 		if (trimmed.startsWith('<figure>')) {
@@ -175,8 +176,9 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<p>${trimmed}</p>`;
 	};
 
-	renderer.code = function (source, lang) {
-		lang = lang || 'txt';
+	renderer.code = function (token) {
+		const source = token.text;
+		let lang = token.lang || 'txt';
 
 		let fileName = '';
 		let sourceLink = '';
@@ -342,14 +344,18 @@ export function parseFileToHtmlAndMeta(file): {
 		return `<pre id="${id}" aria-hidden="true" tabindex="-1">${heading}${codeblock}</pre>`;
 	};
 
-	renderer.codespan = function (source) {
-		return `<code>${source}</code>`;
+	renderer.codespan = function (token) {
+		return `<code>${token.text}</code>`;
 	};
-	renderer.blockquote = function (source) {
+	renderer.blockquote = function (token) {
+		const source = this.parser.parse(token.tokens);
 		return `<blockquote><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg></span>${source}</blockquote>`;
 	};
 
-	renderer.heading = function (text, level, rawtext) {
+	renderer.heading = function (token) {
+		const level = token.depth;
+		const rawtext = token.text;
+		const text = this.parser.parseInline(token.tokens);
 		const headingText = text.includes('{') ? text.substring(0, text.indexOf('{') - 1) : text;
 		const anchorRegExp = /{([^}]+)}/g;
 		const anchorOverwrite = anchorRegExp.exec(rawtext);
