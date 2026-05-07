@@ -22,7 +22,7 @@ The project I worked on, uses an ASP.NET API as the backend and an Angular front
 
 Before letting the agents loose, I've set up the project structure the way I wanted.
 
-I used the same design as mentioned in [Treat your .NET Minimal API Endpoint as the application layer](../treat-your-net-minimal-api-endpoint-as-the-application-layer/index.md) using a Vertical Slice architecture. For Angular, I decided to use all the Signal API features, and no external UI library. After the initial setup, I let the AI handle the implementation of the features.
+I used the same design as mentioned in [Treat your .NET Minimal API Endpoint as the application layer](../treat-your-net-minimal-api-endpoint-as-the-application-layer/index.md) using a Vertical Slice architecture. I prefer the slices approach because it separates the different uses cases of an application, which to my feeling helps the agent as well (and makes it easier to rewrite or delete code when requirements changes). For Angular, I decided to use all the Signal API features, and no external UI library. After the initial setup, I let the AI handle the implementation of the features.
 
 The goal of this project was to act as a sandbox to experiment with different approaches and techniques, to get myself familiar with the capabilities and limitations of AI in software development.
 Disclaimer: I'm certainly not an AI-expert, but I wanted to share my successful experience, and I hope it can inspire you to explore AI. I also want to share some of the techniques and approaches I used, and how these helped me to get the most out of AI in software development.

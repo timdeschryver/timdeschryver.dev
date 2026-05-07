@@ -167,7 +167,10 @@ To render the Angular application, also update the `_Host.cshtml` file to load t
     // link rel="stylesheet"
     var nonceLinkStyle = $"<link nonce=\"{nonce}\" rel=\"stylesheet";
     source = source.Replace("<link rel=\"stylesheet", nonceLinkStyle);
-    source = source.Replace("<link rel=\"modulepreload", nonceLinkStyle);
+
+    // link rel="modulepreload"
+    var nonceLinkModulePreload = $"<link nonce=\"{nonce}\" rel=\"modulepreload";
+    source = source.Replace("<link rel=\"modulepreload", nonceLinkModulePreload);
 
     var xsrf = antiForgery.GetAndStoreTokens(HttpContext);
     var requestToken = xsrf.RequestToken;
