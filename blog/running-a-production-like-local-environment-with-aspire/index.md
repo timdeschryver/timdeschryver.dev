@@ -257,6 +257,10 @@ With the many integrations available, it's easy to run a wide variety of depende
 This makes the local environment reflect the real environment much better.
 This is crucial, as many bugs are not caused by business logic alone. They appear in the interaction between those integrations.
 
+:::tip
+During (integration) testing, you can also use the same approach to run tests against a production-like environment, instead of relying on mocks and stubs, you can use [TestContainers](https://testcontainers.org/) to run real instances of the dependencies your application interacts with.
+:::
+
 ## Conclusion
 
 In my experience, a good local environment gives the entire team confidence, and allows them to move faster without worrying about breaking things for others or running into unexpected issues when deploying.
