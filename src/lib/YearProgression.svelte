@@ -1,7 +1,7 @@
 <script lang="ts">
 	type RunningStats = {
 		kilometers: number;
-		activityCount: number | null;
+		totalHours: number | null;
 		year: number;
 	};
 
@@ -24,6 +24,11 @@
 
 	const distance = $derived(
 		new Intl.NumberFormat('en', { maximumFractionDigits: 1 }).format(stats.kilometers),
+	);
+	const runningHours = $derived(
+		stats.totalHours === null
+			? null
+			: new Intl.NumberFormat('en', { maximumFractionDigits: 1 }).format(stats.totalHours),
 	);
 
 	const commits = $derived(
@@ -61,8 +66,8 @@
 				<strong class="number">{distance}</strong>
 				<span class="unit">km</span>
 			</div>
-			{#if stats.activityCount}
-				<span class="sub">{stats.activityCount} activities</span>
+			{#if runningHours}
+				<span class="sub">{runningHours} total hours</span>
 			{/if}
 		</div>
 

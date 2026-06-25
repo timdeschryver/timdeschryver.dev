@@ -1,8 +1,13 @@
 import { execSync } from 'child_process';
+import { existsSync } from 'fs';
 import { optimizeImage } from './optimize-image.js';
 
 for (const filepath of getChangedFiles()) {
 	try {
+		if (!existsSync(filepath)) {
+			continue;
+		}
+
 		if (!filepath.includes('blog') && !filepath.includes('bits')) {
 			continue;
 		}
@@ -28,6 +33,7 @@ for (const filepath of getChangedFiles()) {
 function getChangedFiles() {
 	const staged = execSync(`git diff --name-only --staged`)?.toString() ?? '';
 	const unstaged = execSync(`git diff --name-only`)?.toString() ?? '';
+	const untracked = execSync(`git ls-files --others --exclude-standard`)?.toString() ?? '';
 
-	return staged.concat(unstaged).trim().split('\n');
+	return [...new Set([staged, unstaged, untracked].join('\n').trim().split('\n').filter(Boolean))];
 }

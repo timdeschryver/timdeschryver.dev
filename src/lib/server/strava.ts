@@ -2,7 +2,7 @@ import { env } from '$env/dynamic/private';
 
 export type StravaRunningStats = {
 	kilometers: number;
-	activityCount: number | null;
+	totalHours: number | null;
 	year: number;
 	updatedAt: string;
 };
@@ -26,6 +26,7 @@ export async function getYearToDateRunningStats(
 		const stats = await getAthleteStats(fetcher, accessToken, athleteId);
 		const ytdRunTotals = getRecord(stats, 'ytd_run_totals');
 		const distance = ytdRunTotals?.distance;
+		const movingTime = ytdRunTotals?.moving_time;
 
 		if (typeof distance !== 'number') {
 			throw new Error('Strava did not return year-to-date run distance.');
@@ -33,7 +34,7 @@ export async function getYearToDateRunningStats(
 
 		return {
 			kilometers: Number((distance / 1000).toFixed(1)),
-			activityCount: typeof ytdRunTotals.count === 'number' ? ytdRunTotals.count : null,
+			totalHours: typeof movingTime === 'number' ? Number((movingTime / 60 / 60).toFixed(1)) : null,
 			year: new Date().getFullYear(),
 			updatedAt: new Date().toISOString(),
 		};

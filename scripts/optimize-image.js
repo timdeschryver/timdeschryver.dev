@@ -25,6 +25,7 @@ export async function optimizeImage(img) {
 	}
 
 	if (extension !== 'webp') {
+		console.log(`Converting ${img} to WebP format`);
 		await sharp(img).webp({ quality: 100 }).toFile(img.replace(supportedImageExtensions, '.webp'));
 	}
 }

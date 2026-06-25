@@ -7,7 +7,7 @@
 
 	type RunningStats = {
 		kilometers: number;
-		activityCount: number | null;
+		totalHours: number | null;
 		year: number;
 		updatedAt: string;
 	};
