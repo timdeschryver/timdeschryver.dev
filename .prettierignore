@@ -1,8 +1,0 @@
-.svelte-kit/**
-.vercel_build_output/**
-static/**/*.md
-build/**
-node_modules/**
-package-lock.json
-pnpm-lock.yaml
-.blog-cache/**

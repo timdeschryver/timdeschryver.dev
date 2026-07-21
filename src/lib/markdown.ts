@@ -470,7 +470,7 @@ function createStyle(scope: string, theme) {
 		style += '\n\t' + `--${key.replace(/\./g, '-')}: ${color};`;
 	}
 
-	style += '\n' + `}`;
+	style += '\n}\n';
 
 	return style;
 }
@@ -516,5 +516,5 @@ function hexToHSL(H: string | null | undefined): string {
 	const normalizedS = +(s * 100).toFixed(1);
 	const normalizedL = +(l * 100).toFixed(1);
 
-	return h + ',' + normalizedS + '%,' + normalizedL + '%';
+	return `${h}, ${normalizedS}%, ${normalizedL}%`;
 }

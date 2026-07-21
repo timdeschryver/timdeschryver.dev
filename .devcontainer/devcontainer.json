@@ -23,20 +23,25 @@
 		"vscode": {
 			"settings": {
 				"[typescript]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode",
+					"editor.defaultFormatter": "oxc.oxc-vscode",
 					"editor.formatOnSave": true
 				},
 				"[md]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode",
+					"editor.defaultFormatter": "oxc.oxc-vscode",
 					"editor.formatOnSave": true
 				},
 				"[json]": {
-					"editor.defaultFormatter": "esbenp.prettier-vscode",
+					"editor.defaultFormatter": "oxc.oxc-vscode",
 					"editor.formatOnSave": true
 				}
 			},
 			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": ["svelte.svelte-vscode", "ms-playwright.playwright", "GitHub.copilot-nightly"]
+			"extensions": [
+				"oxc.oxc-vscode",
+				"svelte.svelte-vscode",
+				"ms-playwright.playwright",
+				"GitHub.copilot-nightly"
+			]
 		}
 	}
 }

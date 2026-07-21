@@ -286,4 +286,4 @@ app.Run();
 In this post, we've seen how to implement an endpoint filter that verifies if a feature flag is enabled.
 Instead of polluting the route handlers with this concern, configuring the filter on the route (or group) handler keeps the route handlers clean and compact.
 
-~For now, we need to implement the endpoint filters ourselves, but it could be that this will be provided out-of-the-box in the future - for more info see this [GitHub issue](https://github.com/microsoft/FeatureManagement-Dotnet/issues/253).~ The feature flag filter for Minimal API's is implemented in https://github.com/microsoft/FeatureManagement-Dotnet/pull/524.
+~~For now, we need to implement the endpoint filters ourselves, but it could be that this will be provided out-of-the-box in the future - for more info see this [GitHub issue](https://github.com/microsoft/FeatureManagement-Dotnet/issues/253).~~ The feature flag filter for Minimal API's is implemented in https://github.com/microsoft/FeatureManagement-Dotnet/pull/524.

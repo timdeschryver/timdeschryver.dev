@@ -1,0 +1,19 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"ignorePatterns": [
+		".svelte-kit/**",
+		".vercel_build_output/**",
+		"static/**/*.md",
+		"build/**",
+		"node_modules/**",
+		"package-lock.json",
+		"pnpm-lock.yaml",
+		".blog-cache/**"
+	],
+	"printWidth": 100,
+	"singleQuote": true,
+	"sortPackageJson": true,
+	"svelte": true,
+	"trailingComma": "all",
+	"useTabs": true
+}

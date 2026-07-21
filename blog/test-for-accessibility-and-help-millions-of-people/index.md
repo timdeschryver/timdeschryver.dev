@@ -82,14 +82,14 @@ With this in place all that is left to do is to add this command as a step in th
 
 ```yml
 test-accessibility:
-    <<: *job_defaults
-    steps:
-      - checkout
-      - restore_cache:
-          key: *cache_key
-      - run:
-          name: test accessibility
-          command: npm run `accessibility`
+  <<: *job_defaults
+  steps:
+    - checkout
+    - restore_cache:
+        key: *cache_key
+    - run:
+        name: test accessibility
+        command: npm run `accessibility`
 ```
 
 ### Pa11y tips

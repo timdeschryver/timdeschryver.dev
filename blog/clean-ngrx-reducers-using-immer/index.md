@@ -108,7 +108,7 @@ Let’s highlight some points from the snippet above:
 - changes made to `draft` produces the next state
 - We can simply edit our item’s amount `draft.cartItems[action.payload.sku] = …`
 - We can simply delete products from our cart  
-   `delete draft.cartItems[action.payload.sku]`
+  `delete draft.cartItems[action.payload.sku]`
 
 And some subtle differences which you may have missed:
 

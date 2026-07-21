@@ -1,0 +1,29 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["eslint", "typescript"],
+	"categories": {
+		"correctness": "error"
+	},
+	"env": {
+		"browser": true,
+		"node": true
+	},
+	"globals": {
+		"kofiWidgetOverlay": "readonly"
+	},
+	"rules": {
+		"no-undef": "off",
+		"typescript/no-unused-vars": [
+			"error",
+			{
+				"args": "all",
+				"argsIgnorePattern": "^_",
+				"caughtErrors": "all",
+				"caughtErrorsIgnorePattern": "^_",
+				"destructuredArrayIgnorePattern": "^_",
+				"varsIgnorePattern": "^_",
+				"ignoreRestSiblings": true
+			}
+		]
+	}
+}
