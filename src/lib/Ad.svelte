@@ -1,19 +1,31 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { dev } from '$app/environment';
-	let ad: HTMLDivElement = $state();
+	let ad: HTMLDivElement | undefined = $state();
 
 	onMount(() => {
-		if (dev) {
+		if (dev || !ad) {
 			return;
 		}
-		const script = document.createElement('script');
-		script.async = true;
-		script.type = 'text/javascript';
-		script.src =
-			'//cdn.carbonads.com/carbon.js?serve=CW7DV237&placement=timdeschryverdev&format=responsive';
-		script.id = '_carbonads_js';
-		ad.appendChild(script);
+		const adElement = ad;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (!entry.isIntersecting) return;
+
+				observer.disconnect();
+				const script = document.createElement('script');
+				script.async = true;
+				script.src =
+					'https://cdn.carbonads.com/carbon.js?serve=CW7DV237&placement=timdeschryverdev&format=responsive';
+				script.id = '_carbonads_js';
+				adElement.appendChild(script);
+			},
+			{ rootMargin: '300px' },
+		);
+		observer.observe(adElement);
+
+		return () => observer.disconnect();
 	});
 </script>
 

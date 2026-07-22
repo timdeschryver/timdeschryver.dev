@@ -133,37 +133,22 @@
 	}
 </script>
 
-<Head title={post.metadata.title} details={false} />
-
-<svelte:head>
-	<link rel="canonical" href={post.metadata.canonical} />
-
-	<meta name="author" content={post.metadata.author} />
-	<meta name="copyright" content={post.metadata.author} />
-	<meta name="keywords" content={post.metadata.tags.join(',')} />
-	<meta name="title" property="og:title" content={post.metadata.title} />
-	<meta name="description" property="og:description" content={post.metadata.description} />
-	<meta name="image" property="og:image" content={post.metadata.banner} />
-	<meta name="publish_date" property="og:publish_date" content={humanDate(post.metadata.date)} />
-	<meta name="og:type" property="og:type" content="article" />
-	<meta name="og:url" property="og:url" content={post.metadata.canonical} />
-
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content={post.metadata.banner} />
-	<meta name="twitter:image:alt" content={post.metadata.title} />
-	<meta name="twitter:title" content={post.metadata.title} />
-	<meta name="twitter:description" content={post.metadata.description} />
-	<meta name="twitter:label1" content="Written by" />
-	<meta name="twitter:data1" content={post.metadata.author} />
-	<meta name="twitter:label2" content="Published on" />
-	<meta name="twitter:data2" content={humanDate(post.metadata.date)} />
-</svelte:head>
+<Head
+	title={post.metadata.title}
+	description={post.metadata.description}
+	canonical={post.metadata.canonical}
+	image={post.metadata.banner}
+	type="article"
+	author={post.metadata.author}
+	published={post.metadata.date}
+	modified={post.metadata.modified}
+	tags={post.metadata.tags}
+/>
 
 <svelte:window bind:scrollY />
 
 <header bind:this={header} style:--post-title="post-title-{post.metadata.slug}">
 	<h1>{post.metadata.title}</h1>
-	<img class="banner" src={post.metadata.banner} alt={post.metadata.title} />
 	<div class="details">
 		<div class="published-at">
 			{#if post.metadata.modified && post.metadata.modified !== post.metadata.date}
@@ -175,12 +160,18 @@
 
 		<div class="logos">
 			{#each post.metadata.logos as logo (logo.src)}
-				<img class="mt-0 logo" src="/images/{logo.src}" alt={logo.alt} />
+				<img class="mt-0 logo" src="/images/{logo.src}" alt={logo.alt} width="64" height="64" />
 			{/each}
 		</div>
 
 		<div class="mt-0 author">
-			<img class="author-img" src="/images/tim.jpg" alt="profile" />
+			<img
+				class="author-img"
+				src="/images/tim-96.webp"
+				alt="Tim Deschryver"
+				width="96"
+				height="96"
+			/>
 			<div class="mt-0">
 				<div class="author-name">Tim Deschryver</div>
 				<div class="author-source mt-0">timdeschryver.dev</div>
@@ -406,10 +397,6 @@
 		margin: 0 auto;
 		padding: 0;
 		font-size: clamp(1rem, 3vw, 6rem);
-	}
-
-	.banner {
-		display: none;
 	}
 
 	.details {

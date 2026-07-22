@@ -13,12 +13,6 @@
 		to: null,
 	});
 
-	const meta = $derived(() => ({
-		canonical: 'https://timdeschryver.dev/blog',
-		title: "Tim's Blog",
-		description: `${data.posts.length} notes, mainly about Angular and .NET`,
-	}));
-
 	let filterUrlSyncHandle: ReturnType<typeof setTimeout> | undefined;
 
 	onMount(() => {
@@ -153,22 +147,11 @@
 	}
 </script>
 
-<Head title="Blog - Tim Deschryver" details={false} />
-
-<svelte:head>
-	<link rel="canonical" href={meta().canonical} />
-
-	<meta name="title" content={meta().title} />
-	<meta name="description" content={meta().description} />
-
-	<meta name="twitter:title" content={meta().title} />
-	<meta name="twitter:description" content={meta().description} />
-
-	<meta name="og:url" content={meta().canonical} />
-	<meta name="og:title" content={meta().title} />
-	<meta name="og:description" content={meta().description} />
-	<meta name="og:type" content="website" />
-</svelte:head>
+<Head
+	title="Blog - Tim Deschryver"
+	description={`${data.posts.length} articles about Angular, .NET, testing, and developer tooling.`}
+	canonical="https://timdeschryver.dev/blog"
+/>
 
 <div class="mt-normal">
 	<input
@@ -213,7 +196,7 @@
 							<span class="series-progress">({post.series.order}/{post.series.total})</span>
 						</div>
 					{/if}
-					<time datetime={humanDate(post.date)}>{humanDate(post.date)}</time>
+					<time datetime={post.date}>{humanDate(post.date)}</time>
 					<div>{post.description}</div>
 				</a>
 				<div>
@@ -257,6 +240,8 @@
 	}
 
 	li {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 220px;
 		list-style: none;
 		padding: 1em;
 		border: 1px solid;

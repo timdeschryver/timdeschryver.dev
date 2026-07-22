@@ -129,23 +129,12 @@
 	];
 </script>
 
-<Head title="NgRx - Tim Deschryver" details={false} />
-
-<svelte:head>
-	<meta name="description" content="NgRx Resources I share a lot" />
-	<meta name="image" content="https://timdeschryver.dev/images/ngrx.png" />
-
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content="https://timdeschryver.dev/images/ngrx.png" />
-	<meta name="twitter:image:alt" content="The NgRx Logo" />
-	<meta name="twitter:title" content="NgRx Resources" />
-	<meta name="twitter:description" content="NgRx Resources I share a lot" />
-	<meta name="og:url" content="https://timdeschryver.dev/resources/ngrx" />
-	<meta name="og:title" content="Resources: NgRx" />
-	<meta name="og:description" content="NgRx Resources I share a lot" />
-	<meta name="og:type" content="article" />
-	<meta name="og:image" content="https://timdeschryver.dev/images/ngrx.png" />
-</svelte:head>
+<Head
+	title="NgRx Resources - Tim Deschryver"
+	description="NgRx resources that I frequently use and recommend."
+	canonical="https://timdeschryver.dev/resources/ngrx"
+	image="https://timdeschryver.dev/images/ngrx.png"
+/>
 
 <h1>NgRx Resources</h1>
 

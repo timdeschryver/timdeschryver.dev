@@ -9,6 +9,7 @@ const bits: {
 	metadata: {
 		title: string;
 		slug: string;
+		description: string;
 		date: string;
 		tags: string[];
 	};
@@ -20,6 +21,7 @@ export async function readBits(): Promise<
 		metadata: {
 			title: string;
 			slug: string;
+			description: string;
 			date: string;
 			tags: string[];
 		};
@@ -50,6 +52,7 @@ export async function readBits(): Promise<
 				metadata: {
 					title: metadata.title,
 					slug: metadata.slug,
+					description: createDescription(html, metadata.title),
 					date: ISODate(metadata.date),
 					tags: tags.map((t) => t.toLowerCase()),
 				},
@@ -59,4 +62,21 @@ export async function readBits(): Promise<
 
 	bits.push(...bitsSorted);
 	return bitsSorted;
+}
+
+function createDescription(html: string, fallback: string) {
+	const paragraph = html.match(/<p>(.*?)<\/p>/s)?.[1] ?? fallback;
+	const description = paragraph
+		.replace(/<[^>]+>/g, ' ')
+		.replace(/&quot;/g, '"')
+		.replace(/&#39;|&apos;/g, "'")
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&amp;/g, '&')
+		.replace(/\s+/g, ' ')
+		.trim();
+
+	if (description.length <= 160) return description;
+	const breakpoint = description.lastIndexOf(' ', 157);
+	return `${description.slice(0, breakpoint > 0 ? breakpoint : 157)}...`;
 }
