@@ -1,12 +1,41 @@
 @import './light.theme.css';
 @import './dark.theme.css';
 
-@import '@fontsource-variable/mona-sans/wght.css';
-@import '@fontsource-variable/mona-sans/wght-italic.css';
-@import '@fontsource-variable/hubot-sans/wght.css';
-@import '@fontsource-variable/hubot-sans/wght-italic.css';
-@import '@fontsource-variable/victor-mono/wght.css';
-@import '@fontsource-variable/victor-mono/wght-italic.css';
+@font-face {
+	font-family: 'Mona Sans Variable';
+	font-style: normal;
+	font-display: optional;
+	font-weight: 200 900;
+	src: url('@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2')
+		format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'Mona Sans Variable';
+	font-style: italic;
+	font-display: optional;
+	font-weight: 200 900;
+	src: url('@fontsource-variable/mona-sans/files/mona-sans-latin-wght-italic.woff2')
+		format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'Hubot Sans Variable';
+	font-style: normal;
+	font-display: optional;
+	font-weight: 200 900;
+	src: url('@fontsource-variable/hubot-sans/files/hubot-sans-latin-wght-normal.woff2')
+		format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'Victor Mono Variable';
+	font-style: normal;
+	font-display: optional;
+	font-weight: 100 700;
+	src: url('@fontsource-variable/victor-mono/files/victor-mono-latin-wght-normal.woff2')
+		format('woff2-variations');
+}
 
 :root {
 	--head-font: 'Hubot Sans Variable', 'Helvetica', sans-serif;
@@ -491,9 +520,9 @@ a[data-with-favicon]:hover:after {
 code,
 pre {
 	font-family:
-		'Victor Mono', 'JetBrains Mono', 'Fira Code', 'Ligconsolata', 'MonoLisa', 'Cartograph CF',
-		'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig', 'Cascadia Mono',
-		'Victor Mono', Consolas, monospace;
+		'Victor Mono Variable', 'JetBrains Mono', 'Fira Code', 'Ligconsolata', 'MonoLisa',
+		'Cartograph CF', 'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig',
+		'Cascadia Mono', 'Victor Mono', Consolas, monospace;
 	line-height: 1.375;
 	direction: ltr;
 	text-align: left;

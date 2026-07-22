@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { run } from 'svelte/legacy';
 
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -16,25 +16,7 @@
 	let segment = $derived($page.url?.pathname.substring(1) ?? '');
 	let support = $state<HTMLElement | null>();
 	let scrollY = $state(0);
-
-	onMount(() => {
-		if (typeof kofiWidgetOverlay !== 'undefined') {
-			kofiWidgetOverlay.draw('timdeschryver', {
-				type: 'floating-chat',
-				'floating-chat.donateButton.text': '',
-				...(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-					? {
-							'floating-chat.donateButton.background-color': '#fff',
-							'floating-chat.donateButton.text-color': '#111',
-						}
-					: {
-							'floating-chat.donateButton.background-color': '#fff',
-							'floating-chat.donateButton.text-color': '#eee',
-						}),
-			});
-			support = document.querySelector('[id*=kofi-widget-overlay]');
-		}
-	});
+	let kofiRequested = false;
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
@@ -47,14 +29,41 @@
 	});
 
 	run(() => {
+		const supportVisible = segment.startsWith('blog/') && scrollY > 1000;
+		if (supportVisible && !support) {
+			loadKofiWidget();
+		}
+
 		if (support) {
-			if (segment.startsWith('blog/') && scrollY > 1000) {
-				support.style.display = 'block';
-			} else {
-				support.style.display = 'none';
-			}
+			support.style.display = supportVisible ? 'block' : 'none';
 		}
 	});
+
+	function loadKofiWidget() {
+		if (kofiRequested || typeof document === 'undefined') return;
+		kofiRequested = true;
+
+		const draw = () => {
+			kofiWidgetOverlay.draw('timdeschryver', {
+				type: 'floating-chat',
+				'floating-chat.donateButton.text': '',
+				'floating-chat.donateButton.background-color': '#fff',
+				'floating-chat.donateButton.text-color': $theme === 'dark' ? '#111' : '#eee',
+			});
+			support = document.querySelector('[id*=kofi-widget-overlay]');
+		};
+
+		if (typeof kofiWidgetOverlay !== 'undefined') {
+			draw();
+			return;
+		}
+
+		const script = document.createElement('script');
+		script.async = true;
+		script.src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js';
+		script.addEventListener('load', draw, { once: true });
+		document.head.appendChild(script);
+	}
 
 	function toggleTheme(event: MouseEvent, newTheme: string) {
 		// Credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
@@ -96,10 +105,6 @@
 		}
 	});
 </script>
-
-<svelte:head>
-	<script async src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
-</svelte:head>
 
 <svelte:window bind:scrollY />
 
@@ -210,11 +215,16 @@
 {#if segment}
 	<footer>
 		<Host />
-		<Socials />
+		<span class:underlined-socials={segment.startsWith('blog/')}><Socials /></span>
 	</footer>
 {/if}
 
 <style>
+	.underlined-socials :global(a) {
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
+	}
+
 	header {
 		position: fixed;
 		top: 0;

@@ -89,7 +89,7 @@ export async function load({ params }) {
 								return null;
 						}
 					})
-					.filter(Boolean),
+					.filter((logo): logo is { src: string; alt: string } => logo !== null),
 				edit: `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${post.metadata.slug}/index.md`,
 			},
 			contributors,

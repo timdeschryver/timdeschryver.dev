@@ -20,6 +20,7 @@
 		<iframe
 			title="Subscribe to my newsletter"
 			src={`https://embeds.beehiiv.com/${beehiivId}?slim=true`}
+			loading="lazy"
 			data-test-id="beehiiv-embed"
 			frameborder="0"
 			scrolling="no"

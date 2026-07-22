@@ -14,19 +14,28 @@ export async function optimizeImage(img) {
 	}
 
 	const extension = img.split('.').at(-1).toLowerCase();
-	const optimizedImage = sharp(img);
+	const isBanner = /[/\\]images[/\\]banner\.(png|jpe?g|webp)$/i.test(img);
+	const optimizedImage = isBanner
+		? sharp(img).resize({ width: 1200, withoutEnlargement: true })
+		: sharp(img);
 
 	if (extension === 'jpg' || extension === 'jpeg') {
 		await writeOptimizedImage(img, optimizedImage.jpeg({ quality: 100, mozjpeg: true }), extension);
 	} else if (extension === 'png') {
 		await writeOptimizedImage(img, optimizedImage.png({ compressionLevel: 9 }), extension);
 	} else if (extension === 'webp') {
-		await writeOptimizedImage(img, optimizedImage.webp({ quality: 100 }), extension);
+		await writeOptimizedImage(
+			img,
+			optimizedImage.webp({ quality: isBanner ? 82 : 100 }),
+			extension,
+		);
 	}
 
 	if (extension !== 'webp') {
 		console.log(`Converting ${img} to WebP format`);
-		await sharp(img).webp({ quality: 100 }).toFile(img.replace(supportedImageExtensions, '.webp'));
+		await sharp(img)
+			.webp({ quality: isBanner ? 82 : 100 })
+			.toFile(img.replace(supportedImageExtensions, '.webp'));
 	}
 }
 

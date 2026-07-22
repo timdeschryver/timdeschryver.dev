@@ -63,7 +63,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		<channel>
 		<title><![CDATA[ Tim Deschryver ]]></title>
 		<description><![CDATA[ Blog by Tim Deschryver ]]></description>
-		<lastBuildDate>${variables.timestamp.toISOString()}</lastBuildDate>
+		<lastBuildDate>${UTCDate(variables.timestamp)}</lastBuildDate>
 		<ttl>60</ttl>
 		<language>en-us</language>
 		${link}

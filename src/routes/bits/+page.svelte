@@ -45,31 +45,15 @@
 	}
 </script>
 
-<Head title="Bits - Tim Deschryver" details={false} />
-
-<svelte:head>
-	<meta name="title" content="Tim's Bits" />
-	<meta
-		name="description"
-		content="Tools || (new) features || blog posts in a bit format on topics that I'm excited about."
-	/>
-
-	<meta name="twitter:title" content="Tim's Bits" />
-	<meta
-		name="twitter:description"
-		content="Tools || (new) features || blog posts in a bit format on topics that I'm excited about."
-	/>
-
-	<meta name="og:title" content="Tim's Bits" />
-	<meta
-		name="og:description"
-		content="Tools || (new) features || blog posts in a bit format on topics that I'm excited about."
-	/>
-	<meta name="og:type" content="website" />
-</svelte:head>
+<Head
+	title="Developer Bits - Tim Deschryver"
+	description="Short notes about developer tools, new Angular and .NET features, and other topics that I'm excited about."
+	canonical="https://timdeschryver.dev/bits"
+/>
 
 <header class="mt-normal">
-	<h3>Tools || (new) features || blog posts in a bit format on topics that I'm excited about.</h3>
+	<h1>Developer Bits</h1>
+	<p>Tools || (new) features || blog posts in a bit format on topics that I'm excited about.</p>
 
 	<Newsletter hideTitle={true} />
 
@@ -108,6 +92,8 @@
 		margin: 4rem 1rem;
 	}
 	.bit {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 900px;
 		overflow: auto;
 	}
 	.bit:nth-child(even) hr {

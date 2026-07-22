@@ -64,23 +64,12 @@
 	];
 </script>
 
-<Head title="RxJS - Tim Deschryver" details={false} />
-
-<svelte:head>
-	<meta name="description" content="RxJS Resources I share a lot" />
-	<meta name="image" content="https://timdeschryver.dev/images/rxjs.png" />
-
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image" content="https://timdeschryver.dev/images/rxjs.png" />
-	<meta name="twitter:image:alt" content="The RxJS Logo" />
-	<meta name="twitter:title" content="RxJS Resources" />
-	<meta name="twitter:description" content="RxJS Resources I share a lot" />
-	<meta name="og:url" content="https://timdeschryver.dev/resources/rxjs" />
-	<meta name="og:title" content="Resources: RxJS" />
-	<meta name="og:description" content="RxJS Resources I share a lot" />
-	<meta name="og:type" content="article" />
-	<meta name="og:image" content="https://timdeschryver.dev/images/rxjs.png" />
-</svelte:head>
+<Head
+	title="RxJS Resources - Tim Deschryver"
+	description="RxJS resources that helped me understand reactive programming."
+	canonical="https://timdeschryver.dev/resources/rxjs"
+	image="https://timdeschryver.dev/images/rxjs.webp"
+/>
 
 <h1>RxJS Resources</h1>
 <p>

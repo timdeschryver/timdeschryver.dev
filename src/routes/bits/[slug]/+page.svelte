@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Support from '$lib/Support.svelte';
-	import { humanDate } from '$lib/formatters';
 	import Head from '$lib/Head.svelte';
 	import Share from '$lib/Share.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
@@ -14,59 +13,45 @@
 	// svelte-ignore state_referenced_locally
 	const { bit } = data;
 
-	let scrollY = $state<number>();
+	let scrollY = $state(0);
 	codeBlockLifeCycle();
 	copyLifeCycle();
 </script>
 
-<Head title={bit.metadata.title} details={false} />
-
-<svelte:head>
-	<link rel="canonical" href={bit.metadata.canonical} />
-
-	<meta name="author" content={bit.metadata.author} />
-	<meta name="copyright" content={bit.metadata.author} />
-	<meta name="title" content={bit.metadata.title} />
-	<meta name="description" content={bit.metadata.description} />
-	<meta name="keywords" content={bit.metadata.tags.join(',')} />
-
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:image:alt" content={bit.metadata.title} />
-	<meta name="twitter:title" content={bit.metadata.title} />
-	<meta name="twitter:description" content={bit.metadata.description} />
-	<meta name="twitter:label1" content="Written by" />
-	<meta name="twitter:data1" content={bit.metadata.author} />
-	<meta name="twitter:label2" content="Published on" />
-	<meta name="twitter:data2" content={humanDate(bit.metadata.date)} />
-
-	<meta name="og:url" content={bit.metadata.canonical} />
-	<meta name="og:title" content={bit.metadata.title} />
-	<meta name="og:description" content={bit.metadata.description} />
-	<meta name="og:type" content="article" />
-
-	<meta name="image" content={bit.metadata.banner} />
-	<meta name="twitter:image" content={bit.metadata.banner} />
-	<meta name="og:image" content={bit.metadata.banner} />
-</svelte:head>
+<Head
+	title={bit.metadata.title}
+	description={bit.metadata.description}
+	canonical={bit.metadata.canonical}
+	image={bit.metadata.banner}
+	type="article"
+	author={bit.metadata.author}
+	published={bit.metadata.date}
+	tags={bit.metadata.tags}
+/>
 
 <svelte:window bind:scrollY />
 
 <div></div>
 <h1 style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
-<img
-	src={bit.metadata.banner}
-	alt="banner"
-	style="--scroll: {(scrollY ?? 0) <= 150
-		? 1
-		: scrollY <= 200
-			? 0.75
-			: scrollY <= 300
-				? 0.5
-				: scrollY <= 500
-					? 0.25
-					: 0}"
-	loading="lazy"
-/>
+{#if bit.metadata.banner}
+	<img
+		src={bit.metadata.banner}
+		alt={bit.metadata.title}
+		width={bit.metadata.bannerWidth}
+		height={bit.metadata.bannerHeight}
+		fetchpriority="high"
+		decoding="async"
+		style="--scroll: {(scrollY ?? 0) <= 150
+			? 1
+			: scrollY <= 200
+				? 0.75
+				: scrollY <= 300
+					? 0.5
+					: scrollY <= 500
+						? 0.25
+						: 0}"
+	/>
+{/if}
 
 <div class="m-auto mt-0 mb-normal">
 	<Ad />

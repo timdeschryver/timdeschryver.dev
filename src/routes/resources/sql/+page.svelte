@@ -39,20 +39,11 @@
 	];
 </script>
 
-<Head title="SQL - Tim Deschryver" details={false} />
-
-<svelte:head>
-	<meta name="title" content="Resouces: SQL" />
-	<meta name="description" content="SQL Resources that I use as a reference" />
-
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="SQL Resources" />
-	<meta name="twitter:description" content="SQL Resources that I use as a reference" />
-	<meta name="og:url" content="https://timdeschryver.dev/resources/sql" />
-	<meta name="og:title" content="Resouces: SQL" />
-	<meta name="og:description" content="SQL Resources that I use as a reference" />
-	<meta name="og:type" content="article" />
-</svelte:head>
+<Head
+	title="SQL Resources - Tim Deschryver"
+	description="SQL resources that I use as a reference."
+	canonical="https://timdeschryver.dev/resources/sql"
+/>
 
 <h1>SQL Resources</h1>
 

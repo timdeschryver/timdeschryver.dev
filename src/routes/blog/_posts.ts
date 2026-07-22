@@ -119,7 +119,7 @@ function createPostMetadata(
 	metadata: ProcessedMetadata,
 	options: { includeModified?: boolean } = {},
 ): BlogPostMetadata {
-	const banner = [variables.basePath, 'blog', metadata.slug, 'images', 'banner.png'].join('/');
+	const banner = [variables.basePath, 'blog', metadata.slug, 'images', 'banner.webp'].join('/');
 	const canonical = [variables.basePath, 'blog', metadata.slug].join('/');
 	const modified =
 		options.includeModified === false
@@ -415,6 +415,11 @@ function readCachedPost(slug: string): CachedPost | null {
 
 		const cacheContent = fs.readFileSync(cacheFilePath, 'utf-8');
 		const cached: CachedPost = JSON.parse(cacheContent);
+		// URLs depend on the current build environment and must not be restored from the cache.
+		cached.post.metadata.canonical = [variables.basePath, 'blog', slug].join('/');
+		cached.post.metadata.banner = [variables.basePath, 'blog', slug, 'images', 'banner.webp'].join(
+			'/',
+		);
 		return cached;
 	} catch (error) {
 		console.warn(`Failed to read cache for ${slug}:`, error);

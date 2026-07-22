@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Head from '$lib/Head.svelte';
-	import confetti from 'canvas-confetti';
 	import Socials from '$lib/Socials.svelte';
 	import YearProgression from '$lib/YearProgression.svelte';
 
@@ -30,13 +29,14 @@
 	} = $props();
 
 	let lastConfetti = 0;
-	function fireConfetti(evt: MouseEvent | FocusEvent): void {
+	async function fireConfetti(evt: MouseEvent | FocusEvent): Promise<void> {
 		if (evt instanceof FocusEvent) {
 			return;
 		}
 		if (lastConfetti + 1_111 > Date.now()) return;
 
 		lastConfetti = Date.now();
+		const { default: confetti } = await import('canvas-confetti');
 
 		const defaults = {
 			disableForReducedMotion: true,
@@ -77,7 +77,12 @@
 	}
 </script>
 
-<Head title="Tim Deschryver" details={true} />
+<Head
+	title="Tim Deschryver - Angular and .NET Software Engineer"
+	description="Tim Deschryver is a software engineer and Microsoft MVP from Belgium who writes about Angular, .NET, testing, and developer tooling."
+	canonical="https://timdeschryver.dev"
+	type="profile"
+/>
 
 <section>
 	<h1>
@@ -136,7 +141,7 @@
 	</p>
 
 	<p>
-		<Socials />
+		<span class="social-links"><Socials /></span>
 	</p>
 </section>
 
@@ -144,5 +149,10 @@
 	section {
 		font-size: 1.25rem;
 		margin-top: 2em;
+	}
+
+	section .social-links :global(a) {
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
 	}
 </style>
