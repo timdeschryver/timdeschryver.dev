@@ -70,9 +70,9 @@ function createDescription(html: string, fallback: string) {
 		.replace(/<[^>]+>/g, ' ')
 		.replace(/&quot;/g, '"')
 		.replace(/&#39;|&apos;/g, "'")
-		.replace(/&amp;/g, '&')
 		.replace(/&lt;/g, '<')
 		.replace(/&gt;/g, '>')
+		.replace(/&amp;/g, '&')
 		.replace(/\s+/g, ' ')
 		.trim();
 
