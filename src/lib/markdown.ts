@@ -14,13 +14,14 @@ import iconCsharp from '../../static/images/languages/csharp.svg?raw';
 import iconSvelte from '../../static/images/languages/svelte.svg?raw';
 import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
 import * as shiki from 'shiki';
-import type { BundledLanguage, ThemedToken } from 'shiki';
+import type { BundledLanguage, ThemedToken, ThemeRegistrationRaw } from 'shiki';
 import pallete from 'shiki/themes/rose-pine.mjs';
 import palleteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
-import type { TOC, BlogSeries } from './models';
+import type { TOC } from './models';
+import type { MarkdownMetadata } from './content';
 import { extractFrontmatter } from './content';
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
@@ -57,7 +58,7 @@ const highlighter = await shiki.createHighlighter({
 	],
 });
 
-const langToIcon = {
+const langToIcon: Partial<Record<string, string>> = {
 	bash: iconShell,
 	sh: iconShell,
 	html: iconCodePurple,
@@ -78,23 +79,13 @@ const langToIcon = {
 	xml: iconBracketsPurple,
 	md: iconMarkdown,
 };
-export function parseFileToHtmlAndMeta(file): {
+export function parseFileToHtmlAndMeta(file: string): {
 	html: string;
-	metadata: {
-		outgoingSlugs: string[];
-		title: string;
-		slug: string;
-		date: string;
-		description: string;
-		tags: string[];
-		toc: TOC[];
-		translations?: { url: string; author: string; profile: string; language: string }[];
-		series?: BlogSeries;
-	};
+	metadata: MarkdownMetadata;
 	assetsSrc: string;
 } {
 	if (!fs.existsSync(file)) {
-		return null;
+		throw new Error(`Markdown file not found: ${file}`);
 	}
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
@@ -119,8 +110,8 @@ export function parseFileToHtmlAndMeta(file): {
 
 		let style = '';
 		if (internal) {
-			const outgoingSlug = url.parse(link, false).pathname.split('/').pop();
-			if (metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
+			const outgoingSlug = url.parse(link, false).pathname?.split('/').pop();
+			if (outgoingSlug && metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}
 		} else {
@@ -321,23 +312,18 @@ export function parseFileToHtmlAndMeta(file): {
 			html += '</code>';
 			return html;
 
-			function replaceColorToCSSVariable(color: string) {
-				const scopeColors = pallete.tokenColors
-					.filter((p) => p.scope)
-					.map((tc) => {
-						return {
-							scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) =>
-								c.replace(/\./g, '-'),
-							),
-							color: tc.settings.foreground,
-						};
-					});
+			function replaceColorToCSSVariable(color?: string) {
+				if (!color) {
+					return `var(--syntax-unknown)`;
+				}
 
-				const key = scopeColors.find((c) => c.color?.toLowerCase() === color?.toLowerCase());
+				const scopeColors = normalizeScopeColors(pallete);
+
+				const key = scopeColors.find((c) => c.color?.toLowerCase() === color.toLowerCase());
 				if (!key) {
 					return `var(--syntax-unknown)`;
 				}
-				return `var(--syntax-${key.scope[0]})`;
+				return `var(--syntax-${key.scope})`;
 			}
 		}
 
@@ -396,7 +382,7 @@ function getUniqueFragment(fragment: string, fragmentCounts: Map<string, number>
 	return count ? `${fragment}-${count + 1}` : fragment;
 }
 
-function slugify(string) {
+function slugify(string: string) {
 	const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
 	const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
 	const p = new RegExp(a.split('').join('|'), 'g');
@@ -453,25 +439,26 @@ function appendCreatorId(link: string) {
 	}
 }
 
-function createStyle(scope: string, theme) {
-	const scopeColors = theme.tokenColors
-		.filter((p) => p.scope)
-		.map((tc) => {
-			return {
-				scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) => c.replace(/\./g, '-')),
-				color: tc.settings.foreground,
-			};
-		});
+function normalizeScopeColors(theme: ThemeRegistrationRaw) {
+	return (theme.tokenColors ?? theme.settings ?? []).flatMap(({ scope, settings }) => {
+		const scopes = Array.isArray(scope) ? scope : scope ? [scope] : [];
+		return scopes.map((scope) => ({
+			scope: scope.replace(/\./g, '-'),
+			color: settings.foreground,
+		}));
+	});
+}
+
+function createStyle(scope: string, theme: ThemeRegistrationRaw) {
+	const scopeColors = normalizeScopeColors(theme);
 
 	let style = `html.${scope} {`;
 
 	for (const color of scopeColors) {
-		for (const scope of color.scope) {
-			style += '\n\t' + `--syntax-${scope}: ${hexToHSL(color.color)};`;
-		}
+		style += '\n\t' + `--syntax-${color.scope}: ${hexToHSL(color.color)};`;
 	}
 
-	for (const [key, color] of Object.entries(theme.colors)) {
+	for (const [key, color] of Object.entries(theme.colors ?? {})) {
 		style += '\n\t' + `--${key.replace(/\./g, '-')}: ${color};`;
 	}
 

@@ -1,9 +1,9 @@
 export default function codeBlockLifeCycle(trigger?: () => unknown) {
-	let codeTabs: Element[] = [];
+	let codeTabs: HTMLElement[] = [];
 
 	$effect(() => {
 		trigger?.();
-		codeTabs = [...document.querySelectorAll('.code-group-tab')];
+		codeTabs = [...document.querySelectorAll<HTMLElement>('.code-group-tab')];
 		codeTabs.forEach((pre) => pre.addEventListener('click', codeTabClick));
 		return () => {
 			codeTabs.forEach((pre) => pre.removeEventListener('click', codeTabClick));
@@ -11,16 +11,22 @@ export default function codeBlockLifeCycle(trigger?: () => unknown) {
 	});
 
 	function codeTabClick(e: PointerEvent) {
-		if (e.target instanceof HTMLElement) {
-			const target = e.target;
+		if (e.currentTarget instanceof HTMLElement) {
+			const target = e.currentTarget;
 			if (target.classList.contains('active')) {
 				return;
 			}
-			const id = target.getAttribute('data-id');
-			const code = document.querySelector(`.code-group-code[data-id="${id}"]`);
+			const id = target.dataset.id;
+			if (!id) return;
+
+			const code = document.querySelector<HTMLElement>(`.code-group-code[data-id="${id}"]`);
 			if (code instanceof HTMLElement) {
-				const currentVisible = code.parentElement.querySelector(`.code-group-code:not([hidden])`);
-				const currentActive = code.parentElement.querySelector(`.code-group-tab.active`);
+				const group = code.parentElement;
+				if (!group) return;
+
+				const currentVisible = group.querySelector<HTMLElement>(`.code-group-code:not([hidden])`);
+				const currentActive = group.querySelector<HTMLElement>(`.code-group-tab.active`);
+				if (!currentVisible || !currentActive) return;
 
 				code.removeAttribute('hidden');
 				target.classList.add('active');

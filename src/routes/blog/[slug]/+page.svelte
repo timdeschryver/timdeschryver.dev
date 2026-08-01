@@ -50,8 +50,11 @@
 
 	function tocClick(evt: MouseEvent) {
 		evt.preventDefault();
-		const element = document.querySelector((evt.currentTarget as HTMLElement).getAttribute('href'));
-		gotoHeader(element as HTMLElement);
+		const href = (evt.currentTarget as HTMLAnchorElement).getAttribute('href');
+		if (!href) return;
+
+		const element = document.querySelector<HTMLElement>(href);
+		if (element) gotoHeader(element);
 	}
 
 	function gotoHeader(header: HTMLElement) {
@@ -113,7 +116,7 @@
 		};
 	});
 
-	let lastHeadingId = $state(null);
+	let lastHeadingId = $state<string | null>(null);
 	$effect(() => {
 		if (browser) {
 			if (blog.blog?.state === 'tldr' && lastHeadingId) {
@@ -121,7 +124,7 @@
 			} else if (blog.blog?.state !== 'tldr' && headings()) {
 				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
-					lastHeadingId = heading?.id;
+					lastHeadingId = heading?.id ?? null;
 				}
 			}
 		}

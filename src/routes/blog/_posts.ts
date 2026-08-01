@@ -85,7 +85,7 @@ async function processFullPost(files: { file: string; path: string }[]): Promise
 		tags: result.metadata.tags,
 		toc: result.metadata.toc,
 		outgoingSlugs: result.metadata.outgoingSlugs,
-		translations: result.metadata.translations,
+		translations: result.metadata.translations ?? [],
 		series: result.metadata.series,
 	};
 
@@ -523,7 +523,7 @@ export function orderTags(tags: string[]) {
 		.map(([v]) => v);
 }
 
-export const TAG_COLORS = {
+export const TAG_COLORS: Partial<Record<string, string>> = {
 	typescript: 'typescript',
 	angular: 'angular',
 	dotnet: 'dotnet',

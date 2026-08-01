@@ -141,7 +141,7 @@
 	function toggleTheme(event: MouseEvent, newTheme: string) {
 		// Credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
 		const isAppearanceTransition =
-			document.startViewTransition &&
+			typeof document.startViewTransition === 'function' &&
 			!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		if (!isAppearanceTransition) {

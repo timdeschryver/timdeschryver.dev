@@ -44,7 +44,10 @@ export async function readBits(): Promise<
 
 	const bitsSorted = Object.values(directories)
 		.map((files) => {
-			const postPath = files.find((f) => f.file === 'index.md').path;
+			const postPath = files.find((f) => f.file === 'index.md')?.path;
+			if (!postPath) {
+				throw new Error('Bit folder is missing index.md');
+			}
 			const { html, metadata } = parseFileToHtmlAndMeta(postPath);
 			const tags = metadata.tags;
 			return {

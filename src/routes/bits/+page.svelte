@@ -15,7 +15,7 @@
 	codeBlockLifeCycle();
 	copyLifeCycle();
 
-	let query = $state(null);
+	let query = $state<string | null>(null);
 
 	onMount(() => {
 		query = $page.url.searchParams.get('q') ?? '';
@@ -31,7 +31,7 @@
 
 	let queryParts = $derived((query || '').split(' ').filter(Boolean));
 
-	function tagClicked(tag) {
+	function tagClicked(tag: string) {
 		if (queryParts.includes(tag)) {
 			query = queryParts.filter((q) => q !== tag).join(' ');
 		} else {

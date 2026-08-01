@@ -23,10 +23,13 @@ function createBlog() {
 			};
 		},
 		toggleTldr: () => {
-			blog.state = blog.state === 'tldr' ? 'detailed' : 'tldr';
+			const currentBlog = blog;
+			if (!currentBlog) return;
+
+			currentBlog.state = currentBlog.state === 'tldr' ? 'detailed' : 'tldr';
 
 			const queryParams = new SvelteURLSearchParams(location.search);
-			if (blog.state === 'tldr') {
+			if (currentBlog.state === 'tldr') {
 				queryParams.set('tldr', 'true');
 			} else {
 				queryParams.delete('tldr');
@@ -34,7 +37,7 @@ function createBlog() {
 			const route = queryParams.size
 				? (`/blog/[slug]?${queryParams.toString()}` as `/blog/[slug]?${string}`)
 				: '/blog/[slug]';
-			goto(resolve(route, { slug: blog.slug }), {
+			goto(resolve(route, { slug: currentBlog.slug }), {
 				noScroll: true,
 				replaceState: true,
 			});
