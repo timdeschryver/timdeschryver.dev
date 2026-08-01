@@ -16,7 +16,6 @@ import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
 import * as shiki from 'shiki';
 import type { BundledLanguage, ThemedToken, ThemeRegistrationRaw } from 'shiki';
 import pallete from 'shiki/themes/rose-pine.mjs';
-import palleteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
@@ -24,13 +23,11 @@ import type { TOC } from './models';
 import type { MarkdownMetadata } from './content';
 import { extractFrontmatter } from './content';
 
-fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
-fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
-
 marked.use({
 	extensions: [codeGroup, customBlock],
 });
 const renderer = new marked.Renderer();
+const omitFromTocMarker = '<!-- omit in toc -->';
 
 const highlighter = await shiki.createHighlighter({
 	themes: ['rose-pine', 'rose-pine-dawn'],
@@ -261,7 +258,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 			sourceLink
 				? `<a href="${sourceLink}" class="icon align-text-top" target="_blank" rel="noopener noreferrer" title="View source"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>`
 				: undefined,
-			`<button class="copy-code icon align-text-top" data-ref="${id}" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></button>`,
+			`<button type="button" class="copy-code icon align-text-top" data-ref="${id}" data-status="${id}-copy-status" aria-label="Copy code"><span class="copy-code-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></span></button><span id="${id}-copy-status" class="screen-reader-only" aria-live="polite"></span>`,
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
@@ -271,7 +268,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 
 		function generateHTMLFromTokens(tokens: ThemedToken[][]): string {
 			const codeClass = linesHighlight.length ? 'dim' : '';
-			let html = `<code class="${shikiLang} ${codeClass}">`;
+			let html = `<code class="${shikiLang} ${codeClass}" tabindex="0">`;
 
 			tokens.forEach((token, line) => {
 				const lineClass = [
@@ -332,11 +329,11 @@ export function parseFileToHtmlAndMeta(file: string): {
 			theme: pallete,
 		});
 		const codeblock = generateHTMLFromTokens(tokens.tokens);
-		return `<pre id="${id}" aria-hidden="true" tabindex="-1">${heading}${codeblock}</pre>`;
+		return `<pre id="${id}">${heading}${codeblock}</pre>`;
 	};
 
 	renderer.codespan = function (token) {
-		return `<code>${token.text}</code>`;
+		return `<code>${escapeHtml(token.text)}</code>`;
 	};
 	renderer.blockquote = function (token) {
 		const source = this.parser.parse(token.tokens);
@@ -345,8 +342,9 @@ export function parseFileToHtmlAndMeta(file: string): {
 
 	renderer.heading = function (token) {
 		const level = token.depth;
-		const rawtext = token.text;
-		const text = this.parser.parseInline(token.tokens);
+		const omitFromToc = token.text.includes(omitFromTocMarker);
+		const rawtext = token.text.replaceAll(omitFromTocMarker, '').trim();
+		const text = this.parser.parseInline(token.tokens).replaceAll(omitFromTocMarker, '').trim();
 		const headingText = text.includes('{') ? text.substring(0, text.indexOf('{') - 1) : text;
 		const anchorRegExp = /{([^}]+)}/g;
 		const anchorOverwrite = anchorRegExp.exec(rawtext);
@@ -359,7 +357,9 @@ export function parseFileToHtmlAndMeta(file: string): {
 		}
 		const uniqueFragment = getUniqueFragment(fragment, fragmentCounts);
 
-		metadata.toc.push({ description: rawtext, level, slug: uniqueFragment });
+		if (!omitFromToc) {
+			metadata.toc.push({ description: rawtext, level, slug: uniqueFragment });
+		}
 
 		return `
 		<h${level} id="${uniqueFragment}">
@@ -449,64 +449,11 @@ function normalizeScopeColors(theme: ThemeRegistrationRaw) {
 	});
 }
 
-function createStyle(scope: string, theme: ThemeRegistrationRaw) {
-	const scopeColors = normalizeScopeColors(theme);
-
-	let style = `html.${scope} {`;
-
-	for (const color of scopeColors) {
-		style += '\n\t' + `--syntax-${color.scope}: ${hexToHSL(color.color)};`;
-	}
-
-	for (const [key, color] of Object.entries(theme.colors ?? {})) {
-		style += '\n\t' + `--${key.replace(/\./g, '-')}: ${color};`;
-	}
-
-	style += '\n}\n';
-
-	return style;
-}
-
-// https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
-function hexToHSL(H: string | null | undefined): string {
-	if (!H) {
-		return '';
-	}
-	// Convert hex to RGB first
-	let r = 0,
-		g = 0,
-		b = 0;
-	if (H.length == 4) {
-		r = parseInt('0x' + H[1] + H[1]);
-		g = parseInt('0x' + H[2] + H[2]);
-		b = parseInt('0x' + H[3] + H[3]);
-	} else if (H.length == 7) {
-		r = parseInt('0x' + H[1] + H[2]);
-		g = parseInt('0x' + H[3] + H[4]);
-		b = parseInt('0x' + H[5] + H[6]);
-	}
-	// Then to HSL
-	r /= 255;
-	g /= 255;
-	b /= 255;
-	const cmin = Math.min(r, g, b),
-		cmax = Math.max(r, g, b),
-		delta = cmax - cmin;
-	let h: number;
-
-	if (delta == 0) h = 0;
-	else if (cmax == r) h = ((g - b) / delta) % 6;
-	else if (cmax == g) h = (b - r) / delta + 2;
-	else h = (r - g) / delta + 4;
-
-	h = Math.round(h * 60);
-
-	if (h < 0) h += 360;
-
-	const l = (cmax + cmin) / 2;
-	const s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-	const normalizedS = +(s * 100).toFixed(1);
-	const normalizedL = +(l * 100).toFixed(1);
-
-	return `${h}, ${normalizedS}%, ${normalizedL}%`;
+function escapeHtml(value: string): string {
+	return value
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
 }

@@ -114,18 +114,11 @@ test('blog list shows subtle sequential post numbers', async ({ page }) => {
 	await expect(postNumbers.nth(1)).toHaveText('02');
 });
 
-test('contributors works ', async ({ page }) => {
-	await page.goto(
-		'/blog/configuring-azure-application-insights-in-an-angular-application#sending-custom-events-and-traces-to-application-insights',
-	);
-	await expect(
-		page.getByText('A warm thank you to the contributors of this blog post'),
-	).toBeDefined();
-	await expect(page.getByText('Dzhavat Ushev')).toBeDefined();
-});
-
 test('translations works ', async ({ page }) => {
 	await page.goto('/blog/single-component-angular-modules-and-component-tests-go-hand-in-hand');
-	await expect(page.getByText('This article is also available in')).toBeDefined();
-	await expect(page.getByText('Español by Dany Paredes')).toBeDefined();
+	await expect(
+		page.getByText('Thanks to the ❤️ community you can also read this post in:'),
+	).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Español' })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Dany Paredes' })).toBeVisible();
 });

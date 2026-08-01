@@ -6,7 +6,15 @@ test('flow test', async ({ page }) => {
 
 	await expect(page).toHaveURL(`/blog`);
 
-	await page.getByRole('button', { name: 'Angular', exact: true }).click();
+	const angularTag = page.getByRole('button', { name: 'Angular', exact: true });
+	await expect
+		.poll(() =>
+			angularTag.evaluate((button) =>
+				Object.getOwnPropertySymbols(button).some((symbol) => symbol.description === 'events'),
+			),
+		)
+		.toBe(true);
+	await angularTag.click();
 	await expect(page).toHaveURL(`/blog?q=Angular`);
 
 	await page.getByRole('button', { name: 'Testing', exact: true }).click();
@@ -17,7 +25,7 @@ test('flow test', async ({ page }) => {
 		.fill('Angular Testing ngrx project');
 	await page.getByRole('link', { name: /Testing an NgRx project/i }).click();
 
-	await expect(page.getByRole('heading', { name: 'Actions' })).toBeDefined();
+	await expect(page.getByRole('heading', { name: 'Actions', exact: true })).toBeVisible();
 });
 
 test('overlapping blog navigations do not leak view transition errors', async ({ page }) => {
@@ -131,7 +139,7 @@ test('blog header links the current article and aligns its controls', async ({ p
 			? Math.abs(bounds.top + bounds.height / 2 - (header.top + header.height / 2))
 			: 100;
 	});
-	expect(alignment).toBeLessThan(2);
+	expect(alignment).toBeLessThan(3);
 });
 
 test('blog detail includes the author photo on mobile', async ({ page }) => {

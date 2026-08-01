@@ -60,9 +60,7 @@ export async function load({ params }) {
 			html,
 			metadata: {
 				...post.metadata,
-				toc: post.metadata.toc.filter(
-					({ level, description }) => level < 4 && !description.includes('omit from toc'),
-				),
+				toc: post.metadata.toc.filter(({ level }) => level < 4),
 				color: post.metadata.tags
 					.map((t) => TAG_COLORS[t.toLowerCase()])
 					.find(Boolean)

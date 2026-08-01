@@ -24,7 +24,7 @@ As the number of prompts and criteria grows, manual verification quickly becomes
 It evaluates the responses using predefined assertions, making it easier to repeat the same checks after every change.
 This ensures that the prompt continues to meet the requirements and that the output quality is not compromised due to different factors.
 
-### Compare models without sacrificing quality
+### Compare models without sacrificing quality <!-- omit in toc -->
 
 Next to testing prompt behavior, promptfoo makes it easier to compare and evaluate multiple models.
 Automated evaluations help catch regressions, and it also helps when the application switches to another model.
@@ -45,7 +45,7 @@ Promptfoo renders the prompt, sends it to every configured model, and evaluates 
 
 The assertions broadly fall into two categories: deterministic assertions and model-graded assertions.
 
-### Deterministic assertions
+### Deterministic assertions <!-- omit in toc -->
 
 Deterministic assertions evaluate a response using explicit rules.
 Given the same response and assertion, they always produce the same result.
@@ -65,7 +65,7 @@ These assertions are usually the best starting point because their results are p
 
 See the [Deterministic metrics](https://www.promptfoo.dev/docs/configuration/expected-outputs/deterministic/) documentation for the complete list.
 
-### Model-graded assertions
+### Model-graded assertions <!-- omit in toc -->
 
 Some requirements are difficult to describe with an exact rule.
 Model-graded assertions use another language model as a judge to evaluate more subjective qualities, such as:
@@ -386,7 +386,7 @@ Hi, my name is Alex Johnson. Contact me at alex.johnson@example.com.
 
 In this example, promptfoo loads the customer message from the fixture instead of embedding it in the configuration. All `file://` paths are resolved relative to `promptfooconfig.yaml`, regardless of the directory from which the command is run.
 
-### Compare multiple prompts for the same task
+### Compare multiple prompts for the same task <!-- omit in toc -->
 
 When two prompts solve the same task, add both prompt files to the same configuration:
 
@@ -399,7 +399,7 @@ prompts:
 By default, promptfoo runs every test against every prompt and provider.
 This is useful for comparing prompt variants because each combination receives the same inputs and assertions.
 
-### Organize different tasks by feature
+### Organize different tasks by feature <!-- omit in toc -->
 
 As an application grows, it will probably contain different types of prompts for unrelated tasks with different variables and expectations.
 In that case, I prefer to use a separate configuration for each task instead of placing every prompt and test in one configuration.

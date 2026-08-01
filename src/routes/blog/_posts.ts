@@ -4,12 +4,13 @@ import { readMarkdownMetadata, sortByDate, traverseFolder } from '$lib/content';
 import { ISODate } from '$lib/formatters';
 import { variables } from '$lib/variables';
 import { execFileSync } from 'child_process';
+import { createHash } from 'crypto';
 import { dev } from '$app/environment';
 import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
 
 const blogPath = 'blog';
 const cacheDir = '.blog-cache';
-const cacheVersion = 2;
+const postProcessorHash = createPostProcessorHash();
 
 // TypeScript types for blog posts
 export interface BlogPostMetadata {
@@ -44,9 +45,24 @@ export interface BlogPostSummary {
 
 interface CachedPost {
 	post: BlogPost;
-	lastModified: number;
+	sourceState: PostSourceState;
 	cacheTimestamp: number;
-	cacheVersion: number;
+	processorHash: string;
+}
+
+interface PostSourceState {
+	index: FileState;
+	tldr: FileState | null;
+}
+
+interface FileState {
+	modified: number;
+	size: number;
+}
+
+interface PostFile {
+	file: string;
+	path: string;
 }
 
 let markdownModulePromise: Promise<typeof import('$lib/markdown')> | undefined;
@@ -59,7 +75,7 @@ function getMarkdownModule() {
 /**
  * Process individual post files to extract full post data with HTML
  */
-async function processFullPost(files: { file: string; path: string }[]): Promise<BlogPost | null> {
+async function processFullPost(files: PostFile[]): Promise<BlogPost | null> {
 	const { parseFileToHtmlAndMeta } = await getMarkdownModule();
 	const postPath = files.find((f) => f.file === 'index.md')?.path;
 	const tldrPath = files.find((f) => f.file === 'tldr.md')?.path;
@@ -200,14 +216,7 @@ function addPostLinks(posts: BlogPost[]): void {
 }
 
 export async function readPostSummaries(): Promise<BlogPostSummary[]> {
-	const folderContent = [...traverseFolder(blogPath, '.md')];
-	const directories = folderContent.reduce(
-		(dirs, file) => {
-			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-			return dirs;
-		},
-		{} as Record<string, { file: string; path: string }[]>,
-	);
+	const directories = getPostDirectories();
 
 	const summaries = Object.values(directories)
 		.map((files) => {
@@ -250,84 +259,50 @@ export async function readPostSummaries(): Promise<BlogPostSummary[]> {
 }
 
 export async function readPosts(): Promise<BlogPost[]> {
-	const folderContent = [...traverseFolder(blogPath, '.md')];
-	const directories = folderContent.reduce(
-		(dirs, file) => {
-			dirs[file.folder] = [...(dirs[file.folder] || []), { path: file.path, file: file.file }];
-			return dirs;
-		},
-		{} as Record<string, { file: string; path: string }[]>,
-	);
-
-	// Check if we can use cached posts for all directories
-	const cachedPosts = getAllValidCachedPosts();
-	if (cachedPosts.length === Object.keys(directories).length) {
-		console.log('\x1b[35m[posts] using cached posts\x1b[0m');
-		return cachedPosts.sort(sortByDate);
-	}
-
+	const directories = getPostDirectories();
 	const startTime = performance.now();
-	console.log('\x1b[35m[posts] generate \x1b[0m');
-	const promises = Object.values(directories).map(processFullPost);
+	let cacheHits = 0;
+	const promises = Object.values(directories).map(async (files) => {
+		const postPath = files.find((file) => file.file === 'index.md')?.path;
+		if (!postPath) {
+			return null;
+		}
+
+		const slug = path.basename(path.dirname(postPath));
+		const sourceState = getPostSourceState(files);
+		const cached = readCachedPost(slug);
+		if (cached && isCacheValid(cached, sourceState)) {
+			cacheHits++;
+			return cached.post;
+		}
+
+		const post = await processFullPost(files);
+		if (post) {
+			writeCachedPost(slug, post, sourceState);
+		}
+		return post;
+	});
 	const results = await Promise.all(promises);
 	const postsSorted = results
 		.filter((result): result is BlogPost => result !== null)
 		.sort(sortByDate);
 
-	addPostLinks(postsSorted);
-	addSeriesInformation(postsSorted);
-
-	// Cache all posts to file system
-	for (const post of postsSorted) {
-		const postPath = `blog/${post.metadata.slug}/index.md`;
-		const lastModified = getFileModificationTime(postPath);
-		writeCachedPost(post.metadata.slug, post, lastModified);
+	if (cacheHits === postsSorted.length) {
+		console.log('\x1b[35m[posts] using cached posts\x1b[0m');
+	} else {
+		const endTime = performance.now();
+		console.log(
+			`\x1b[35m[posts] generated ${postsSorted.length - cacheHits} of ${postsSorted.length} posts in ${Math.round(endTime - startTime)}ms\x1b[0m`,
+		);
 	}
 
-	const endTime = performance.now();
-	console.log(
-		`\x1b[35m[posts] generated ${postsSorted.length} posts in ${Math.round(endTime - startTime)}ms\x1b[0m`,
-	);
-
-	return postsSorted;
+	return addPostRelationships(postsSorted);
 }
 
 // Optimized function to read a single post by slug with caching
 export async function readPostBySlug(slug: string): Promise<BlogPost | null> {
-	const postPath = `blog/${slug}/index.md`;
-	const tldrPath = `blog/${slug}/tldr.md`;
-
-	const currentModified = getFileModificationTime(postPath);
-
-	// Check if we have a cached version and if it's still valid
-	if (isCacheValid(slug, currentModified)) {
-		const cached = readCachedPost(slug);
-		if (cached) {
-			console.log(`\x1b[35m[posts] using cached post: ${slug}\x1b[0m`);
-			return cached.post;
-		}
-	}
-
-	const startTime = performance.now();
-	console.log(`\x1b[35m[posts] generate single post: ${slug}\x1b[0m`);
-
-	const result = await processFullPost([
-		{ file: 'index.md', path: postPath },
-		{ file: 'tldr.md', path: tldrPath },
-	]);
-	if (!result) {
-		return null;
-	}
-
-	// Update cache with the new/updated post
-	writeCachedPost(slug, result, currentModified);
-
-	const endTime = performance.now();
-	console.log(
-		`\x1b[35m[posts] generated post '${slug}' in ${Math.round(endTime - startTime)}ms\x1b[0m`,
-	);
-
-	return result;
+	const posts = await readPosts();
+	return posts.find((post) => post.metadata.slug === slug) ?? null;
 }
 
 /**
@@ -374,15 +349,56 @@ function getLastModifiedDate(slug: string, createdDate: Date): string | null {
 	}
 }
 
-/**
- * Get file modification time for cache invalidation
- */
-function getFileModificationTime(filePath: string): number {
+function getPostDirectories(): Record<string, PostFile[]> {
+	return [...traverseFolder(blogPath, '.md')].reduce(
+		(directories, file) => {
+			directories[file.folder] = [
+				...(directories[file.folder] || []),
+				{ path: file.path, file: file.file },
+			];
+			return directories;
+		},
+		{} as Record<string, PostFile[]>,
+	);
+}
+
+function addPostRelationships(posts: BlogPost[]): BlogPost[] {
+	const finalizedPosts = posts.map((post) => {
+		const { seriesPosts: _, ...metadata } = post.metadata;
+		return {
+			...post,
+			metadata: {
+				...metadata,
+				incomingLinks: [],
+				outgoingLinks: [],
+			},
+		};
+	});
+
+	addPostLinks(finalizedPosts);
+	addSeriesInformation(finalizedPosts);
+	return finalizedPosts;
+}
+
+function getPostSourceState(files: PostFile[]): PostSourceState {
+	const postPath = files.find((file) => file.file === 'index.md')?.path;
+	if (!postPath) {
+		throw new Error('Cannot cache a post without index.md');
+	}
+
+	const tldrPath = files.find((file) => file.file === 'tldr.md')?.path;
+	return {
+		index: getFileState(postPath),
+		tldr: tldrPath ? getFileState(tldrPath) : null,
+	};
+}
+
+function getFileState(filePath: string): FileState {
 	try {
 		const stats = fs.statSync(filePath);
-		return stats.mtime.getTime();
+		return { modified: stats.mtimeMs, size: stats.size };
 	} catch {
-		return 0;
+		return { modified: 0, size: 0 };
 	}
 }
 
@@ -432,15 +448,15 @@ function readCachedPost(slug: string): CachedPost | null {
 /**
  * Write cached post to file system
  */
-function writeCachedPost(slug: string, post: BlogPost, lastModified: number): void {
+function writeCachedPost(slug: string, post: BlogPost, sourceState: PostSourceState): void {
 	try {
 		ensureCacheDir(slug);
 		const cacheFilePath = getCacheFilePath(slug);
 		const cached: CachedPost = {
 			post,
-			lastModified,
+			sourceState,
 			cacheTimestamp: Date.now(),
-			cacheVersion,
+			processorHash: postProcessorHash,
 		};
 
 		fs.writeFileSync(cacheFilePath, JSON.stringify(cached, null, 2));
@@ -452,52 +468,46 @@ function writeCachedPost(slug: string, post: BlogPost, lastModified: number): vo
 /**
  * Check if cached post is still valid
  */
-function isCacheValid(slug: string, currentModified: number): boolean {
-	const cached = readCachedPost(slug);
-	if (!cached) {
-		return false;
-	}
-
-	// Check if the source file has been modified since the cache was created
+function isCacheValid(cached: CachedPost, sourceState: PostSourceState): boolean {
 	return (
-		cached.cacheVersion === cacheVersion &&
-		cached.lastModified >= currentModified &&
-		currentModified > 0
+		cached.processorHash === postProcessorHash &&
+		cached.sourceState.index.modified === sourceState.index.modified &&
+		cached.sourceState.index.size === sourceState.index.size &&
+		cached.sourceState.tldr?.modified === sourceState.tldr?.modified &&
+		cached.sourceState.tldr?.size === sourceState.tldr?.size &&
+		sourceState.index.modified > 0
 	);
 }
 
-/**
- * Get all cached posts that are still valid
- */
-function getAllValidCachedPosts(): BlogPost[] {
-	const cachedPosts: BlogPost[] = [];
+function createPostProcessorHash(): string {
+	const hash = createHash('sha256');
+	const inputs = [
+		'pnpm-lock.yaml',
+		'src/routes/blog/_posts.ts',
+		'src/lib/content.ts',
+		'src/lib/formatters.ts',
+		'src/lib/markdown.ts',
+		'src/lib/code-block.ts',
+		'src/lib/custom-block.ts',
+		'src/lib/variables.ts',
+		'static/images/languages',
+	];
 
-	try {
-		if (!fs.existsSync(cacheDir)) {
-			return cachedPosts;
-		}
-
-		const slugDirs = fs
-			.readdirSync(cacheDir, { withFileTypes: true })
-			.filter((dirent) => dirent.isDirectory())
-			.map((dirent) => dirent.name);
-
-		for (const slug of slugDirs) {
-			const postPath = `blog/${slug}/index.md`;
-			const currentModified = getFileModificationTime(postPath);
-
-			if (isCacheValid(slug, currentModified)) {
-				const cached = readCachedPost(slug);
-				if (cached) {
-					cachedPosts.push(cached.post);
-				}
-			}
-		}
-	} catch (error) {
-		console.warn('Failed to read cached posts:', error);
+	for (const file of inputs.flatMap(listFiles).sort()) {
+		hash.update(file);
+		hash.update(fs.readFileSync(file));
 	}
 
-	return cachedPosts;
+	return hash.digest('hex');
+}
+
+function listFiles(filePath: string): string[] {
+	if (!fs.existsSync(filePath)) return [];
+	if (!fs.statSync(filePath).isDirectory()) return [filePath];
+
+	return fs
+		.readdirSync(filePath, { withFileTypes: true })
+		.flatMap((entry) => listFiles(path.join(filePath, entry.name)));
 }
 
 export function orderTags(tags: string[]) {

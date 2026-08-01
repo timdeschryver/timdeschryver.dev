@@ -36,6 +36,37 @@ test('fixed header remains flush with the viewport edge', async ({ page }) => {
 	expect(headerTop).toBe(0);
 });
 
+test('code controls are keyboard accessible', async ({ context, page }) => {
+	await context.grantPermissions(['clipboard-write']);
+	await page.goto('/bits/switch-exhaustiveness');
+
+	const themeToggle = page.getByRole('button', { name: 'Switch to dark theme' });
+	await expect
+		.poll(() =>
+			themeToggle.evaluate((button) =>
+				Object.getOwnPropertySymbols(button).some((symbol) => symbol.description === 'events'),
+			),
+		)
+		.toBe(true);
+
+	const code = page.locator('pre code').first();
+	await expect(code).toBeVisible();
+	await code.focus();
+	await expect(code).toBeFocused();
+
+	const copyButton = page.locator('.copy-code').first();
+	await expect(copyButton).toHaveAccessibleName('Copy code');
+	await copyButton.focus();
+	await page.keyboard.press('Enter');
+	await expect(copyButton).toHaveAttribute('aria-label', 'Code copied');
+
+	const tabs = page.getByRole('tab');
+	await tabs.first().focus();
+	await page.keyboard.press('ArrowRight');
+	await expect(tabs.nth(1)).toBeFocused();
+	await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+});
+
 for (const theme of ['light', 'dark']) {
 	for (const pageUnderTest of pages) {
 		test(`${pageUnderTest.name} has no ${theme} theme accessibility violations`, async ({

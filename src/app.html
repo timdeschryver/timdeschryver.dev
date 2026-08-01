@@ -20,14 +20,16 @@
 
 		%sveltekit.head%
 		<script>
-			const theme = localStorage.getItem('theme');
-			if (theme) {
-				if (theme === 'dark') {
-					document.documentElement.classList.add('dark');
-				}
-			} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				document.documentElement.classList.add('dark');
-			}
+			(() => {
+				const storedTheme = localStorage.getItem('theme');
+				const theme =
+					storedTheme === 'light' || storedTheme === 'dark'
+						? storedTheme
+						: window.matchMedia?.('(prefers-color-scheme: dark)').matches
+							? 'dark'
+							: 'light';
+				document.documentElement.classList.add(theme);
+			})();
 		</script>
 	</head>
 	<body>

@@ -183,21 +183,30 @@
 		placeholder="Title, topic, or keyword"
 		autocomplete="off"
 	/>
-	<div class="mt-0 search-info">
-		<div><small>Found {filteredPosts().length} posts out of {data.posts.length} posts</small></div>
+	<div class="search-info" role="status" aria-live="polite" aria-atomic="true">
+		<span class="result-summary">
+			<strong>{filteredPosts().length}</strong>
+			{#if normalizedQuery() || filter.from || filter.to}
+				{filteredPosts().length === 1 ? 'article matches' : 'articles match'} your filters
+			{:else}
+				{filteredPosts().length === 1 ? 'article' : 'articles'}
+			{/if}
+		</span>
 		{#if filter.from || filter.to}
-			<div class="mt-0">
-				<small
-					>{filter.from ? `From ${filter.from}` : ''}{filter.from && filter.to ? ' ' : ''}{filter.to
-						? `To ${filter.to}`
-						: ''}</small
-				>
-			</div>
+			<span class="date-range">
+				{filter.from ? `From ${filter.from}` : ''}{filter.from && filter.to ? ' / ' : ''}{filter.to
+					? `To ${filter.to}`
+					: ''}
+			</span>
 		{/if}
-		<small></small>
 	</div>
 	{#each data.tags as tag (tag)}
-		<button class={tag} class:active={isTagActive(tag)} onclick={() => tagClicked(tag)}>
+		<button
+			class={tag}
+			class:active={isTagActive(tag)}
+			aria-pressed={isTagActive(tag)}
+			onclick={() => tagClicked(tag)}
+		>
 			{tag}
 		</button>
 	{/each}
@@ -251,9 +260,8 @@
 		</li>
 	{:else}
 		<li class="empty-state" aria-live="polite">
-			<div class="empty-state-mark" aria-hidden="true">0</div>
 			<div class="empty-state-copy">
-				<div class="empty-state-label">No posts found</div>
+				<div class="empty-state-label">No articles found</div>
 				<h2>Nothing matched this search.</h2>
 				<p>
 					Try fewer keywords, remove a topic, or clear the filters to see all {data.posts.length}
@@ -271,17 +279,6 @@
 		margin-top: clamp(4rem, 10vh, 7rem);
 		padding: 0 0 clamp(2rem, 6vw, 4rem);
 		border-bottom: 1px solid var(--line-color);
-	}
-
-	.page-intro::after {
-		content: '';
-		position: absolute;
-		right: 0.5rem;
-		top: 0;
-		width: clamp(3rem, 8vw, 5rem);
-		aspect-ratio: 1;
-		border: 1px solid var(--line-color);
-		border-radius: 50%;
 	}
 
 	.page-intro h1 {
@@ -328,10 +325,10 @@
 		border: 1px solid var(--line-color);
 		border-radius: 2px;
 		background: var(--background-color-subtle);
-		padding: 0.75rem 1rem;
+		padding: 0.5rem 1rem;
 		color: var(--text-color);
 		font-family: var(--head-font);
-		font-size: clamp(1.1rem, 3vw, 1.5rem);
+		font-size: clamp(1.1rem, 3vw, 1.2rem);
 		transition:
 			border-color 0.2s ease,
 			background-color 0.2s ease;
@@ -388,10 +385,6 @@
 	}
 
 	.empty-state {
-		display: grid;
-		grid-template-columns: minmax(4rem, 0.22fr) minmax(0, 1fr);
-		gap: clamp(1.5rem, 5vw, 4rem);
-		align-items: start;
 		padding: clamp(3rem, 8vw, 6rem) 0;
 		background: linear-gradient(90deg, var(--background-color-subtle), transparent 75%);
 	}
@@ -400,20 +393,10 @@
 		background: linear-gradient(90deg, var(--background-color-subtle), transparent 75%);
 	}
 
-	.empty-state-mark {
-		margin-top: 0;
-		color: var(--text-color-subtle);
-		font-family: var(--head-font);
-		font-size: clamp(4rem, 11vw, 8rem);
-		font-variant-numeric: tabular-nums;
-		font-weight: 760;
-		letter-spacing: -0.08em;
-		line-height: 0.8;
-	}
-
 	.empty-state-copy {
 		max-width: 42rem;
 		margin-top: 0;
+		padding-left: clamp(1rem, 3vw, 2.5rem);
 		color: var(--text-color);
 	}
 
@@ -465,8 +448,30 @@
 	}
 
 	.search-info {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+		margin: 0.75rem 0 1rem;
 		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.85rem;
 		text-align: left;
+	}
+
+	.result-summary strong {
+		margin-right: 0.2rem;
+		color: var(--text-color);
+		font-size: 1.35rem;
+		font-variant-numeric: tabular-nums;
+		font-weight: 650;
+	}
+
+	.date-range {
+		padding-left: 0.75rem;
+		border-left: 1px solid var(--line-color);
+		font-size: 0.72rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
 	}
 
 	.post-link {
@@ -573,15 +578,19 @@
 			white-space: normal;
 		}
 
-		.empty-state {
-			grid-template-columns: 2.25rem minmax(0, 1fr);
-			gap: 1rem;
-			padding: 2.5rem 0;
+		.search-info {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.25rem;
 		}
 
-		.empty-state-mark {
-			font-size: 2.5rem;
-			line-height: 1;
+		.date-range {
+			padding-left: 0;
+			border-left: 0;
+		}
+
+		.empty-state {
+			padding: 2.5rem 0;
 		}
 
 		article {

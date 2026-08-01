@@ -57,7 +57,11 @@
 
 	<div class="mt-normal">
 		{#each tags as tag (tag)}
-			<button class:active={queryParts && tagSelected(tag)} onclick={() => tagClicked(tag)}>
+			<button
+				class:active={queryParts && tagSelected(tag)}
+				aria-pressed={Boolean(queryParts && tagSelected(tag))}
+				onclick={() => tagClicked(tag)}
+			>
 				# {tag}
 			</button>
 		{/each}

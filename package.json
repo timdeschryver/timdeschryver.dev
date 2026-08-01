@@ -7,7 +7,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"prebuild": "rimraf build && pnpm copy:content",
+		"prebuild": "pnpm generate:themes && rimraf build && pnpm copy:content",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
@@ -28,6 +28,7 @@
 		"optimize:image": "node ./scripts/optimize-image-cli.js",
 		"optimize:images": "node ./scripts/optimize-images.js",
 		"contributors": "node ./scripts/contributors.js",
+		"generate:themes": "node ./scripts/generate-syntax-themes.js",
 		"postinstall": "svelte-kit sync",
 		"prepare": "git config core.hookspath .githooks"
 	},

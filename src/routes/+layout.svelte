@@ -7,7 +7,7 @@
 	import { resolve } from '$app/paths';
 	import Host from '$lib/Host.svelte';
 	import { blog } from '$lib/current-blog.svelte';
-	import { theme } from '$lib/theme.store';
+	import { setTheme, theme } from '$lib/theme.store';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
 
@@ -138,14 +138,14 @@
 		document.head.appendChild(script);
 	}
 
-	function toggleTheme(event: MouseEvent, newTheme: string) {
+	function toggleTheme(event: MouseEvent, newTheme: 'light' | 'dark') {
 		// Credits to https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts
 		const isAppearanceTransition =
 			typeof document.startViewTransition === 'function' &&
 			!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		if (!isAppearanceTransition) {
-			theme.set(newTheme);
+			setTheme(newTheme);
 			return;
 		}
 
@@ -153,7 +153,7 @@
 		const y = event.clientY;
 		const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
 		const transition = startManagedViewTransition(async () => {
-			theme.set(newTheme);
+			setTheme(newTheme);
 			await tick();
 		});
 		void transition.ready.then(
@@ -180,7 +180,8 @@
 
 	$effect.pre(() => {
 		if (typeof document !== 'undefined') {
-			document.documentElement.className = $theme;
+			document.documentElement.classList.remove('light', 'dark');
+			document.documentElement.classList.add($theme);
 		}
 	});
 </script>
@@ -358,8 +359,10 @@
 	header > div {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
+		grid-template-rows: max-content;
 		column-gap: clamp(1rem, 3vw, 2.5rem);
-		align-items: center;
+		align-content: center;
+		align-items: baseline;
 		height: 100%;
 	}
 
@@ -393,6 +396,7 @@
 		font-size: 0.9rem;
 		font-weight: 760;
 		letter-spacing: 0.08em;
+		line-height: 1;
 		text-transform: uppercase;
 	}
 
@@ -415,6 +419,7 @@
 		color: var(--text-color-light);
 		font-family: var(--head-font);
 		font-weight: 550;
+		line-height: 1;
 		text-decoration: none;
 	}
 
@@ -461,11 +466,13 @@
 	}
 
 	nav a {
+		position: relative;
 		color: var(--text-color-light);
 		font-family: var(--head-font);
 		font-size: 0.72rem;
 		font-weight: 650;
 		letter-spacing: 0.12em;
+		line-height: 1;
 		transition: color 0.2s ease-in-out;
 		text-decoration: none;
 	}
@@ -478,10 +485,11 @@
 
 	nav a.active::after {
 		content: '';
-		display: block;
+		position: absolute;
+		top: calc(100% + 0.35rem);
+		left: 0;
 		width: 100%;
 		height: 1px;
-		margin-top: 0.2rem;
 		background: currentColor;
 	}
 

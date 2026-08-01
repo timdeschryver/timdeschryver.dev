@@ -73,18 +73,18 @@ export const codeGroup = {
 		const { codeblocks } = token as CodeGroupToken;
 		return `
         <div class="code-group">
-            <div class="code-group-tabs"> ${codeblocks
-							.map(
-								(c, i) =>
-									`<button data-id="${c.id}" class="code-group-tab ${i === 0 ? 'active' : ''}">${
-										c.title
-									}</button>`,
-							)
-							.join('')}</div>
+			<div class="code-group-tabs" role="tablist" aria-label="Code examples"> ${codeblocks
+				.map(
+					(c, i) =>
+						`<button type="button" id="code-tab-${c.id}" data-id="${c.id}" class="code-group-tab ${i === 0 ? 'active' : ''}" role="tab" aria-selected="${i === 0}" aria-controls="code-panel-${c.id}" tabindex="${i === 0 ? '0' : '-1'}">${
+							c.title
+						}</button>`,
+				)
+				.join('')}</div>
 			${codeblocks
 				.map(
 					(c, i) =>
-						`<div data-id="${c.id}" class="code-group-code" ${i === 0 ? '' : 'hidden'}>${this.parser.renderer.code(
+						`<div id="code-panel-${c.id}" data-id="${c.id}" class="code-group-code" role="tabpanel" aria-labelledby="code-tab-${c.id}" ${i === 0 ? '' : 'hidden'}>${this.parser.renderer.code(
 							c,
 						)}</div>`,
 				)

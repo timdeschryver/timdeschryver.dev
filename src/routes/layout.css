@@ -89,7 +89,7 @@ html.dark {
 	--header-color: hsla(120, 4%, 7%, 0.88);
 }
 
-@media (prefers-reduced-motion) {
+@media (prefers-reduced-motion: reduce) {
 	* {
 		transition: none !important;
 		animation: none !important;
@@ -126,12 +126,6 @@ html {
 body {
 	font-family: var(--text-font);
 	background-color: var(--background-color);
-	background-image: linear-gradient(
-		90deg,
-		transparent calc(50% - 0.5px),
-		var(--background-color-transparent) 50%,
-		transparent calc(50% + 0.5px)
-	);
 	background-size: min(100%, 100rem) 100%;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -714,6 +708,20 @@ pre > .code-heading > a {
 	--title-color: hsla(52, 100%, 71%, 1);
 }
 
+html.light .custom-block.success,
+html.light .custom-block.tip {
+	--title-color: #166534;
+}
+
+html.light .custom-block.info,
+html.light .custom-block.info-ai {
+	--title-color: #3730a3;
+}
+
+html.light .custom-block.warning {
+	--title-color: #854d0e;
+}
+
 .code-group {
 	overflow: auto;
 }
@@ -747,6 +755,18 @@ pre > .code-heading > a {
 
 .code-group-code {
 	margin-top: 0;
+}
+
+.screen-reader-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
 .icon {
