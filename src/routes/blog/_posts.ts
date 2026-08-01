@@ -9,6 +9,7 @@ import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
 
 const blogPath = 'blog';
 const cacheDir = '.blog-cache';
+const cacheVersion = 2;
 
 // TypeScript types for blog posts
 export interface BlogPostMetadata {
@@ -45,6 +46,7 @@ interface CachedPost {
 	post: BlogPost;
 	lastModified: number;
 	cacheTimestamp: number;
+	cacheVersion: number;
 }
 
 let markdownModulePromise: Promise<typeof import('$lib/markdown')> | undefined;
@@ -438,6 +440,7 @@ function writeCachedPost(slug: string, post: BlogPost, lastModified: number): vo
 			post,
 			lastModified,
 			cacheTimestamp: Date.now(),
+			cacheVersion,
 		};
 
 		fs.writeFileSync(cacheFilePath, JSON.stringify(cached, null, 2));
@@ -456,7 +459,11 @@ function isCacheValid(slug: string, currentModified: number): boolean {
 	}
 
 	// Check if the source file has been modified since the cache was created
-	return cached.lastModified >= currentModified && currentModified > 0;
+	return (
+		cached.cacheVersion === cacheVersion &&
+		cached.lastModified >= currentModified &&
+		currentModified > 0
+	);
 }
 
 /**

@@ -3,11 +3,17 @@
 	import { humanDate } from '$lib/formatters';
 	import { page } from '$app/stores';
 	import { resolve } from '$app/paths';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
 	let { data } = $props();
 
-	let filter = $state({
+	type Filter = {
+		query: string | null;
+		from: string | null;
+		to: string | null;
+	};
+
+	let filter = $state<Filter>({
 		query: null,
 		from: null,
 		to: null,
@@ -24,7 +30,7 @@
 	});
 
 	$effect(() => {
-		const query = filter.query?.trim();
+		const query = filter.query?.trim() || null;
 		const from = filter.from;
 		const to = filter.to;
 
@@ -101,7 +107,7 @@
 		return filteredPosts;
 	});
 
-	function tagClicked(tag) {
+	function tagClicked(tag: string) {
 		const normalizedTag = tag.toLowerCase();
 
 		if (rawQueryParts().some((part) => part.toLowerCase() === normalizedTag)) {
@@ -118,7 +124,7 @@
 		}
 	}
 
-	function isTagActive(tag) {
+	function isTagActive(tag: string) {
 		const normalizedTag = tag.toLowerCase();
 
 		return (
@@ -126,7 +132,13 @@
 		);
 	}
 
-	function setOrDeleteParam(params, key, value) {
+	async function clearFilters() {
+		filter = { query: null, from: null, to: null };
+		await tick();
+		document.querySelector<HTMLInputElement>('#blog-search')?.focus();
+	}
+
+	function setOrDeleteParam(params: URLSearchParams, key: string, value: string | null) {
 		if (value) {
 			params.set(key, value);
 		} else {
@@ -134,32 +146,42 @@
 		}
 	}
 
-	function escapeRegExp(value) {
+	function escapeRegExp(value: string) {
 		return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	}
 
-	function like(text, value) {
+	function like(text: string, value: string) {
 		return text.includes(value);
 	}
 
-	function match(text, value) {
+	function match(text: string, value: string) {
 		return text === value;
 	}
 </script>
 
 <Head
 	title="Blog - Tim Deschryver"
-	description={`${data.posts.length} articles about Angular, .NET, testing, and developer tooling.`}
+	description={`${data.posts.length} articles about .NET, Angular, testing, and developer tooling.`}
 	canonical="https://timdeschryver.dev/blog"
 />
 
-<div class="mt-normal">
+<header class="page-intro">
+	<div class="eyebrow">Writing · {data.posts.length} articles</div>
+	<h1>Notes from building software</h1>
+	<p>
+		Practical ideas, experiments, and lessons learned while working with .NET, Angular, and the
+		tools around them.
+	</p>
+</header>
+
+<div class="filters">
+	<label for="blog-search">Search articles</label>
 	<input
+		id="blog-search"
 		type="search"
 		bind:value={filter.query}
-		placeholder="Search"
+		placeholder="Title, topic, or keyword"
 		autocomplete="off"
-		aria-label="Search"
 	/>
 	<div class="mt-0 search-info">
 		<div><small>Found {filteredPosts().length} posts out of {data.posts.length} posts</small></div>
@@ -182,91 +204,260 @@
 </div>
 
 <ul>
-	{#each filteredPosts() as post (post.slug)}
-		<li style:--accent-color={`var(--${post.color})`}>
+	{#each filteredPosts() as post, index (post.slug)}
+		<li data-post-slug={post.slug} style:--accent-color={`var(--${post.color})`}>
 			<article>
-				<a href={resolve('/blog/[slug]', { slug: post.slug })} data-sveltekit-preload-data="hover">
+				<span class="post-order" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+				<a
+					class="post-link"
+					href={resolve('/blog/[slug]', { slug: post.slug })}
+					data-sveltekit-preload-data="hover"
+				>
 					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
 						{post.title}
 					</h2>
-					{#if post.series}
-						<div class="series-indicator">
-							<span class="series-label">Series:</span>
-							<span class="series-name">{post.series.name}</span>
-							<span class="series-progress">({post.series.order}/{post.series.total})</span>
-						</div>
-					{/if}
-					<time datetime={post.date}>{humanDate(post.date)}</time>
-					<div>{post.description}</div>
+					<div class="post-description">{post.description}</div>
 				</a>
-				<div>
-					<a
-						href={resolve('/blog/[slug]', { slug: post.slug })}
-						data-sveltekit-preload-data="hover"
-						class="bold mark-hover"
-					>
-						Read more</a
-					>
-					{#if post.tldr}
-						| <a
-							href={resolve('/blog/[slug]?tldr=true', { slug: post.slug })}
+				<div class="post-footer">
+					<div class="post-meta">
+						<time datetime={post.date}>{humanDate(post.date)}</time>
+						{#if post.series}
+							<span class="meta-separator" aria-hidden="true">/</span>
+							<span class="series-indicator">
+								<span class="series-label">Series</span>
+								<span class="series-name">{post.series.name}</span>
+								<span class="series-progress">{post.series.order}/{post.series.total}</span>
+							</span>
+						{/if}
+					</div>
+					<div class="post-actions">
+						<a
+							href={resolve('/blog/[slug]', { slug: post.slug })}
 							data-sveltekit-preload-data="hover"
-							class="bold mark-hover">Read TLDR</a
+							class="bold mark-hover"
 						>
-					{/if}
+							Read more</a
+						>
+						{#if post.tldr}
+							| <a
+								href={resolve('/blog/[slug]?tldr=true', { slug: post.slug })}
+								data-sveltekit-preload-data="hover"
+								class="bold mark-hover">Read TLDR</a
+							>
+						{/if}
+					</div>
 				</div>
 			</article>
 		</li>
-	{:else}Sorry, no posts matched your criteria...
+	{:else}
+		<li class="empty-state" aria-live="polite">
+			<div class="empty-state-mark" aria-hidden="true">0</div>
+			<div class="empty-state-copy">
+				<div class="empty-state-label">No posts found</div>
+				<h2>Nothing matched this search.</h2>
+				<p>
+					Try fewer keywords, remove a topic, or clear the filters to see all {data.posts.length}
+					articles.
+				</p>
+				<button onclick={clearFilters}>Clear all filters</button>
+			</div>
+		</li>
 	{/each}
 </ul>
 
 <style>
+	.page-intro {
+		position: relative;
+		margin-top: clamp(4rem, 10vh, 7rem);
+		padding: 0 0 clamp(2rem, 6vw, 4rem);
+		border-bottom: 1px solid var(--line-color);
+	}
+
+	.page-intro::after {
+		content: '';
+		position: absolute;
+		right: 0.5rem;
+		top: 0;
+		width: clamp(3rem, 8vw, 5rem);
+		aspect-ratio: 1;
+		border: 1px solid var(--line-color);
+		border-radius: 50%;
+	}
+
+	.page-intro h1 {
+		max-width: 11ch;
+		margin-top: clamp(1.25rem, 3vw, 2.25rem);
+		font-size: clamp(3rem, 8vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: -0.06em;
+		text-wrap: balance;
+	}
+
+	.page-intro p {
+		max-width: 48ch;
+		color: var(--text-color-light);
+	}
+
+	.eyebrow {
+		margin: 0 0 1rem;
+		font-family: var(--head-font);
+		font-size: 0.72rem;
+		font-weight: 650;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-color-light);
+	}
+
+	.filters {
+		padding: 1.5rem 0;
+		border-bottom: 1px solid var(--line-color);
+	}
+
+	.filters label {
+		display: block;
+		margin-bottom: 0.4rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.72rem;
+		font-weight: 650;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.filters input {
+		border: 1px solid var(--line-color);
+		border-radius: 2px;
+		background: var(--background-color-subtle);
+		padding: 0.75rem 1rem;
+		color: var(--text-color);
+		font-family: var(--head-font);
+		font-size: clamp(1.1rem, 3vw, 1.5rem);
+		transition:
+			border-color 0.2s ease,
+			background-color 0.2s ease;
+	}
+
+	.filters input::placeholder {
+		color: var(--text-color-light);
+	}
+
+	.filters input:hover {
+		border-color: var(--text-color-light);
+	}
+
+	.filters input:focus-visible {
+		border-color: currentColor;
+		background: var(--background-color);
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
+	}
+
 	button {
 		color: var(--text-color-light);
-		border: 1px solid transparent;
+		border: 0;
+		border-bottom: 1px solid transparent;
+		border-radius: 0;
+		padding: 0.15em 0;
+		margin-right: 0.8em;
 		transition: color 0.2s ease;
 	}
 
 	button:hover,
 	button.active {
 		color: var(--text-color);
-		border-color: hsla(var(--accent-color), 0.8);
+		border-color: currentColor;
 	}
 
 	button.active {
-		background-color: hsla(var(--accent-color), 0.1);
-		border-color: hsla(var(--accent-color), 0.8);
+		background: transparent;
+	}
+
+	ul {
+		margin-top: 0;
 	}
 
 	li {
-		content-visibility: auto;
-		contain-intrinsic-size: auto 220px;
 		list-style: none;
-		padding: 1em;
-		border: 1px solid;
-		border-left-width: 8px;
-		border-radius: 3px;
-		border-color: hsla(var(--accent-color), 0.2);
+		position: relative;
+		padding: clamp(2rem, 5vw, 3.5rem) 0;
+		border-bottom: 1px solid var(--line-color);
 	}
 
 	li:hover {
-		transition-property: background-color, border-color, border-width, transform;
-		transition-duration: 0.2s;
-		transition-timing-function: ease-out;
-		transform: scale(1.05);
-		background-color: hsla(var(--accent-color), 0.1);
-		border-color: hsla(var(--accent-color), 0.8);
-		border-left-width: 16px;
+		background: linear-gradient(90deg, transparent, hsla(var(--accent-color), 0.06));
 	}
 
-	li + li {
-		margin-top: var(--spacing);
+	.empty-state {
+		display: grid;
+		grid-template-columns: minmax(4rem, 0.22fr) minmax(0, 1fr);
+		gap: clamp(1.5rem, 5vw, 4rem);
+		align-items: start;
+		padding: clamp(3rem, 8vw, 6rem) 0;
+		background: linear-gradient(90deg, var(--background-color-subtle), transparent 75%);
+	}
+
+	.empty-state:hover {
+		background: linear-gradient(90deg, var(--background-color-subtle), transparent 75%);
+	}
+
+	.empty-state-mark {
+		margin-top: 0;
+		color: var(--text-color-subtle);
+		font-family: var(--head-font);
+		font-size: clamp(4rem, 11vw, 8rem);
+		font-variant-numeric: tabular-nums;
+		font-weight: 760;
+		letter-spacing: -0.08em;
+		line-height: 0.8;
+	}
+
+	.empty-state-copy {
+		max-width: 42rem;
+		margin-top: 0;
+		color: var(--text-color);
+	}
+
+	.empty-state-label {
+		margin-top: 0;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.72rem;
+		font-weight: 650;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.empty-state h2 {
+		margin-top: 0.75rem;
+		font-size: clamp(1.7rem, 4vw, 2.6rem);
+	}
+
+	.empty-state p {
+		max-width: 48ch;
+		color: var(--text-color-light);
+	}
+
+	.empty-state button {
+		width: max-content;
+		margin: 1.25rem 0 0;
+		padding: 0 0 0.2rem;
+		border: 0;
+		border-bottom: 1px solid currentColor;
+		color: var(--text-color);
+		font-family: var(--head-font);
+		font-size: 0.85rem;
+		font-weight: 650;
 	}
 
 	li div {
 		margin-top: var(--spacing-small);
 		color: var(--text-color-light);
+	}
+
+	li h2 {
+		font-size: clamp(1.65rem, 4vw, 2.45rem);
+		line-height: 1.1;
+		text-wrap: balance;
 	}
 
 	time {
@@ -275,32 +466,128 @@
 
 	.search-info {
 		color: var(--text-color-light);
-		text-align: right;
+		text-align: left;
+	}
+
+	.post-link {
+		display: block;
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.post-meta {
+		display: flex;
+		gap: 0.65rem;
+		align-items: baseline;
+		margin-top: 0;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.post-description {
+		margin-top: var(--spacing-small);
+	}
+
+	.post-footer {
+		display: grid;
+		gap: 0.35rem;
+		margin-top: 1.25rem;
+	}
+
+	.post-actions {
+		margin-top: 0;
 	}
 
 	.series-indicator {
-		font-size: 0.875rem;
+		display: inline-flex;
+		gap: 0.35rem;
+		align-items: baseline;
 		color: var(--text-color-light);
-		margin: var(--spacing-small) 0;
-		line-height: 1.4;
 	}
 
 	.series-label {
-		font-weight: 500;
+		color: var(--text-color-subtle);
 	}
 
 	.series-name {
 		color: var(--text-color);
-		font-weight: 400;
+		letter-spacing: 0.03em;
+		text-transform: none;
 	}
 
 	.series-progress {
-		opacity: 0.8;
-		font-weight: 300;
+		font-variant-numeric: tabular-nums;
 	}
 
 	article {
-		font-weight: 300;
+		display: grid;
+		grid-template-columns: 2.75rem minmax(0, 1fr);
+		column-gap: clamp(0.75rem, 2vw, 1.25rem);
+		font-weight: 380;
+	}
+
+	article > a,
+	article > div {
+		grid-column: 2;
+		min-width: 0;
+	}
+
+	.post-order {
+		grid-column: 1;
+		grid-row: 1 / span 2;
+		margin-top: 0.4rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.68rem;
+		font-variant-numeric: tabular-nums;
+		font-weight: 650;
+		letter-spacing: 0.08em;
+		transition: color 0.2s ease;
+	}
+
+	li:hover .post-order {
+		color: var(--text-color);
+	}
+
+	@media (max-width: 620px) {
+		.page-intro::after {
+			display: none;
+		}
+
+		.page-intro {
+			margin-top: 3rem;
+			padding-bottom: 2.5rem;
+		}
+
+		.filters {
+			white-space: normal;
+		}
+
+		.filters input,
+		.search-info {
+			width: 100%;
+			white-space: normal;
+		}
+
+		.empty-state {
+			grid-template-columns: 2.25rem minmax(0, 1fr);
+			gap: 1rem;
+			padding: 2.5rem 0;
+		}
+
+		.empty-state-mark {
+			font-size: 2.5rem;
+			line-height: 1;
+		}
+
+		article {
+			grid-template-columns: 1.75rem minmax(0, 1fr);
+			column-gap: 0.65rem;
+		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

@@ -21,7 +21,7 @@ This can be used to easily apply consistent styling across form controls, e.g. t
 
 The `classes` option accepts an object where the keys are the CSS class names and the values are functions that receive the `FormField` to determine when to apply the class based on the form control's state. Of course, this is not limited to re-applying the `ng-*` classes. You can define any custom classes that you want to apply based on the form control's state.
 
-```ts [title="app.config.ts"] [highlight="6-14"]
+```ts [file="app.config.ts"] [highlight="6-14"]
 import { ApplicationConfig } from '@angular/core';
 import { provideSignalFormsConfig } from '@angular/forms/signals';
 
@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
 
 If you want to re-apply all the `ng-*` classes, Angular provides a predefined set of classes called [`NG_STATUS_CLASSES`](https://angular.dev/api/forms/signals/compat/NG_STATUS_CLASSES) that you can use with `provideSignalFormsConfig` to have the same behavior as the previous version of Angular forms. This is a great option for those who want to migrate to Signal Forms without losing the styling.
 
-```ts [title="app.config.ts"] [highlight="8"]
+```ts [file="app.config.ts"] [highlight="8"]
 import { ApplicationConfig } from '@angular/core';
 import { provideSignalFormsConfig } from '@angular/forms/signals';
 import { NG_STATUS_CLASSES } from '@angular/forms/signals/compat';
@@ -164,13 +164,13 @@ Instead of implementing a `submit` event handler, we now set the (new) `formRoot
 
 The `formRoot` directive also adds the `novalidate` attribute to the form element, which disables the browser's default validation.
 
-```html [title="form.component.html"]
+```html [file="form.component.html"]
 <form [formRoot]="form"></form>
 ```
 
 The directive needs to be imported from the `@angular/forms/signals` package in the component's imports array.
 
-```ts [title="form.component.ts"] [highlight="6"]
+```ts [file="form.component.ts"] [highlight="6"]
 import { Component } from '@angular/core';
 import { FormRoot } from '@angular/forms/signals';
 

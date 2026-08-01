@@ -10,7 +10,6 @@
 	import BlogSeries from '$lib/BlogSeries.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
-	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
@@ -65,13 +64,16 @@
 			--accent-color: var(--${post.metadata.color ?? 'base-color'});
 		}
 
-		main h1, 
-		main h2,  
+		main > header h1 {
+			color: hsla(var(--accent-color), 1);
+		}
+
+		main > h2,
 		main h3, 
 		main h4,
 		main h5, 
 		main h6 {
-			color: hsla(var(--accent-color), 1);
+			color: var(--text-color);
 		}
 	</style>`);
 
@@ -281,8 +283,6 @@
 
 <Actions editUrl={post.metadata.edit} />
 
-<Newsletter beehiivId={post.beehiivId} />
-
 <Support />
 
 <Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
@@ -290,6 +290,10 @@
 <Comments />
 
 <style>
+	:global(main[data-segment*='blog/']) {
+		--content-width: 80ch;
+	}
+
 	.tldr {
 		background: none;
 		border: none;
@@ -305,16 +309,15 @@
 	.left-nav {
 		display: block;
 		position: fixed;
-		padding-top: 2.5em;
-		padding-right: 2.5em;
-		padding-left: 3em;
+		top: var(--header-height);
+		padding: 2.5rem clamp(1.5rem, 3vw, 3rem);
 		text-align: left;
-		width: 20%;
+		width: min(25vw, 22rem);
 		transition: all 0.2s;
-		background-color: var(--background-color-subtle);
-		height: 100%;
+		background: var(--background-color);
+		height: calc(100dvh - var(--header-height));
 		margin-top: 0;
-		border-right: 1px solid rgba(255, 255, 255, 0.1);
+		border-right: 1px solid var(--line-color);
 		overflow: auto;
 	}
 
@@ -337,42 +340,39 @@
 		overflow: auto;
 	}
 
-	@media (max-width: 1799px) {
-		.left-nav {
-			width: 25%;
-		}
-
+	@media (min-width: 1280px) {
 		:global(main[data-segment*='blog/'] ~ footer) {
-			padding-left: 25%;
+			transform: translateX(min(12.5vw, 11rem));
 		}
 	}
 
-	@media (max-width: 1022px) {
+	@media (max-width: 1279px) {
 		.left-nav {
 			display: none;
 		}
 
 		:global(main[data-segment*='blog/'] ~ footer) {
 			padding-left: 0;
+			transform: none;
 		}
 	}
 
 	.toc ul {
 		list-style: none;
 		font-size: 1rem;
-		color: var(--text-color-light-subtle);
+		color: var(--text-color-subtle);
 		transition: all 0.25s;
 	}
 
 	.toc ul li.active {
-		color: var(--text-color);
+		color: hsla(var(--accent-color), 1);
 		font-weight: 600;
 	}
 
-	.toc ul li.active::first-letter {
-		font-size: 1.5rem;
-		line-height: 1;
-		font-weight: 900;
+	.toc h3 {
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
 	.toc ul li:hover {
@@ -386,26 +386,52 @@
 
 	:global(body > div > main) > header {
 		grid-column: 1 / 4;
-		min-height: 100dvh;
-		min-width: 90%;
-		max-width: 90%;
+		position: relative;
+		min-height: calc(100dvh - var(--header-height));
+		width: min(calc(100% - 2.4rem), 96rem);
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: space-evenly;
-		text-align: center;
+		align-items: flex-start;
+		justify-content: flex-end;
+		text-align: left;
 		margin: 0 auto;
-		padding: 0;
-		font-size: clamp(1rem, 3vw, 6rem);
+		margin-bottom: clamp(2rem, 4vw, 3.5rem);
+		padding: clamp(4rem, 12vh, 9rem) clamp(0rem, 5vw, 5rem) clamp(2rem, 5vw, 4rem);
+		border-bottom: 1px solid var(--line-color);
+		overflow: hidden;
+	}
+
+	:global(body > div > main) > header::after {
+		content: '';
+		position: absolute;
+		top: clamp(3rem, 10vw, 8rem);
+		right: clamp(0rem, 8vw, 8rem);
+		width: clamp(5rem, 16vw, 13rem);
+		aspect-ratio: 1;
+		border: 1px solid hsla(var(--accent-color), 0.5);
+		border-radius: 50%;
+		transform: translateX(35%);
+		pointer-events: none;
+	}
+
+	:global(body > div > main) > header h1 {
+		position: relative;
+		z-index: 1;
+		max-width: 16ch;
+		font-size: clamp(2.8rem, 7.5vw, 7rem);
+		line-height: 0.95;
+		letter-spacing: -0.065em;
+		text-wrap: balance;
 	}
 
 	.details {
 		display: flex;
 		justify-content: space-between;
-		margin: 0;
-		font-size: 1.5rem;
+		margin-top: clamp(2rem, 8vh, 5rem);
+		font-size: 0.85rem;
 		width: 100%;
 		align-items: center;
+		color: var(--text-color-light);
 	}
 
 	.author-img,
@@ -422,7 +448,8 @@
 	}
 
 	.author-name {
-		font-size: 1.3rem;
+		font-size: 0.9rem;
+		font-weight: 650;
 	}
 	.author-source {
 		font-size: 0.8rem;
@@ -431,7 +458,8 @@
 	}
 
 	.author-img {
-		width: auto;
+		width: 44px;
+		height: 44px;
 		border-radius: 100%;
 	}
 
@@ -458,6 +486,23 @@
 		.logo {
 			width: 48px;
 			height: 48px;
+		}
+	}
+
+	@media screen and (max-width: 620px) {
+		:global(body > div > main) > header {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		:global(body > div > main) > header::after {
+			top: 3rem;
+		}
+
+		.details {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.75rem;
 		}
 	}
 

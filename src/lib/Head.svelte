@@ -25,56 +25,87 @@
 		tags = [],
 	}: Props = $props();
 
-	const structuredData = $derived(
-		type === 'article'
-			? {
-					'@context': 'https://schema.org',
-					'@type': 'BlogPosting',
-					headline: title,
-					description,
-					url: canonical,
-					mainEntityOfPage: canonical,
-					image,
-					datePublished: published,
-					dateModified: modified || published,
-					author: {
-						'@type': 'Person',
-						name: author,
-						url: 'https://timdeschryver.dev',
-					},
-					publisher: {
-						'@type': 'Person',
-						name: author,
-						url: 'https://timdeschryver.dev',
-					},
-					keywords: tags.join(', '),
-				}
-			: type === 'profile'
+	const siteUrl = 'https://timdeschryver.dev';
+	const personId = `${siteUrl}/#person`;
+	const websiteId = `${siteUrl}/#website`;
+
+	const structuredData = $derived.by(() => {
+		const person = {
+			'@type': 'Person',
+			'@id': personId,
+			name: author,
+			url: siteUrl,
+			image: `${siteUrl}/images/tim.webp`,
+			description:
+				'Belgian software engineer and Microsoft MVP writing about .NET, Angular, testing, AI-assisted development, and developer tooling.',
+			jobTitle: 'Software Engineer',
+			award: 'Microsoft Most Valuable Professional (MVP)',
+			knowsAbout: [
+				'.NET',
+				'Angular',
+				'Software testing',
+				'AI-assisted development',
+				'Agentic AI',
+				'Sociocracy 3.0',
+				'NgRx',
+			],
+			homeLocation: {
+				'@type': 'Country',
+				name: 'Belgium',
+			},
+			sameAs: [
+				'https://www.linkedin.com/in/tim-deschryver',
+				'https://bsky.app/profile/timdeschryver.dev',
+				'https://twitter.com/tim_deschryver',
+				'https://github.com/timdeschryver',
+				'https://mvp.microsoft.com/en-us/PublicProfile/5004452?fullName=Tim%20Deschryver',
+			],
+		};
+		const website = {
+			'@type': 'WebSite',
+			'@id': websiteId,
+			url: siteUrl,
+			name: 'Tim Deschryver',
+			description: 'Articles about .NET, Angular, testing, and developer tooling.',
+			inLanguage: 'en',
+			publisher: { '@id': personId },
+		};
+		const webPage = {
+			'@type': type === 'profile' ? 'ProfilePage' : 'WebPage',
+			'@id': `${canonical}#webpage`,
+			url: canonical,
+			name: title,
+			description,
+			inLanguage: 'en',
+			isPartOf: { '@id': websiteId },
+			...(type === 'profile' ? { mainEntity: { '@id': personId } } : {}),
+		};
+		const article =
+			type === 'article'
 				? {
-						'@context': 'https://schema.org',
-						'@type': 'ProfilePage',
+						'@type': 'BlogPosting',
+						'@id': `${canonical}#article`,
+						headline: title,
+						description,
 						url: canonical,
-						mainEntity: {
-							'@type': 'Person',
-							name: author,
-							url: canonical,
-							jobTitle: 'Software Engineer',
-							homeLocation: {
-								'@type': 'Country',
-								name: 'Belgium',
-							},
-							sameAs: [
-								'https://github.com/timdeschryver',
-								'https://www.linkedin.com/in/tim-deschryver',
-								'https://bsky.app/profile/timdeschryver.dev',
-							],
-						},
+						mainEntityOfPage: { '@id': `${canonical}#webpage` },
+						isPartOf: { '@id': websiteId },
+						...(image ? { image } : {}),
+						datePublished: published,
+						dateModified: modified || published,
+						author: { '@id': personId },
+						publisher: { '@id': personId },
+						keywords: tags,
+						inLanguage: 'en',
 					}
-				: null,
-	);
-	const structuredDataJson = $derived(
-		structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : '',
-	);
+				: null;
+
+		return {
+			'@context': 'https://schema.org',
+			'@graph': [webPage, ...(article ? [article] : []), website, person],
+		};
+	});
+	const structuredDataJson = $derived(JSON.stringify(structuredData).replace(/</g, '\\u003c'));
 </script>
 
 <svelte:head>
@@ -107,7 +138,5 @@
 		<meta name="twitter:image:alt" content={title} />
 	{/if}
 
-	{#if structuredData}
-		<svelte:element this={"script"} type="application/ld+json">{structuredDataJson}</svelte:element>
-	{/if}
+	<svelte:element this={"script"} type="application/ld+json">{structuredDataJson}</svelte:element>
 </svelte:head>

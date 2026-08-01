@@ -165,6 +165,11 @@ export function parseFileToHtmlAndMeta(file): {
 		`;
 	};
 
+	renderer.table = function (token) {
+		const table = marked.Renderer.prototype.table.call(this, token);
+		return `<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0">${table}</div>`;
+	};
+
 	renderer.paragraph = function (token) {
 		const text = this.parser.parseInline(token.tokens);
 		const trimmed = text.replace('👋', `<span class="wave">👋</span>`).trim();
