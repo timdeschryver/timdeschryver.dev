@@ -494,6 +494,9 @@
 
 	@media screen and (max-width: 620px) {
 		:global(body > div > main) > header {
+			justify-content: center;
+			padding-top: clamp(2rem, 5vh, 3rem);
+			padding-bottom: clamp(2rem, 5vh, 3rem);
 			padding-left: 0;
 			padding-right: 0;
 		}
@@ -503,9 +506,21 @@
 		}
 
 		.details {
-			flex-direction: column;
-			align-items: flex-start;
+			position: absolute;
+			bottom: clamp(2rem, 5vh, 3rem);
+			left: 0;
+			align-items: center;
 			gap: 0.75rem;
+			margin-top: 0;
+		}
+
+		.author-img {
+			width: 36px;
+			height: 36px;
+		}
+
+		.author {
+			flex-shrink: 0;
 		}
 	}
 

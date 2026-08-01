@@ -138,7 +138,30 @@ test('blog detail includes the author photo on mobile', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/blog/your-first-mcp-server-with-aspnet');
 
-	await expect(page.locator('.author-img')).toBeVisible();
+	const authorPhoto = page.locator('.author-img');
+	await expect(authorPhoto).toBeVisible();
+	await expect(authorPhoto).toHaveCSS('width', '36px');
+
+	const rightEdgeOffset = await page.locator('.author').evaluate((author) => {
+		const authorBounds = author.getBoundingClientRect();
+		const detailsBounds = author.parentElement!.getBoundingClientRect();
+		return detailsBounds.right - authorBounds.right;
+	});
+	expect(Math.abs(rightEdgeOffset)).toBeLessThan(1);
+
+	const metadataCenterOffset = await page.locator('.details').evaluate((details) => {
+		const dateBounds = details.querySelector('.published-at')!.getBoundingClientRect();
+		const authorBounds = details.querySelector('.author')!.getBoundingClientRect();
+		return dateBounds.top + dateBounds.height / 2 - (authorBounds.top + authorBounds.height / 2);
+	});
+	expect(Math.abs(metadataCenterOffset)).toBeLessThan(1);
+
+	const titleCenterOffset = await page.locator('main > header h1').evaluate((title) => {
+		const titleBounds = title.getBoundingClientRect();
+		const headerBounds = title.parentElement!.getBoundingClientRect();
+		return titleBounds.top + titleBounds.height / 2 - (headerBounds.top + headerBounds.height / 2);
+	});
+	expect(Math.abs(titleCenterOffset)).toBeLessThan(1);
 });
 
 test('blog tags wrap on mobile', async ({ page }) => {
