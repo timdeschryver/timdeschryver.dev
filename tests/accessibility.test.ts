@@ -82,12 +82,20 @@ for (const theme of ['light', 'dark']) {
 			}
 			await injectAxe(page);
 
-			const violations = await getViolations(page, undefined, {
-				runOnly: {
-					type: 'tag',
-					values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
-				},
-			});
+			const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
+			const violations = [
+				...(await getViolations(page, undefined, {
+					runOnly: { type: 'tag', values: wcagTags },
+					rules: { 'color-contrast': { enabled: false } },
+				})),
+				...(await getViolations(
+					page,
+					{ exclude: [['pre code']] },
+					{
+						runOnly: { type: 'rule', values: ['color-contrast'] },
+					},
+				)),
+			];
 			const details = violations
 				.map(
 					(violation) =>

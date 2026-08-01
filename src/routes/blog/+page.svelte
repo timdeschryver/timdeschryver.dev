@@ -225,19 +225,18 @@
 					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
 						{post.title}
 					</h2>
+					{#if post.series}
+						<span class="series-indicator">
+							<span class="series-label">Series</span>
+							<span class="series-name">{post.series.name}</span>
+							<span class="series-progress">{post.series.order}/{post.series.total}</span>
+						</span>
+					{/if}
 					<div class="post-description">{post.description}</div>
 				</a>
 				<div class="post-footer">
 					<div class="post-meta">
 						<time datetime={post.date}>{humanDate(post.date)}</time>
-						{#if post.series}
-							<span class="meta-separator" aria-hidden="true">/</span>
-							<span class="series-indicator">
-								<span class="series-label">Series</span>
-								<span class="series-name">{post.series.name}</span>
-								<span class="series-progress">{post.series.order}/{post.series.total}</span>
-							</span>
-						{/if}
 					</div>
 					<div class="post-actions">
 						<a
@@ -515,7 +514,7 @@
 	}
 
 	.series-label {
-		color: var(--text-color-subtle);
+		color: var(--text-color-light);
 	}
 
 	.series-name {
