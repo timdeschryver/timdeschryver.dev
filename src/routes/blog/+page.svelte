@@ -242,7 +242,7 @@
 						<a
 							href={resolve('/blog/[slug]', { slug: post.slug })}
 							data-sveltekit-preload-data="hover"
-							class="bold mark-hover"
+							class="read-more bold mark-hover"
 						>
 							Read more</a
 						>
@@ -493,7 +493,7 @@
 	}
 
 	.post-description {
-		margin-top: var(--spacing-small);
+		margin-top: 1rem;
 	}
 
 	.post-footer {
@@ -506,11 +506,21 @@
 		margin-top: 0;
 	}
 
+	li:hover .read-more {
+		box-shadow: inset 0 -0.33rem 0 hsla(var(--accent-color), 0.8);
+	}
+
 	.series-indicator {
 		display: inline-flex;
 		gap: 0.35rem;
 		align-items: baseline;
+		margin-top: 0.35rem;
 		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 	}
 
 	.series-label {
