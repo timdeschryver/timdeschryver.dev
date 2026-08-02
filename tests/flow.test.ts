@@ -142,6 +142,23 @@ test('blog header links the current article and aligns its controls', async ({ p
 	expect(alignment).toBeLessThan(3);
 });
 
+test('loads the TLDR only when requested', async ({ page }) => {
+	const tldrRequests: string[] = [];
+	page.on('request', (request) => {
+		if (request.url().endsWith('/blog/your-first-mcp-server-with-aspnet/tldr')) {
+			tldrRequests.push(request.url());
+		}
+	});
+
+	await page.goto('/blog/your-first-mcp-server-with-aspnet');
+	expect(tldrRequests).toEqual([]);
+
+	await page.getByRole('button', { name: 'Switch to TLDR version' }).click();
+	await expect(page).toHaveURL('/blog/your-first-mcp-server-with-aspnet?tldr=true');
+	await expect(page.getByText('.AddMcpServer()', { exact: true })).toBeVisible();
+	expect(tldrRequests).toHaveLength(1);
+});
+
 test('blog detail includes the author photo on mobile', async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/blog/your-first-mcp-server-with-aspnet');

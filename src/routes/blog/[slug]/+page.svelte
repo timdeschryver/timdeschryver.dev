@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../../code.css';
 	import { onMount } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
@@ -18,21 +19,48 @@
 	let { data } = $props();
 	const post = $derived(data.post);
 
-	const tldr = $derived(() => blog.blog?.state === 'tldr');
+	const showTldr = $derived(() => blog.blog?.state === 'tldr');
+	let tldrHtml = $state<string | null>(null);
+	let tldrError = $state(false);
 
 	// svelte-ignore state_referenced_locally
-	codeBlockLifeCycle(tldr);
+	codeBlockLifeCycle(showTldr);
 	// svelte-ignore state_referenced_locally
-	copyLifeCycle(tldr);
+	copyLifeCycle(showTldr);
 
 	onMount(() => {
-		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
+		const showTldrInitially = post.hasTldr && $page.url.searchParams.get('tldr') === 'true';
 		blog.loadBlog(
 			post.metadata.title,
 			post.metadata.slug,
-			hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single',
+			showTldrInitially ? 'tldr' : post.hasTldr ? 'detailed' : 'single',
 		);
 		return () => blog.reset();
+	});
+
+	$effect(() => {
+		if (!showTldr() || tldrHtml !== null) return;
+
+		const controller = new AbortController();
+		tldrError = false;
+
+		fetch(resolve('/blog/[slug]/tldr', { slug: post.metadata.slug }), {
+			signal: controller.signal,
+		})
+			.then((response) => {
+				if (!response.ok) throw new Error(`Could not load TLDR (${response.status})`);
+				return response.text();
+			})
+			.then((html) => {
+				tldrHtml = html;
+			})
+			.catch((error: unknown) => {
+				if (!(error instanceof DOMException && error.name === 'AbortError')) {
+					tldrError = true;
+				}
+			});
+
+		return () => controller.abort();
 	});
 
 	let scrollY = $state(0);
@@ -84,8 +112,8 @@
 		if (!browser) {
 			return [];
 		}
-		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
-		return hasTldr
+		const showTldrInitially = post.hasTldr && $page.url.searchParams.get('tldr') === 'true';
+		return showTldrInitially
 			? []
 			: ([...document.querySelectorAll('main > h2, main > h3')].reverse() as HTMLElement[]);
 	});
@@ -135,6 +163,14 @@
 			const { origin, pathname } = window.location;
 			navigator.clipboard.writeText(`${origin}${pathname}#${(e.currentTarget as HTMLElement).id}`);
 		}
+	}
+
+	function showDetailedPost() {
+		if (showTldr()) blog.toggleTldr();
+	}
+
+	function showCodeOnly() {
+		if (!showTldr()) blog.toggleTldr();
 	}
 </script>
 
@@ -212,15 +248,63 @@
 		</div>
 	{/if}
 
-	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
+	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} compact />
 </aside>
 
-{#if post.tldr}
-	<button class="tldr" onclick={blog.toggleTldr}>
-		👀 {blog.blog?.state === 'tldr'
-			? 'I want to read the blog post'
-			: 'Just show me the code already'}</button
-	>
+{#if post.hasTldr}
+	<div class="tldr" role="group" aria-label="Reading mode">
+		<span class="tldr-label">Reading mode</span>
+		<div class="tldr-options">
+			<button
+				type="button"
+				class:active={!showTldr()}
+				aria-pressed={!showTldr()}
+				onclick={showDetailedPost}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+					<path d="M14 2v6h6" />
+					<path d="M16 13H8" />
+					<path d="M16 17H8" />
+				</svg>
+				Full article
+			</button>
+			<button
+				type="button"
+				class:active={showTldr()}
+				aria-pressed={showTldr()}
+				onclick={showCodeOnly}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="m16 18 6-6-6-6" />
+					<path d="m8 6-6 6 6 6" />
+				</svg>
+				Code only
+			</button>
+		</div>
+	</div>
 {/if}
 
 {@html htmlStyle}
@@ -229,8 +313,14 @@
 	<BlogSeries series={post.metadata.series} seriesPosts={post.metadata.seriesPosts} />
 {/if}
 
-{#if tldr()}
-	{@html post.tldr}
+{#if showTldr()}
+	{#if tldrHtml}
+		{@html tldrHtml}
+	{:else if tldrError}
+		<p role="alert">The TLDR version could not be loaded. Switch back and try again.</p>
+	{:else}
+		<p role="status">Loading TLDR...</p>
+	{/if}
 {:else}
 	{@html post.html}
 
@@ -298,11 +388,89 @@
 	}
 
 	.tldr {
-		background: none;
-		border: none;
-		text-align: center;
-		font-weight: bolder;
-		margin-bottom: var(--spacing);
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		width: fit-content;
+		max-width: 100%;
+		margin: 0 auto var(--spacing);
+		padding: 0.3rem;
+		border: 1px solid var(--line-color);
+		border-radius: 0.7rem;
+		background: var(--background-color-subtle);
+	}
+
+	.tldr-label {
+		padding: 0 0.65rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.68rem;
+		font-weight: 650;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.tldr-options {
+		display: flex;
+		gap: 0.25rem;
+		margin-top: 0;
+	}
+
+	.tldr button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.4rem;
+		min-height: 2.75rem;
+		margin: 0;
+		padding: 0.55rem 0.8rem;
+		border: 0;
+		border-radius: 0.45rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.82rem;
+		font-weight: 620;
+		line-height: 1.2;
+		white-space: nowrap;
+		transition:
+			background-color 0.2s ease,
+			color 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.tldr button:hover:not(.active) {
+		background: var(--background-color-transparent);
+		color: var(--text-color);
+	}
+
+	.tldr button.active {
+		background: hsla(var(--accent-color), 0.12);
+		box-shadow: inset 0 0 0 1px var(--text-color-light);
+		color: var(--text-color);
+		cursor: default;
+	}
+
+	.tldr svg {
+		flex: 0 0 auto;
+	}
+
+	@media (max-width: 480px) {
+		.tldr {
+			width: 100%;
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.tldr-label {
+			padding: 0.35rem 0.5rem 0.2rem;
+			text-align: center;
+		}
+
+		.tldr-options {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 
 	:global(main > p:first-of-type) {

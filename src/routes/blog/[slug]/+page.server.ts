@@ -57,8 +57,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	const contributors = getContributors(post.metadata.slug);
 	return {
 		post: {
-			...post,
 			html,
+			hasTldr: Boolean(post.tldr),
 			metadata: {
 				...post.metadata,
 				toc: post.metadata.toc.filter(({ level }) => level < 4),

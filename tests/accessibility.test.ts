@@ -70,6 +70,30 @@ test('code controls are keyboard accessible', async ({ browserName, context, pag
 });
 
 for (const theme of ['light', 'dark']) {
+	test(`reading mode controls have sufficient ${theme} theme contrast`, async ({ page }) => {
+		await page.addInitScript(
+			(selectedTheme) => localStorage.setItem('theme', selectedTheme),
+			theme,
+		);
+		await page.goto('/blog/your-first-mcp-server-with-aspnet');
+		await injectAxe(page);
+
+		const detailedViolations = await getViolations(
+			page,
+			{ include: [['.tldr']] },
+			{ runOnly: { type: 'rule', values: ['color-contrast'] } },
+		);
+
+		await page.getByRole('button', { name: 'Code only' }).click();
+		const codeOnlyViolations = await getViolations(
+			page,
+			{ include: [['.tldr']] },
+			{ runOnly: { type: 'rule', values: ['color-contrast'] } },
+		);
+
+		expect([...detailedViolations, ...codeOnlyViolations]).toEqual([]);
+	});
+
 	for (const pageUnderTest of pages) {
 		test(`${pageUnderTest.name} has no ${theme} theme accessibility violations`, async ({
 			page,

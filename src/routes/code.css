@@ -1,0 +1,336 @@
+@import './light.theme.css';
+@import './dark.theme.css';
+
+@font-face {
+	font-family: 'Victor Mono Variable';
+	font-style: normal;
+	font-display: optional;
+	font-weight: 100 700;
+	src: url('@fontsource-variable/victor-mono/files/victor-mono-latin-wght-normal.woff2')
+		format('woff2-variations');
+}
+
+body > div > main > pre,
+body > div > main > div.code-group {
+	grid-column: 1 / 4;
+	width: 100%;
+	max-width: 95ch;
+	justify-self: center;
+}
+
+@media (min-width: 1280px) {
+	body > div > main[data-segment*='blog/'] > pre,
+	body > div > main[data-segment*='blog/'] > div.code-group {
+		width: min(95ch, calc(100vw - 4rem));
+	}
+}
+
+code,
+pre {
+	font-family:
+		'Victor Mono Variable', 'JetBrains Mono', 'Fira Code', 'Ligconsolata', 'MonoLisa',
+		'Cartograph CF', 'Cascadia Code', 'Dank Mono', 'Operator Mono Lig', 'Operator Mono Lig',
+		'Cascadia Mono', 'Victor Mono', Consolas, monospace;
+	line-height: 1.375;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre {
+	overflow: auto;
+	position: relative;
+	border: 1px solid;
+	border-color: transparent;
+}
+
+pre:hover {
+	border-color: var(--accent-color);
+	transition: all 0.2s ease-in;
+}
+
+:not(pre) > code {
+	padding: 0.3em 0.5em;
+	border-radius: 0.3em;
+	white-space: normal;
+	line-height: inherit;
+}
+
+pre > code {
+	padding: 0;
+	display: block;
+	margin-top: 0;
+	line-height: 2;
+	overflow: auto;
+}
+
+code {
+	word-break: break-word;
+	border: 1px solid var(--input-border);
+}
+
+code > div.line {
+	margin: 0;
+	padding-left: 1.5em;
+	padding-right: 0.75em;
+}
+
+code > div.line:first-child {
+	margin-top: 3em;
+}
+
+code > div.line:last-child {
+	margin-bottom: 1em;
+}
+
+code.dim > div:not(.highlight) {
+	opacity: 0.3;
+	filter: blur(0.065rem);
+	transition: all 0.2s ease-in;
+}
+
+code.dim:hover > div:not(.highlight) {
+	filter: blur(0px);
+	opacity: 1;
+}
+
+code.diff > div.line.addition::before {
+	content: '+';
+	color: hsl(var(--syntax-entity-name-section));
+	font-size: 0.8rem;
+}
+
+code.diff > div.line.addition {
+	border-left: 3px solid hsl(var(--syntax-entity-name-section));
+	background: hsla(var(--syntax-entity-name-section), 8%);
+}
+
+code.diff > div.line.removal::before {
+	content: '-';
+	color: hsl(var(--syntax-invalid));
+	font-size: 0.8rem;
+}
+
+code.diff > div.line.removal {
+	border-left: 3px solid hsl(var(--syntax-invalid));
+	background: hsla(var(--syntax-invalid), 8%);
+}
+
+pre > .code-heading {
+	background: var(--tab-activeBackground);
+	color: var(--text-color);
+	font-family: var(--text-font);
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 0.2em 0.4em;
+	font-size: 0.85rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	transition: color 0.2s ease-in;
+}
+
+pre > .code-heading > .file-name {
+	width: 100%;
+}
+
+pre > .code-heading > .icon {
+	margin-left: auto;
+	opacity: 0.3;
+	transition: opacity 0.2s ease-in;
+}
+
+pre:hover > .code-heading > .icon {
+	opacity: 1;
+}
+
+pre > .code-heading > .icon.success {
+	animation: wiggle 1.5s linear;
+	color: hsla(135, 59%, 49%, 0.8);
+}
+
+pre > .code-heading > * {
+	margin: 0 0.4em;
+}
+
+pre > .code-heading > a {
+	font-weight: bold;
+	font-size: initial;
+}
+
+.custom-block {
+	--background-color: none;
+	--border-color: none;
+
+	background: var(--background-color);
+	border: 1px solid var(--border-color);
+	border-radius: 3px;
+	padding: 0.5em 1em;
+	overflow: auto;
+}
+
+.custom-block > p {
+	margin-top: 0;
+}
+
+.custom-block-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
+	font-size: 1rem;
+	font-weight: bold;
+	color: var(--title-color);
+}
+
+.custom-block-icon {
+	display: inline-flex;
+	animation: pulse 3s infinite;
+}
+
+.custom-block.success,
+.custom-block.tip {
+	--background-color: hsla(135, 59%, 49%, 0.1);
+	--border-color: hsla(135, 59%, 49%, 0.8);
+	--title-color: hsla(135, 59%, 49%, 1);
+}
+
+.custom-block.danger {
+	--background-color: hsla(0, 74%, 56%, 0.1);
+	--border-color: hsla(0, 74%, 56%, 0.8);
+	--title-color: hsla(0, 74%, 56%, 1);
+}
+
+.custom-block.info,
+.custom-block.info-ai {
+	--background-color: hsla(233, 82%, 69%, 0.1);
+	--border-color: hsla(233, 82%, 69%, 0.8);
+	--title-color: hsla(233, 82%, 69%, 1);
+}
+
+.custom-block.warning {
+	--background-color: hsla(52, 100%, 71%, 0.1);
+	--border-color: hsla(52, 100%, 71%, 0.8);
+	--title-color: hsla(52, 100%, 71%, 1);
+}
+
+html.light .custom-block.success,
+html.light .custom-block.tip {
+	--title-color: #166534;
+}
+
+html.light .custom-block.info,
+html.light .custom-block.info-ai {
+	--title-color: #3730a3;
+}
+
+html.light .custom-block.warning {
+	--title-color: #854d0e;
+}
+
+.code-group {
+	overflow: auto;
+}
+
+.code-group-tabs {
+	display: flex;
+	flex-direction: row;
+	overflow: auto;
+}
+
+.code-group-tabs > button {
+	margin-bottom: 0;
+}
+
+.code-group-tab {
+	margin-top: 0;
+	padding: 0.2em 0.8em;
+	margin-right: 0.1rem;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	transition: 0.2s ease-in-out;
+}
+
+.code-group-tab:not(.active) {
+	background-color: var(--tab-activeBackground);
+	color: var(--text-color-light);
+	font-weight: 300;
+}
+
+.code-group-tab.active {
+	border-top: 1px solid hsla(var(--accent-color));
+	background-color: var(--tab-activeBackground);
+	font-weight: 900;
+}
+
+.code-group-code {
+	margin-top: 0;
+}
+
+.screen-reader-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+@keyframes wiggle {
+	0%,
+	7% {
+		transform: rotateZ(0);
+	}
+	15% {
+		transform: rotateZ(-15deg);
+	}
+	20% {
+		transform: rotateZ(10deg);
+	}
+	25% {
+		transform: rotateZ(-10deg);
+	}
+	30% {
+		transform: rotateZ(6deg);
+	}
+	35% {
+		transform: rotateZ(-4deg);
+	}
+	40%,
+	100% {
+		transform: rotateZ(0);
+	}
+}
+
+.pulse {
+	animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		font-variation-settings: 'wght' 100;
+	}
+	50% {
+		font-variation-settings: 'wght' 700;
+	}
+	100% {
+		font-variation-settings: 'wght' 100;
+	}
+}

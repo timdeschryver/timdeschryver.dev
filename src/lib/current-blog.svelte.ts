@@ -1,5 +1,6 @@
-import { goto } from '$app/navigation';
+import { replaceState } from '$app/navigation';
 import { resolve } from '$app/paths';
+import { page } from '$app/state';
 import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 interface Blog {
@@ -37,10 +38,7 @@ function createBlog() {
 			const route = queryParams.size
 				? (`/blog/[slug]?${queryParams.toString()}` as `/blog/[slug]?${string}`)
 				: '/blog/[slug]';
-			goto(resolve(route, { slug: currentBlog.slug }), {
-				noScroll: true,
-				replaceState: true,
-			});
+			replaceState(resolve(route, { slug: currentBlog.slug }), page.state);
 		},
 		reset: () => {
 			blog = null;

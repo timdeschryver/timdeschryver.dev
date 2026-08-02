@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../code.css';
 	import Head from '$lib/Head.svelte';
 	import { page } from '$app/stores';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
@@ -97,7 +98,6 @@
 				<a
 					href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
 					class="mark-hover"
-					data-sveltekit-preload-data="hover"
 					style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
 				>
 			</h2>

@@ -546,5 +546,4 @@ Promptfoo is not the only option for evaluating prompts and AI applications.
 Depending on the application's technology stack and whether evaluation needs to be connected to production observability, the following alternatives are also worth considering:
 
 - [Langfuse](https://langfuse.com/docs/evaluation/core-concepts) combines evaluation with tracing, prompt management, datasets, and production observability. It supports offline experiments for comparing prompt or model versions, as well as online evaluations of live application traces, making it a good fit when evaluation should be part of a broader LLM observability workflow. You can also use Langfuse prompts within promptfoo evaluations, which makes it possible to combine the two tools.
-
 - The [.NET `Microsoft.Extensions.AI.Evaluation` libraries](https://learn.microsoft.com/en-us/dotnet/ai/evaluation/libraries) provide a code-first option for .NET applications. They integrate with test frameworks such as xUnit, NUnit, and MSTest, and include quality, natural language processing (NLP) metrics, safety.

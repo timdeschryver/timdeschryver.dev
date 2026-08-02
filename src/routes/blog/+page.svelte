@@ -218,11 +218,7 @@
 		<li data-post-slug={post.slug} style:--accent-color={`var(--${post.color})`}>
 			<article>
 				<span class="post-order" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-				<a
-					class="post-link"
-					href={resolve('/blog/[slug]', { slug: post.slug })}
-					data-sveltekit-preload-data="hover"
-				>
+				<a class="post-link" href={resolve('/blog/[slug]', { slug: post.slug })}>
 					<h2 style:--post-title="post-title-{post.slug}" class="mark-hover">
 						{post.title}
 					</h2>
@@ -242,7 +238,6 @@
 					<div class="post-actions">
 						<a
 							href={resolve('/blog/[slug]', { slug: post.slug })}
-							data-sveltekit-preload-data="hover"
 							class="read-more bold mark-hover"
 						>
 							Read more</a
@@ -250,7 +245,6 @@
 						{#if post.tldr}
 							| <a
 								href={resolve('/blog/[slug]?tldr=true', { slug: post.slug })}
-								data-sveltekit-preload-data="hover"
 								class="bold mark-hover">Read TLDR</a
 							>
 						{/if}

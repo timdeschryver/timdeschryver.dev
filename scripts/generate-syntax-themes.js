@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import palette from 'shiki/themes/rose-pine.mjs';
 import paletteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 
+const usedEditorColors = new Set(['input.border', 'tab.activeBackground']);
+
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', palette));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', paletteDawn));
 
@@ -19,6 +21,7 @@ function createStyle(scope, theme) {
 		style += `\n\t--syntax-${color.scope}: ${hexToHsl(color.color)};`;
 	}
 	for (const [key, color] of Object.entries(theme.colors ?? {})) {
+		if (!usedEditorColors.has(key)) continue;
 		style += `\n\t--${key.replace(/\./g, '-')}: ${color};`;
 	}
 	return `${style}\n}\n`;

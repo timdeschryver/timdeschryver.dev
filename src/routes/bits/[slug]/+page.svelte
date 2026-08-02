@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../../code.css';
 	import Support from '$lib/Support.svelte';
 	import Head from '$lib/Head.svelte';
 	import Share from '$lib/Share.svelte';
@@ -12,7 +13,6 @@
 	// svelte-ignore state_referenced_locally
 	const { bit } = data;
 
-	let scrollY = $state(0);
 	codeBlockLifeCycle();
 	copyLifeCycle();
 </script>
@@ -28,8 +28,6 @@
 	tags={bit.metadata.tags}
 />
 
-<svelte:window bind:scrollY />
-
 <div class="eyebrow">Developer bit</div>
 <h1 style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</h1>
 {#if bit.metadata.banner}
@@ -40,15 +38,6 @@
 		height={bit.metadata.bannerHeight}
 		fetchpriority="high"
 		decoding="async"
-		style="--scroll: {(scrollY ?? 0) <= 150
-			? 1
-			: scrollY <= 200
-				? 0.75
-				: scrollY <= 300
-					? 0.5
-					: scrollY <= 500
-						? 0.25
-						: 0}"
 	/>
 {/if}
 
@@ -60,7 +49,7 @@
 
 <Support />
 
-<Share title="Share this bit on" text={bit.metadata.title} url={bit.metadata.canonical} />
+<Share title="Share this bit" text={bit.metadata.title} url={bit.metadata.canonical} />
 
 <Comments />
 
