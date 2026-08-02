@@ -131,4 +131,54 @@ describe('Markdown rendering', () => {
 		expect(html).toContain('<figcaption>Running dotnet test in .NET 9</figcaption>');
 		expect(html).not.toContain('autoplay');
 	});
+
+	it('normalizes relative links at every directory depth', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'[Blog post](../another-post/index.md)',
+				'',
+				'[Bit](../../bits/a-useful-bit/index.md#example)',
+			].join('\n'),
+		);
+
+		const { html } = parseFileToHtmlAndMeta(file);
+
+		expect(html).toContain('href="/blog/another-post"');
+		expect(html).toContain('href="/bits/a-useful-bit#example"');
+	});
+
+	it('decodes heading entities only once when creating slugs', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'## &amp;lt;script&amp;gt;',
+			].join('\n'),
+		);
+
+		const { html, metadata } = parseFileToHtmlAndMeta(file);
+
+		expect(metadata.toc[0]?.slug).toBe('and-lt-script-and-gt');
+		expect(html).toContain('id="and-lt-script-and-gt"');
+	});
 });

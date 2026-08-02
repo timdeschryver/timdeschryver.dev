@@ -97,7 +97,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 		const { href, title } = token;
 		const text = this.parser.parseInline(token.tokens);
 
-		const link = href.replace('../', '/blog/').replace('/index.md', '');
+		const link = normalizeLink(href);
 		const href_attr = `href="${appendCreatorId(link)}"`;
 		const title_attr = title ? `title="${title}"` : '';
 		const internal = link.startsWith('/');
@@ -392,19 +392,22 @@ function slugify(string: string) {
 	const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
 	const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
 	const p = new RegExp(a.split('').join('|'), 'g');
+	const entities: Record<string, string> = {
+		'&amp;': '&',
+		'&lt;': '<',
+		'&gt;': '>',
+		'&#39;': '',
+	};
 
 	return string
 		.toString()
-		.replace(/&amp;/g, '&')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
+		.replace(/&(?:amp|lt|gt|#39);/g, (entity) => entities[entity])
 		.replace(/<code>/g, '`')
 		.replace(/<\/code>/g, '`')
 		.toLowerCase()
 		.replace(/,/g, '') // Remove commas
 		.replace(/\./g, '') // Remove dots
 		.replace(/'/g, '') // Remove single quote
-		.replace(/&#39;/g, '') // Remove single quote
 		.replace(/"/g, '') // Remove double quote
 		.replace(/\s+/g, '-') // Replace spaces with -
 		.replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
@@ -413,6 +416,15 @@ function slugify(string: string) {
 		.replace(/--+/, '-') // Replace multiple - with single -
 		.replace(/^-+/, '') // Trim - from start of text
 		.replace(/-+$/, ''); // Trim - from end of text
+}
+
+function normalizeLink(href: string) {
+	if (!href.startsWith('../')) {
+		return href.replace(/\/index\.md(?=[?#]|$)/, '');
+	}
+
+	const resolved = new URL(href, 'https://internal.invalid/blog/current/');
+	return `${resolved.pathname.replace(/\/index\.md$/, '')}${resolved.search}${resolved.hash}`;
 }
 
 function appendCreatorId(link: string) {

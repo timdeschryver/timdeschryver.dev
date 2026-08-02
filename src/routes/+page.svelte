@@ -54,7 +54,7 @@
 
 <Head
 	title="Tim Deschryver - .NET and Angular Software Engineer"
-	description="Tim Deschryver is a software engineer and Microsoft MVP from Belgium who writes about .NET, Angular, testing, and developer tooling."
+	description="Practical insights on .NET, Angular, testing, and developer tooling from Tim Deschryver, a Belgium-based software engineer and Microsoft MVP."
 	canonical={publicUrl()}
 	type="profile"
 />
