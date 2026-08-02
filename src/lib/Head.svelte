@@ -118,7 +118,7 @@
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
+	<meta property="og:type" content={type} />
 	{#if image}
 		<meta property="og:image" content={image} />
 		<meta property="og:image:alt" content={title} />

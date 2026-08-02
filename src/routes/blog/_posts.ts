@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { readMarkdownMetadata, sortByDate, traverseFolder } from '$lib/content';
 import { ISODate } from '$lib/formatters';
-import { variables } from '$lib/variables';
+import { publicUrl } from '$lib/variables';
 import { execFileSync } from 'child_process';
 import { createHash } from 'crypto';
 import { dev } from '$app/environment';
@@ -137,8 +137,8 @@ function createPostMetadata(
 	metadata: ProcessedMetadata,
 	options: { includeModified?: boolean } = {},
 ): BlogPostMetadata {
-	const banner = [variables.basePath, 'blog', metadata.slug, 'images', 'banner.webp'].join('/');
-	const canonical = [variables.basePath, 'blog', metadata.slug].join('/');
+	const banner = publicUrl(`/blog/${metadata.slug}/images/banner.webp`);
+	const canonical = publicUrl(`/blog/${metadata.slug}`);
 	const modified =
 		options.includeModified === false
 			? null
@@ -434,10 +434,8 @@ function readCachedPost(slug: string): CachedPost | null {
 		const cacheContent = fs.readFileSync(cacheFilePath, 'utf-8');
 		const cached: CachedPost = JSON.parse(cacheContent);
 		// URLs depend on the current build environment and must not be restored from the cache.
-		cached.post.metadata.canonical = [variables.basePath, 'blog', slug].join('/');
-		cached.post.metadata.banner = [variables.basePath, 'blog', slug, 'images', 'banner.webp'].join(
-			'/',
-		);
+		cached.post.metadata.canonical = publicUrl(`/blog/${slug}`);
+		cached.post.metadata.banner = publicUrl(`/blog/${slug}/images/banner.webp`);
 		return cached;
 	} catch (error) {
 		console.warn(`Failed to read cache for ${slug}:`, error);

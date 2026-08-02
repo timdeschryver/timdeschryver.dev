@@ -9,7 +9,7 @@ const content = './blog';
 	const generateBanners = [];
 	const posts = fs.readdirSync(content);
 	for (const post of posts) {
-		const bannerPath = path.join(content, post, 'images', 'banner.png');
+		const bannerPath = path.join(content, post, 'images', 'banner.webp');
 		const bannerExists = fs.existsSync(bannerPath);
 		if (!bannerExists) {
 			generateBanners.push({ post, bannerPath });
@@ -78,7 +78,8 @@ const content = './blog';
 					});
 
 					await page.screenshot({
-						type: 'png',
+						type: 'webp',
+						quality: 82,
 						path: bannerPath,
 					});
 				}

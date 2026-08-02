@@ -1,8 +1,9 @@
 import { error } from '@sveltejs/kit';
 import { TAG_COLORS, readPostBySlug } from '../_posts';
 import * as fs from 'fs';
+import type { PageServerLoad } from './$types';
 
-export async function load({ params }) {
+export const load: PageServerLoad = async ({ params }) => {
 	const post = await readPostBySlug(params.slug);
 	if (!post) {
 		error(404, `Blog ${params.slug} Not found`);
@@ -93,7 +94,7 @@ export async function load({ params }) {
 			contributors,
 		},
 	};
-}
+};
 
 function getContributors(slug: string) {
 	const contributors = `./blog/${slug}/contributors.json`;

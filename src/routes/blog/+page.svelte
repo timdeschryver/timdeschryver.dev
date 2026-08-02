@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { resolve } from '$app/paths';
 	import { onMount, tick } from 'svelte';
+	import { publicUrl } from '$lib/variables';
 
 	let { data } = $props();
 
@@ -76,7 +77,7 @@
 		if (parts.length) {
 			filteredPosts = data.posts.filter((post) => {
 				const titleLower = post.title.toLowerCase();
-				const descriptionLower = post.description.toLowerCase();
+				const descriptionLower = (post.description ?? '').toLowerCase();
 				const tagsLower = post.tags.map((tag) => tag.toLowerCase());
 
 				return parts.every(
@@ -162,7 +163,7 @@
 <Head
 	title="Blog - Tim Deschryver"
 	description={`${data.posts.length} articles about .NET, Angular, testing, and developer tooling.`}
-	canonical="https://timdeschryver.dev/blog"
+	canonical={publicUrl('/blog')}
 />
 
 <header class="page-intro">

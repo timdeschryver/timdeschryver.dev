@@ -1,32 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Head from '$lib/Head.svelte';
-	import YearProgression from '$lib/YearProgression.svelte';
-
-	type RunningStats = {
-		kilometers: number;
-		totalHours: number | null;
-		year: number;
-		updatedAt: string;
-	};
-
-	type GitHubStats = {
-		totalCommits: number;
-		repositoryCount: number | null;
-		year: number;
-	};
-
-	let {
-		data,
-	}: {
-		data: {
-			stravaRunning: RunningStats | null;
-			githubStats: GitHubStats | null;
-			blogPostsThisYear: number;
-			blogReadingMinutes: number;
-		};
-	} = $props();
-	const showYearProgression = false;
+	import { publicUrl } from '$lib/variables';
 
 	let lastConfetti = 0;
 	async function fireConfetti(evt: MouseEvent | FocusEvent): Promise<void> {
@@ -80,7 +55,7 @@
 <Head
 	title="Tim Deschryver - .NET and Angular Software Engineer"
 	description="Tim Deschryver is a software engineer and Microsoft MVP from Belgium who writes about .NET, Angular, testing, and developer tooling."
-	canonical="https://timdeschryver.dev"
+	canonical={publicUrl()}
 	type="profile"
 />
 
@@ -168,15 +143,6 @@
 			</dd>
 		</div>
 	</dl>
-
-	{#if showYearProgression && data.stravaRunning}
-		<YearProgression
-			stats={data.stravaRunning}
-			githubStats={data.githubStats}
-			blogPostsThisYear={data.blogPostsThisYear}
-			blogReadingMinutes={data.blogReadingMinutes}
-		/>
-	{/if}
 
 	<p>
 		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement based

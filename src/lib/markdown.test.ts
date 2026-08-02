@@ -67,6 +67,8 @@ describe('Markdown rendering', () => {
 				'',
 				'## Included heading',
 				'',
+				'## Explicit heading {#explicit-heading}',
+				'',
 				'### Excluded heading <!-- omit in toc -->',
 			].join('\n'),
 		);
@@ -75,9 +77,58 @@ describe('Markdown rendering', () => {
 
 		expect(metadata.toc).toEqual([
 			{ description: 'Included heading', level: 2, slug: 'included-heading' },
+			{ description: 'Explicit heading', level: 2, slug: 'explicit-heading' },
 		]);
 		expect(html).toContain('<h3 id="excluded-heading">');
 		expect(html).toContain('>Excluded heading</a>');
 		expect(html).not.toContain('<!-- omit in toc -->');
+	});
+
+	it('normalizes empty descriptions', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description:',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'Content',
+			].join('\n'),
+		);
+
+		const { metadata } = parseFileToHtmlAndMeta(file);
+
+		expect(metadata.description).toBe('');
+	});
+
+	it('renders videos with controls and their description', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'![Running dotnet test in .NET 9](./images/video.mp4)',
+			].join('\n'),
+		);
+
+		const { html } = parseFileToHtmlAndMeta(file);
+
+		expect(html).toContain('<video controls preload="metadata">');
+		expect(html).toContain('<figcaption>Running dotnet test in .NET 9</figcaption>');
+		expect(html).not.toContain('autoplay');
 	});
 });

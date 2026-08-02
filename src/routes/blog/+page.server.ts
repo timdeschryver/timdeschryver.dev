@@ -9,10 +9,11 @@ export async function load() {
 		slug: p.metadata.slug,
 		date: p.metadata.date,
 		tags: p.metadata.tags,
-		color: p.metadata.tags
-			.map((t) => TAG_COLORS[t.toLowerCase()])
-			.find(Boolean)
-			?.toLowerCase(),
+		color:
+			p.metadata.tags
+				.map((t) => TAG_COLORS[t.toLowerCase()])
+				.find(Boolean)
+				?.toLowerCase() ?? 'base-color',
 		series: p.metadata.series
 			? {
 					name: p.metadata.series.name,

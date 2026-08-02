@@ -1,11 +1,11 @@
-import { variables } from '$lib/variables';
+import { publicUrl } from '$lib/variables';
 import { error } from '@sveltejs/kit';
 import { existsSync } from 'node:fs';
 import sharp from 'sharp';
 import { readBits } from '../_bits';
+import type { PageServerLoad } from './$types';
 
-/** @type {import('./$types').PageLoad} */
-export async function load({ params }) {
+export const load: PageServerLoad = async ({ params }) => {
 	const bits = await readBits();
 	const bit = bits.find((p) => p.metadata.slug === params.slug);
 	if (!bit) {
@@ -15,7 +15,7 @@ export async function load({ params }) {
 	const bannerPath = `bits/${bit.metadata.slug}/images/banner.webp`;
 	const banner = existsSync(bannerPath)
 		? {
-				url: `${variables.basePath}/bits/${bit.metadata.slug}/images/banner.webp`,
+				url: publicUrl(`/bits/${bit.metadata.slug}/images/banner.webp`),
 				...(await sharp(bannerPath).metadata()),
 			}
 		: null;
@@ -26,7 +26,7 @@ export async function load({ params }) {
 			metadata: {
 				...bit.metadata,
 				author: 'Tim Deschryver',
-				canonical: `${variables.basePath}/bits/${bit.metadata.slug}`,
+				canonical: publicUrl(`/bits/${bit.metadata.slug}`),
 				description: bit.metadata.description,
 				banner: banner?.url,
 				bannerWidth: banner?.width,
@@ -35,4 +35,4 @@ export async function load({ params }) {
 			},
 		},
 	};
-}
+};

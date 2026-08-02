@@ -44,6 +44,7 @@ export function extractFrontmatter(markdown: string): {
 
 	const metadata: MarkdownMetadata = {
 		...result.attributes,
+		description: result.attributes.description ?? '',
 		outgoingSlugs: [],
 		toc: [],
 		tags: [],

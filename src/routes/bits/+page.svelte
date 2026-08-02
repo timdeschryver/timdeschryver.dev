@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { publicUrl } from '$lib/variables';
 
 	let { data } = $props();
 
@@ -29,25 +30,45 @@
 		});
 	});
 
-	let queryParts = $derived((query || '').split(' ').filter(Boolean));
+	let queryParts = $derived(
+		(query || '')
+			.split(/\s+/)
+			.map((part) => part.toLowerCase())
+			.filter(Boolean),
+	);
 
 	function tagClicked(tag: string) {
-		if (queryParts.includes(tag)) {
-			query = queryParts.filter((q) => q !== tag).join(' ');
+		const normalizedTag = tag.toLowerCase();
+
+		if (queryParts.includes(normalizedTag)) {
+			query = queryParts.filter((q) => q !== normalizedTag).join(' ');
 		} else {
 			query = query ? `${query.trim()} ${tag}` : tag;
 		}
 	}
 
 	function tagSelected(tag: string) {
-		return queryParts.includes(tag);
+		return queryParts.includes(tag.toLowerCase());
+	}
+
+	function bitMatchesQuery(bit: {
+		metadata: { title: string; description: string; tags: string[] };
+	}) {
+		const title = bit.metadata.title.toLowerCase();
+		const description = bit.metadata.description.toLowerCase();
+		const tags = bit.metadata.tags.map((tag) => tag.toLowerCase());
+
+		return queryParts.every(
+			(queryPart) =>
+				tags.includes(queryPart) || title.includes(queryPart) || description.includes(queryPart),
+		);
 	}
 </script>
 
 <Head
 	title="Developer Bits - Tim Deschryver"
 	description="Short notes about developer tools, new .NET and Angular features, and other topics that I'm excited about."
-	canonical="https://timdeschryver.dev/bits"
+	canonical={publicUrl('/bits')}
 />
 
 <header class="mt-normal">
@@ -69,7 +90,7 @@
 </header>
 
 {#each bits as bit, i (bit.metadata.slug)}
-	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
+	{#if queryParts.length === 0 || bitMatchesQuery(bit)}
 		<div class="bit">
 			<h2>
 				{bits.length - i}.

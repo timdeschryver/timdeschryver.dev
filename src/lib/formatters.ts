@@ -3,6 +3,7 @@ export function humanDate(date: string | Date) {
 		year: 'numeric',
 		month: 'long',
 		day: '2-digit',
+		timeZone: 'UTC',
 	});
 }
 

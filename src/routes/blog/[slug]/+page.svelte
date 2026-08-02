@@ -87,7 +87,7 @@
 		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
 		return hasTldr
 			? []
-			: ([...document.querySelectorAll('main > h2,h3')].reverse() as HTMLElement[]);
+			: ([...document.querySelectorAll('main > h2, main > h3')].reverse() as HTMLElement[]);
 	});
 
 	$effect(() => {

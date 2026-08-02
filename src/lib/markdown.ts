@@ -140,9 +140,12 @@ export function parseFileToHtmlAndMeta(file: string): {
 
 		if (src.endsWith('.mp4')) {
 			return `
-				<video loading="lazy" autoplay>
-					<source src="${src}" type="video/mp4">
-				</video>`;
+				<figure>
+					<video controls preload="metadata">
+						<source src="${src}" type="video/mp4">
+					</video>
+					<figcaption>${text}</figcaption>
+				</figure>`;
 		}
 
 		return `
@@ -358,7 +361,10 @@ export function parseFileToHtmlAndMeta(file: string): {
 		const uniqueFragment = getUniqueFragment(fragment, fragmentCounts);
 
 		if (!omitFromToc) {
-			metadata.toc.push({ description: rawtext, level, slug: uniqueFragment });
+			const description = anchorOverwrite
+				? rawtext.replace(anchorOverwrite[0], '').trim()
+				: rawtext;
+			metadata.toc.push({ description, level, slug: uniqueFragment });
 		}
 
 		return `
