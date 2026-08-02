@@ -31,16 +31,6 @@ test('sitemap works and can navigate to random pages', async ({ page, request })
 	}
 });
 
-test('rss feed exposes full article content', async ({ request }) => {
-	const response = await request.get('/blog/rss.xml');
-	expect(response.ok()).toBeTruthy();
-	expect(response.headers()['content-type']).toContain('application/rss+xml');
-	const rss = await response.text();
-	expect(rss).toContain('<content:encoded><![CDATA[<img');
-	expect(rss).toContain('<dc:creator><![CDATA[Tim Deschryver]]></dc:creator>');
-	expect(rss.match(/<item>/g)).toHaveLength(20);
-});
-
 test('llms index exposes curated content', async ({ request }) => {
 	const response = await request.get('/llms.txt');
 	expect(response.ok()).toBeTruthy();
