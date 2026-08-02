@@ -187,7 +187,7 @@ test('empty blog searches provide a clear recovery action', async ({ page }) => 
 	await page.goto('/blog?q=a-query-that-cannot-match-any-post');
 	const search = page.getByRole('searchbox', { name: 'Search articles' });
 
-	await expect(page.getByText('No posts found', { exact: true })).toBeVisible();
+	await expect(page.getByText('No articles found', { exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Nothing matched this search.' })).toBeVisible();
 	await page.getByRole('button', { name: 'Clear all filters' }).click();
 

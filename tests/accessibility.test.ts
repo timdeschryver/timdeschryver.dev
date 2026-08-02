@@ -36,8 +36,10 @@ test('fixed header remains flush with the viewport edge', async ({ page }) => {
 	expect(headerTop).toBe(0);
 });
 
-test('code controls are keyboard accessible', async ({ context, page }) => {
-	await context.grantPermissions(['clipboard-write']);
+test('code controls are keyboard accessible', async ({ browserName, context, page }) => {
+	if (browserName === 'chromium') {
+		await context.grantPermissions(['clipboard-write']);
+	}
 	await page.goto('/bits/switch-exhaustiveness');
 
 	const themeToggle = page.getByRole('button', { name: 'Switch to dark theme' });
@@ -78,7 +80,7 @@ for (const theme of ['light', 'dark']) {
 			);
 			await page.goto(pageUnderTest.path);
 			if (pageUnderTest.name === 'empty blog search') {
-				await expect(page.getByText('No posts found', { exact: true })).toBeVisible();
+				await expect(page.getByText('No articles found', { exact: true })).toBeVisible();
 			}
 			await injectAxe(page);
 
