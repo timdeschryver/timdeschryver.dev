@@ -1,6 +1,12 @@
 {
 	"routes": [
 		{
+			"route": "/blog/rss.xml",
+			"headers": {
+				"Content-Type": "application/rss+xml; charset=utf-8"
+			}
+		},
+		{
 			"route": "/posts",
 			"redirect": "/blog",
 			"statusCode": 301
