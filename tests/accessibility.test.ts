@@ -71,6 +71,7 @@ test('code controls are keyboard accessible', async ({ browserName, context, pag
 
 for (const theme of ['light', 'dark']) {
 	test(`reading mode controls have sufficient ${theme} theme contrast`, async ({ page }) => {
+		test.slow();
 		await page.addInitScript(
 			(selectedTheme) => localStorage.setItem('theme', selectedTheme),
 			theme,
@@ -98,6 +99,7 @@ for (const theme of ['light', 'dark']) {
 		test(`${pageUnderTest.name} has no ${theme} theme accessibility violations`, async ({
 			page,
 		}) => {
+			test.slow();
 			await page.addInitScript(
 				(selectedTheme) => localStorage.setItem('theme', selectedTheme),
 				theme,

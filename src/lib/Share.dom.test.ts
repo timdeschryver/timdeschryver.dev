@@ -12,13 +12,13 @@ describe('Share', () => {
 		});
 
 		const bluesky = new URL(
-			screen.getByRole('link', { name: 'Bluesky' }).getAttribute('href') ?? '',
+			screen.getByRole('link', { name: 'Share on Bluesky' }).getAttribute('href') ?? '',
 		);
 		const twitter = new URL(
-			screen.getByRole('link', { name: 'Twitter' }).getAttribute('href') ?? '',
+			screen.getByRole('link', { name: 'Share on Twitter' }).getAttribute('href') ?? '',
 		);
 		const linkedIn = new URL(
-			screen.getByRole('link', { name: 'LinkedIn' }).getAttribute('href') ?? '',
+			screen.getByRole('link', { name: 'Share on LinkedIn' }).getAttribute('href') ?? '',
 		);
 
 		expect(bluesky.searchParams.get('text')).toBe(
