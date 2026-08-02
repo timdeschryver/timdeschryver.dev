@@ -569,6 +569,9 @@
 		margin-bottom: clamp(2rem, 4vw, 3.5rem);
 		padding: clamp(4rem, 12vh, 9rem) clamp(0rem, 5vw, 5rem) clamp(2rem, 5vw, 4rem);
 		border-bottom: 1px solid var(--line-color);
+		background:
+			linear-gradient(135deg, hsla(var(--accent-color), 0.07), transparent 42%),
+			linear-gradient(90deg, transparent 52%, hsla(var(--accent-color), 0.04));
 		overflow: hidden;
 	}
 
