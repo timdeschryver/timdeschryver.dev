@@ -581,6 +581,9 @@
 		aspect-ratio: 1;
 		border: 1px solid hsla(var(--accent-color), 0.5);
 		border-radius: 50%;
+		box-shadow:
+			0 0 2rem hsla(var(--accent-color), 0.14),
+			inset 0 0 1.5rem hsla(var(--accent-color), 0.08);
 		transform: translateX(35%);
 		pointer-events: none;
 	}
@@ -592,6 +595,9 @@
 		font-size: clamp(2.8rem, 7.5vw, 7rem);
 		line-height: 0.95;
 		letter-spacing: -0.065em;
+		text-shadow:
+			0 0 0.45em hsla(var(--accent-color), 0.18),
+			0 0 1.2em hsla(var(--accent-color), 0.08);
 		text-wrap: balance;
 	}
 
