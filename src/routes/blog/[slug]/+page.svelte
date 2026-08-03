@@ -559,7 +559,7 @@
 		grid-column: 1 / 4;
 		position: relative;
 		min-height: calc(100dvh - var(--header-height));
-		width: min(calc(100% - 2.4rem), 96rem);
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
