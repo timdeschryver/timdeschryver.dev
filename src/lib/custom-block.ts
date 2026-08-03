@@ -1,4 +1,16 @@
-const admonitionTypes = ['danger', 'warning', 'info', 'success', 'note', 'ai', 'tip'];
+import type { Token, TokenizerAndRendererExtension, Tokens } from 'marked';
+
+const admonitionTypes = ['danger', 'warning', 'info', 'success', 'note', 'ai', 'tip'] as const;
+type AdmonitionType = (typeof admonitionTypes)[number];
+type BlockDetail = readonly [className: string, title: string, icon: string];
+
+interface CustomBlockToken extends Tokens.Generic {
+	type: 'customBlock';
+	icon: AdmonitionType;
+	text: string;
+	tokens: Token[];
+}
+
 const startReg = new RegExp(`^:::(${admonitionTypes.join('|')})$`);
 const endReg = /^:::$/;
 const iconAttributes =
@@ -12,7 +24,7 @@ const icons = {
 	success: `<svg ${iconAttributes}><path d="M20 6 9 17l-5-5"/></svg>`,
 	tip: `<svg ${iconAttributes}><path d="M15 14c.2-1 .7-1.7 1.5-2.5A4.8 4.8 0 0 0 18 8 6 6 0 0 0 6 8c0 1.3.5 2.5 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>`,
 };
-const blockDetails = {
+const blockDetails: Record<AdmonitionType, BlockDetail> = {
 	danger: ['danger', 'Alert', icons.danger],
 	warning: ['warning', 'Warning', icons.warning],
 	info: ['info', 'Note', icons.info],
@@ -25,11 +37,12 @@ const blockDetails = {
 export const customBlock = {
 	name: 'customBlock',
 	level: 'block',
-	start(this, src: string) {
+	childTokens: ['tokens'],
+	start(src) {
 		const index = src.match(new RegExp(`(^|[\\r\\n]):::(${admonitionTypes.join('|')})`))?.index;
 		return index;
 	},
-	tokenizer(src: string, _tokens) {
+	tokenizer(src) {
 		const lines = src.split(/\n/);
 		if (startReg.test(lines[0])) {
 			const section = { x: -1, y: -1 };
@@ -49,16 +62,18 @@ export const customBlock = {
 
 			if (sections.length) {
 				const section = sections[0];
-				const [_, icon] = startReg.exec(lines[section.x]) || [];
+				const icon = startReg.exec(lines[section.x])?.[1];
+				if (!isAdmonitionType(icon)) {
+					return;
+				}
 				const text = lines.slice(section.x + 1, section.y).join('\n');
 				const raw = lines.slice(section.x, section.y + 1).join('\n');
-				const token = {
+				const token: CustomBlockToken = {
 					type: 'customBlock',
 					raw,
 					icon,
 					text,
 					tokens: [],
-					childTokens: ['title', 'text'],
 				};
 
 				this.lexer.blockTokens(token.text, token.tokens);
@@ -66,11 +81,16 @@ export const customBlock = {
 			}
 		}
 	},
-	renderer(this, token) {
-		const [clazz, title, icon] = blockDetails[token.icon];
+	renderer(token) {
+		const customBlockToken = token as CustomBlockToken;
+		const [clazz, title, icon] = blockDetails[customBlockToken.icon];
 		return `<div class="custom-block ${clazz}">
 			<div class="custom-block-title"><span class="custom-block-icon">${icon}</span>${title}</div>
-			${this.parser.parse(token.tokens)}
+			${this.parser.parse(customBlockToken.tokens)}
 		</div>`;
 	},
-};
+} satisfies TokenizerAndRendererExtension;
+
+function isAdmonitionType(value: string | undefined): value is AdmonitionType {
+	return value !== undefined && (admonitionTypes as readonly string[]).includes(value);
+}

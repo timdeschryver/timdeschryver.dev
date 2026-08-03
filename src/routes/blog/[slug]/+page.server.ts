@@ -1,8 +1,9 @@
 import { error } from '@sveltejs/kit';
 import { TAG_COLORS, readPostBySlug } from '../_posts';
 import * as fs from 'fs';
+import type { PageServerLoad } from './$types';
 
-export async function load({ params }) {
+export const load: PageServerLoad = async ({ params }) => {
 	const post = await readPostBySlug(params.slug);
 	if (!post) {
 		error(404, `Blog ${params.slug} Not found`);
@@ -56,13 +57,11 @@ export async function load({ params }) {
 	const contributors = getContributors(post.metadata.slug);
 	return {
 		post: {
-			...post,
 			html,
+			hasTldr: Boolean(post.tldr),
 			metadata: {
 				...post.metadata,
-				toc: post.metadata.toc.filter(
-					({ level, description }) => level < 4 && !description.includes('omit from toc'),
-				),
+				toc: post.metadata.toc.filter(({ level }) => level < 4),
 				color: post.metadata.tags
 					.map((t) => TAG_COLORS[t.toLowerCase()])
 					.find(Boolean)
@@ -93,14 +92,9 @@ export async function load({ params }) {
 				edit: `https://github.com/timdeschryver/timdeschryver.dev/tree/main/blog/${post.metadata.slug}/index.md`,
 			},
 			contributors,
-			beehiivId: post.metadata.tags.some((x) => x.toLowerCase() == '.net')
-				? '8429a039-a5f6-4056-92f8-b6a53f7b28a3'
-				: post.metadata.tags.some((x) => x.toLowerCase() == 'angular' || x.toLowerCase() == 'ngrx')
-					? '39e02e8e-88c3-460e-92d6-616cc8740c5b'
-					: '6e82f6ae-d456-4c88-8cda-8ceb01587e01',
 		},
 	};
-}
+};
 
 function getContributors(slug: string) {
 	const contributors = `./blog/${slug}/contributors.json`;

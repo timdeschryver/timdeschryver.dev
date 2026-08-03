@@ -44,6 +44,7 @@ export function extractFrontmatter(markdown: string): {
 
 	const metadata: MarkdownMetadata = {
 		...result.attributes,
+		description: result.attributes.description ?? '',
 		outgoingSlugs: [],
 		toc: [],
 		tags: [],
@@ -70,7 +71,7 @@ export function extractFrontmatter(markdown: string): {
 
 	if (Array.isArray(result.attributes.translations)) {
 		for (const translation of result.attributes.translations) {
-			const translationsMap = {
+			const translationsMap: Partial<Record<string, string>> = {
 				es: 'Español',
 				ru: 'Russian',
 			};

@@ -1,12 +1,16 @@
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
-let initialValue = '';
+type Theme = 'light' | 'dark';
+
+let initialValue: Theme = 'light';
+let followsSystemTheme = true;
 
 if (browser) {
 	const themeStored = localStorage.getItem('theme');
-	if (themeStored) {
+	if (themeStored === 'light' || themeStored === 'dark') {
 		initialValue = themeStored;
+		followsSystemTheme = false;
 	} else {
 		initialValue =
 			window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -16,14 +20,15 @@ if (browser) {
 }
 
 export const theme = writable(initialValue);
-theme.subscribe((value) => {
-	if (browser) {
-		window.localStorage.setItem('theme', value);
-	}
-});
+
+export function setTheme(value: Theme) {
+	followsSystemTheme = false;
+	if (browser) window.localStorage.setItem('theme', value);
+	theme.set(value);
+}
 
 if (browser) {
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-		theme.set(event.matches ? 'dark' : 'light');
+		if (followsSystemTheme) theme.set(event.matches ? 'dark' : 'light');
 	});
 }

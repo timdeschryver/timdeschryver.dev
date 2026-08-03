@@ -28,7 +28,7 @@ function createPost(title) {
 		`---
 title: ${title}
 slug: ${slug}
-description: 
+description: ''
 date: ${new Date().toISOString().split('T')[0]}
 tags: 
 ---

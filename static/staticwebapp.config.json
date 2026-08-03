@@ -1,12 +1,13 @@
 {
 	"routes": [
 		{
-			"route": "/posts",
-			"redirect": "/blog",
-			"statusCode": 301
+			"route": "/blog/rss.xml",
+			"headers": {
+				"Content-Type": "application/rss+xml; charset=utf-8"
+			}
 		},
 		{
-			"route": "/posts/*",
+			"route": "/posts",
 			"redirect": "/blog",
 			"statusCode": 301
 		},
@@ -31,14 +32,14 @@
 			"statusCode": 301
 		},
 		{
-			"route": "/bits/http-file",
-			"redirect": "/bits/http-files",
+			"route": "/posts/*",
+			"redirect": "/blog",
 			"statusCode": 301
 		},
 		{
-			"route": "/newsletter",
-			"redirect": "https://tinyletter.com/timdeschryver",
-			"statusCode": 302
+			"route": "/bits/http-file",
+			"redirect": "/bits/http-files",
+			"statusCode": 301
 		},
 		{
 			"route": "/twitter",

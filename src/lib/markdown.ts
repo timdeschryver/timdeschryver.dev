@@ -14,22 +14,20 @@ import iconCsharp from '../../static/images/languages/csharp.svg?raw';
 import iconSvelte from '../../static/images/languages/svelte.svg?raw';
 import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
 import * as shiki from 'shiki';
-import type { BundledLanguage, ThemedToken } from 'shiki';
+import type { BundledLanguage, ThemedToken, ThemeRegistrationRaw } from 'shiki';
 import pallete from 'shiki/themes/rose-pine.mjs';
-import palleteDawn from 'shiki/themes/rose-pine-dawn.mjs';
 import { variables } from '$lib/variables';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
-import type { TOC, BlogSeries } from './models';
+import type { TOC } from './models';
+import type { MarkdownMetadata } from './content';
 import { extractFrontmatter } from './content';
-
-fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', pallete));
-fs.writeFileSync('src/routes/light.theme.css', createStyle('light', palleteDawn));
 
 marked.use({
 	extensions: [codeGroup, customBlock],
 });
 const renderer = new marked.Renderer();
+const omitFromTocMarker = '<!-- omit in toc -->';
 
 const highlighter = await shiki.createHighlighter({
 	themes: ['rose-pine', 'rose-pine-dawn'],
@@ -57,7 +55,7 @@ const highlighter = await shiki.createHighlighter({
 	],
 });
 
-const langToIcon = {
+const langToIcon: Partial<Record<string, string>> = {
 	bash: iconShell,
 	sh: iconShell,
 	html: iconCodePurple,
@@ -78,23 +76,13 @@ const langToIcon = {
 	xml: iconBracketsPurple,
 	md: iconMarkdown,
 };
-export function parseFileToHtmlAndMeta(file): {
+export function parseFileToHtmlAndMeta(file: string): {
 	html: string;
-	metadata: {
-		outgoingSlugs: string[];
-		title: string;
-		slug: string;
-		date: string;
-		description: string;
-		tags: string[];
-		toc: TOC[];
-		translations?: { url: string; author: string; profile: string; language: string }[];
-		series?: BlogSeries;
-	};
+	metadata: MarkdownMetadata;
 	assetsSrc: string;
 } {
 	if (!fs.existsSync(file)) {
-		return null;
+		throw new Error(`Markdown file not found: ${file}`);
 	}
 	const markdown = fs.readFileSync(file, 'utf-8');
 	const { content, metadata } = extractFrontmatter(markdown);
@@ -109,7 +97,7 @@ export function parseFileToHtmlAndMeta(file): {
 		const { href, title } = token;
 		const text = this.parser.parseInline(token.tokens);
 
-		const link = href.replace('../', '/blog/').replace('/index.md', '');
+		const link = normalizeLink(href);
 		const href_attr = `href="${appendCreatorId(link)}"`;
 		const title_attr = title ? `title="${title}"` : '';
 		const internal = link.startsWith('/');
@@ -119,8 +107,8 @@ export function parseFileToHtmlAndMeta(file): {
 
 		let style = '';
 		if (internal) {
-			const outgoingSlug = url.parse(link, false).pathname.split('/').pop();
-			if (metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
+			const outgoingSlug = url.parse(link, false).pathname?.split('/').pop();
+			if (outgoingSlug && metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}
 		} else {
@@ -152,9 +140,12 @@ export function parseFileToHtmlAndMeta(file): {
 
 		if (src.endsWith('.mp4')) {
 			return `
-				<video loading="lazy" autoplay>
-					<source src="${src}" type="video/mp4">
-				</video>`;
+				<figure>
+					<video controls preload="metadata">
+						<source src="${src}" type="video/mp4">
+					</video>
+					<figcaption>${text}</figcaption>
+				</figure>`;
 		}
 
 		return `
@@ -163,6 +154,11 @@ export function parseFileToHtmlAndMeta(file): {
 				<figcaption>${text}</figcaption>
 			</figure>
 		`;
+	};
+
+	renderer.table = function (token) {
+		const table = marked.Renderer.prototype.table.call(this, token);
+		return `<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0">${table}</div>`;
 	};
 
 	renderer.paragraph = function (token) {
@@ -265,7 +261,7 @@ export function parseFileToHtmlAndMeta(file): {
 			sourceLink
 				? `<a href="${sourceLink}" class="icon align-text-top" target="_blank" rel="noopener noreferrer" title="View source"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>`
 				: undefined,
-			`<button class="copy-code icon align-text-top" data-ref="${id}" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></button>`,
+			`<button type="button" class="copy-code icon align-text-top" data-ref="${id}" data-status="${id}-copy-status" aria-label="Copy code"><span class="copy-code-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></span></button><span id="${id}-copy-status" class="screen-reader-only" aria-live="polite"></span>`,
 		].filter(Boolean);
 		const heading = headingParts.length
 			? `<div class="code-heading">${headingParts.join(' ')}</div>`
@@ -275,7 +271,7 @@ export function parseFileToHtmlAndMeta(file): {
 
 		function generateHTMLFromTokens(tokens: ThemedToken[][]): string {
 			const codeClass = linesHighlight.length ? 'dim' : '';
-			let html = `<code class="${shikiLang} ${codeClass}">`;
+			let html = `<code class="${shikiLang} ${codeClass}" tabindex="0">`;
 
 			tokens.forEach((token, line) => {
 				const lineClass = [
@@ -316,23 +312,18 @@ export function parseFileToHtmlAndMeta(file): {
 			html += '</code>';
 			return html;
 
-			function replaceColorToCSSVariable(color: string) {
-				const scopeColors = pallete.tokenColors
-					.filter((p) => p.scope)
-					.map((tc) => {
-						return {
-							scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) =>
-								c.replace(/\./g, '-'),
-							),
-							color: tc.settings.foreground,
-						};
-					});
+			function replaceColorToCSSVariable(color?: string) {
+				if (!color) {
+					return `var(--syntax-unknown)`;
+				}
 
-				const key = scopeColors.find((c) => c.color?.toLowerCase() === color?.toLowerCase());
+				const scopeColors = normalizeScopeColors(pallete);
+
+				const key = scopeColors.find((c) => c.color?.toLowerCase() === color.toLowerCase());
 				if (!key) {
 					return `var(--syntax-unknown)`;
 				}
-				return `var(--syntax-${key.scope[0]})`;
+				return `var(--syntax-${key.scope})`;
 			}
 		}
 
@@ -341,11 +332,11 @@ export function parseFileToHtmlAndMeta(file): {
 			theme: pallete,
 		});
 		const codeblock = generateHTMLFromTokens(tokens.tokens);
-		return `<pre id="${id}" aria-hidden="true" tabindex="-1">${heading}${codeblock}</pre>`;
+		return `<pre id="${id}">${heading}${codeblock}</pre>`;
 	};
 
 	renderer.codespan = function (token) {
-		return `<code>${token.text}</code>`;
+		return `<code>${escapeHtml(token.text)}</code>`;
 	};
 	renderer.blockquote = function (token) {
 		const source = this.parser.parse(token.tokens);
@@ -354,8 +345,9 @@ export function parseFileToHtmlAndMeta(file): {
 
 	renderer.heading = function (token) {
 		const level = token.depth;
-		const rawtext = token.text;
-		const text = this.parser.parseInline(token.tokens);
+		const omitFromToc = token.text.includes(omitFromTocMarker);
+		const rawtext = token.text.replaceAll(omitFromTocMarker, '').trim();
+		const text = this.parser.parseInline(token.tokens).replaceAll(omitFromTocMarker, '').trim();
 		const headingText = text.includes('{') ? text.substring(0, text.indexOf('{') - 1) : text;
 		const anchorRegExp = /{([^}]+)}/g;
 		const anchorOverwrite = anchorRegExp.exec(rawtext);
@@ -368,7 +360,12 @@ export function parseFileToHtmlAndMeta(file): {
 		}
 		const uniqueFragment = getUniqueFragment(fragment, fragmentCounts);
 
-		metadata.toc.push({ description: rawtext, level, slug: uniqueFragment });
+		if (!omitFromToc) {
+			const description = anchorOverwrite
+				? rawtext.replace(anchorOverwrite[0], '').trim()
+				: rawtext;
+			metadata.toc.push({ description, level, slug: uniqueFragment });
+		}
 
 		return `
 		<h${level} id="${uniqueFragment}">
@@ -391,23 +388,26 @@ function getUniqueFragment(fragment: string, fragmentCounts: Map<string, number>
 	return count ? `${fragment}-${count + 1}` : fragment;
 }
 
-function slugify(string) {
+function slugify(string: string) {
 	const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
 	const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
 	const p = new RegExp(a.split('').join('|'), 'g');
+	const entities: Record<string, string> = {
+		'&amp;': '&',
+		'&lt;': '<',
+		'&gt;': '>',
+		'&#39;': '',
+	};
 
 	return string
 		.toString()
-		.replace(/&amp;/g, '&')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
+		.replace(/&(?:amp|lt|gt|#39);/g, (entity) => entities[entity])
 		.replace(/<code>/g, '`')
 		.replace(/<\/code>/g, '`')
 		.toLowerCase()
 		.replace(/,/g, '') // Remove commas
 		.replace(/\./g, '') // Remove dots
 		.replace(/'/g, '') // Remove single quote
-		.replace(/&#39;/g, '') // Remove single quote
 		.replace(/"/g, '') // Remove double quote
 		.replace(/\s+/g, '-') // Replace spaces with -
 		.replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
@@ -416,6 +416,15 @@ function slugify(string) {
 		.replace(/--+/, '-') // Replace multiple - with single -
 		.replace(/^-+/, '') // Trim - from start of text
 		.replace(/-+$/, ''); // Trim - from end of text
+}
+
+function normalizeLink(href: string) {
+	if (!href.startsWith('../')) {
+		return href.replace(/\/index\.md(?=[?#]|$)/, '');
+	}
+
+	const resolved = new URL(href, 'https://internal.invalid/blog/current/');
+	return `${resolved.pathname.replace(/\/index\.md$/, '')}${resolved.search}${resolved.hash}`;
 }
 
 function appendCreatorId(link: string) {
@@ -448,73 +457,21 @@ function appendCreatorId(link: string) {
 	}
 }
 
-function createStyle(scope: string, theme) {
-	const scopeColors = theme.tokenColors
-		.filter((p) => p.scope)
-		.map((tc) => {
-			return {
-				scope: (Array.isArray(tc.scope) ? tc.scope : [tc.scope]).map((c) => c.replace(/\./g, '-')),
-				color: tc.settings.foreground,
-			};
-		});
-
-	let style = `html.${scope} {`;
-
-	for (const color of scopeColors) {
-		for (const scope of color.scope) {
-			style += '\n\t' + `--syntax-${scope}: ${hexToHSL(color.color)};`;
-		}
-	}
-
-	for (const [key, color] of Object.entries(theme.colors)) {
-		style += '\n\t' + `--${key.replace(/\./g, '-')}: ${color};`;
-	}
-
-	style += '\n}\n';
-
-	return style;
+function normalizeScopeColors(theme: ThemeRegistrationRaw) {
+	return (theme.tokenColors ?? theme.settings ?? []).flatMap(({ scope, settings }) => {
+		const scopes = Array.isArray(scope) ? scope : scope ? [scope] : [];
+		return scopes.map((scope) => ({
+			scope: scope.replace(/\./g, '-'),
+			color: settings.foreground,
+		}));
+	});
 }
 
-// https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
-function hexToHSL(H: string | null | undefined): string {
-	if (!H) {
-		return '';
-	}
-	// Convert hex to RGB first
-	let r = 0,
-		g = 0,
-		b = 0;
-	if (H.length == 4) {
-		r = parseInt('0x' + H[1] + H[1]);
-		g = parseInt('0x' + H[2] + H[2]);
-		b = parseInt('0x' + H[3] + H[3]);
-	} else if (H.length == 7) {
-		r = parseInt('0x' + H[1] + H[2]);
-		g = parseInt('0x' + H[3] + H[4]);
-		b = parseInt('0x' + H[5] + H[6]);
-	}
-	// Then to HSL
-	r /= 255;
-	g /= 255;
-	b /= 255;
-	const cmin = Math.min(r, g, b),
-		cmax = Math.max(r, g, b),
-		delta = cmax - cmin;
-	let h: number;
-
-	if (delta == 0) h = 0;
-	else if (cmax == r) h = ((g - b) / delta) % 6;
-	else if (cmax == g) h = (b - r) / delta + 2;
-	else h = (r - g) / delta + 4;
-
-	h = Math.round(h * 60);
-
-	if (h < 0) h += 360;
-
-	const l = (cmax + cmin) / 2;
-	const s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-	const normalizedS = +(s * 100).toFixed(1);
-	const normalizedL = +(l * 100).toFixed(1);
-
-	return `${h}, ${normalizedS}%, ${normalizedL}%`;
+function escapeHtml(value: string): string {
+	return value
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
 }

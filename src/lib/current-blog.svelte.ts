@@ -1,5 +1,6 @@
-import { goto } from '$app/navigation';
+import { replaceState } from '$app/navigation';
 import { resolve } from '$app/paths';
+import { page } from '$app/state';
 import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 interface Blog {
@@ -23,10 +24,13 @@ function createBlog() {
 			};
 		},
 		toggleTldr: () => {
-			blog.state = blog.state === 'tldr' ? 'detailed' : 'tldr';
+			const currentBlog = blog;
+			if (!currentBlog) return;
+
+			currentBlog.state = currentBlog.state === 'tldr' ? 'detailed' : 'tldr';
 
 			const queryParams = new SvelteURLSearchParams(location.search);
-			if (blog.state === 'tldr') {
+			if (currentBlog.state === 'tldr') {
 				queryParams.set('tldr', 'true');
 			} else {
 				queryParams.delete('tldr');
@@ -34,10 +38,7 @@ function createBlog() {
 			const route = queryParams.size
 				? (`/blog/[slug]?${queryParams.toString()}` as `/blog/[slug]?${string}`)
 				: '/blog/[slug]';
-			goto(resolve(route, { slug: blog.slug }), {
-				noScroll: true,
-				replaceState: true,
-			});
+			replaceState(resolve(route, { slug: currentBlog.slug }), page.state);
 		},
 		reset: () => {
 			blog = null;

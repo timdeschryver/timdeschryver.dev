@@ -8,13 +8,13 @@ export async function GET() {
 	const posts = await readPosts();
 	return new Response(generate(posts), {
 		headers: {
-			'Content-Type': 'application/xml',
+			'Content-Type': 'application/rss+xml; charset=utf-8',
 		},
 	});
 }
 
 function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
-	const nodes = posts.map((post) => {
+	const nodes = posts.slice(0, 20).map((post) => {
 		const link = `${variables.basePath}/blog/${post.metadata.slug}`;
 		const tldr = post.tldr
 			? `<p><a href="${link}?tldr=true">Read the <strong>TLDR version</strong> on timdeschryver.dev</a></p>`
@@ -24,15 +24,11 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			description: post.metadata.description,
 			link,
 			pubDate: UTCDate(post.metadata.date),
-			content: (
-				`<img class="webfeedsFeaturedVisual" src="${link}/images/banner.png" alt="${post.metadata.title}"/>` +
-				tldr +
-				post.html
-			)
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;'),
+			content: safeCdata(
+				`<img class="webfeedsFeaturedVisual" src="${post.metadata.banner}" alt="${htmlAttribute(post.metadata.title)}"/>` +
+					tldr +
+					post.html,
+			),
 		};
 	});
 
@@ -40,11 +36,13 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		.map((node) => {
 			return `
 				<item>
-					<title><![CDATA[ ${node.title} ]]></title>
-					<description><![CDATA[ ${node.description} ]]></description>
+					<title><![CDATA[${safeCdata(node.title)}]]></title>
+					<description><![CDATA[${safeCdata(node.description)}]]></description>
 					<link>${node.link}</link>
 					<guid>${node.link}</guid>
 					<pubDate>${node.pubDate}</pubDate>
+					<dc:creator><![CDATA[Tim Deschryver]]></dc:creator>
+					<content:encoded><![CDATA[${node.content}]]></content:encoded>
 				</item>
 			`;
 		})
@@ -73,4 +71,16 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		</channel>
 		</rss>`;
 	return xml;
+}
+
+function safeCdata(value: string) {
+	return value.replaceAll(']]>', ']]]]><![CDATA[>');
+}
+
+function htmlAttribute(value: string) {
+	return value
+		.replaceAll('&', '&amp;')
+		.replaceAll('"', '&quot;')
+		.replaceAll('<', '&lt;')
+		.replaceAll('>', '&gt;');
 }

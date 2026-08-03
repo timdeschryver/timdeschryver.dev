@@ -1,7 +1,21 @@
+import type { TokenizerAndRendererExtension, Tokens } from 'marked';
+
+interface CodeGroupCode extends Tokens.Code {
+	title: string;
+	id: number;
+}
+
+interface CodeGroupToken extends Tokens.Generic {
+	type: 'codeGroup';
+	text: string;
+	codeblocks: CodeGroupCode[];
+}
+
 let codeBlockId = 0;
 export const codeGroup = {
 	name: 'codeGroup',
 	level: 'block',
+	childTokens: ['codeblocks'],
 	start(src) {
 		return src.match(/^:::code-group$/)?.index;
 	},
@@ -28,57 +42,53 @@ export const codeGroup = {
 				const text = lines.slice(section.x + 1, section.y).join('\n');
 				const raw = lines.slice(section.x, section.y + 1).join('\n');
 
-				const codeblocks = text.trim().match(/```.*?```$/gms);
-				const token = {
+				const codeblocks = text.trim().match(/```.*?```$/gms) ?? [];
+				const token: CodeGroupToken = {
 					type: 'codeGroup',
 					raw,
 					text: text.trim(),
-					tokens: [],
 					codeblocks: codeblocks.map((c) => {
 						const codeLines = c.split('\n');
-						const first = codeLines.shift().replace(/```/, '');
+						const first = (codeLines.shift() ?? '').replace(/```/, '');
 						const titleMatch = first.match(/\[title=([^\]]+)\]/);
-						const title = titleMatch ? titleMatch[1] : '';
+						const title = titleMatch?.[1] ?? '';
 						const lang = first.replace(/\[title=[^\]]+\]/, '').trim();
-						const _last = codeLines.pop();
-						const formatted = this.lexer.options.renderer.code({
+						codeLines.pop();
+
+						return {
 							type: 'code',
 							raw: c,
 							lang,
 							text: codeLines.join('\n'),
-						});
-
-						return {
-							formatted,
 							title,
 							id: codeBlockId++,
 						};
 					}),
 				};
-				this.lexer.inline(token.text, token.tokens);
 				return token;
 			}
 		}
 	},
 	renderer(token) {
+		const { codeblocks } = token as CodeGroupToken;
 		return `
         <div class="code-group">
-            <div class="code-group-tabs"> ${token.codeblocks
-							.map(
-								(c, i) =>
-									`<button data-id="${c.id}" class="code-group-tab ${i === 0 ? 'active' : ''}">${
-										c.title
-									}</button>`,
-							)
-							.join('')}</div>
-            ${token.codeblocks
-							.map(
-								(c, i) =>
-									`<div data-id="${c.id}" class="code-group-code" ${i === 0 ? '' : 'hidden'}>${
-										c.formatted
-									}</div>`,
-							)
-							.join('')}
-        </div>`;
+			<div class="code-group-tabs" role="tablist" aria-label="Code examples"> ${codeblocks
+				.map(
+					(c, i) =>
+						`<button type="button" id="code-tab-${c.id}" data-id="${c.id}" class="code-group-tab ${i === 0 ? 'active' : ''}" role="tab" aria-selected="${i === 0}" aria-controls="code-panel-${c.id}" tabindex="${i === 0 ? '0' : '-1'}">${
+							c.title
+						}</button>`,
+				)
+				.join('')}</div>
+			${codeblocks
+				.map(
+					(c, i) =>
+						`<div id="code-panel-${c.id}" data-id="${c.id}" class="code-group-code" role="tabpanel" aria-labelledby="code-tab-${c.id}" ${i === 0 ? '' : 'hidden'}>${this.parser.renderer.code(
+							c,
+						)}</div>`,
+				)
+				.join('')}
+		</div>`;
 	},
-};
+} satisfies TokenizerAndRendererExtension;

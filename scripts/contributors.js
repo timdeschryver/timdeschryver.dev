@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { chromium } from 'playwright';
 import fs from 'fs';
 
@@ -7,7 +7,10 @@ const contributorsCache = new Map();
 const visited = [];
 
 (async () => {
-	const posts = fs.readdirSync(content);
+	const posts = fs
+		.readdirSync(content, { withFileTypes: true })
+		.filter((entry) => entry.isDirectory() && fs.existsSync(`${content}/${entry.name}/index.md`))
+		.map((entry) => entry.name);
 	for (const slug of posts) {
 		const contributors = await getContributors(slug);
 		fs.writeFileSync(`${content}/${slug}/contributors.json`, JSON.stringify(contributors));
@@ -15,13 +18,16 @@ const visited = [];
 })();
 
 async function getContributors(slug) {
-	const buffer = execSync(`git log --follow --format=%an ${content}/${slug}/index.md`);
+	const buffer = execFileSync(
+		'git',
+		['log', '--follow', '--format=%an', '--', `${content}/${slug}/index.md`],
+		{ encoding: 'utf-8' },
+	);
 	if (!buffer) {
 		return [];
 	}
 
 	const authors = buffer
-		.toString()
 		.trim()
 		.split('\n')
 		.filter((a) => !a.toLowerCase().includes('deschryver'));

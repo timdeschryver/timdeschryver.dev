@@ -1,12 +1,13 @@
 <script lang="ts">
+	import '../code.css';
 	import Head from '$lib/Head.svelte';
 	import { page } from '$app/stores';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
-	import Newsletter from '$lib/Newsletter.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { publicUrl } from '$lib/variables';
 
 	let { data } = $props();
 
@@ -16,7 +17,7 @@
 	codeBlockLifeCycle();
 	copyLifeCycle();
 
-	let query = $state(null);
+	let query = $state<string | null>(null);
 
 	onMount(() => {
 		query = $page.url.searchParams.get('q') ?? '';
@@ -30,36 +31,59 @@
 		});
 	});
 
-	let queryParts = $derived((query || '').split(' ').filter(Boolean));
+	let queryParts = $derived(
+		(query || '')
+			.split(/\s+/)
+			.map((part) => part.toLowerCase())
+			.filter(Boolean),
+	);
 
-	function tagClicked(tag) {
-		if (queryParts.includes(tag)) {
-			query = queryParts.filter((q) => q !== tag).join(' ');
+	function tagClicked(tag: string) {
+		const normalizedTag = tag.toLowerCase();
+
+		if (queryParts.includes(normalizedTag)) {
+			query = queryParts.filter((q) => q !== normalizedTag).join(' ');
 		} else {
 			query = query ? `${query.trim()} ${tag}` : tag;
 		}
 	}
 
 	function tagSelected(tag: string) {
-		return queryParts.includes(tag);
+		return queryParts.includes(tag.toLowerCase());
+	}
+
+	function bitMatchesQuery(bit: {
+		metadata: { title: string; description: string; tags: string[] };
+	}) {
+		const title = bit.metadata.title.toLowerCase();
+		const description = bit.metadata.description.toLowerCase();
+		const tags = bit.metadata.tags.map((tag) => tag.toLowerCase());
+
+		return queryParts.every(
+			(queryPart) =>
+				tags.includes(queryPart) || title.includes(queryPart) || description.includes(queryPart),
+		);
 	}
 </script>
 
 <Head
 	title="Developer Bits - Tim Deschryver"
-	description="Short notes about developer tools, new Angular and .NET features, and other topics that I'm excited about."
-	canonical="https://timdeschryver.dev/bits"
+	description="Short notes about developer tools, new .NET and Angular features, and other topics that I'm excited about."
+	canonical={publicUrl('/bits')}
 />
 
 <header class="mt-normal">
+	<div class="eyebrow">Short-form notes</div>
 	<h1>Developer Bits</h1>
 	<p>Tools || (new) features || blog posts in a bit format on topics that I'm excited about.</p>
 
-	<Newsletter hideTitle={true} />
-
 	<div class="mt-normal">
 		{#each tags as tag (tag)}
-			<button class:active={queryParts && tagSelected(tag)} onclick={() => tagClicked(tag)}>
+			<button
+				class:active={queryParts && tagSelected(tag)}
+				aria-pressed={Boolean(queryParts && tagSelected(tag))}
+				onclick={() => tagClicked(tag)}
+			>
 				# {tag}
 			</button>
 		{/each}
@@ -67,14 +91,13 @@
 </header>
 
 {#each bits as bit, i (bit.metadata.slug)}
-	{#if queryParts.length === 0 || bit.metadata.tags.some((tag) => tagSelected(tag))}
+	{#if queryParts.length === 0 || bitMatchesQuery(bit)}
 		<div class="bit">
 			<h2>
 				{bits.length - i}.
 				<a
 					href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
 					class="mark-hover"
-					data-sveltekit-preload-data="hover"
 					style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
 				>
 			</h2>
@@ -88,19 +111,41 @@
 <style>
 	hr {
 		border: none;
-		border-top: solid 2px var(--text-color);
-		margin: 4rem 1rem;
+		border-top: solid 1px var(--line-color);
+		margin: 4rem 0;
 	}
 	.bit {
 		content-visibility: auto;
 		contain-intrinsic-size: auto 900px;
 		overflow: auto;
 	}
-	.bit:nth-child(even) hr {
-		transform: rotate(2deg);
+	header {
+		position: relative;
+		margin-top: clamp(4rem, 10vh, 7rem);
+		padding-bottom: 3rem;
+		border-bottom: 1px solid var(--line-color);
 	}
-	.bit:nth-child(odd) hr {
-		transform: rotate(-2deg);
+
+	header h1 {
+		margin-top: clamp(1.25rem, 3vw, 2.25rem);
+		font-size: clamp(3rem, 8vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: -0.06em;
+	}
+
+	.eyebrow {
+		margin: 0 0 1rem;
+		font-family: var(--head-font);
+		font-size: 0.72rem;
+		font-weight: 650;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-color-light);
+	}
+
+	.bit h2 {
+		font-size: clamp(1.6rem, 4vw, 2.35rem);
+		text-wrap: balance;
 	}
 	button {
 		color: var(--text-color-light);

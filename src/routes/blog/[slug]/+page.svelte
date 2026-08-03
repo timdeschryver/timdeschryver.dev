@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../../code.css';
 	import { onMount } from 'svelte';
 	import Support from '$lib/Support.svelte';
 	import { humanDate } from '$lib/formatters';
@@ -10,7 +11,6 @@
 	import BlogSeries from '$lib/BlogSeries.svelte';
 	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
 	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
-	import Newsletter from '$lib/Newsletter.svelte';
 	import Ad from '$lib/Ad.svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
@@ -19,21 +19,48 @@
 	let { data } = $props();
 	const post = $derived(data.post);
 
-	const tldr = $derived(() => blog.blog?.state === 'tldr');
+	const showTldr = $derived(() => blog.blog?.state === 'tldr');
+	let tldrHtml = $state<string | null>(null);
+	let tldrError = $state(false);
 
 	// svelte-ignore state_referenced_locally
-	codeBlockLifeCycle(tldr);
+	codeBlockLifeCycle(showTldr);
 	// svelte-ignore state_referenced_locally
-	copyLifeCycle(tldr);
+	copyLifeCycle(showTldr);
 
 	onMount(() => {
-		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
+		const showTldrInitially = post.hasTldr && $page.url.searchParams.get('tldr') === 'true';
 		blog.loadBlog(
 			post.metadata.title,
 			post.metadata.slug,
-			hasTldr ? 'tldr' : post.tldr ? 'detailed' : 'single',
+			showTldrInitially ? 'tldr' : post.hasTldr ? 'detailed' : 'single',
 		);
 		return () => blog.reset();
+	});
+
+	$effect(() => {
+		if (!showTldr() || tldrHtml !== null) return;
+
+		const controller = new AbortController();
+		tldrError = false;
+
+		fetch(resolve('/blog/[slug]/tldr', { slug: post.metadata.slug }), {
+			signal: controller.signal,
+		})
+			.then((response) => {
+				if (!response.ok) throw new Error(`Could not load TLDR (${response.status})`);
+				return response.text();
+			})
+			.then((html) => {
+				tldrHtml = html;
+			})
+			.catch((error: unknown) => {
+				if (!(error instanceof DOMException && error.name === 'AbortError')) {
+					tldrError = true;
+				}
+			});
+
+		return () => controller.abort();
 	});
 
 	let scrollY = $state(0);
@@ -51,8 +78,11 @@
 
 	function tocClick(evt: MouseEvent) {
 		evt.preventDefault();
-		const element = document.querySelector((evt.currentTarget as HTMLElement).getAttribute('href'));
-		gotoHeader(element as HTMLElement);
+		const href = (evt.currentTarget as HTMLAnchorElement).getAttribute('href');
+		if (!href) return;
+
+		const element = document.querySelector<HTMLElement>(href);
+		if (element) gotoHeader(element);
 	}
 
 	function gotoHeader(header: HTMLElement) {
@@ -65,13 +95,16 @@
 			--accent-color: var(--${post.metadata.color ?? 'base-color'});
 		}
 
-		main h1, 
-		main h2,  
+		main > header h1 {
+			color: hsla(var(--accent-color), 1);
+		}
+
+		main > h2,
 		main h3, 
 		main h4,
 		main h5, 
 		main h6 {
-			color: hsla(var(--accent-color), 1);
+			color: var(--text-color);
 		}
 	</style>`);
 
@@ -79,10 +112,10 @@
 		if (!browser) {
 			return [];
 		}
-		const hasTldr = post.tldr && $page.url.searchParams.get('tldr') === 'true';
-		return hasTldr
+		const showTldrInitially = post.hasTldr && $page.url.searchParams.get('tldr') === 'true';
+		return showTldrInitially
 			? []
-			: ([...document.querySelectorAll('main > h2,h3')].reverse() as HTMLElement[]);
+			: ([...document.querySelectorAll('main > h2, main > h3')].reverse() as HTMLElement[]);
 	});
 
 	$effect(() => {
@@ -111,7 +144,7 @@
 		};
 	});
 
-	let lastHeadingId = $state(null);
+	let lastHeadingId = $state<string | null>(null);
 	$effect(() => {
 		if (browser) {
 			if (blog.blog?.state === 'tldr' && lastHeadingId) {
@@ -119,7 +152,7 @@
 			} else if (blog.blog?.state !== 'tldr' && headings()) {
 				const heading = headings().find((h) => h.offsetTop <= scrollY + 110);
 				if (lastHeadingId !== heading?.id) {
-					lastHeadingId = heading?.id;
+					lastHeadingId = heading?.id ?? null;
 				}
 			}
 		}
@@ -130,6 +163,14 @@
 			const { origin, pathname } = window.location;
 			navigator.clipboard.writeText(`${origin}${pathname}#${(e.currentTarget as HTMLElement).id}`);
 		}
+	}
+
+	function showDetailedPost() {
+		if (showTldr()) blog.toggleTldr();
+	}
+
+	function showCodeOnly() {
+		if (!showTldr()) blog.toggleTldr();
 	}
 </script>
 
@@ -207,15 +248,63 @@
 		</div>
 	{/if}
 
-	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
+	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} compact />
 </aside>
 
-{#if post.tldr}
-	<button class="tldr" onclick={blog.toggleTldr}>
-		👀 {blog.blog?.state === 'tldr'
-			? 'I want to read the blog post'
-			: 'Just show me the code already'}</button
-	>
+{#if post.hasTldr}
+	<div class="tldr" role="group" aria-label="Reading mode">
+		<span class="tldr-label">Reading mode</span>
+		<div class="tldr-options">
+			<button
+				type="button"
+				class:active={!showTldr()}
+				aria-pressed={!showTldr()}
+				onclick={showDetailedPost}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+					<path d="M14 2v6h6" />
+					<path d="M16 13H8" />
+					<path d="M16 17H8" />
+				</svg>
+				Full article
+			</button>
+			<button
+				type="button"
+				class:active={showTldr()}
+				aria-pressed={showTldr()}
+				onclick={showCodeOnly}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="m16 18 6-6-6-6" />
+					<path d="m8 6-6 6 6 6" />
+				</svg>
+				Code only
+			</button>
+		</div>
+	</div>
 {/if}
 
 {@html htmlStyle}
@@ -224,8 +313,14 @@
 	<BlogSeries series={post.metadata.series} seriesPosts={post.metadata.seriesPosts} />
 {/if}
 
-{#if tldr()}
-	{@html post.tldr}
+{#if showTldr()}
+	{#if tldrHtml}
+		{@html tldrHtml}
+	{:else if tldrError}
+		<p role="alert">The TLDR version could not be loaded. Switch back and try again.</p>
+	{:else}
+		<p role="status">Loading TLDR...</p>
+	{/if}
 {:else}
 	{@html post.html}
 
@@ -281,8 +376,6 @@
 
 <Actions editUrl={post.metadata.edit} />
 
-<Newsletter beehiivId={post.beehiivId} />
-
 <Support />
 
 <Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} />
@@ -290,12 +383,94 @@
 <Comments />
 
 <style>
+	:global(main[data-segment*='blog/']) {
+		--content-width: 80ch;
+	}
+
 	.tldr {
-		background: none;
-		border: none;
-		text-align: center;
-		font-weight: bolder;
-		margin-bottom: var(--spacing);
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		width: fit-content;
+		max-width: 100%;
+		margin: 0 auto var(--spacing);
+		padding: 0.3rem;
+		border: 1px solid var(--line-color);
+		border-radius: 0.7rem;
+		background: var(--background-color-subtle);
+	}
+
+	.tldr-label {
+		padding: 0 0.65rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.68rem;
+		font-weight: 650;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.tldr-options {
+		display: flex;
+		gap: 0.25rem;
+		margin-top: 0;
+	}
+
+	.tldr button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.4rem;
+		min-height: 2.75rem;
+		margin: 0;
+		padding: 0.55rem 0.8rem;
+		border: 0;
+		border-radius: 0.45rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.82rem;
+		font-weight: 620;
+		line-height: 1.2;
+		white-space: nowrap;
+		transition:
+			background-color 0.2s ease,
+			color 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.tldr button:hover:not(.active) {
+		background: var(--background-color-transparent);
+		color: var(--text-color);
+	}
+
+	.tldr button.active {
+		background: hsla(var(--accent-color), 0.12);
+		box-shadow: inset 0 0 0 1px var(--text-color-light);
+		color: var(--text-color);
+		cursor: default;
+	}
+
+	.tldr svg {
+		flex: 0 0 auto;
+	}
+
+	@media (max-width: 480px) {
+		.tldr {
+			width: 100%;
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.tldr-label {
+			padding: 0.35rem 0.5rem 0.2rem;
+			text-align: center;
+		}
+
+		.tldr-options {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 	}
 
 	:global(main > p:first-of-type) {
@@ -305,16 +480,15 @@
 	.left-nav {
 		display: block;
 		position: fixed;
-		padding-top: 2.5em;
-		padding-right: 2.5em;
-		padding-left: 3em;
+		top: var(--header-height);
+		padding: 2.5rem clamp(1.5rem, 3vw, 3rem);
 		text-align: left;
-		width: 20%;
+		width: min(25vw, 22rem);
 		transition: all 0.2s;
-		background-color: var(--background-color-subtle);
-		height: 100%;
+		background: var(--background-color);
+		height: calc(100dvh - var(--header-height));
 		margin-top: 0;
-		border-right: 1px solid rgba(255, 255, 255, 0.1);
+		border-right: 1px solid var(--line-color);
 		overflow: auto;
 	}
 
@@ -337,42 +511,39 @@
 		overflow: auto;
 	}
 
-	@media (max-width: 1799px) {
-		.left-nav {
-			width: 25%;
-		}
-
+	@media (min-width: 1280px) {
 		:global(main[data-segment*='blog/'] ~ footer) {
-			padding-left: 25%;
+			transform: translateX(min(12.5vw, 11rem));
 		}
 	}
 
-	@media (max-width: 1022px) {
+	@media (max-width: 1279px) {
 		.left-nav {
 			display: none;
 		}
 
 		:global(main[data-segment*='blog/'] ~ footer) {
 			padding-left: 0;
+			transform: none;
 		}
 	}
 
 	.toc ul {
 		list-style: none;
 		font-size: 1rem;
-		color: var(--text-color-light-subtle);
+		color: var(--text-color-subtle);
 		transition: all 0.25s;
 	}
 
 	.toc ul li.active {
-		color: var(--text-color);
+		color: hsla(var(--accent-color), 1);
 		font-weight: 600;
 	}
 
-	.toc ul li.active::first-letter {
-		font-size: 1.5rem;
-		line-height: 1;
-		font-weight: 900;
+	.toc h3 {
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
 	.toc ul li:hover {
@@ -386,26 +557,61 @@
 
 	:global(body > div > main) > header {
 		grid-column: 1 / 4;
-		min-height: 100dvh;
-		min-width: 90%;
-		max-width: 90%;
+		position: relative;
+		min-height: calc(100dvh - var(--header-height));
+		width: 100%;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: space-evenly;
-		text-align: center;
+		align-items: flex-start;
+		justify-content: flex-end;
+		text-align: left;
 		margin: 0 auto;
-		padding: 0;
-		font-size: clamp(1rem, 3vw, 6rem);
+		margin-bottom: clamp(2rem, 4vw, 3.5rem);
+		padding: clamp(4rem, 12vh, 9rem) clamp(0rem, 5vw, 5rem) clamp(2rem, 5vw, 4rem);
+		border-bottom: 1px solid var(--line-color);
+		background:
+			linear-gradient(135deg, hsla(var(--accent-color), 0.07), transparent 42%),
+			linear-gradient(90deg, transparent 52%, hsla(var(--accent-color), 0.04));
+		overflow: hidden;
+	}
+
+	:global(body > div > main) > header::after {
+		content: '';
+		position: absolute;
+		top: clamp(3rem, 10vw, 8rem);
+		right: clamp(0rem, 8vw, 8rem);
+		width: clamp(5rem, 16vw, 13rem);
+		aspect-ratio: 1;
+		border: 1px solid hsla(var(--accent-color), 0.5);
+		border-radius: 50%;
+		box-shadow:
+			0 0 2rem hsla(var(--accent-color), 0.14),
+			inset 0 0 1.5rem hsla(var(--accent-color), 0.08);
+		transform: translateX(35%);
+		pointer-events: none;
+	}
+
+	:global(body > div > main) > header h1 {
+		position: relative;
+		z-index: 1;
+		max-width: 16ch;
+		font-size: clamp(2.8rem, 7.5vw, 7rem);
+		line-height: 0.95;
+		letter-spacing: -0.065em;
+		text-shadow:
+			0 0 0.45em hsla(var(--accent-color), 0.18),
+			0 0 1.2em hsla(var(--accent-color), 0.08);
+		text-wrap: balance;
 	}
 
 	.details {
 		display: flex;
 		justify-content: space-between;
-		margin: 0;
-		font-size: 1.5rem;
+		margin-top: clamp(2rem, 8vh, 5rem);
+		font-size: 0.85rem;
 		width: 100%;
 		align-items: center;
+		color: var(--text-color-light);
 	}
 
 	.author-img,
@@ -422,7 +628,8 @@
 	}
 
 	.author-name {
-		font-size: 1.3rem;
+		font-size: 0.9rem;
+		font-weight: 650;
 	}
 	.author-source {
 		font-size: 0.8rem;
@@ -431,7 +638,8 @@
 	}
 
 	.author-img {
-		width: auto;
+		width: 44px;
+		height: 44px;
 		border-radius: 100%;
 	}
 
@@ -458,6 +666,38 @@
 		.logo {
 			width: 48px;
 			height: 48px;
+		}
+	}
+
+	@media screen and (max-width: 620px) {
+		:global(body > div > main) > header {
+			justify-content: center;
+			padding-top: clamp(2rem, 5vh, 3rem);
+			padding-bottom: clamp(2rem, 5vh, 3rem);
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		:global(body > div > main) > header::after {
+			top: 3rem;
+		}
+
+		.details {
+			position: absolute;
+			bottom: clamp(2rem, 5vh, 3rem);
+			left: 0;
+			align-items: center;
+			gap: 0.75rem;
+			margin-top: 0;
+		}
+
+		.author-img {
+			width: 36px;
+			height: 36px;
+		}
+
+		.author {
+			flex-shrink: 0;
 		}
 	}
 

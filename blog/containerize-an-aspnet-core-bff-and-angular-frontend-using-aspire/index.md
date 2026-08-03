@@ -83,7 +83,7 @@ builder.AddServiceDefaults();
 
 To reroute the Angular routes to the Angular development server, the template uses [YARP (Yet Another Reverse Proxy)](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/yarp/yarp-overview). To know the URL of the Angular development server, the template uses a hardcoded URL in the `appsettings.Development.config` file. This is not ideal, as it can lead to issues when running the project in different environments. By using the environment variable created by the AppHost, we can make the configuration more flexible and avoid hardcoding URLs. The `bff-angular` is the name of the Angular project given in the `AppHost.cs` file.
 
-```diff [appsettings.Development.config]
+```diff [file="appsettings.Development.config"]
 {
 -  "UiDevServerUrl": "https://localhost:4201",
   "ReverseProxy": {
@@ -190,7 +190,7 @@ Because this isn't the default behavior when building an Angular application and
 Therefore I removed the output path configuration from the `angular.json` file.
 Now when the application is built, it reverts back to the default behavior to add the output build into the `dist` folder of the Angular project.
 
-```diff [angular.json]
+```diff [file=angular.json]
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
@@ -289,7 +289,7 @@ Finally, we use the `PublishAsDockerComposeService` method to add this project a
 
 Resulting in the following `docker-compose.yaml` file being generated after running `aspire publish`:
 
-```yaml
+```yaml [file=docker-compose.yaml]
 services:
   bff-server:
     image: '${BFF_SERVER_IMAGE}'

@@ -2,6 +2,7 @@ import { ISODate } from '$lib/formatters';
 import { variables } from '../../lib/variables';
 import { readPosts } from '../blog/_posts';
 import { readBits } from '../bits/_bits';
+import { execFileSync } from 'node:child_process';
 
 export const prerender = true;
 
@@ -19,43 +20,31 @@ function generate(
 	posts: Awaited<ReturnType<typeof readPosts>>,
 	bits: Awaited<ReturnType<typeof readBits>>,
 ) {
-	const date = ISODate(new Date());
+	const latestPostDate = latestDate(
+		posts.map((post) => post.metadata.modified || post.metadata.date),
+	);
+	const latestBitDate = latestDate(bits.map((bit) => bit.metadata.date));
+	const latestContentDate = latestDate([latestPostDate, latestBitDate]);
 	const nodes = [
 		{
 			loc: `${variables.basePath}`,
-			priority: '1.0',
-			changefreq: 'daily',
-			date,
+			date: latestDate([latestContentDate, gitLastModified('src/routes/+page.svelte')]),
 		},
 		...posts.map((post) => ({
 			loc: `${variables.basePath}/blog/${post.metadata.slug}`,
-			priority: '1.0',
-			changefreq: 'daily',
 			date: ISODate(post.metadata.modified || post.metadata.date),
 		})),
 		...bits.map((bit) => ({
 			loc: `${variables.basePath}/bits/${bit.metadata.slug}`,
-			priority: '1.0',
-			changefreq: 'daily',
 			date: ISODate(bit.metadata.date),
 		})),
 		{
 			loc: `${variables.basePath}/bits`,
-			priority: '0.8',
-			changefreq: 'daily',
-			date,
+			date: latestBitDate,
 		},
 		{
 			loc: `${variables.basePath}/blog`,
-			priority: '0.6',
-			changefreq: 'daily',
-			date,
-		},
-		{
-			loc: `${variables.basePath}/resources/ngrx`,
-			priority: '0.2',
-			changefreq: 'monthly',
-			date,
+			date: latestPostDate,
 		},
 	];
 
@@ -64,8 +53,6 @@ function generate(
 			return `
 				<url>
 					<loc>${node.loc}</loc>
-					<priority>${node.priority}</priority>
-					<changefreq>${node.changefreq}</changefreq>
 					<lastmod>${node.date}</lastmod>
 				</url>
 			`;
@@ -82,4 +69,24 @@ function generate(
 		${urlNodes}
 		</urlset>`;
 	return xml.trim();
+}
+
+function latestDate(dates: (string | null | undefined)[]) {
+	return (
+		dates
+			.filter((date): date is string => Boolean(date))
+			.sort()
+			.at(-1) || ISODate(new Date())
+	);
+}
+
+function gitLastModified(filePath: string) {
+	try {
+		const date = execFileSync('git', ['log', '-1', '--format=%cI', '--', filePath], {
+			encoding: 'utf-8',
+		}).trim();
+		return date ? ISODate(date) : null;
+	} catch {
+		return null;
+	}
 }
