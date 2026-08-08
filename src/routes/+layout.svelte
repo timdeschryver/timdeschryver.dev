@@ -214,6 +214,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to light theme"
+					aria-label="Switch to light theme"
 					onclick={(evt) => toggleTheme(evt, 'light')}
 				>
 					<svg
@@ -239,6 +240,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to dark theme"
+					aria-label="Switch to dark theme"
 					onclick={(evt) => toggleTheme(evt, 'dark')}
 				>
 					<svg

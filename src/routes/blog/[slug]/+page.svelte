@@ -95,19 +95,15 @@
 		window.scrollTo({ top: y, behavior: 'smooth' });
 	}
 
-	const htmlStyle = $derived(`<style> 
+	const htmlStyle = $derived(`<style>
 		main {
 			--accent-color: var(--${post.metadata.color ?? 'base-color'});
 		}
 
-		main > header h1 {
-			color: hsla(var(--accent-color), 1);
-		}
-
 		main > h2,
-		main h3, 
+		main h3,
 		main h4,
-		main h5, 
+		main h5,
 		main h6 {
 			color: var(--text-color);
 		}
@@ -560,7 +556,7 @@
 	.toc ul {
 		list-style: none;
 		font-size: 1rem;
-		color: var(--text-color-subtle);
+		color: var(--text-color-light);
 		transition: all 0.25s;
 	}
 
@@ -611,11 +607,8 @@
 		right: clamp(0rem, 8vw, 8rem);
 		width: clamp(5rem, 16vw, 13rem);
 		aspect-ratio: 1;
-		border: 1px solid hsla(var(--accent-color), 0.5);
+		border: 1px solid hsla(var(--accent-color), 0.45);
 		border-radius: 50%;
-		box-shadow:
-			0 0 2rem hsla(var(--accent-color), 0.14),
-			inset 0 0 1.5rem hsla(var(--accent-color), 0.08);
 		transform: translateX(35%);
 		pointer-events: none;
 	}
@@ -627,10 +620,16 @@
 		font-size: clamp(2.8rem, 7.5vw, 7rem);
 		line-height: 0.95;
 		letter-spacing: -0.065em;
-		text-shadow:
-			0 0 0.45em hsla(var(--accent-color), 0.18),
-			0 0 1.2em hsla(var(--accent-color), 0.08);
 		text-wrap: balance;
+	}
+
+	:global(body > div > main) > header h1::before {
+		content: '';
+		display: block;
+		width: clamp(2.5rem, 5vw, 4rem);
+		height: 0.28rem;
+		margin-bottom: clamp(1.25rem, 3vh, 2rem);
+		background: hsla(var(--accent-color), 1);
 	}
 
 	.details {
@@ -708,8 +707,8 @@
 			justify-content: center;
 			padding-top: clamp(2rem, 5vh, 3rem);
 			padding-bottom: clamp(2rem, 5vh, 3rem);
-			padding-left: 0;
-			padding-right: 0;
+			padding-left: 1.2rem;
+			padding-right: 1.2rem;
 		}
 
 		:global(body > div > main) > header::after {
@@ -719,7 +718,9 @@
 		.details {
 			position: absolute;
 			bottom: clamp(2rem, 5vh, 3rem);
-			left: 0;
+			left: 1.2rem;
+			right: 1.2rem;
+			width: auto;
 			align-items: center;
 			gap: 0.75rem;
 			margin-top: 0;

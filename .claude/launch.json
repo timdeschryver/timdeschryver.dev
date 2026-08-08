@@ -1,0 +1,17 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "dev",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["dev"],
+			"port": 5173
+		},
+		{
+			"name": "dev-alt",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["dev", "--port", "5199", "--strictPort"],
+			"port": 5199
+		}
+	]
+}

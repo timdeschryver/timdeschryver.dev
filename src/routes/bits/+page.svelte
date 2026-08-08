@@ -110,7 +110,8 @@
 					<p>{bit.metadata.description}</p>
 					<a
 						href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
-						class="read-more mark-hover">Read bit</a
+						class="read-more mark-hover"
+						aria-label="Read bit: {bit.metadata.title}">Read bit</a
 					>
 				</article>
 			</li>
@@ -162,7 +163,7 @@
 		position: absolute;
 		right: 0;
 		top: clamp(1.5rem, 3.5vw, 2.25rem);
-		color: var(--text-color-subtle);
+		color: var(--text-color-light);
 		font-family: var(--head-font);
 		font-size: 0.75rem;
 		letter-spacing: 0.1em;

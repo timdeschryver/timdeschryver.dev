@@ -62,6 +62,10 @@
 <section class="profile">
 	<div class="intro-label">Software engineer · Belgium</div>
 	<h1>Hi, I'm Tim <span class="wave">👋</span></h1>
+	<p class="tagline">
+		Helping teams <strong onmouseover={fireConfetti} onfocus={fireConfetti}>deliver value</strong> with
+		.NET, Angular, and agentic AI.
+	</p>
 	<nav class="profile-socials" aria-label="Social profiles">
 		<span>Elsewhere</span>
 		<a href="https://www.linkedin.com/in/tim-deschryver" rel="me external">LinkedIn</a>
@@ -144,7 +148,7 @@
 		</div>
 	</dl>
 
-	<p>
+	<p class="kaizen-note">
 		<strong>Kaizen 改善</strong> (kai.zen): Kaizen is an approach to creating continuous improvement based
 		on the idea that small, ongoing positive changes can reap significant improvements.
 	</p>
@@ -186,6 +190,18 @@
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 		color: var(--text-color-light);
+	}
+
+	.tagline {
+		margin-top: clamp(1.25rem, 3vw, 2rem);
+		font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+		line-height: 1.5;
+		color: var(--text-color-light);
+		text-wrap: balance;
+	}
+
+	.tagline strong {
+		color: var(--text-color);
 	}
 
 	.profile-socials {
@@ -285,6 +301,17 @@
 		color: var(--text-color-light);
 		font-size: 1rem;
 		line-height: 1.6;
+	}
+
+	.kaizen-note {
+		margin-top: var(--spacing);
+		color: var(--text-color-light);
+		font-size: 0.95rem;
+		line-height: 1.7;
+	}
+
+	.kaizen-note strong {
+		color: var(--text-color);
 	}
 
 	@media (max-width: 620px) {
