@@ -1,21 +1,16 @@
 <script lang="ts">
-	import '../code.css';
 	import Head from '$lib/Head.svelte';
 	import { page } from '$app/stores';
-	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
-	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { publicUrl } from '$lib/variables';
+	import { humanDate } from '$lib/formatters';
 
 	let { data } = $props();
 
 	// svelte-ignore state_referenced_locally
 	const { bits, tags } = data;
-
-	codeBlockLifeCycle();
-	copyLifeCycle();
 
 	let query = $state<string | null>(null);
 
@@ -70,6 +65,11 @@
 	title="Developer Bits - Tim Deschryver"
 	description="Short notes about developer tools, new .NET and Angular features, and other topics that I'm excited about."
 	canonical={publicUrl('/bits')}
+	type="collection"
+	items={bits.slice(0, 20).map((bit) => ({
+		name: bit.metadata.title,
+		url: publicUrl(`/bits/${bit.metadata.slug}`),
+	}))}
 />
 
 <header class="mt-normal">
@@ -90,35 +90,35 @@
 	</div>
 </header>
 
-{#each bits as bit, i (bit.metadata.slug)}
-	{#if queryParts.length === 0 || bitMatchesQuery(bit)}
-		<div class="bit">
-			<h2>
-				{bits.length - i}.
-				<a
-					href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
-					class="mark-hover"
-					style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
-				>
-			</h2>
-			{@html bit.html}
-
-			<hr />
-		</div>
-	{/if}
-{/each}
+<ol class="bits-list">
+	{#each bits as bit, i (bit.metadata.slug)}
+		{#if queryParts.length === 0 || bitMatchesQuery(bit)}
+			<li>
+				<article class="bit">
+					<span class="bit-order" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+					<div class="bit-meta">
+						<time datetime={bit.metadata.date}>{humanDate(bit.metadata.date)}</time>
+						<span>{bit.metadata.tags.map((tag) => `#${tag}`).join(' · ')}</span>
+					</div>
+					<h2>
+						<a
+							href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
+							class="mark-hover"
+							style:--bit-title="bit-title-{bit.metadata.slug}">{bit.metadata.title}</a
+						>
+					</h2>
+					<p>{bit.metadata.description}</p>
+					<a
+						href={resolve('/bits/[slug]', { slug: bit.metadata.slug })}
+						class="read-more mark-hover">Read bit</a
+					>
+				</article>
+			</li>
+		{/if}
+	{/each}
+</ol>
 
 <style>
-	hr {
-		border: none;
-		border-top: solid 1px var(--line-color);
-		margin: 4rem 0;
-	}
-	.bit {
-		content-visibility: auto;
-		contain-intrinsic-size: auto 900px;
-		overflow: auto;
-	}
 	header {
 		position: relative;
 		margin-top: clamp(4rem, 10vh, 7rem);
@@ -143,9 +143,65 @@
 		color: var(--text-color-light);
 	}
 
+	.bits-list {
+		margin-top: 0;
+		list-style: none;
+	}
+
+	.bits-list > li {
+		margin-top: 0;
+		border-bottom: 1px solid var(--line-color);
+	}
+
+	.bit {
+		position: relative;
+		padding: clamp(1.5rem, 3.5vw, 2.25rem) 0;
+	}
+
+	.bit-order {
+		position: absolute;
+		right: 0;
+		top: clamp(1.5rem, 3.5vw, 2.25rem);
+		color: var(--text-color-subtle);
+		font-family: var(--head-font);
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+	}
+
+	.bit-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem 1rem;
+		padding-right: 3rem;
+		color: var(--text-color-light);
+		font-size: 0.78rem;
+	}
+
+	.bit-meta time {
+		font-size: 1em;
+	}
+
+	.bit-meta > * {
+		margin-top: 0;
+	}
+
 	.bit h2 {
+		margin-top: 1rem;
 		font-size: clamp(1.6rem, 4vw, 2.35rem);
 		text-wrap: balance;
+	}
+
+	.bit p {
+		max-width: 62ch;
+		color: var(--text-color-light);
+	}
+
+	.read-more {
+		display: inline-block;
+		font-family: var(--head-font);
+		font-size: 0.85rem;
+		font-weight: 650;
 	}
 	button {
 		color: var(--text-color-light);

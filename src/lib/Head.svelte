@@ -1,16 +1,23 @@
 <script lang="ts">
-	type PageType = 'website' | 'article' | 'profile';
+	type PageType = 'website' | 'article' | 'profile' | 'collection';
+	type Link = { name: string; url: string };
 
 	type Props = {
 		title: string;
 		description: string;
 		canonical: string;
 		image?: string;
+		imageWidth?: number;
+		imageHeight?: number;
+		imageType?: string;
 		type?: PageType;
+		markdown?: string;
 		author?: string;
 		published?: string;
 		modified?: string | null;
 		tags?: string[];
+		section?: Link;
+		items?: Link[];
 	};
 
 	let {
@@ -18,11 +25,17 @@
 		description,
 		canonical,
 		image,
+		imageWidth,
+		imageHeight,
+		imageType,
 		type = 'website',
+		markdown,
 		author = 'Tim Deschryver',
 		published,
 		modified,
 		tags = [],
+		section,
+		items = [],
 	}: Props = $props();
 
 	const siteUrl = 'https://timdeschryver.dev';
@@ -70,8 +83,33 @@
 			inLanguage: 'en',
 			publisher: { '@id': personId },
 		};
+		const breadcrumb = section
+			? {
+					'@type': 'BreadcrumbList',
+					'@id': `${canonical}#breadcrumb`,
+					itemListElement: [
+						{ '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+						{ '@type': 'ListItem', position: 2, name: section.name, item: section.url },
+						{ '@type': 'ListItem', position: 3, name: title, item: canonical },
+					],
+				}
+			: null;
+		const itemList =
+			type === 'collection' && items.length
+				? {
+						'@type': 'ItemList',
+						'@id': `${canonical}#items`,
+						itemListElement: items.map((item, index) => ({
+							'@type': 'ListItem',
+							position: index + 1,
+							name: item.name,
+							url: item.url,
+						})),
+					}
+				: null;
 		const webPage = {
-			'@type': type === 'profile' ? 'ProfilePage' : 'WebPage',
+			'@type':
+				type === 'profile' ? 'ProfilePage' : type === 'collection' ? 'CollectionPage' : 'WebPage',
 			'@id': `${canonical}#webpage`,
 			url: canonical,
 			name: title,
@@ -79,6 +117,8 @@
 			inLanguage: 'en',
 			isPartOf: { '@id': websiteId },
 			...(type === 'profile' ? { mainEntity: { '@id': personId } } : {}),
+			...(breadcrumb ? { breadcrumb: { '@id': breadcrumb['@id'] } } : {}),
+			...(itemList ? { mainEntity: { '@id': itemList['@id'] } } : {}),
 		};
 		const article =
 			type === 'article'
@@ -96,16 +136,25 @@
 						author: { '@id': personId },
 						publisher: { '@id': personId },
 						keywords: tags,
+						articleSection: tags,
 						inLanguage: 'en',
 					}
 				: null;
 
 		return {
 			'@context': 'https://schema.org',
-			'@graph': [webPage, ...(article ? [article] : []), website, person],
+			'@graph': [
+				webPage,
+				...(breadcrumb ? [breadcrumb] : []),
+				...(itemList ? [itemList] : []),
+				...(article ? [article] : []),
+				website,
+				person,
+			],
 		};
 	});
 	const structuredDataJson = $derived(JSON.stringify(structuredData).replace(/</g, '\\u003c'));
+	const openGraphType = $derived(type === 'collection' ? 'website' : type);
 </script>
 
 <svelte:head>
@@ -113,21 +162,39 @@
 	<meta name="description" content={description} />
 	<meta name="author" content={author} />
 	<link rel="canonical" href={canonical} />
+	{#if markdown}
+		<link
+			rel="alternate"
+			type="text/markdown"
+			href={markdown}
+			title="Markdown version of this page"
+		/>
+	{/if}
 
 	<meta property="og:site_name" content="Tim Deschryver" />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:type" content={type} />
+	<meta property="og:type" content={openGraphType} />
+	<meta property="og:locale" content="en_US" />
 	{#if image}
 		<meta property="og:image" content={image} />
 		<meta property="og:image:alt" content={title} />
+		{#if imageWidth}<meta property="og:image:width" content={String(imageWidth)} />{/if}
+		{#if imageHeight}<meta property="og:image:height" content={String(imageHeight)} />{/if}
+		{#if imageType}<meta property="og:image:type" content={imageType} />{/if}
 	{/if}
 	{#if type === 'article' && published}
 		<meta property="article:published_time" content={published} />
 	{/if}
 	{#if type === 'article' && modified}
 		<meta property="article:modified_time" content={modified} />
+	{/if}
+	{#if type === 'article'}
+		<meta property="article:author" content={siteUrl} />
+		{#each tags as tag (tag)}
+			<meta property="article:tag" content={tag} />
+		{/each}
 	{/if}
 
 	<meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />

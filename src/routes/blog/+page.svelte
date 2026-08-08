@@ -164,6 +164,11 @@
 	title="Blog - Tim Deschryver"
 	description={`${data.posts.length} articles about .NET, Angular, testing, and developer tooling.`}
 	canonical={publicUrl('/blog')}
+	type="collection"
+	items={data.posts.slice(0, 20).map((post) => ({
+		name: post.title,
+		url: publicUrl(`/blog/${post.slug}`),
+	}))}
 />
 
 <header class="page-intro">
@@ -245,7 +250,7 @@
 						{#if post.tldr}
 							| <a
 								href={resolve('/blog/[slug]?tldr=true', { slug: post.slug })}
-								class="bold mark-hover">Read TLDR</a
+								class="bold mark-hover">Read code only</a
 							>
 						{/if}
 					</div>

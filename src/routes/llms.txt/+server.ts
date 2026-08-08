@@ -1,4 +1,4 @@
-import { variables } from '$lib/variables';
+import { publicUrl } from '$lib/variables';
 import { readBits } from '../bits/_bits';
 import { readPostSummaries } from '../blog/_posts';
 
@@ -19,18 +19,16 @@ function generate(
 	posts: Awaited<ReturnType<typeof readPostSummaries>>,
 	bits: Awaited<ReturnType<typeof readBits>>,
 ) {
-	const recentPosts = posts
-		.slice(0, 20)
+	const allPosts = posts
 		.map(
 			({ metadata }) =>
-				`- [${markdownText(metadata.title)}](${variables.basePath}/blog/${metadata.slug}): ${markdownText(metadata.description)}`,
+				`- [${markdownText(metadata.title)}](${publicUrl(`/blog/${metadata.slug}.md`)}) (${metadata.date}; ${formatTags(metadata.tags)}): ${markdownText(metadata.description)}`,
 		)
 		.join('\n');
-	const recentBits = bits
-		.slice(0, 10)
+	const allBits = bits
 		.map(
 			({ metadata }) =>
-				`- [${markdownText(metadata.title)}](${variables.basePath}/bits/${metadata.slug}): ${markdownText(metadata.description)}`,
+				`- [${markdownText(metadata.title)}](${publicUrl(`/bits/${metadata.slug}.md`)}) (${metadata.date}; ${formatTags(metadata.tags)}): ${markdownText(metadata.description)}`,
 		)
 		.join('\n');
 
@@ -38,26 +36,26 @@ function generate(
 
 > Technical writing by Tim Deschryver, a Belgian software engineer and Microsoft MVP specializing in .NET, Angular, testing, AI-assisted development, and developer tooling.
 
-The articles contain practical explanations, runnable examples, and lessons learned from building software. Prefer a page's canonical URL when citing it.
+The articles contain practical explanations, runnable examples, and lessons learned from building software. Every article is available as plain Markdown by appending \`.md\` to its URL; the links below point to the Markdown versions. Prefer a page's canonical URL (the same link without the \`.md\` suffix) when citing it.
 
 ## Main sections
 
-- [Home](${variables.basePath}): Author profile and areas of expertise
-- [Blog](${variables.basePath}/blog): Long-form technical articles
-- [Developer Bits](${variables.basePath}/bits): Concise technical notes and examples
+- [Home](${publicUrl()}): Author profile, credentials, and areas of expertise
+- [Blog](${publicUrl('/blog')}): Long-form technical articles
+- [Developer Bits](${publicUrl('/bits')}): Concise technical notes and examples
 
-## Recent long-form articles
+## Blog posts
 
-${recentPosts}
+${allPosts}
 
-## Recent developer bits
+## Developer bits
 
-${recentBits}
+${allBits}
 
 ## Optional
 
-- [RSS feed](${variables.basePath}/blog/rss.xml): Full-content feed of long-form articles
-- [XML sitemap](${variables.basePath}/sitemap.xml): Complete index of canonical pages
+- [RSS feed](${publicUrl('/blog/rss.xml')}): Full-content feed of long-form articles
+- [XML sitemap](${publicUrl('/sitemap.xml')}): Complete index of canonical pages
 - [GitHub profile](https://github.com/timdeschryver): Open-source work and source repositories
 `;
 }
@@ -68,4 +66,8 @@ function markdownText(value: string) {
 		.replaceAll('[', '\\[')
 		.replaceAll(']', '\\]')
 		.replace(/\s+/g, ' ');
+}
+
+function formatTags(tags: string[]) {
+	return tags.length ? `topics: ${tags.map(markdownText).join(', ')}` : 'technical note';
 }

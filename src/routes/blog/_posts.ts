@@ -3,9 +3,7 @@ import * as path from 'path';
 import { readMarkdownMetadata, sortByDate, traverseFolder } from '$lib/content';
 import { ISODate } from '$lib/formatters';
 import { publicUrl } from '$lib/variables';
-import { execFileSync } from 'child_process';
 import { createHash } from 'crypto';
-import { dev } from '$app/environment';
 import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
 
 const blogPath = 'blog';
@@ -98,6 +96,7 @@ async function processFullPost(files: PostFile[]): Promise<BlogPost | null> {
 		slug: result.metadata.slug,
 		description: result.metadata.description,
 		date: result.metadata.date,
+		modified: result.metadata.modified,
 		tags: result.metadata.tags,
 		toc: result.metadata.toc,
 		outgoingSlugs: result.metadata.outgoingSlugs,
@@ -123,6 +122,7 @@ interface ProcessedMetadata {
 	slug: string;
 	description: string;
 	date: string;
+	modified?: string;
 	tags: string[];
 	toc: TOC[];
 	outgoingSlugs: string[];
@@ -133,23 +133,16 @@ interface ProcessedMetadata {
 /**
  * Create standardized post metadata
  */
-function createPostMetadata(
-	metadata: ProcessedMetadata,
-	options: { includeModified?: boolean } = {},
-): BlogPostMetadata {
+function createPostMetadata(metadata: ProcessedMetadata): BlogPostMetadata {
 	const banner = publicUrl(`/blog/${metadata.slug}/images/banner.webp`);
 	const canonical = publicUrl(`/blog/${metadata.slug}`);
-	const modified =
-		options.includeModified === false
-			? null
-			: getLastModifiedDate(metadata.slug, new Date(metadata.date));
 
 	return {
 		title: metadata.title,
 		slug: metadata.slug,
 		description: metadata.description,
 		date: ISODate(metadata.date),
-		modified: modified ? ISODate(modified) : null,
+		modified: metadata.modified ? ISODate(metadata.modified) : null,
 		tags: metadata.tags,
 		banner,
 		canonical,
@@ -230,20 +223,18 @@ export async function readPostSummaries(): Promise<BlogPostSummary[]> {
 				return null;
 			}
 
-			const finalMetadata = createPostMetadata(
-				{
-					title: metadata.title,
-					slug: metadata.slug,
-					description: metadata.description,
-					date: metadata.date,
-					tags: metadata.tags,
-					toc: metadata.toc,
-					outgoingSlugs: metadata.outgoingSlugs,
-					translations: metadata.translations || [],
-					series: metadata.series,
-				},
-				{ includeModified: false },
-			);
+			const finalMetadata = createPostMetadata({
+				title: metadata.title,
+				slug: metadata.slug,
+				description: metadata.description,
+				date: metadata.date,
+				modified: metadata.modified,
+				tags: metadata.tags,
+				toc: metadata.toc,
+				outgoingSlugs: metadata.outgoingSlugs,
+				translations: metadata.translations || [],
+				series: metadata.series,
+			});
 
 			return {
 				hasTldr: files.some((file) => file.file === 'tldr.md'),
@@ -316,36 +307,6 @@ export function clearPostsCache(): void {
 		}
 	} catch (error) {
 		console.warn('Failed to clear posts cache:', error);
-	}
-}
-
-function getLastModifiedDate(slug: string, createdDate: Date): string | null {
-	if (dev) {
-		return null;
-	}
-
-	try {
-		const output = execFileSync(
-			'git',
-			['log', '--follow', '--format=%cI', '--', `blog/${slug}/index.md`],
-			{ encoding: 'utf-8' },
-		).trim();
-
-		if (!output) {
-			return null;
-		}
-
-		const [lastModifiedDate] = output.split(/\r?\n/);
-		if (!lastModifiedDate) {
-			return null;
-		}
-
-		const lastModifiedDay = ISODate(lastModifiedDate);
-		const createdDay = ISODate(createdDate);
-
-		return lastModifiedDay === createdDay ? null : lastModifiedDay;
-	} catch {
-		return null;
 	}
 }
 

@@ -419,6 +419,11 @@ function slugify(string: string) {
 }
 
 function normalizeLink(href: string) {
+	if (href.startsWith('https://timdeschryver.dev/')) {
+		const internalUrl = new URL(href);
+		return `${internalUrl.pathname}${internalUrl.search}${internalUrl.hash}`;
+	}
+
 	if (!href.startsWith('../')) {
 		return href.replace(/\/index\.md(?=[?#]|$)/, '');
 	}

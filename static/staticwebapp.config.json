@@ -32,11 +32,6 @@
 			"statusCode": 301
 		},
 		{
-			"route": "/posts/*",
-			"redirect": "/blog",
-			"statusCode": 301
-		},
-		{
 			"route": "/bits/http-file",
 			"redirect": "/bits/http-files",
 			"statusCode": 301
@@ -85,6 +80,9 @@
 			}
 		}
 	],
+	"mimeTypes": {
+		".md": "text/markdown; charset=utf-8"
+	},
 	"responseOverrides": {
 		"404": {
 			"rewrite": "/404.html",
