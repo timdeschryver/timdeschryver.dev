@@ -23,7 +23,7 @@ test('flow test', async ({ page }) => {
 	await page
 		.getByRole('searchbox', { name: 'Search articles' })
 		.fill('Angular Testing ngrx project');
-	await page.getByRole('link', { name: /Testing an NgRx project/i }).click();
+	await page.getByRole('heading', { name: 'Testing an NgRx project', exact: true }).click();
 
 	await expect(page.getByRole('heading', { name: 'Actions', exact: true })).toBeVisible();
 });
@@ -130,7 +130,7 @@ test('blog header links the current article and aligns its controls', async ({ p
 	await expect(currentArticle).toBeVisible();
 	await expect(currentArticle).toContainText('Your first MCP server with ASP.NET');
 	await expect(currentArticle).toHaveAttribute('href', '/blog/your-first-mcp-server-with-aspnet');
-	await expect(page.getByRole('button', { name: 'Switch to TLDR version' })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Switch to code-only version' })).toBeVisible();
 
 	const alignment = await page.locator('.blog-context').evaluate((context) => {
 		const header = context.closest('header')?.getBoundingClientRect();
@@ -153,7 +153,7 @@ test('loads the TLDR only when requested', async ({ page }) => {
 	await page.goto('/blog/your-first-mcp-server-with-aspnet');
 	expect(tldrRequests).toEqual([]);
 
-	await page.getByRole('button', { name: 'Switch to TLDR version' }).click();
+	await page.getByRole('button', { name: 'Switch to code-only version' }).click();
 	await expect(page).toHaveURL('/blog/your-first-mcp-server-with-aspnet?tldr=true');
 	await expect(page.getByText('.AddMcpServer()', { exact: true })).toBeVisible();
 	expect(tldrRequests).toHaveLength(1);
