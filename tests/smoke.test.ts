@@ -38,9 +38,28 @@ test('llms index exposes curated content', async ({ request }) => {
 
 	const llms = await response.text();
 	expect(llms).toContain('# Tim Deschryver');
-	expect(llms).toContain('## Recent long-form articles');
+	expect(llms).toContain('## Blog posts');
+	expect(llms).toContain('## Developer bits');
 	expect(llms).not.toContain('/resources/');
-	expect(llms).toContain('/blog/testing-ai-prompts-and-comparing-models-with-promptfoo');
+	expect(llms).toContain('/blog/testing-ai-prompts-and-comparing-models-with-promptfoo.md');
+	// the index is complete, not a recent-only window
+	expect(llms).toContain('/blog/a-cheat-sheet-to-migrate-from-moq-to-nsubstitute.md');
+});
+
+test('articles are available as plain markdown', async ({ request }) => {
+	const response = await request.get(
+		'/blog/testing-ai-prompts-and-comparing-models-with-promptfoo.md',
+	);
+	expect(response.ok()).toBeTruthy();
+	expect(response.headers()['content-type']).toContain('text/markdown');
+
+	const markdown = await response.text();
+	expect(markdown).toContain('title: ');
+	expect(markdown).toContain('## ');
+
+	const bitResponse = await request.get('/bits/http-files.md');
+	expect(bitResponse.ok()).toBeTruthy();
+	expect(bitResponse.headers()['content-type']).toContain('text/markdown');
 });
 
 test('robots explicitly permits AI search crawlers', async ({ request }) => {
@@ -51,10 +70,15 @@ test('robots explicitly permits AI search crawlers', async ({ request }) => {
 	for (const crawler of [
 		'OAI-SearchBot',
 		'ChatGPT-User',
+		'GPTBot',
 		'Claude-SearchBot',
 		'Claude-User',
+		'ClaudeBot',
 		'PerplexityBot',
 		'Perplexity-User',
+		'Google-Extended',
+		'Applebot-Extended',
+		'Meta-ExternalAgent',
 	]) {
 		expect(robots).toContain(`User-agent: ${crawler}\nAllow: /`);
 	}
@@ -72,6 +96,7 @@ test('articles connect author and website structured data', async ({ page }) => 
 	const person = graph.find((entity) => entity['@id'] === 'https://timdeschryver.dev/#person');
 	const website = graph.find((entity) => entity['@id'] === 'https://timdeschryver.dev/#website');
 	const article = graph.find((entity) => entity['@type'] === 'BlogPosting');
+	const breadcrumb = graph.find((entity) => entity['@type'] === 'BreadcrumbList');
 
 	expect(person?.sameAs).toContain('https://github.com/timdeschryver');
 	expect(person?.sameAs).toContain('https://twitter.com/tim_deschryver');
@@ -80,6 +105,13 @@ test('articles connect author and website structured data', async ({ page }) => 
 	expect(website?.publisher).toEqual({ '@id': person?.['@id'] });
 	expect(article?.author).toEqual({ '@id': person?.['@id'] });
 	expect(article?.isPartOf).toEqual({ '@id': website?.['@id'] });
+	expect(article?.articleSection).toEqual(expect.arrayContaining(['AI']));
+	expect(breadcrumb?.itemListElement).toHaveLength(3);
+	await expect(page.locator('link[rel="alternate"][type="text/markdown"]')).toHaveAttribute(
+		'href',
+		/\/blog\/testing-ai-prompts-and-comparing-models-with-promptfoo\.md$/,
+	);
+	await expect(page.locator('.article-summary')).toContainText('promptfoo');
 });
 
 test('homepage works ', async ({ page }) => {
@@ -95,6 +127,16 @@ test('homepage works ', async ({ page }) => {
 test('blog works ', async ({ page }) => {
 	const response = await page.goto('/blog');
 	expect(response?.ok()).toBeTruthy();
+});
+
+test('bits index exposes summaries instead of duplicate full articles', async ({ page }) => {
+	await page.goto('/bits');
+	await expect(page.locator('main article')).not.toHaveCount(0);
+	await expect(page.locator('main pre')).toHaveCount(0);
+	const json = await page.locator('script[type="application/ld+json"]').textContent();
+	const graph = JSON.parse(json || '{}')['@graph'] as Record<string, unknown>[];
+	expect(graph.some((entity) => entity['@type'] === 'CollectionPage')).toBeTruthy();
+	expect(graph.some((entity) => entity['@type'] === 'ItemList')).toBeTruthy();
 });
 
 test('blog list shows subtle sequential post numbers', async ({ page }) => {

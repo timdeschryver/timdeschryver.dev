@@ -8,6 +8,7 @@
 	import Host from '$lib/Host.svelte';
 	import { blog } from '$lib/current-blog.svelte';
 	import { setTheme, theme } from '$lib/theme.store';
+	import { publicUrl } from '$lib/variables';
 	import './layout.css';
 	import Socials from '$lib/Socials.svelte';
 
@@ -186,15 +187,24 @@
 	});
 </script>
 
+<svelte:head>
+	<link
+		rel="alternate"
+		type="application/rss+xml"
+		title="Tim Deschryver's Blog"
+		href={publicUrl('/blog/rss.xml')}
+	/>
+</svelte:head>
+
 <svelte:window bind:scrollY />
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <header class:scrolled={scrollY > 24}>
 	<div class:has-blog-context={blog.blog}>
-		<h2>
+		<div class="site-title">
 			<a href={resolve('/')}>Tim Deschryver</a>
-		</h2>
+		</div>
 
 		<nav>
 			<a href={resolve('/blog')} class:active={segment.startsWith('blog')}>BLOG</a>
@@ -204,6 +214,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to light theme"
+					aria-label="Switch to light theme"
 					onclick={(evt) => toggleTheme(evt, 'light')}
 				>
 					<svg
@@ -229,6 +240,7 @@
 				<button
 					class="theme-switch"
 					title="Switch to dark theme"
+					aria-label="Switch to dark theme"
 					onclick={(evt) => toggleTheme(evt, 'dark')}
 				>
 					<svg
@@ -275,7 +287,7 @@
 				{#if blog.blog.state !== 'single'}
 					<button class="blog-version-toggle" onclick={blog.toggleTldr}
 						>{blog.blog.state === 'detailed'
-							? 'Switch to TLDR version'
+							? 'Switch to code-only version'
 							: 'Switch to detailed version'}</button
 					>
 				{/if}
@@ -370,7 +382,7 @@
 		grid-template-columns: auto minmax(0, 1fr) auto;
 	}
 
-	header > div > h2 {
+	header > div > .site-title {
 		grid-column: 1;
 		grid-row: 1;
 	}
@@ -389,7 +401,7 @@
 		margin-top: 0;
 	}
 
-	header h2 > a {
+	header .site-title > a {
 		text-decoration: none;
 		display: inline-flex;
 		align-items: center;
@@ -534,7 +546,7 @@
 			grid-column: 2;
 		}
 
-		header h2 > a {
+		header .site-title > a {
 			font-size: 0.68rem;
 		}
 

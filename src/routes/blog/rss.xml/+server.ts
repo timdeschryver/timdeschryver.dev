@@ -1,5 +1,5 @@
 import { UTCDate } from '$lib/formatters';
-import { variables } from '../../../lib/variables';
+import { publicUrl } from '../../../lib/variables';
 import { readPosts } from '../_posts';
 
 export const prerender = true;
@@ -15,9 +15,9 @@ export async function GET() {
 
 function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 	const nodes = posts.slice(0, 20).map((post) => {
-		const link = `${variables.basePath}/blog/${post.metadata.slug}`;
+		const link = publicUrl(`/blog/${post.metadata.slug}`);
 		const tldr = post.tldr
-			? `<p><a href="${link}?tldr=true">Read the <strong>TLDR version</strong> on timdeschryver.dev</a></p>`
+			? `<p><a href="${link}?tldr=true">Read the <strong>code-only version</strong> on timdeschryver.dev</a></p>`
 			: `<p>Read <strong>${post.metadata.title}</strong> on <a href="${link}">timdeschryver.dev</a></p>`;
 		return {
 			title: post.metadata.title,
@@ -27,7 +27,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 			content: safeCdata(
 				`<img class="webfeedsFeaturedVisual" src="${post.metadata.banner}" alt="${htmlAttribute(post.metadata.title)}"/>` +
 					tldr +
-					post.html,
+					absolutizeUrls(post.html || ''),
 			),
 		};
 	});
@@ -48,11 +48,11 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		})
 		.join('\n');
 
-	const link = `<link>${variables.basePath}/blog</link>`;
-	const atom = `<atom:link href="${variables.basePath}/blog/rss.xml" rel="self" type="application/rss+xml"/>`;
-	const imageLink = `<link>${variables.basePath}/blog</link>`;
+	const link = `<link>${publicUrl('/blog')}</link>`;
+	const atom = `<atom:link href="${publicUrl('/blog/rss.xml')}" rel="self" type="application/rss+xml"/>`;
+	const imageLink = `<link>${publicUrl('/blog')}</link>`;
 	const image = `<image>
-	<url>${variables.basePath}/favicons/favicon-32x32.png</url>
+	<url>${publicUrl('/favicons/favicon-32x32.png')}</url>
 	<title>Tim Deschryver</title>
 	${imageLink}
 	</image>`;
@@ -61,7 +61,7 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		<channel>
 		<title><![CDATA[ Tim Deschryver ]]></title>
 		<description><![CDATA[ Blog by Tim Deschryver ]]></description>
-		<lastBuildDate>${UTCDate(variables.timestamp)}</lastBuildDate>
+		<lastBuildDate>${UTCDate(latestContentDate(posts))}</lastBuildDate>
 		<ttl>60</ttl>
 		<language>en-us</language>
 		${link}
@@ -71,6 +71,19 @@ function generate(posts: Awaited<ReturnType<typeof readPosts>>) {
 		</channel>
 		</rss>`;
 	return xml;
+}
+
+function latestContentDate(posts: Awaited<ReturnType<typeof readPosts>>) {
+	return posts
+		.map((post) => post.metadata.modified || post.metadata.date)
+		.sort()
+		.at(-1) as string;
+}
+
+function absolutizeUrls(html: string) {
+	return html.replace(/\b(href|src)="\/(?!\/)/g, (_, attribute: string) => {
+		return `${attribute}="${publicUrl('/')}`;
+	});
 }
 
 function safeCdata(value: string) {

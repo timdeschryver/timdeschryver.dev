@@ -14,6 +14,7 @@ interface TestPost {
 	title: string;
 	slug: string;
 	date: string;
+	modified?: string;
 	html?: string;
 	outgoingSlugs?: string[];
 	series?: { name: string };
@@ -37,6 +38,7 @@ describe.sequential('blog post cache', () => {
 					slug: source.slug,
 					description: `${source.title} description`,
 					date: source.date,
+					modified: source.modified,
 					tags: [],
 					toc: [],
 					outgoingSlugs: source.outgoingSlugs ?? [],
@@ -147,6 +149,21 @@ describe.sequential('blog post cache', () => {
 		await readPostBySlug('first');
 
 		expect(markdown.parseFileToHtmlAndMeta).toHaveBeenCalledTimes(1);
+	});
+
+	it('only exposes explicit editorial modification dates', async () => {
+		writePost({
+			title: 'Updated',
+			slug: 'updated',
+			date: '2024-01-01',
+			modified: '2024-02-01',
+		});
+		writePost({ title: 'Unchanged', slug: 'unchanged', date: '2024-01-01' });
+
+		const { readPostBySlug } = await import('./_posts');
+
+		expect((await readPostBySlug('updated'))?.metadata.modified).toBe('2024-02-01');
+		expect((await readPostBySlug('unchanged'))?.metadata.modified).toBeNull();
 	});
 });
 

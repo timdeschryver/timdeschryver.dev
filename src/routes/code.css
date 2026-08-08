@@ -56,7 +56,7 @@ pre {
 }
 
 pre:hover {
-	border-color: var(--accent-color);
+	border-color: hsla(var(--accent-color), 0.45);
 	transition: all 0.2s ease-in;
 }
 
@@ -95,13 +95,11 @@ code > div.line:last-child {
 }
 
 code.dim > div:not(.highlight) {
-	opacity: 0.3;
-	filter: blur(0.065rem);
-	transition: all 0.2s ease-in;
+	opacity: 0.5;
+	transition: opacity 0.2s ease-in;
 }
 
 code.dim:hover > div:not(.highlight) {
-	filter: blur(0px);
 	opacity: 1;
 }
 

@@ -164,6 +164,11 @@
 	title="Blog - Tim Deschryver"
 	description={`${data.posts.length} articles about .NET, Angular, testing, and developer tooling.`}
 	canonical={publicUrl('/blog')}
+	type="collection"
+	items={data.posts.slice(0, 20).map((post) => ({
+		name: post.title,
+		url: publicUrl(`/blog/${post.slug}`),
+	}))}
 />
 
 <header class="page-intro">
@@ -239,13 +244,15 @@
 						<a
 							href={resolve('/blog/[slug]', { slug: post.slug })}
 							class="read-more bold mark-hover"
+							aria-label="Read more: {post.title}"
 						>
 							Read more</a
 						>
 						{#if post.tldr}
 							| <a
 								href={resolve('/blog/[slug]?tldr=true', { slug: post.slug })}
-								class="bold mark-hover">Read TLDR</a
+								class="bold mark-hover"
+								aria-label="Read code only: {post.title}">Read code only</a
 							>
 						{/if}
 					</div>
@@ -370,7 +377,7 @@
 	li {
 		list-style: none;
 		position: relative;
-		padding: clamp(2rem, 5vw, 3.5rem) 0;
+		padding: clamp(1.75rem, 3.5vw, 2.5rem) 0;
 		border-bottom: 1px solid var(--line-color);
 	}
 
@@ -432,8 +439,8 @@
 	}
 
 	li h2 {
-		font-size: clamp(1.65rem, 4vw, 2.45rem);
-		line-height: 1.1;
+		font-size: clamp(1.45rem, 3vw, 1.9rem);
+		line-height: 1.15;
 		text-wrap: balance;
 	}
 
@@ -488,13 +495,13 @@
 	}
 
 	.post-description {
-		margin-top: 1rem;
+		margin-top: 0.65rem;
 	}
 
 	.post-footer {
 		display: grid;
 		gap: 0.35rem;
-		margin-top: 1.25rem;
+		margin-top: 1rem;
 	}
 
 	.post-actions {

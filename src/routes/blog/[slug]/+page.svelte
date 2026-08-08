@@ -15,9 +15,14 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { resolve } from '$app/paths';
+	import { publicUrl } from '$lib/variables';
 
 	let { data } = $props();
 	const post = $derived(data.post);
+	const relatedLinks = $derived.by(() => {
+		const links = [...post.metadata.outgoingLinks, ...post.metadata.incomingLinks];
+		return [...new Map(links.map((link) => [link.slug, link])).values()];
+	});
 
 	const showTldr = $derived(() => blog.blog?.state === 'tldr');
 	let tldrHtml = $state<string | null>(null);
@@ -90,19 +95,15 @@
 		window.scrollTo({ top: y, behavior: 'smooth' });
 	}
 
-	const htmlStyle = $derived(`<style> 
+	const htmlStyle = $derived(`<style>
 		main {
 			--accent-color: var(--${post.metadata.color ?? 'base-color'});
 		}
 
-		main > header h1 {
-			color: hsla(var(--accent-color), 1);
-		}
-
 		main > h2,
-		main h3, 
+		main h3,
 		main h4,
-		main h5, 
+		main h5,
 		main h6 {
 			color: var(--text-color);
 		}
@@ -178,12 +179,17 @@
 	title={post.metadata.title}
 	description={post.metadata.description}
 	canonical={post.metadata.canonical}
+	markdown={`${post.metadata.canonical}.md`}
 	image={post.metadata.banner}
+	imageWidth={1200}
+	imageHeight={627}
+	imageType="image/webp"
 	type="article"
 	author={post.metadata.author}
 	published={post.metadata.date}
 	modified={post.metadata.modified}
 	tags={post.metadata.tags}
+	section={{ name: 'Blog', url: publicUrl('/blog') }}
 />
 
 <svelte:window bind:scrollY />
@@ -192,10 +198,9 @@
 	<h1>{post.metadata.title}</h1>
 	<div class="details">
 		<div class="published-at">
+			<time datetime={post.metadata.date}>Published {humanDate(post.metadata.date)}</time>
 			{#if post.metadata.modified && post.metadata.modified !== post.metadata.date}
-				<time datetime={post.metadata.modified}>Modified {humanDate(post.metadata.modified)}</time>
-			{:else}
-				<time datetime={post.metadata.date}>Published {humanDate(post.metadata.date)}</time>
+				<time datetime={post.metadata.modified}>Updated {humanDate(post.metadata.modified)}</time>
 			{/if}
 		</div>
 
@@ -205,7 +210,7 @@
 			{/each}
 		</div>
 
-		<div class="mt-0 author">
+		<a class="mt-0 author" href={resolve('/')} aria-label="About Tim Deschryver">
 			<img
 				class="author-img"
 				src="/images/tim-96.webp"
@@ -214,42 +219,12 @@
 				height="96"
 			/>
 			<div class="mt-0">
-				<div class="author-name">Tim Deschryver</div>
+				<span class="author-name">Tim Deschryver</span>
 				<div class="author-source mt-0">timdeschryver.dev</div>
 			</div>
-		</div>
+		</a>
 	</div>
 </header>
-
-<aside class="left-nav" hidden={!sideNavsVisible()}>
-	{#if post.metadata.toc.length > 1}
-		<div class="toc" hidden={blog.blog?.state === 'tldr'}>
-			<h3>On this page</h3>
-			<ul>
-				{#each post.metadata.toc as { slug, description, level } (slug)}
-					<li class:active={lastHeadingId === slug} style={`--level:${level - 2}`}>
-						<a href={`#${slug}`} onclick={tocClick}>{description}</a>
-					</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
-
-	<div>
-		<Ad />
-	</div>
-
-	{#if post.metadata.translations.length > 0}
-		<div>
-			<h4>Read this post in</h4>
-			{#each post.metadata.translations as translation (translation.url)}
-				<a href={translation.url} rel="external">{translation.language}</a>
-			{/each}
-		</div>
-	{/if}
-
-	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} compact />
-</aside>
 
 {#if post.hasTldr}
 	<div class="tldr" role="group" aria-label="Reading mode">
@@ -307,6 +282,43 @@
 	</div>
 {/if}
 
+<p class="article-summary">{post.metadata.description}</p>
+<ul class="article-tags" aria-label="Topics">
+	{#each post.metadata.tags as tag (tag)}
+		<li>#{tag}</li>
+	{/each}
+</ul>
+
+<aside class="left-nav" hidden={!sideNavsVisible()}>
+	{#if post.metadata.toc.length > 1}
+		<div class="toc" hidden={blog.blog?.state === 'tldr'}>
+			<h3>On this page</h3>
+			<ul>
+				{#each post.metadata.toc as { slug, description, level } (slug)}
+					<li class:active={lastHeadingId === slug} style={`--level:${level - 2}`}>
+						<a href={`#${slug}`} onclick={tocClick}>{description}</a>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	{/if}
+
+	<div>
+		<Ad />
+	</div>
+
+	{#if post.metadata.translations.length > 0}
+		<div>
+			<h4>Read this post in</h4>
+			{#each post.metadata.translations as translation (translation.url)}
+				<a href={translation.url} rel="external">{translation.language}</a>
+			{/each}
+		</div>
+	{/if}
+
+	<Share title="Share this post" text={post.metadata.title} url={post.metadata.canonical} compact />
+</aside>
+
 {@html htmlStyle}
 
 {#if post.metadata.series && post.metadata.seriesPosts}
@@ -317,15 +329,15 @@
 	{#if tldrHtml}
 		{@html tldrHtml}
 	{:else if tldrError}
-		<p role="alert">The TLDR version could not be loaded. Switch back and try again.</p>
+		<p role="alert">The code-only version could not be loaded. Switch back and try again.</p>
 	{:else}
-		<p role="status">Loading TLDR...</p>
+		<p role="status">Loading code-only version...</p>
 	{/if}
 {:else}
 	{@html post.html}
 
 	{#if post.contributors.length}
-		<h4>A warm thank you to the contributors of this blog post</h4>
+		<h2>A warm thank you to the contributors of this blog post</h2>
 		<ul class="mt-0">
 			{#each post.contributors as [login, name] (login)}
 				<li>
@@ -335,21 +347,10 @@
 		</ul>
 	{/if}
 
-	{#if post.metadata.incomingLinks.length}
-		<h4>Incoming links</h4>
+	{#if relatedLinks.length}
+		<h2>Related articles</h2>
 		<ul class="mt-0" data-sveltekit-reload>
-			{#each post.metadata.incomingLinks as link (link.slug)}
-				<li>
-					<a href={resolve('/blog/[slug]', { slug: link.slug })} class="mark">{link.title}</a>
-				</li>
-			{/each}
-		</ul>
-	{/if}
-
-	{#if post.metadata.outgoingLinks.length}
-		<h4>Outgoing links</h4>
-		<ul class="mt-0" data-sveltekit-reload>
-			{#each post.metadata.outgoingLinks as link (link.slug)}
+			{#each relatedLinks as link (link.slug)}
 				<li>
 					<a href={resolve('/blog/[slug]', { slug: link.slug })} class="mark">{link.title}</a>
 				</li>
@@ -394,10 +395,34 @@
 		width: fit-content;
 		max-width: 100%;
 		margin: 0 auto var(--spacing);
-		padding: 0.3rem;
+		padding: 0.2rem;
 		border: 1px solid var(--line-color);
-		border-radius: 0.7rem;
+		border-radius: 0.6rem;
 		background: var(--background-color-subtle);
+	}
+
+	.article-summary {
+		max-width: 62ch;
+		margin-top: 0;
+		color: var(--text-color-light);
+		font-size: 1rem;
+		font-style: italic;
+		line-height: 1.7;
+	}
+
+	.article-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 1rem;
+		margin-top: 0.5rem;
+		color: var(--text-color-light);
+		font-family: var(--head-font);
+		font-size: 0.78rem;
+		list-style: none;
+	}
+
+	.article-tags li {
+		margin-top: 0;
 	}
 
 	.tldr-label {
@@ -422,14 +447,14 @@
 		align-items: center;
 		justify-content: center;
 		gap: 0.4rem;
-		min-height: 2.75rem;
+		min-height: 2.25rem;
 		margin: 0;
-		padding: 0.55rem 0.8rem;
+		padding: 0.4rem 0.7rem;
 		border: 0;
 		border-radius: 0.45rem;
 		color: var(--text-color-light);
 		font-family: var(--head-font);
-		font-size: 0.82rem;
+		font-size: 0.78rem;
 		font-weight: 620;
 		line-height: 1.2;
 		white-space: nowrap;
@@ -531,7 +556,7 @@
 	.toc ul {
 		list-style: none;
 		font-size: 1rem;
-		color: var(--text-color-subtle);
+		color: var(--text-color-light);
 		transition: all 0.25s;
 	}
 
@@ -582,11 +607,8 @@
 		right: clamp(0rem, 8vw, 8rem);
 		width: clamp(5rem, 16vw, 13rem);
 		aspect-ratio: 1;
-		border: 1px solid hsla(var(--accent-color), 0.5);
+		border: 1px solid hsla(var(--accent-color), 0.45);
 		border-radius: 50%;
-		box-shadow:
-			0 0 2rem hsla(var(--accent-color), 0.14),
-			inset 0 0 1.5rem hsla(var(--accent-color), 0.08);
 		transform: translateX(35%);
 		pointer-events: none;
 	}
@@ -598,10 +620,16 @@
 		font-size: clamp(2.8rem, 7.5vw, 7rem);
 		line-height: 0.95;
 		letter-spacing: -0.065em;
-		text-shadow:
-			0 0 0.45em hsla(var(--accent-color), 0.18),
-			0 0 1.2em hsla(var(--accent-color), 0.08);
 		text-wrap: balance;
+	}
+
+	:global(body > div > main) > header h1::before {
+		content: '';
+		display: block;
+		width: clamp(2.5rem, 5vw, 4rem);
+		height: 0.28rem;
+		margin-bottom: clamp(1.25rem, 3vh, 2rem);
+		background: hsla(var(--accent-color), 1);
 	}
 
 	.details {
@@ -635,6 +663,11 @@
 		font-size: 0.8rem;
 		transform: translate(3px, -8px);
 		display: none;
+	}
+
+	.published-at {
+		display: grid;
+		gap: 0.2rem;
 	}
 
 	.author-img {
@@ -674,8 +707,8 @@
 			justify-content: center;
 			padding-top: clamp(2rem, 5vh, 3rem);
 			padding-bottom: clamp(2rem, 5vh, 3rem);
-			padding-left: 0;
-			padding-right: 0;
+			padding-left: 1.2rem;
+			padding-right: 1.2rem;
 		}
 
 		:global(body > div > main) > header::after {
@@ -685,7 +718,9 @@
 		.details {
 			position: absolute;
 			bottom: clamp(2rem, 5vh, 3rem);
-			left: 0;
+			left: 1.2rem;
+			right: 1.2rem;
+			width: auto;
 			align-items: center;
 			gap: 0.75rem;
 			margin-top: 0;

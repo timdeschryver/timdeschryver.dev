@@ -8,6 +8,7 @@ export interface MarkdownMetadata {
 	title: string;
 	slug: string;
 	date: string;
+	modified?: string;
 	description: string;
 	tags: string[];
 	toc: TOC[];
@@ -39,6 +40,7 @@ export function extractFrontmatter(markdown: string): {
 		title: string;
 		slug: string;
 		date: string;
+		modified?: string;
 		description: string;
 	}>(markdown);
 

@@ -85,6 +85,9 @@
 			}
 		}
 	],
+	"mimeTypes": {
+		".md": "text/markdown; charset=utf-8"
+	},
 	"responseOverrides": {
 		"404": {
 			"rewrite": "/404.html",

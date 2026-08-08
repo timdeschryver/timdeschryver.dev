@@ -149,13 +149,17 @@ describe('Markdown rendering', () => {
 				'[Blog post](../another-post/index.md)',
 				'',
 				'[Bit](../../bits/a-useful-bit/index.md#example)',
+				'',
+				'[Absolute post](https://timdeschryver.dev/blog/absolute-post?source=test#example)',
 			].join('\n'),
 		);
 
-		const { html } = parseFileToHtmlAndMeta(file);
+		const { html, metadata } = parseFileToHtmlAndMeta(file);
 
 		expect(html).toContain('href="/blog/another-post"');
 		expect(html).toContain('href="/bits/a-useful-bit#example"');
+		expect(html).toContain('href="/blog/absolute-post?source=test#example"');
+		expect(metadata.outgoingSlugs).toEqual(['another-post', 'a-useful-bit', 'absolute-post']);
 	});
 
 	it('decodes heading entities only once when creating slugs', () => {

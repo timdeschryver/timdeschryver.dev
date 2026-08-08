@@ -1,20 +1,15 @@
-<script>
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} [editUrl]
-	 */
+<script lang="ts">
+	type Props = {
+		editUrl?: string;
+		contentType?: string;
+	};
 
-	/** @type {Props} */
-	let { editUrl = '' } = $props();
+	let { editUrl = '', contentType = 'blog post' }: Props = $props();
 </script>
 
 <p>
-	Feel free to update this blog post on <a
-		class="mark"
-		target="_blank"
-		rel="noreferrer"
-		href={editUrl}>GitHub</a
-	>, thanks in advance!
+	Feel free to update this {contentType} on
+	<a class="mark" target="_blank" rel="noreferrer" href={editUrl}>GitHub</a>, thanks in advance!
 </p>
 
 <style>
