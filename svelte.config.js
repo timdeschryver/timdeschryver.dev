@@ -8,5 +8,12 @@ export default {
 		adapter: adapter({
 			fallback: '404.html',
 		}),
+		prerender: {
+			handleInvalidUrl: ({ href, message }) => {
+				// at:// URIs (the standard.site document links) are valid, but not crawlable
+				if (href.startsWith('at://')) return;
+				throw new Error(message);
+			},
+		},
 	},
 };

@@ -16,6 +16,7 @@
 	import { page } from '$app/stores';
 	import { resolve } from '$app/paths';
 	import { publicUrl } from '$lib/variables';
+	import { standardSite } from '$lib/standard-site';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -190,6 +191,7 @@
 	modified={post.metadata.modified}
 	tags={post.metadata.tags}
 	section={{ name: 'Blog', url: publicUrl('/blog') }}
+	standardDocument={standardSite.document(post.metadata.slug, post.metadata.date)}
 />
 
 <svelte:window bind:scrollY />

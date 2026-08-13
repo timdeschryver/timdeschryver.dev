@@ -1,6 +1,12 @@
 {
 	"routes": [
 		{
+			"route": "/.well-known/site.standard.publication",
+			"headers": {
+				"Content-Type": "text/plain; charset=utf-8"
+			}
+		},
+		{
 			"route": "/blog/rss.xml",
 			"headers": {
 				"Content-Type": "application/rss+xml; charset=utf-8"

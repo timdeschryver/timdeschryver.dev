@@ -23,6 +23,7 @@
 		"g": "node ./scripts/generate",
 		"gb": "node ./scripts/generate-bit",
 		"p": "node ./scripts/devto",
+		"standard-site": "node ./scripts/standard-site.js",
 		"banners": "node ./scripts/banners.js",
 		"pre-commit": "pnpm banners && git add ./**/banner.webp && lint-staged",
 		"optimize:image": "node ./scripts/optimize-image-cli.js",

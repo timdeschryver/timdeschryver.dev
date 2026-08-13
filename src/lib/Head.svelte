@@ -18,6 +18,7 @@
 		tags?: string[];
 		section?: Link;
 		items?: Link[];
+		standardDocument?: string;
 	};
 
 	let {
@@ -36,6 +37,7 @@
 		tags = [],
 		section,
 		items = [],
+		standardDocument,
 	}: Props = $props();
 
 	const siteUrl = 'https://timdeschryver.dev';
@@ -169,6 +171,9 @@
 			href={markdown}
 			title="Markdown version of this page"
 		/>
+	{/if}
+	{#if standardDocument}
+		<link rel="site.standard.document" href={standardDocument} />
 	{/if}
 
 	<meta property="og:site_name" content="Tim Deschryver" />
