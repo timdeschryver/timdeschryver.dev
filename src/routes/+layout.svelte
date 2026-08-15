@@ -200,7 +200,11 @@
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<header class:scrolled={scrollY > 24}>
+<header
+	class:scrolled={scrollY > 24}
+	class:blog-header={blog.blog}
+	style:--accent-color={blog.blog ? `var(--${blog.blog.color ?? 'base-color'})` : undefined}
+>
 	<div class:has-blog-context={blog.blog}>
 		<div class="site-title">
 			<a href={resolve('/')}>Tim Deschryver</a>
@@ -368,6 +372,21 @@
 		border-bottom-color: var(--line-color);
 	}
 
+	header.blog-header {
+		background: linear-gradient(
+			90deg,
+			hsla(var(--accent-color), 0.1),
+			hsla(var(--accent-color), 0.025)
+		);
+		border-bottom-color: hsla(var(--accent-color), 0.18);
+	}
+
+	header.blog-header.scrolled {
+		background:
+			linear-gradient(90deg, hsla(var(--accent-color), 0.1), transparent 42%), var(--header-color);
+		border-bottom-color: hsla(var(--accent-color), 0.3);
+	}
+
 	header > div {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
@@ -443,6 +462,7 @@
 		flex: 0 0 auto;
 		width: 14px;
 		height: 14px;
+		color: hsla(var(--accent-color), 1);
 	}
 
 	.current-blog-link span {
@@ -456,7 +476,7 @@
 		margin-left: 0.8rem;
 		padding-left: 0.8rem;
 		border: 0;
-		border-left: 1px solid var(--line-color);
+		border-left: 1px solid hsla(var(--accent-color), 0.35);
 		color: var(--text-color-light);
 		font-size: 0.72rem;
 		white-space: nowrap;
@@ -503,6 +523,10 @@
 		width: 100%;
 		height: 1px;
 		background: currentColor;
+	}
+
+	header.blog-header nav a.active::after {
+		background: hsla(var(--accent-color), 1);
 	}
 
 	header button {

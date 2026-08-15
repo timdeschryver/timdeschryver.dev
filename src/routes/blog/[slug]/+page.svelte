@@ -40,6 +40,7 @@
 			post.metadata.title,
 			post.metadata.slug,
 			showTldrInitially ? 'tldr' : post.hasTldr ? 'detailed' : 'single',
+			post.metadata.color,
 		);
 		return () => blog.reset();
 	});

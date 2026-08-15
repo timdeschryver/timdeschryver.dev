@@ -4,6 +4,7 @@ import { page } from '$app/state';
 import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 interface Blog {
+	color?: string;
 	title: string;
 	slug: string;
 	state: 'tldr' | 'detailed' | 'single';
@@ -16,8 +17,14 @@ function createBlog() {
 		get blog() {
 			return blog;
 		},
-		loadBlog: (title: string, slug: string, state: 'tldr' | 'detailed' | 'single') => {
+		loadBlog: (
+			title: string,
+			slug: string,
+			state: 'tldr' | 'detailed' | 'single',
+			color?: string,
+		) => {
 			blog = {
+				color,
 				slug,
 				state,
 				title,
