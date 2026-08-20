@@ -6,6 +6,7 @@ import { chromium } from 'playwright';
 
 const content = './blog';
 const regenerateAll = process.argv.includes('--all');
+const banner = { width: 1200, height: 627 };
 
 (async () => {
 	const generateBanners = [];
@@ -36,10 +37,7 @@ const regenerateAll = process.argv.includes('--all');
 						colorScheme: 'dark',
 					});
 
-					await page.setViewportSize({
-						width: 1200,
-						height: 627,
-					});
+					await page.setViewportSize(banner);
 
 					await page.goto(`http://localhost:5173/blog/`);
 
@@ -54,40 +52,54 @@ const regenerateAll = process.argv.includes('--all');
 							first = false;
 						}
 
-						await page.waitForSelector('header');
+						await page.waitForSelector('main > header');
 						await page.evaluate(() => document.fonts.ready);
-						await page.$eval('header', (el) => {
-							el.style.display = 'none';
-						});
 
-						await page.$eval('main', (el) => {
-							el.style.marginTop = '.4em';
-						});
+						await page.evaluate(({ width, height }) => {
+							const main = document.querySelector('main');
+							const postHeader = main.querySelector(':scope > header');
 
-						await page.$eval('.published-at', (el) => {
-							el.style.display = 'none';
-						});
-						await page.$eval('.logos', (el) => {
-							el.style.display = 'flex';
-						});
-						await page.$eval('.author-source', (el) => {
-							el.style.display = 'block';
-						});
-						await page.$eval('body', (el) => {
-							el.style.overflow = 'hidden';
-						});
+							// only keep the post header (title, logos and profile) in view
+							for (const element of document.querySelectorAll('body > div > *')) {
+								if (element !== main) {
+									element.style.display = 'none';
+								}
+							}
+							for (const element of main.children) {
+								if (element !== postHeader) {
+									element.style.display = 'none';
+								}
+							}
 
-						await page.$eval('.author', (el) => {
-							el.style.textDecoration = 'none';
-						});
+							// reclaim the scrollbar gutter and the space of the (hidden) site header
+							document.documentElement.style.scrollbarGutter = 'auto';
+							document.documentElement.style.overflow = 'hidden';
+							document.body.style.overflow = 'hidden';
+							document.body.style.margin = '0';
+							document.body.style.padding = '0';
+							main.style.margin = '0';
 
-						await page.evaluate(() => {
-							window.scrollTo({ top: document.querySelector('header').clientHeight });
-						});
+							// let the post header cover the whole banner
+							postHeader.style.position = 'fixed';
+							postHeader.style.top = '0';
+							postHeader.style.left = '0';
+							postHeader.style.margin = '0';
+							postHeader.style.width = `${width}px`;
+							postHeader.style.height = `${height}px`;
+							postHeader.style.minHeight = `${height}px`;
+							postHeader.style.borderBottom = 'none';
+
+							postHeader.querySelector('.published-at').style.display = 'none';
+							postHeader.querySelector('.logos').style.display = 'flex';
+							postHeader.querySelector('.author-source').style.display = 'block';
+							postHeader.querySelector('.author').style.textDecoration = 'none';
+
+							window.scrollTo({ top: 0 });
+						}, banner);
 
 						await page.screenshot({
 							type: 'webp',
-							quality: 82,
+							quality: 100,
 							path: path.join(temporaryDirectory, `${post}.webp`),
 						});
 					}
