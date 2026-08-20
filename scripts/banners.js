@@ -55,47 +55,75 @@ const banner = { width: 1200, height: 627 };
 						await page.waitForSelector('main > header');
 						await page.evaluate(() => document.fonts.ready);
 
-						await page.evaluate(({ width, height }) => {
-							const main = document.querySelector('main');
-							const postHeader = main.querySelector(':scope > header');
-
-							// only keep the post header (title, logos and profile) in view
-							for (const element of document.querySelectorAll('body > div > *')) {
-								if (element !== main) {
-									element.style.display = 'none';
+						// use a stylesheet with !important rules instead of inline styles,
+						// otherwise Svelte hydration can revert the changes before the screenshot is taken
+						await page.addStyleTag({
+							content: `
+								/* only keep the post header (title, logos and profile) in view */
+								body > *:not(:has(main)),
+								body > div > :not(main),
+								main > :not(header) {
+									display: none !important;
 								}
-							}
-							for (const element of main.children) {
-								if (element !== postHeader) {
-									element.style.display = 'none';
+
+								/* reclaim the scrollbar gutter and the space of the (hidden) site header */
+								html {
+									scrollbar-gutter: auto !important;
+									overflow: hidden !important;
 								}
-							}
+								body {
+									overflow: hidden !important;
+									margin: 0 !important;
+									padding: 0 !important;
+								}
+								main {
+									margin: 0 !important;
+								}
 
-							// reclaim the scrollbar gutter and the space of the (hidden) site header
-							document.documentElement.style.scrollbarGutter = 'auto';
-							document.documentElement.style.overflow = 'hidden';
-							document.body.style.overflow = 'hidden';
-							document.body.style.margin = '0';
-							document.body.style.padding = '0';
-							main.style.margin = '0';
+								/* let the post header cover the whole banner */
+								main > header {
+									position: fixed !important;
+									top: 0 !important;
+									left: 0 !important;
+									margin: 0 !important;
+									width: ${banner.width}px !important;
+									height: ${banner.height}px !important;
+									min-height: ${banner.height}px !important;
+									border-bottom: none !important;
+								}
 
-							// let the post header cover the whole banner
-							postHeader.style.position = 'fixed';
-							postHeader.style.top = '0';
-							postHeader.style.left = '0';
-							postHeader.style.margin = '0';
-							postHeader.style.width = `${width}px`;
-							postHeader.style.height = `${height}px`;
-							postHeader.style.minHeight = `${height}px`;
-							postHeader.style.borderBottom = 'none';
+								main > header .published-at {
+									display: none !important;
+								}
+								main > header .logos {
+									display: flex !important;
+								}
+								main > header .author-source {
+									display: block !important;
+								}
+								main > header .author {
+									text-decoration: none !important;
+								}
+							`,
+						});
 
-							postHeader.querySelector('.published-at').style.display = 'none';
-							postHeader.querySelector('.logos').style.display = 'flex';
-							postHeader.querySelector('.author-source').style.display = 'block';
-							postHeader.querySelector('.author').style.textDecoration = 'none';
-
+						await page.evaluate(() => {
 							window.scrollTo({ top: 0 });
-						}, banner);
+						});
+
+						// the post header anchors its content to the bottom, so a long title
+						// overflows at the top and gets clipped; shrink it until it fits
+						for (let fontSize = 80; fontSize >= 40; fontSize -= 5) {
+							const titleTop = await page.evaluate(
+								() => document.querySelector('main > header h1').getBoundingClientRect().top,
+							);
+							if (titleTop >= 40) {
+								break;
+							}
+							await page.addStyleTag({
+								content: `main > header h1 { font-size: ${fontSize}px !important; }`,
+							});
+						}
 
 						await page.screenshot({
 							type: 'webp',
