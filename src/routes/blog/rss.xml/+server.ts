@@ -1,4 +1,4 @@
-import { UTCDate } from '$lib/formatters';
+import { UTCDate } from '#lib/formatters.js';
 import { publicUrl } from '../../../lib/variables';
 import { readPosts } from '../_posts';
 

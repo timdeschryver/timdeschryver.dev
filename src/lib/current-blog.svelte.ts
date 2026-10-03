@@ -1,4 +1,4 @@
-import { replaceState } from '$app/navigation';
+import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { page } from '$app/state';
 import { SvelteURLSearchParams } from 'svelte/reactivity';
@@ -45,7 +45,11 @@ function createBlog() {
 			const route = queryParams.size
 				? (`/blog/[slug]?${queryParams.toString()}` as `/blog/[slug]?${string}`)
 				: '/blog/[slug]';
-			replaceState(resolve(route, { slug: currentBlog.slug }), page.state);
+			goto(resolve(route, { slug: currentBlog.slug }), {
+				shallow: true,
+				replace: true,
+				state: page.state,
+			});
 		},
 		reset: () => {
 			blog = null;

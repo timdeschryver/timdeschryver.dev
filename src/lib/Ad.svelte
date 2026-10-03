@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { dev } from '$app/environment';
+	import { dev } from '$app/env';
 	let ad: HTMLDivElement | undefined = $state();
 
 	onMount(() => {

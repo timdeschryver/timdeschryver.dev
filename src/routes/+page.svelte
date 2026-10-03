@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import Head from '$lib/Head.svelte';
-	import { publicUrl } from '$lib/variables';
+	import Head from '#lib/Head.svelte';
+	import { publicUrl } from '#lib/variables.js';
 
 	let lastConfetti = 0;
 	async function fireConfetti(evt: MouseEvent | FocusEvent): Promise<void> {

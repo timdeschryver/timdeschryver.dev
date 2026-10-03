@@ -1,5 +1,5 @@
 <script>
-	import { variables } from '$lib/variables';
+	import { variables } from '#lib/variables.js';
 </script>
 
 <div>

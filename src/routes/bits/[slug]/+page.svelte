@@ -1,15 +1,15 @@
 <script lang="ts">
 	import '../../code.css';
-	import Support from '$lib/Support.svelte';
-	import Head from '$lib/Head.svelte';
-	import Share from '$lib/Share.svelte';
-	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
-	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
-	import Comments from '$lib/Comments.svelte';
-	import Ad from '$lib/Ad.svelte';
-	import Actions from '$lib/Actions.svelte';
-	import { humanDate } from '$lib/formatters';
-	import { publicUrl } from '$lib/variables';
+	import Support from '#lib/Support.svelte';
+	import Head from '#lib/Head.svelte';
+	import Share from '#lib/Share.svelte';
+	import codeBlockLifeCycle from '#lib/code-block-lifecycle.svelte.js';
+	import copyLifeCycle from '#lib/copy-lifecycle.svelte.js';
+	import Comments from '#lib/Comments.svelte';
+	import Ad from '#lib/Ad.svelte';
+	import Actions from '#lib/Actions.svelte';
+	import { humanDate } from '#lib/formatters.js';
+	import { publicUrl } from '#lib/variables.js';
 	import { resolve } from '$app/paths';
 
 	let { data } = $props();

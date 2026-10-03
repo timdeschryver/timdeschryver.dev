@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+import { GH_PERSONAL_TOKEN } from '$app/env/private';
 
 export type GitHubStats = {
 	totalCommits: number;
@@ -9,7 +9,7 @@ export type GitHubStats = {
 type Fetch = typeof globalThis.fetch;
 
 export async function getYearToDateCommits(fetcher: Fetch): Promise<GitHubStats | null> {
-	const token = env.GH_PERSONAL_TOKEN;
+	const token = GH_PERSONAL_TOKEN;
 
 	if (!token) {
 		return null;

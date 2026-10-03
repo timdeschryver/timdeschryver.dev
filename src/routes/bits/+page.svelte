@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Head from '$lib/Head.svelte';
-	import { page } from '$app/stores';
+	import Head from '#lib/Head.svelte';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
-	import { publicUrl } from '$lib/variables';
-	import { humanDate } from '$lib/formatters';
+	import { publicUrl } from '#lib/variables.js';
+	import { humanDate } from '#lib/formatters.js';
 
 	let { data } = $props();
 
@@ -15,14 +15,13 @@
 	let query = $state<string | null>(null);
 
 	onMount(() => {
-		query = $page.url.searchParams.get('q') ?? '';
+		query = page.url.searchParams.get('q') ?? '';
 	});
 
 	$effect(() => {
 		goto(resolve(query ? `/bits?q=${encodeURIComponent(query)}` : '/bits'), {
-			noScroll: true,
-			replaceState: true,
-			keepFocus: true,
+			reset: false,
+			replace: true,
 		});
 	});
 

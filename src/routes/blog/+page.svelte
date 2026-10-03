@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Head from '$lib/Head.svelte';
-	import { humanDate } from '$lib/formatters';
-	import { page } from '$app/stores';
+	import Head from '#lib/Head.svelte';
+	import { humanDate } from '#lib/formatters.js';
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { onMount, tick } from 'svelte';
-	import { publicUrl } from '$lib/variables';
+	import { publicUrl } from '#lib/variables.js';
 
 	let { data } = $props();
 
@@ -24,9 +24,9 @@
 
 	onMount(() => {
 		filter = {
-			query: $page.url.searchParams.get('q'),
-			from: $page.url.searchParams.get('from'),
-			to: $page.url.searchParams.get('to'),
+			query: page.url.searchParams.get('q'),
+			from: page.url.searchParams.get('from'),
+			to: page.url.searchParams.get('to'),
 		};
 	});
 

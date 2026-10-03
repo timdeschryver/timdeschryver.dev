@@ -1,4 +1,4 @@
-import { publicUrl } from '$lib/variables';
+import { publicUrl } from '#lib/variables.js';
 import { readBits } from '../bits/_bits';
 import { readPostSummaries } from '../blog/_posts';
 
