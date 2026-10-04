@@ -1,4 +1,4 @@
-import { publicUrl } from '$lib/variables';
+import { publicUrl } from '#lib/variables.js';
 import { error } from '@sveltejs/kit';
 import { existsSync } from 'node:fs';
 import sharp from 'sharp';

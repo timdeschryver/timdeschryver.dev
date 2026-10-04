@@ -16,6 +16,7 @@ export const standardSite = {
 	did,
 	publicationRkey,
 	publication: `at://${did}/site.standard.publication/${publicationRkey}`,
+	/** @param {string} slug @param {string | number | Date} date */
 	document: (slug, date) => `at://${did}/site.standard.document/${documentRkey(slug, date)}`,
 };
 
@@ -24,6 +25,7 @@ export const standardSite = {
 // The date is truncated to UTC midnight so every date representation of the
 // same day yields the same key, and the clock id is derived from the slug to
 // keep posts published on the same day distinct.
+/** @param {string} slug @param {string | number | Date} date */
 export function documentRkey(slug, date) {
 	const day = new Date(date).toISOString().split('T')[0];
 	const micros = BigInt(Date.parse(day)) * 1000n;
@@ -32,6 +34,7 @@ export function documentRkey(slug, date) {
 
 const S32_ALPHABET = '234567abcdefghijklmnopqrstuvwxyz';
 
+/** @param {bigint} value */
 function encodeTid(value) {
 	let tid = '';
 	for (let i = 0; i < 13; i++) {
@@ -41,10 +44,11 @@ function encodeTid(value) {
 	return tid;
 }
 
+/** @param {string} slug */
 function clockId(slug) {
 	let hash = 0;
 	for (const char of slug) {
-		hash = (hash * 31 + char.codePointAt(0)) % 1024;
+		hash = (hash * 31 + (char.codePointAt(0) ?? 0)) % 1024;
 	}
 	return hash;
 }

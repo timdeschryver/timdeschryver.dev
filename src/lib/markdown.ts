@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as url from 'url';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
 import iconBracketsPurple from '../../static/images/languages/brackets-purple.svg?raw';
@@ -16,7 +15,7 @@ import iconMarkdown from '../../static/images/languages/markdown.svg?raw';
 import * as shiki from 'shiki';
 import type { BundledLanguage, ThemedToken, ThemeRegistrationRaw } from 'shiki';
 import pallete from 'shiki/themes/rose-pine.mjs';
-import { variables } from '$lib/variables';
+import { variables } from '#lib/variables.js';
 import { codeGroup } from './code-block';
 import { customBlock } from './custom-block';
 import type { TOC } from './models';
@@ -107,7 +106,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 
 		let style = '';
 		if (internal) {
-			const outgoingSlug = url.parse(link, false).pathname?.split('/').pop();
+			const outgoingSlug = new URL(link, 'https://internal.invalid').pathname.split('/').pop();
 			if (outgoingSlug && metadata.slug !== outgoingSlug && outgoingSlug !== 'blog') {
 				metadata.outgoingSlugs.push(outgoingSlug);
 			}

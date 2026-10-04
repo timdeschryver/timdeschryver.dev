@@ -1,6 +1,6 @@
-import { sortByDate, traverseFolder } from '$lib/content';
-import { ISODate } from '$lib/formatters';
-import { parseFileToHtmlAndMeta } from '$lib/markdown';
+import { sortByDate, traverseFolder } from '#lib/content.js';
+import { ISODate } from '#lib/formatters.js';
+import { parseFileToHtmlAndMeta } from '#lib/markdown.js';
 
 const bitsPath = 'bits';
 

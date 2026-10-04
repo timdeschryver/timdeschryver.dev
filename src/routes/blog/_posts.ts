@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { readMarkdownMetadata, sortByDate, traverseFolder } from '$lib/content';
-import { ISODate } from '$lib/formatters';
-import { publicUrl } from '$lib/variables';
+import { readMarkdownMetadata, sortByDate, traverseFolder } from '#lib/content.js';
+import { ISODate } from '#lib/formatters.js';
+import { publicUrl } from '#lib/variables.js';
 import { createHash } from 'crypto';
-import type { TOC, SeriesPost, BlogSeries } from '$lib/models';
+import type { TOC, SeriesPost, BlogSeries } from '#lib/models.js';
 
 const blogPath = 'blog';
 const cacheDir = '.blog-cache';
@@ -63,10 +63,10 @@ interface PostFile {
 	path: string;
 }
 
-let markdownModulePromise: Promise<typeof import('$lib/markdown')> | undefined;
+let markdownModulePromise: Promise<typeof import('#lib/markdown.js')> | undefined;
 
 function getMarkdownModule() {
-	markdownModulePromise ??= import('$lib/markdown');
+	markdownModulePromise ??= import('#lib/markdown.js');
 	return markdownModulePromise;
 }
 

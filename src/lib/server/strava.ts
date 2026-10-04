@@ -1,4 +1,4 @@
-import { env } from '$env/dynamic/private';
+import { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET, STRAVA_REFRESH_TOKEN } from '$app/env/private';
 
 export type StravaRunningStats = {
 	kilometers: number;
@@ -12,9 +12,9 @@ type Fetch = typeof globalThis.fetch;
 export async function getYearToDateRunningStats(
 	fetcher: Fetch,
 ): Promise<StravaRunningStats | null> {
-	const clientId = env.STRAVA_CLIENT_ID;
-	const clientSecret = env.STRAVA_CLIENT_SECRET;
-	const refreshToken = env.STRAVA_REFRESH_TOKEN;
+	const clientId = STRAVA_CLIENT_ID;
+	const clientSecret = STRAVA_CLIENT_SECRET;
+	const refreshToken = STRAVA_REFRESH_TOKEN;
 
 	if (!clientId || !clientSecret || !refreshToken) {
 		return null;

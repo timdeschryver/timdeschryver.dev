@@ -1,20 +1,18 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import { tick } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import Host from '$lib/Host.svelte';
-	import { blog } from '$lib/current-blog.svelte';
-	import { setTheme, theme } from '$lib/theme.store';
-	import { publicUrl } from '$lib/variables';
+	import Host from '#lib/Host.svelte';
+	import { blog } from '#lib/current-blog.svelte.js';
+	import { setTheme, theme } from '#lib/theme.store.js';
+	import { publicUrl } from '#lib/variables.js';
 	import './layout.css';
-	import Socials from '$lib/Socials.svelte';
+	import Socials from '#lib/Socials.svelte';
 
 	let { children } = $props();
 
-	let segment = $derived($page.url?.pathname.substring(1) ?? '');
+	let segment = $derived(page.url?.pathname.substring(1) ?? '');
 	let support = $state<HTMLElement | null>();
 	let scrollY = $state(0);
 	let kofiRequested = false;
@@ -22,6 +20,8 @@
 	let blogOverviewAnchor: { slug: string; viewportTop: number } | null = null;
 
 	onNavigate((navigation) => {
+		// shallow routing (e.g. toggling the TLDR view) also triggers navigation hooks
+		if (navigation.shallow) return;
 		if (!document.startViewTransition) return;
 		const fromPath = navigation.from?.url.pathname;
 		const toPath = navigation.to?.url.pathname;
@@ -102,7 +102,7 @@
 		);
 	}
 
-	run(() => {
+	$effect(() => {
 		const supportVisible = segment.startsWith('blog/') && scrollY > 1000;
 		if (supportVisible && !support) {
 			loadKofiWidget();

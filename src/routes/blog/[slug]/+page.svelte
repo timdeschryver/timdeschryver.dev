@@ -1,22 +1,22 @@
 <script lang="ts">
 	import '../../code.css';
 	import { onMount } from 'svelte';
-	import Support from '$lib/Support.svelte';
-	import { humanDate } from '$lib/formatters';
-	import Head from '$lib/Head.svelte';
-	import Comments from '$lib/Comments.svelte';
-	import { blog } from '$lib/current-blog.svelte';
-	import Share from '$lib/Share.svelte';
-	import Actions from '$lib/Actions.svelte';
-	import BlogSeries from '$lib/BlogSeries.svelte';
-	import codeBlockLifeCycle from '$lib/code-block-lifecycle.svelte';
-	import copyLifeCycle from '$lib/copy-lifecycle.svelte';
-	import Ad from '$lib/Ad.svelte';
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
+	import Support from '#lib/Support.svelte';
+	import { humanDate } from '#lib/formatters.js';
+	import Head from '#lib/Head.svelte';
+	import Comments from '#lib/Comments.svelte';
+	import { blog } from '#lib/current-blog.svelte.js';
+	import Share from '#lib/Share.svelte';
+	import Actions from '#lib/Actions.svelte';
+	import BlogSeries from '#lib/BlogSeries.svelte';
+	import codeBlockLifeCycle from '#lib/code-block-lifecycle.svelte.js';
+	import copyLifeCycle from '#lib/copy-lifecycle.svelte.js';
+	import Ad from '#lib/Ad.svelte';
+	import { browser } from '$app/env';
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import { publicUrl } from '$lib/variables';
-	import { standardSite } from '$lib/standard-site';
+	import { publicUrl } from '#lib/variables.js';
+	import { standardSite } from '#lib/standard-site.js';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -35,7 +35,7 @@
 	copyLifeCycle(showTldr);
 
 	onMount(() => {
-		const showTldrInitially = post.hasTldr && $page.url.searchParams.get('tldr') === 'true';
+		const showTldrInitially = post.hasTldr && page.url.searchParams.get('tldr') === 'true';
 		blog.loadBlog(
 			post.metadata.title,
 			post.metadata.slug,
@@ -115,7 +115,7 @@
 		if (!browser) {
 			return [];
 		}
-		const showTldrInitially = post.hasTldr && $page.url.searchParams.get('tldr') === 'true';
+		const showTldrInitially = post.hasTldr && page.url.searchParams.get('tldr') === 'true';
 		return showTldrInitially
 			? []
 			: ([...document.querySelectorAll('main > h2, main > h3')].reverse() as HTMLElement[]);

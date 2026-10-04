@@ -7,8 +7,8 @@ const markdown = vi.hoisted(() => ({
 	parseFileToHtmlAndMeta: vi.fn(),
 }));
 
-vi.mock('$app/environment', () => ({ dev: true }));
-vi.mock('$lib/markdown', () => markdown);
+vi.mock('$app/env', () => ({ dev: true }));
+vi.mock('#lib/markdown.js', () => markdown);
 
 interface TestPost {
 	title: string;
