@@ -621,8 +621,9 @@
 		z-index: 1;
 		max-width: 16ch;
 		font-size: clamp(2.8rem, 7.5vw, 7rem);
-		line-height: 0.95;
-		letter-spacing: -0.065em;
+		line-height: 1;
+		letter-spacing: -0.02em;
+		word-spacing: 0.05em;
 		text-wrap: balance;
 	}
 

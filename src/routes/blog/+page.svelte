@@ -441,6 +441,8 @@
 	li h2 {
 		font-size: clamp(1.45rem, 3vw, 1.9rem);
 		line-height: 1.15;
+		letter-spacing: -0.01em;
+		word-spacing: 0.05em;
 		text-wrap: balance;
 	}
 
