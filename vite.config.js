@@ -13,6 +13,9 @@ export default defineConfig(() => {
 				adapter: adapter({
 					fallback: '404.html',
 				}),
+				// Inline the (small) stylesheets so the first paint doesn't wait for extra requests,
+				// most visits only view one or two pages
+				inlineStyleThreshold: 20_000,
 				prerender: {
 					handleInvalidUrl: ({ href, message }) => {
 						// at:// URIs (the standard.site document links) are valid, but not crawlable
