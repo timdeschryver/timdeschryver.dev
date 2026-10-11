@@ -3,6 +3,8 @@ import { rename, unlink } from 'fs/promises';
 import sharp from 'sharp';
 
 const supportedImageExtensions = /\.(png|jpe?g|webp)$/i;
+// Visually the same as 100 for screenshots, at a fraction of the size
+const webpQuality = 82;
 
 export async function optimizeImage(img) {
 	if (!existsSync(img)) {
@@ -24,17 +26,13 @@ export async function optimizeImage(img) {
 	} else if (extension === 'png') {
 		await writeOptimizedImage(img, optimizedImage.png({ compressionLevel: 9 }), extension);
 	} else if (extension === 'webp') {
-		await writeOptimizedImage(
-			img,
-			optimizedImage.webp({ quality: isBanner ? 82 : 100 }),
-			extension,
-		);
+		await writeOptimizedImage(img, optimizedImage.webp({ quality: webpQuality }), extension);
 	}
 
 	if (extension !== 'webp') {
 		console.log(`Converting ${img} to WebP format`);
 		await sharp(img)
-			.webp({ quality: isBanner ? 82 : 100 })
+			.webp({ quality: webpQuality })
 			.toFile(img.replace(supportedImageExtensions, '.webp'));
 	}
 }
