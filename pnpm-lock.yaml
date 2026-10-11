@@ -74,6 +74,9 @@ importers:
       front-matter:
         specifier: 4.0.2
         version: 4.0.2
+      image-size:
+        specifier: ^2.0.4
+        version: 2.0.4
       jsdom:
         specifier: 30.0.1
         version: 30.0.1
@@ -1963,6 +1966,11 @@ packages:
   ignore@7.0.6:
     resolution: {integrity: sha512-BAg6QkE8W+TuQLrrw0Ugr7HegXduRuuj8/ti2kSOc+jz1dmx8/WNcjr6XGnq5YpDWxFwwaavqD0+jIUOKelTsw==}
     engines: {node: '>= 4'}
+
+  image-size@2.0.4:
+    resolution: {integrity: sha512-QRUkFFsRV/6fuESxb9Vkq+a0LkSrgKXuc2NEqfikiXxxN/G3tjWt5EVUlMaImRBZRZK/jRBEbYvpPYZL8t08Zw==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
@@ -5075,6 +5083,8 @@ snapshots:
   ieee754@1.2.1: {}
 
   ignore@7.0.6: {}
+
+  image-size@2.0.4: {}
 
   inflight@1.0.6:
     dependencies:

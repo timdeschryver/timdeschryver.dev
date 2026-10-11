@@ -59,6 +59,7 @@
 		"dotenv": "^17.4.2",
 		"dotenv-extended": "3.1.0",
 		"front-matter": "4.0.2",
+		"image-size": "^2.0.4",
 		"jsdom": "30.0.1",
 		"lint-staged": "17.5.1",
 		"marked": "18.0.13",

@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import sharp from 'sharp';
 import { afterEach, describe, expect, it } from 'vitest';
 import { parseFileToHtmlAndMeta } from './markdown';
 
@@ -130,6 +131,40 @@ describe('Markdown rendering', () => {
 		expect(html).toContain('<video controls preload="metadata">');
 		expect(html).toContain('<figcaption>Running dotnet test in .NET 9</figcaption>');
 		expect(html).not.toContain('autoplay');
+	});
+
+	it('renders images with their dimensions to prevent layout shifts', async () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.mkdirSync(path.join(directory, 'images'));
+		await sharp({ create: { width: 40, height: 20, channels: 3, background: '#000' } })
+			.webp()
+			.toFile(path.join(directory, 'images', 'screenshot.webp'));
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'![A screenshot](./images/screenshot.png)',
+				'',
+				'![A missing image](./images/missing.png)',
+			].join('\n'),
+		);
+
+		const { html } = parseFileToHtmlAndMeta(file);
+
+		expect(html).toMatch(
+			/<img src="\/[^"]*\/images\/screenshot\.webp" alt="" width="40" height="20" loading="lazy" decoding="async"\/>/,
+		);
+		expect(html).toMatch(
+			/<img src="\/[^"]*\/images\/missing\.webp" alt="" loading="lazy" decoding="async"\/>/,
+		);
 	});
 
 	it('normalizes relative links at every directory depth', () => {

@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { createHash } from 'crypto';
 import { marked } from 'marked';
+import { imageSize } from 'image-size';
 import iconBracketsPurple from '../../static/images/languages/brackets-purple.svg?raw';
 import iconCodePurple from '../../static/images/languages/code-purple.svg?raw';
 import iconShell from '../../static/images/languages/shell.svg?raw';
@@ -127,15 +128,15 @@ export function parseFileToHtmlAndMeta(file: string): {
 
 	renderer.image = function (token) {
 		const { href, text } = token;
-		const src = href.startsWith('http')
+		const isExternal = href.startsWith('http');
+		const file = isExternal ? '' : path.join(assetsSrc, href).replace(/\.(png|jpg|jpeg)$/, '.webp');
+		const src = isExternal
 			? href
 			: `/` +
-				path
-					.join(assetsSrc, href)
+				file
 					.split(path.sep)
 					.filter((_, index, { length }) => index >= length - 4)
-					.join('/')
-					.replace(/\.(png|jpg|jpeg)$/, '.webp');
+					.join('/');
 
 		if (src.endsWith('.mp4')) {
 			return `
@@ -147,9 +148,12 @@ export function parseFileToHtmlAndMeta(file: string): {
 				</figure>`;
 		}
 
+		const size = isExternal ? undefined : readImageSize(file);
+		const sizeAttributes = size ? ` width="${size.width}" height="${size.height}"` : '';
+
 		return `
 			<figure>
-				<img src="${src}" alt="" loading="lazy"/>
+				<img src="${src}" alt=""${sizeAttributes} loading="lazy" decoding="async"/>
 				<figcaption>${text}</figcaption>
 			</figure>
 		`;
@@ -378,6 +382,16 @@ export function parseFileToHtmlAndMeta(file: string): {
 		{ renderer },
 	) as string;
 	return { html, metadata, assetsSrc };
+}
+
+function readImageSize(file: string) {
+	try {
+		const { width, height } = imageSize(fs.readFileSync(file));
+		return { width, height };
+	} catch {
+		// Missing or unsupported images are rendered without dimensions
+		return undefined;
+	}
 }
 
 function getUniqueFragment(fragment: string, fragmentCounts: Map<string, number>) {
