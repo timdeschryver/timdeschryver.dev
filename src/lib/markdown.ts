@@ -130,7 +130,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 	renderer.image = function (token) {
 		const { href, text } = token;
 		const isExternal = href.startsWith('http');
-		const file = isExternal ? '' : path.join(assetsSrc, href).replace(/\.(png|jpg|jpeg)$/, '.webp');
+		const file = isExternal ? '' : getPublishedImage(path.join(assetsSrc, href));
 		const src = isExternal
 			? href
 			: `/` +
@@ -377,6 +377,29 @@ export function parseFileToHtmlAndMeta(file: string): {
 		{ renderer },
 	) as string;
 	return { html, metadata, assetsSrc };
+}
+
+/**
+ * Images are published as WebP (see scripts/optimize-image.js).
+ * A GIF is only replaced by its animated WebP version when that version is smaller,
+ * and when the WebP file doesn't belong to a still image with the same name.
+ */
+function getPublishedImage(file: string) {
+	if (/\.(png|jpg|jpeg)$/.test(file)) {
+		return file.replace(/\.(png|jpg|jpeg)$/, '.webp');
+	}
+
+	if (!file.endsWith('.gif')) {
+		return file;
+	}
+
+	const webp = file.replace(/\.gif$/, '.webp');
+	const hasStillImage = ['.png', '.jpg', '.jpeg'].some((extension) =>
+		fs.existsSync(file.replace(/\.gif$/, extension)),
+	);
+	const isSmaller =
+		fs.existsSync(webp) && fs.existsSync(file) && fs.statSync(webp).size < fs.statSync(file).size;
+	return !hasStillImage && isSmaller ? webp : file;
 }
 
 function readImageSize(file: string) {

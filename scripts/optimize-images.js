@@ -17,6 +17,7 @@ for (const filepath of getChangedFiles()) {
 				filepath.endsWith('.png') ||
 				filepath.endsWith('.jpg') ||
 				filepath.endsWith('.jpeg') ||
+				filepath.endsWith('.gif') ||
 				filepath.endsWith('.webp')
 			)
 		) {

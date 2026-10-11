@@ -167,6 +167,50 @@ describe('Markdown rendering', () => {
 		);
 	});
 
+	it('replaces GIFs with their animated WebP version only when it is smaller', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		const images = path.join(directory, 'images');
+		fs.mkdirSync(images);
+		const writeImage = (name: string, size: number) =>
+			fs.writeFileSync(path.join(images, name), Buffer.alloc(size));
+		writeImage('smaller.gif', 100);
+		writeImage('smaller.webp', 50);
+		writeImage('larger.gif', 100);
+		writeImage('larger.webp', 150);
+		writeImage('still.gif', 100);
+		writeImage('still.png', 100);
+		writeImage('still.webp', 50);
+		writeImage('only.gif', 100);
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'![Smaller](./images/smaller.gif)',
+				'',
+				'![Larger](./images/larger.gif)',
+				'',
+				'![Still image with the same name](./images/still.gif)',
+				'',
+				'![Only a GIF](./images/only.gif)',
+			].join('\n'),
+		);
+
+		const { html } = parseFileToHtmlAndMeta(file);
+
+		expect(html).toMatch(/src="\/[^"]*\/images\/smaller\.webp"/);
+		expect(html).toMatch(/src="\/[^"]*\/images\/larger\.gif"/);
+		expect(html).toMatch(/src="\/[^"]*\/images\/still\.gif"/);
+		expect(html).toMatch(/src="\/[^"]*\/images\/only\.gif"/);
+	});
+
 	it('normalizes relative links at every directory depth', () => {
 		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
 		const file = path.join(directory, 'index.md');
