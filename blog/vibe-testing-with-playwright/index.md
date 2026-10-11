@@ -52,7 +52,7 @@ The server installs the Playwright MCP through `npm`, so make sure you have it i
 
 After that, you should see the Playwright MCP tools in the list of available tools.
 
-![The command pallete shows a list of the available Playwright MCP tools.](/images/tools.webp)
+![The command pallete shows a list of the available Playwright MCP tools.](./images/tools.webp)
 
 This allows you to run certain playwright commands via GitHub Copilot's agent mode. To run the commands, use the hashtag (`#`) prefix in your prompt.
 

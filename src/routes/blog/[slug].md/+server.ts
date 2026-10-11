@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 import * as fs from 'node:fs';
+import { absolutizeMarkdownLinks } from '#lib/markdown-links.js';
+import { publicUrl } from '#lib/variables.js';
 import { readPostSummaries } from '../_posts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
@@ -16,7 +18,8 @@ export const GET: RequestHandler = ({ params }) => {
 		error(404, `Blog ${params.slug} Not found`);
 	}
 
-	return new Response(fs.readFileSync(filePath, 'utf-8'), {
+	const markdown = fs.readFileSync(filePath, 'utf-8');
+	return new Response(absolutizeMarkdownLinks(markdown, publicUrl(filePath)), {
 		headers: {
 			'Content-Type': 'text/markdown; charset=utf-8',
 		},
