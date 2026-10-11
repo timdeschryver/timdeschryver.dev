@@ -54,6 +54,7 @@ const highlighter = await shiki.createHighlighter({
 		'md',
 	],
 });
+const scopeColors = normalizeScopeColors(pallete);
 
 const langToIcon: Partial<Record<string, string>> = {
 	bash: iconShell,
@@ -285,7 +286,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 				let lineContent = '';
 				if (token.length) {
 					token.forEach((innertoken, index) => {
-						const cssVar = replaceColorToCSSVariable(innertoken.color);
+						const syntaxClass = getSyntaxClass(innertoken.color);
 						let escaped = innertoken.content
 							.replace(/&/g, '&amp;')
 							.replace(/</g, '&lt;')
@@ -302,7 +303,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 							}
 						}
 
-						lineContent += `<span style="color: hsl(${cssVar})">${escaped}</span>`;
+						lineContent += `<span class="${syntaxClass}">${escaped}</span>`;
 					});
 				} else {
 					lineContent += `<span> </span>`;
@@ -315,18 +316,12 @@ export function parseFileToHtmlAndMeta(file: string): {
 			html += '</code>';
 			return html;
 
-			function replaceColorToCSSVariable(color?: string) {
-				if (!color) {
-					return `var(--syntax-unknown)`;
-				}
-
-				const scopeColors = normalizeScopeColors(pallete);
-
-				const key = scopeColors.find((c) => c.color?.toLowerCase() === color.toLowerCase());
-				if (!key) {
-					return `var(--syntax-unknown)`;
-				}
-				return `var(--syntax-${key.scope})`;
+			// The colors are defined per theme in scripts/generate-syntax-themes.js
+			function getSyntaxClass(color?: string) {
+				const key = color
+					? scopeColors.find((c) => c.color?.toLowerCase() === color.toLowerCase())
+					: undefined;
+				return `syntax-${key?.scope ?? 'unknown'}`;
 			}
 		}
 

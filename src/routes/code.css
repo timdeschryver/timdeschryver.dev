@@ -1,5 +1,6 @@
 @import './light.theme.css';
 @import './dark.theme.css';
+@import './syntax.css';
 
 @font-face {
 	font-family: 'Victor Mono Variable';

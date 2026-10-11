@@ -1,0 +1,179 @@
+.syntax-comment {
+	color: hsl(var(--syntax-comment));
+}
+
+.syntax-constant {
+	color: hsl(var(--syntax-constant));
+}
+
+.syntax-constant-numeric {
+	color: hsl(var(--syntax-constant-numeric));
+}
+
+.syntax-constant-language {
+	color: hsl(var(--syntax-constant-language));
+}
+
+.syntax-entity-name {
+	color: hsl(var(--syntax-entity-name));
+}
+
+.syntax-entity-name-section {
+	color: hsl(var(--syntax-entity-name-section));
+}
+
+.syntax-entity-name-tag {
+	color: hsl(var(--syntax-entity-name-tag));
+}
+
+.syntax-entity-name-namespace {
+	color: hsl(var(--syntax-entity-name-namespace));
+}
+
+.syntax-entity-name-type {
+	color: hsl(var(--syntax-entity-name-type));
+}
+
+.syntax-entity-other-attribute-name {
+	color: hsl(var(--syntax-entity-other-attribute-name));
+}
+
+.syntax-entity-other-inherited-class {
+	color: hsl(var(--syntax-entity-other-inherited-class));
+}
+
+.syntax-invalid {
+	color: hsl(var(--syntax-invalid));
+}
+
+.syntax-invalid-deprecated {
+	color: hsl(var(--syntax-invalid-deprecated));
+}
+
+.syntax-keyword {
+	color: hsl(var(--syntax-keyword));
+}
+
+.syntax-variable-language-this {
+	color: hsl(var(--syntax-variable-language-this));
+}
+
+.syntax-markup-inserted-diff {
+	color: hsl(var(--syntax-markup-inserted-diff));
+}
+
+.syntax-markup-deleted-diff {
+	color: hsl(var(--syntax-markup-deleted-diff));
+}
+
+.syntax-markup-heading {
+	color: hsl(var(--syntax-markup-heading));
+}
+
+.syntax-markup-bold-markdown {
+	color: hsl(var(--syntax-markup-bold-markdown));
+}
+
+.syntax-markup-italic-markdown {
+	color: hsl(var(--syntax-markup-italic-markdown));
+}
+
+.syntax-meta-diff-range {
+	color: hsl(var(--syntax-meta-diff-range));
+}
+
+.syntax-meta-tag {
+	color: hsl(var(--syntax-meta-tag));
+}
+
+.syntax-meta-brace {
+	color: hsl(var(--syntax-meta-brace));
+}
+
+.syntax-meta-import {
+	color: hsl(var(--syntax-meta-import));
+}
+
+.syntax-meta-export {
+	color: hsl(var(--syntax-meta-export));
+}
+
+.syntax-meta-directive-vue {
+	color: hsl(var(--syntax-meta-directive-vue));
+}
+
+.syntax-meta-property-name-css {
+	color: hsl(var(--syntax-meta-property-name-css));
+}
+
+.syntax-meta-property-value-css {
+	color: hsl(var(--syntax-meta-property-value-css));
+}
+
+.syntax-meta-tag-other-html {
+	color: hsl(var(--syntax-meta-tag-other-html));
+}
+
+.syntax-punctuation {
+	color: hsl(var(--syntax-punctuation));
+}
+
+.syntax-punctuation-accessor {
+	color: hsl(var(--syntax-punctuation-accessor));
+}
+
+.syntax-punctuation-definition-string {
+	color: hsl(var(--syntax-punctuation-definition-string));
+}
+
+.syntax-punctuation-definition-tag {
+	color: hsl(var(--syntax-punctuation-definition-tag));
+}
+
+.syntax-storage-type {
+	color: hsl(var(--syntax-storage-type));
+}
+
+.syntax-storage-modifier {
+	color: hsl(var(--syntax-storage-modifier));
+}
+
+.syntax-string {
+	color: hsl(var(--syntax-string));
+}
+
+.syntax-support {
+	color: hsl(var(--syntax-support));
+}
+
+.syntax-support-constant {
+	color: hsl(var(--syntax-support-constant));
+}
+
+.syntax-support-function {
+	color: hsl(var(--syntax-support-function));
+}
+
+.syntax-variable {
+	color: hsl(var(--syntax-variable));
+}
+
+.syntax-variable-other {
+	color: hsl(var(--syntax-variable-other));
+}
+
+.syntax-variable-language {
+	color: hsl(var(--syntax-variable-language));
+}
+
+.syntax-variable-function {
+	color: hsl(var(--syntax-variable-function));
+}
+
+.syntax-variable-argument {
+	color: hsl(var(--syntax-variable-argument));
+}
+
+.syntax-variable-parameter {
+	color: hsl(var(--syntax-variable-parameter));
+}

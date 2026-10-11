@@ -6,15 +6,30 @@ const usedEditorColors = new Set(['input.border', 'tab.activeBackground']);
 
 fs.writeFileSync('src/routes/dark.theme.css', createStyle('dark', palette));
 fs.writeFileSync('src/routes/light.theme.css', createStyle('light', paletteDawn));
+fs.writeFileSync('src/routes/syntax.css', createSyntaxClasses([palette, paletteDawn]));
 
-function createStyle(scope, theme) {
-	const scopeColors = (theme.tokenColors ?? theme.settings ?? []).flatMap(({ scope, settings }) => {
+function getScopeColors(theme) {
+	return (theme.tokenColors ?? theme.settings ?? []).flatMap(({ scope, settings }) => {
 		const scopes = Array.isArray(scope) ? scope : scope ? [scope] : [];
 		return scopes.map((tokenScope) => ({
 			scope: tokenScope.replace(/\./g, '-'),
 			color: settings.foreground,
 		}));
 	});
+}
+
+// Code tokens are rendered with a class per scope (see src/lib/markdown.ts) instead of an inline style
+function createSyntaxClasses(themes) {
+	const scopes = new Set(
+		themes.flatMap((theme) => getScopeColors(theme).map(({ scope }) => scope)),
+	);
+	return [...scopes]
+		.map((scope) => `.syntax-${scope} {\n\tcolor: hsl(var(--syntax-${scope}));\n}\n`)
+		.join('\n');
+}
+
+function createStyle(scope, theme) {
+	const scopeColors = getScopeColors(theme);
 
 	let style = `html.${scope} {`;
 	for (const color of scopeColors) {
