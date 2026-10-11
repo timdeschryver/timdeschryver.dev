@@ -87,10 +87,13 @@
 		{
 			"route": "/*.{png,jpg,jpeg,gif,webp,avif,svg,ico,pdf}",
 			"headers": {
-				"Cache-Control": "public, max-age=604800, stale-while-revalidate=86400"
+				"Cache-Control": "public, max-age=2592000, stale-while-revalidate=86400"
 			}
 		}
 	],
+	"globalHeaders": {
+		"Cloudflare-CDN-Cache-Control": "max-age=2592000"
+	},
 	"mimeTypes": {
 		".md": "text/markdown; charset=utf-8"
 	},
