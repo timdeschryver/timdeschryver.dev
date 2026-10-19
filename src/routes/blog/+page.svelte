@@ -165,6 +165,7 @@
 	description={`${data.posts.length} articles about .NET, Angular, testing, and developer tooling.`}
 	canonical={publicUrl('/blog')}
 	type="collection"
+	markdown={publicUrl('/blog.md')}
 	items={data.posts.slice(0, 20).map((post) => ({
 		name: post.title,
 		url: publicUrl(`/blog/${post.slug}`),

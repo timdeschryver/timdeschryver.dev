@@ -293,7 +293,9 @@ export function parseFileToHtmlAndMeta(file: string): {
 							.replace(/>/g, '&gt;')
 							.replace(/"/g, '&quot;');
 
-						if (index === 0) {
+						// Only a diff block uses a leading + or - to mark an added or removed line.
+						// In other languages it's part of the code, e.g. a YAML sequence, a Markdown list, or an SQL comment.
+						if (index === 0 && shikiLang === 'diff') {
 							if (escaped[0] === '+') {
 								lineClass.push('addition');
 								escaped = escaped.substring(1).trim();

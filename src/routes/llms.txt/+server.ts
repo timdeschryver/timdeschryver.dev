@@ -1,3 +1,4 @@
+import { contentListItem } from '#lib/markdown-pages.js';
 import { publicUrl } from '#lib/variables.js';
 import { readBits } from '../bits/_bits';
 import { readPostSummaries } from '../blog/_posts';
@@ -20,23 +21,17 @@ function generate(
 	bits: Awaited<ReturnType<typeof readBits>>,
 ) {
 	const allPosts = posts
-		.map(
-			({ metadata }) =>
-				`- [${markdownText(metadata.title)}](${publicUrl(`/blog/${metadata.slug}.md`)}) (${metadata.date}; ${formatTags(metadata.tags)}): ${markdownText(metadata.description)}`,
-		)
+		.map(({ metadata }) => contentListItem(metadata, publicUrl(`/blog/${metadata.slug}.md`)))
 		.join('\n');
 	const allBits = bits
-		.map(
-			({ metadata }) =>
-				`- [${markdownText(metadata.title)}](${publicUrl(`/bits/${metadata.slug}.md`)}) (${metadata.date}; ${formatTags(metadata.tags)}): ${markdownText(metadata.description)}`,
-		)
+		.map(({ metadata }) => contentListItem(metadata, publicUrl(`/bits/${metadata.slug}.md`)))
 		.join('\n');
 
 	return `# Tim Deschryver
 
 > Technical writing by Tim Deschryver, a Belgian software engineer and Microsoft MVP specializing in .NET, Angular, testing, AI-assisted development, and developer tooling.
 
-The articles contain practical explanations, runnable examples, and lessons learned from building software. Every article is available as plain Markdown by appending \`.md\` to its URL; the links below point to the Markdown versions. Prefer a page's canonical URL (the same link without the \`.md\` suffix) when citing it.
+The articles contain practical explanations, runnable examples, and lessons learned from building software. Every page is available as plain Markdown by requesting it with the \`Accept: text/markdown\` header, and every article also by appending \`.md\` to its URL; the links below point to the Markdown versions. Prefer a page's canonical URL (the same link without the \`.md\` suffix) when citing it.
 
 ## Main sections
 
@@ -58,16 +53,4 @@ ${allBits}
 - [XML sitemap](${publicUrl('/sitemap.xml')}): Complete index of canonical pages
 - [GitHub profile](https://github.com/timdeschryver): Open-source work and source repositories
 `;
-}
-
-function markdownText(value: string) {
-	return value
-		.replaceAll('\\', '\\\\')
-		.replaceAll('[', '\\[')
-		.replaceAll(']', '\\]')
-		.replace(/\s+/g, ' ');
-}
-
-function formatTags(tags: string[]) {
-	return tags.length ? `topics: ${tags.map(markdownText).join(', ')}` : 'technical note';
 }

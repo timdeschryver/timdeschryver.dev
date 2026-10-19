@@ -62,6 +62,53 @@ test('articles are available as plain markdown', async ({ request }) => {
 	expect(bitResponse.headers()['content-type']).toContain('text/markdown');
 });
 
+test('api catalog links to the openapi description', async ({ request }) => {
+	const response = await request.get('/.well-known/api-catalog');
+	expect(response.status()).toBe(200);
+	expect(response.headers()['content-type']).toContain('application/linkset+json');
+
+	const { linkset } = await response.json();
+	expect(linkset).toHaveLength(1);
+	const [api] = linkset;
+	expect(api.anchor).toMatch(/^https?:\/\//);
+	expect(api['service-doc'][0].href).toMatch(/\/llms\.txt$/);
+
+	const openapi = await request.get(new URL(api['service-desc'][0].href).pathname);
+	expect(openapi.ok()).toBeTruthy();
+	const description = await openapi.json();
+	expect(description.openapi).toBe('3.1.0');
+	expect(Object.keys(description.paths)).toContain('/blog/{slug}.md');
+
+	const head = await request.head('/.well-known/api-catalog');
+	expect(head.ok()).toBeTruthy();
+	expect(head.headers()['link']).toContain('rel="api-catalog"');
+});
+
+test('rss feed is served as rss', async ({ request }) => {
+	const response = await request.get('/blog/rss.xml');
+	expect(response.ok()).toBeTruthy();
+	expect(response.headers()['content-type']).toContain('application/rss+xml');
+	expect(await response.text()).toContain('<rss ');
+});
+
+test('security.txt points to github and has not expired', async ({ request }) => {
+	const response = await request.get('/.well-known/security.txt');
+	expect(response.status()).toBe(200);
+	expect(response.headers()['content-type']).toContain('text/plain');
+
+	const security = await response.text();
+	expect(security).toContain(
+		'Contact: https://github.com/timdeschryver/timdeschryver.dev/security/advisories/new',
+	);
+	expect(security).toMatch(/^Canonical: https?:\/\/.+\/\.well-known\/security\.txt$/m);
+
+	const expires = new Date(security.match(/^Expires: (.+)$/m)?.[1] ?? '');
+	const oneYearFromNow = new Date();
+	oneYearFromNow.setUTCFullYear(oneYearFromNow.getUTCFullYear() + 1);
+	expect(expires.getTime()).toBeGreaterThan(Date.now());
+	expect(expires.getTime()).toBeLessThan(oneYearFromNow.getTime());
+});
+
 test('robots explicitly permits AI search crawlers', async ({ request }) => {
 	const response = await request.get('/robots.txt');
 	expect(response.ok()).toBeTruthy();
@@ -80,7 +127,10 @@ test('robots explicitly permits AI search crawlers', async ({ request }) => {
 		'Applebot-Extended',
 		'Meta-ExternalAgent',
 	]) {
-		expect(robots).toContain(`User-agent: ${crawler}\nAllow: /`);
+		// An optional Content-Signal line may sit between the User-agent and Allow directives.
+		expect(robots).toMatch(
+			new RegExp(`^User-agent: ${crawler}\\n(?:Content-Signal: [^\\n]+\\n)?Allow: /$`, 'm'),
+		);
 	}
 });
 

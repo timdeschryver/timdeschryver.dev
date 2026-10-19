@@ -65,6 +65,7 @@
 	description="Short notes about developer tools, new .NET and Angular features, and other topics that I'm excited about."
 	canonical={publicUrl('/bits')}
 	type="collection"
+	markdown={publicUrl('/bits.md')}
 	items={bits.slice(0, 20).map((bit) => ({
 		name: bit.metadata.title,
 		url: publicUrl(`/bits/${bit.metadata.slug}`),

@@ -1,16 +1,21 @@
 {
 	"routes": [
 		{
-			"route": "/.well-known/site.standard.publication",
+			"route": "/",
 			"headers": {
-				"Content-Type": "text/plain; charset=utf-8"
+				"Link": "</llms.txt>; rel=\"describedby\"; type=\"text/plain\", </blog/rss.xml>; rel=\"alternate\"; type=\"application/rss+xml\"; title=\"Tim Deschryver\""
+			}
+		},
+		{
+			"route": "/.well-known/api-catalog",
+			"rewrite": "/.well-known/api-catalog.linkset",
+			"headers": {
+				"Link": "</.well-known/api-catalog>; rel=\"api-catalog\""
 			}
 		},
 		{
 			"route": "/blog/rss.xml",
-			"headers": {
-				"Content-Type": "application/rss+xml; charset=utf-8"
-			}
+			"rewrite": "/blog/rss.feed"
 		},
 		{
 			"route": "/posts",
@@ -92,10 +97,13 @@
 		}
 	],
 	"globalHeaders": {
-		"Cloudflare-CDN-Cache-Control": "max-age=2592000"
+		"Cloudflare-CDN-Cache-Control": "max-age=2592000, stale-while-revalidate=604800"
 	},
 	"mimeTypes": {
-		".md": "text/markdown; charset=utf-8"
+		".md": "text/markdown; charset=utf-8",
+		".linkset": "application/linkset+json; profile=\"https://www.rfc-editor.org/info/rfc9727\"",
+		".feed": "application/rss+xml; charset=utf-8",
+		".publication": "text/plain; charset=utf-8"
 	},
 	"responseOverrides": {
 		"404": {

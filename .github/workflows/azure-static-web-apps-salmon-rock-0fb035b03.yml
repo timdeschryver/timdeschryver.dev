@@ -77,10 +77,12 @@ jobs:
           VITE_PUBLIC_HASH: ${{ github.sha }}
           VITE_PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
 
-      - name: 🧹 Purge Cloudflare Cache
+      # Invalidate instead of purge: cached pages are marked stale (not removed),
+      # so they can be served while Cloudflare fetches the new version (stale-while-revalidate)
+      - name: 🧹 Invalidate Cloudflare Cache
         if: github.event_name == 'push'
         run: |
-          curl -fsS -X POST "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" \
+          curl -fsS -X POST "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/invalidate_cache" \
             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
             -H "Content-Type: application/json" \
             --data '{"purge_everything":true}'

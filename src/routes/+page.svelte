@@ -57,6 +57,7 @@
 	description="Practical insights on .NET, Angular, testing, and developer tooling from Tim Deschryver, a Belgium-based software engineer and Microsoft MVP."
 	canonical={publicUrl()}
 	type="profile"
+	markdown={publicUrl('/index.md')}
 />
 
 <section class="profile">

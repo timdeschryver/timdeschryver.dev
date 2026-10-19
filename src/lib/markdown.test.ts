@@ -52,6 +52,54 @@ describe('Markdown rendering', () => {
 		expect(html).toContain('role="tabpanel"');
 	});
 
+	it('treats a leading + or - as a diff marker only in diff blocks', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'```diff',
+				'- const answer = 41;',
+				'+ const answer = 42;',
+				'```',
+				'',
+				'```yaml',
+				'- task: UseDotNet@2',
+				'```',
+				'',
+				'```md',
+				'- [ ] Tests are added',
+				'```',
+				'',
+				'```sql',
+				'-- a comment',
+				'```',
+			].join('\n'),
+		);
+
+		const { html } = parseFileToHtmlAndMeta(file);
+		const text = html.replace(/<[^>]+>/g, '');
+
+		expect(html).toContain('<div class="line removal">');
+		expect(html).toContain('<div class="line addition">');
+		expect(html.match(/class="line (removal|addition)"/g)).toHaveLength(2);
+		expect(text).toContain('const answer = 41;');
+		expect(text).toContain('const answer = 42;');
+		expect(text).not.toContain('- const answer');
+		expect(text).not.toContain('+ const answer');
+		expect(text).toContain('- task: UseDotNet@2');
+		expect(text).toContain('- [ ] Tests are added');
+		expect(text).toContain('-- a comment');
+	});
+
 	it('omits marked headings from the table of contents', () => {
 		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
 		const file = path.join(directory, 'index.md');
