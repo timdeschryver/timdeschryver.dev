@@ -3,7 +3,8 @@
 	import { humanDate } from '#lib/formatters.js';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import { onMount, tick } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
+	import { tick } from 'svelte';
 	import { publicUrl } from '#lib/variables.js';
 
 	let { data } = $props();
@@ -22,7 +23,8 @@
 
 	let filterUrlSyncHandle: ReturnType<typeof setTimeout> | undefined;
 
-	onMount(() => {
+	// also runs when navigating from the blog overview to the blog overview with other filters (e.g. via the WebMCP tools)
+	afterNavigate(() => {
 		filter = {
 			query: page.url.searchParams.get('q'),
 			from: page.url.searchParams.get('from'),

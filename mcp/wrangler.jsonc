@@ -1,0 +1,20 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "timdeschryver-dev-mcp",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_compat"],
+	// Only reachable on the site's domain, Cloudflare sends the other paths to the static site
+	"workers_dev": false,
+	"routes": [
+		{ "pattern": "timdeschryver.dev/mcp", "zone_name": "timdeschryver.dev" },
+		{ "pattern": "timdeschryver.dev/mcp/*", "zone_name": "timdeschryver.dev" },
+		{ "pattern": "timdeschryver.dev/a2a", "zone_name": "timdeschryver.dev" },
+	],
+	"vars": {
+		"SITE_URL": "https://timdeschryver.dev",
+	},
+	"observability": {
+		"enabled": true,
+	},
+}

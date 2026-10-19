@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -9,6 +9,7 @@
 	import { publicUrl } from '#lib/variables.js';
 	import './layout.css';
 	import Socials from '#lib/Socials.svelte';
+	import { registerWebMcpTools } from '#lib/webmcp.js';
 
 	let { children } = $props();
 
@@ -18,6 +19,12 @@
 	let kofiRequested = false;
 	let activeViewTransition: ViewTransition | null = null;
 	let blogOverviewAnchor: { slug: string; viewportTop: number } | null = null;
+
+	onMount(() => {
+		const webMcpTools = new AbortController();
+		registerWebMcpTools(webMcpTools.signal);
+		return () => webMcpTools.abort();
+	});
 
 	onNavigate((navigation) => {
 		// shallow routing (e.g. toggling the TLDR view) also triggers navigation hooks

@@ -14,6 +14,22 @@
 			}
 		},
 		{
+			"route": "/.well-known/http-message-signatures-directory",
+			"rewrite": "/.well-known/http-message-signatures-directory.jwks"
+		},
+		{
+			"route": "/.well-known/agent-skills/*",
+			"headers": {
+				"Access-Control-Allow-Origin": "*"
+			}
+		},
+		{
+			"route": "/.well-known/mcp/server-card.json",
+			"headers": {
+				"Access-Control-Allow-Origin": "*"
+			}
+		},
+		{
 			"route": "/blog/rss.xml",
 			"rewrite": "/blog/rss.feed"
 		},
@@ -102,6 +118,7 @@
 	"mimeTypes": {
 		".md": "text/markdown; charset=utf-8",
 		".linkset": "application/linkset+json; profile=\"https://www.rfc-editor.org/info/rfc9727\"",
+		".jwks": "application/http-message-signatures-directory+json",
 		".feed": "application/rss+xml; charset=utf-8",
 		".publication": "text/plain; charset=utf-8"
 	},

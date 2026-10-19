@@ -1,0 +1,26 @@
+{
+	"name": "timdeschryver.dev-mcp",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Read-only MCP server and A2A agent for the content of timdeschryver.dev",
+	"license": "MIT",
+	"author": "Tim Deschryver",
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"test": "vitest run",
+		"check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/server": "2.3.1",
+		"agents": "0.28.1",
+		"zod": "^4.6.7"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^5.20261019.1",
+		"typescript": "6.0.3",
+		"vitest": "4.1.10",
+		"wrangler": "4.151.2"
+	}
+}

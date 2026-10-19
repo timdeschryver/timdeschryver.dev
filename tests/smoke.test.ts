@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { createHash } from 'node:crypto';
 
 test('sitemap works and can navigate to random pages', async ({ page, request }) => {
 	const sitemapUrls = await test.step('get sitemap and parse urls', async () => {
@@ -82,6 +83,104 @@ test('api catalog links to the openapi description', async ({ request }) => {
 	const head = await request.head('/.well-known/api-catalog');
 	expect(head.ok()).toBeTruthy();
 	expect(head.headers()['link']).toContain('rel="api-catalog"');
+});
+
+test('web bot auth key directory is signed', async ({ request }) => {
+	const response = await request.get('/.well-known/http-message-signatures-directory');
+	expect(response.status()).toBe(200);
+	expect(response.headers()['content-type']).toBe(
+		'application/http-message-signatures-directory+json',
+	);
+
+	const { keys } = await response.json();
+	expect(keys.length).toBeGreaterThan(0);
+	for (const key of keys) {
+		expect(key).toEqual({
+			kty: 'OKP',
+			crv: 'Ed25519',
+			x: expect.any(String),
+			kid: expect.any(String),
+		});
+	}
+
+	const signatureInput = response.headers()['signature-input'];
+	expect(signatureInput).toContain('("@authority";req)');
+	expect(signatureInput).toContain('tag="http-message-signatures-directory"');
+	expect(signatureInput).toContain(`keyid="${keys[0].kid}"`);
+	expect(response.headers()['signature']).toMatch(/^sig1=:.+:$/);
+});
+
+test('a2a agent card describes the agent and its skills', async ({ request }) => {
+	const response = await request.get('/.well-known/agent-card.json');
+	expect(response.status()).toBe(200);
+	expect(response.headers()['content-type']).toContain('application/json');
+
+	const card = await response.json();
+	expect(card.name).toBeTruthy();
+	expect(card.description).toBeTruthy();
+	expect(card.version).toBeTruthy();
+	expect(card.capabilities).toBeDefined();
+	expect(card.supportedInterfaces.length).toBeGreaterThan(0);
+	for (const agentInterface of card.supportedInterfaces) {
+		expect(agentInterface.url).toMatch(/^https?:\/\//);
+		expect(agentInterface.protocolBinding).toBeTruthy();
+		expect(agentInterface.protocolVersion).toBeTruthy();
+	}
+	expect(card.skills.length).toBeGreaterThan(0);
+	for (const skill of card.skills) {
+		expect(skill).toEqual(
+			expect.objectContaining({
+				id: expect.any(String),
+				name: expect.any(String),
+				description: expect.any(String),
+				tags: expect.any(Array),
+			}),
+		);
+	}
+});
+
+test('agent skills index links to skills that match their digest', async ({ request }) => {
+	const response = await request.get('/.well-known/agent-skills/index.json');
+	expect(response.status()).toBe(200);
+	expect(response.headers()['content-type']).toContain('application/json');
+
+	const index = await response.json();
+	expect(index.$schema).toBe('https://schemas.agentskills.io/discovery/0.2.0/schema.json');
+	expect(index.skills).not.toHaveLength(0);
+
+	for (const skill of index.skills) {
+		expect(skill.name).toMatch(/^(?!.*--)[a-z0-9][a-z0-9-]{0,63}(?<!-)$/);
+		expect(skill.type).toBe('skill-md');
+		expect(skill.description.length).toBeGreaterThan(0);
+		expect(skill.digest).toMatch(/^sha256:[0-9a-f]{64}$/);
+
+		const artifact = await request.get(skill.url);
+		expect(artifact.ok()).toBeTruthy();
+		expect(artifact.headers()['content-type']).toContain('text/markdown');
+		const digest = createHash('sha256')
+			.update(await artifact.body())
+			.digest('hex');
+		expect(skill.digest).toBe(`sha256:${digest}`);
+		expect(await artifact.text()).toContain(`name: ${skill.name}`);
+	}
+});
+
+test('mcp server card points to the mcp endpoint', async ({ request }) => {
+	const response = await request.get('/.well-known/mcp/server-card.json');
+	expect(response.status()).toBe(200);
+	expect(response.headers()['content-type']).toContain('application/json');
+	expect(response.headers()['access-control-allow-origin']).toBe('*');
+
+	const card = await response.json();
+	expect(card.$schema).toBe(
+		'https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json',
+	);
+	expect(card.name).toBe('dev.timdeschryver/content');
+	expect(card.version).toMatch(/^\d+\.\d+\.\d+$/);
+	expect(card.description).toBeTruthy();
+	expect(card.remotes).toHaveLength(1);
+	expect(card.remotes[0].type).toBe('streamable-http');
+	expect(card.remotes[0].url).toMatch(/^https?:\/\/.+\/mcp$/);
 });
 
 test('rss feed is served as rss', async ({ request }) => {

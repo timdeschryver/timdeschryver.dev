@@ -51,6 +51,7 @@ ${allBits}
 
 - [RSS feed](${publicUrl('/blog/rss.xml')}): Full-content feed of long-form articles
 - [XML sitemap](${publicUrl('/sitemap.xml')}): Complete index of canonical pages
+- [Agent skills](${publicUrl('/.well-known/agent-skills/index.json')}): Agent Skills Discovery index with a skill to find, read, and cite the content
 - [GitHub profile](https://github.com/timdeschryver): Open-source work and source repositories
 `;
 }

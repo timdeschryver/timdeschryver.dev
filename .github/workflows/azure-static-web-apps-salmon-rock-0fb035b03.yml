@@ -52,9 +52,18 @@ jobs:
           STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
           STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
           GH_PERSONAL_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
+          WEB_BOT_AUTH_PRIVATE_KEY: ${{ secrets.WEB_BOT_AUTH_PRIVATE_KEY }}
 
       - name: 🧪 Unit Test
         run: pnpm test:unit
+
+      - name: ⏳ Install MCP Worker Dependencies
+        working-directory: mcp
+        run: pnpm install --frozen-lockfile
+
+      - name: 🧪 Test MCP Worker
+        working-directory: mcp
+        run: pnpm check && pnpm test
 
       # - name: 🎭 Install Playwright
       #   run: npx playwright install --with-deps
@@ -76,6 +85,16 @@ jobs:
         env:
           VITE_PUBLIC_HASH: ${{ github.sha }}
           VITE_PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+
+      # The Worker serves /mcp and /a2a on the site's domain (see mcp/wrangler.jsonc)
+      # `pnpm run deploy` because `pnpm deploy` is a built-in pnpm command
+      - name: ☁️ Deploy MCP Worker
+        if: github.event_name == 'push'
+        working-directory: mcp
+        run: pnpm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       # Invalidate instead of purge: cached pages are marked stale (not removed),
       # so they can be served while Cloudflare fetches the new version (stale-while-revalidate)

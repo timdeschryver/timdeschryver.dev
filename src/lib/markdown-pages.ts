@@ -1,5 +1,8 @@
 // Helpers to create the Markdown versions of the pages.
 // Cloudflare serves these instead of the HTML page when an agent requests a page with `Accept: text/markdown`.
+// This is done with URL Rewrite Rules (Rules > Transform Rules) that rewrite `/` to `/index.md`,
+// and `/blog`, `/bits`, `/blog/{slug}`, `/bits/{slug}` to `{path}.md`, keep these in sync when adding Markdown pages.
+// A Response Header Transform Rule adds `Vary: Accept` to the same pages.
 
 type Page = { title: string; description: string; canonical: string };
 type Content = { title: string; description: string; date: string; tags: string[] };

@@ -6,12 +6,14 @@
 	"author": "Tim Deschryver",
 	"type": "module",
 	"imports": {
-		"#lib/*": "./src/lib/*"
+		"#lib/*": "./src/lib/*",
+		"#mcp/*": "./mcp/src/*"
 	},
 	"scripts": {
 		"dev": "vite dev",
 		"prebuild": "pnpm generate:themes && rimraf build static/blog static/bits && pnpm copy:content",
 		"build": "vite build",
+		"postbuild": "node ./scripts/sign-web-bot-auth-directory.js",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"test:ui": "playwright test --ui",
