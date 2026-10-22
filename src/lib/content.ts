@@ -14,6 +14,7 @@ export interface MarkdownMetadata {
 	toc: TOC[];
 	translations?: { url: string; author: string; profile: string; language: string }[];
 	series?: BlogSeries;
+	ai?: string;
 	[key: string]: unknown;
 }
 
@@ -42,10 +43,12 @@ export function extractFrontmatter(markdown: string): {
 		date: string;
 		modified?: string;
 		description: string;
+		ai?: string | boolean;
 	}>(markdown);
 
+	const { ai, ...attributes } = result.attributes;
 	const metadata: MarkdownMetadata = {
-		...result.attributes,
+		...attributes,
 		description: result.attributes.description ?? '',
 		outgoingSlugs: [],
 		toc: [],
@@ -88,7 +91,31 @@ export function extractFrontmatter(markdown: string): {
 		metadata.series = result.attributes.series;
 	}
 
+	const aiNote = normalizeAiNote(ai);
+	if (aiNote) {
+		metadata.ai = aiNote;
+	}
+
 	return { metadata, content: result.body };
+}
+
+/**
+ * The note shown when a post sets `ai: true` in its frontmatter.
+ * Set `ai` to a string instead to show a custom note, or leave it out to show no note.
+ */
+export const DEFAULT_AI_NOTE =
+	'The ideas and experience in this post are my own. AI helped with the writing and the examples, and I reviewed and edited the article before publishing.';
+
+function normalizeAiNote(value: unknown): string | undefined {
+	if (value === true) {
+		return DEFAULT_AI_NOTE;
+	}
+
+	if (typeof value === 'string' && value.trim()) {
+		return value.trim();
+	}
+
+	return undefined;
 }
 
 export function* traverseFolder(

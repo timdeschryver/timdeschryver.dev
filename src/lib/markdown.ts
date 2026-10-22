@@ -127,6 +127,8 @@ export function parseFileToHtmlAndMeta(file: string): {
 		return `<a class="mark mark-hover" ${attributesString} ${style}>${text}</a>`;
 	};
 
+	const videoTypes: Record<string, string> = { '.mp4': 'video/mp4', '.webm': 'video/webm' };
+
 	renderer.image = function (token) {
 		const { href, text } = token;
 		const isExternal = href.startsWith('http');
@@ -139,11 +141,12 @@ export function parseFileToHtmlAndMeta(file: string): {
 					.filter((_, index, { length }) => index >= length - 4)
 					.join('/');
 
-		if (src.endsWith('.mp4')) {
+		const videoType = videoTypes[path.extname(src)];
+		if (videoType) {
 			return `
 				<figure>
 					<video controls preload="metadata">
-						<source src="${src}" type="video/mp4">
+						<source src="${src}" type="${videoType}">
 					</video>
 					<figcaption>${text}</figcaption>
 				</figure>`;

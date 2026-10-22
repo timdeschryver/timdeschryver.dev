@@ -28,6 +28,7 @@ export interface BlogPostMetadata {
 	banner: string;
 	series?: BlogSeries;
 	seriesPosts?: SeriesPost[];
+	ai?: string;
 }
 
 export interface BlogPost {
@@ -102,6 +103,7 @@ async function processFullPost(files: PostFile[]): Promise<BlogPost | null> {
 		outgoingSlugs: result.metadata.outgoingSlugs,
 		translations: result.metadata.translations ?? [],
 		series: result.metadata.series,
+		ai: result.metadata.ai,
 	};
 
 	const finalMetadata = createPostMetadata(processedMetadata);
@@ -128,6 +130,7 @@ interface ProcessedMetadata {
 	outgoingSlugs: string[];
 	translations: { url: string; author: string; profile: string; language: string }[];
 	series?: BlogSeries;
+	ai?: string;
 }
 
 /**
@@ -153,6 +156,7 @@ function createPostMetadata(metadata: ProcessedMetadata): BlogPostMetadata {
 		toc: metadata.toc || [],
 		author: 'Tim Deschryver',
 		series: metadata.series,
+		ai: metadata.ai,
 	};
 }
 

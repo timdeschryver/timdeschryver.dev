@@ -9,6 +9,7 @@
 	import Share from '#lib/Share.svelte';
 	import Actions from '#lib/Actions.svelte';
 	import BlogSeries from '#lib/BlogSeries.svelte';
+	import AiNote from '#lib/AiNote.svelte';
 	import codeBlockLifeCycle from '#lib/code-block-lifecycle.svelte.js';
 	import copyLifeCycle from '#lib/copy-lifecycle.svelte.js';
 	import Ad from '#lib/Ad.svelte';
@@ -291,6 +292,10 @@
 		<li>#{tag}</li>
 	{/each}
 </ul>
+
+{#if post.metadata.ai}
+	<AiNote text={post.metadata.ai} />
+{/if}
 
 <aside class="left-nav" hidden={!sideNavsVisible()}>
 	{#if post.metadata.toc.length > 1}

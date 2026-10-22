@@ -181,6 +181,31 @@ describe('Markdown rendering', () => {
 		expect(html).not.toContain('autoplay');
 	});
 
+	it('renders a WebM recording as a video with its caption', () => {
+		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
+		const file = path.join(directory, 'index.md');
+		fs.writeFileSync(
+			file,
+			[
+				'---',
+				'title: Test',
+				'slug: test',
+				'description: Test',
+				'date: 2024-01-01',
+				'tags: testing',
+				'---',
+				'',
+				'![Adding a todo](./images/recording.webm)',
+			].join('\n'),
+		);
+
+		const { html } = parseFileToHtmlAndMeta(file);
+
+		expect(html).toContain('<video controls preload="metadata">');
+		expect(html).toContain('type="video/webm"');
+		expect(html).toContain('<figcaption>Adding a todo</figcaption>');
+	});
+
 	it('renders images with their dimensions to prevent layout shifts', async () => {
 		directory = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-renderer-'));
 		const file = path.join(directory, 'index.md');

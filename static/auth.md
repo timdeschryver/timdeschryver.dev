@@ -8,15 +8,19 @@ AI agents, assistants, crawlers, and other automated tools that read the article
 
 ## Registration
 
-Not required. This is a public, read-only blog. There are no user accounts, no API, and no registration or provisioning endpoint.
+Not required. This is a public, read-only blog. There are no user accounts, and no registration or provisioning endpoint.
 
 ## Supported methods
 
-Unauthenticated HTTPS `GET` requests. All content is public, and there is no other access method.
+All access is anonymous and read-only:
+
+- Unauthenticated HTTPS `GET` requests for the pages, their Markdown versions, and the feeds
+- [MCP server](https://timdeschryver.dev/mcp): Streamable HTTP MCP server with `search_content` and `read_content` tools, described by its [server card](https://timdeschryver.dev/.well-known/mcp/server-card.json)
+- [A2A agent](https://timdeschryver.dev/a2a): Agent2Agent endpoint, described by its [agent card](https://timdeschryver.dev/.well-known/agent-card.json)
 
 ## Credentials
 
-None. The site does not issue or accept API keys, OAuth tokens, or session cookies, so agents do not need to send credentials.
+None. The site, the MCP server, and the A2A agent do not issue or accept API keys, OAuth tokens, or session cookies, so agents do not need to send credentials.
 
 ## Where to start
 
