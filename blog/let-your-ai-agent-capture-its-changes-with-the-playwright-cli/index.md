@@ -267,6 +267,14 @@ The best part is that this workflow doesn't need extra infrastructure. The CLI s
 For a broader approach to reviewing agent-written code, I recommend reading [How the Claude Code team does code review](https://claude.dev/blog/solving-code-review-at-anthropic/). Their risk-based review resonates with how our team works and, in combination with the visual captures, helps us focus our attention where it matters most. Give it a read!
 :::
 
+## Tips from readers
+
+After sharing this post, I received a few useful tips:
+
+- **Record before and after.** Record the same flow before and after the change, so reviewers can compare the behavior directly.
+- **Add screenshot diffs.** Compare the before and after screenshots and include a diff image that highlights the changed pixels. This makes small visual changes easier to spot. Use the same viewport and test data for both captures to keep the comparison useful.
+- **Try agent-browser.** Readers also suggested [agent-browser](https://github.com/vercel-labs/agent-browser) from Vercel Labs as an alternative for reducing token consumption. Its [snapshot filters](https://github.com/vercel-labs/agent-browser#snapshot-options) can limit the output to interactive elements, remove empty structural elements, or focus on a specific part of the page, so the agent has less context to read.
+
 ## Conclusion
 
 Screenshots show the outcome, recordings show the flow, and inspecting both helps the agent catch mistakes before review. For small changes with little risk, this evidence may be enough to review the change without looking at the code. When the code needs a closer look, the captures give the reviewer context by showing how the change behaves in the running application.
