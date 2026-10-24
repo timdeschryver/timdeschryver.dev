@@ -232,9 +232,11 @@ describe('Markdown rendering', () => {
 
 		const { html } = parseFileToHtmlAndMeta(file);
 
+		// the first image is a LCP candidate: fetched with a high priority and not lazy-loaded
 		expect(html).toMatch(
-			/<img src="\/[^"]*\/images\/screenshot\.webp" alt="" width="40" height="20" loading="lazy" decoding="async"\/>/,
+			/<img src="\/[^"]*\/images\/screenshot\.webp" alt="" width="40" height="20" fetchpriority="high" decoding="async"\/>/,
 		);
+		// the following images are lazy-loaded
 		expect(html).toMatch(
 			/<img src="\/[^"]*\/images\/missing\.webp" alt="" loading="lazy" decoding="async"\/>/,
 		);

@@ -91,6 +91,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 	metadata.toc = [] as TOC[];
 	const assetsSrc = path.dirname(file);
 	const fragmentCounts = new Map<string, number>();
+	let imageCount = 0;
 
 	// const tweetRegexp = /https:\/\/twitter\.com\/[A-Za-z0-9-_]*\/status\/[0-9]+/i;
 
@@ -155,9 +156,14 @@ export function parseFileToHtmlAndMeta(file: string): {
 		const size = isExternal ? undefined : readImageSize(file);
 		const sizeAttributes = size ? ` width="${size.width}" height="${size.height}"` : '';
 
+		// The first image of a post is usually in the viewport and a candidate for LCP,
+		// so it must not be lazy-loaded and should be fetched with a high priority.
+		imageCount += 1;
+		const loadingAttributes = imageCount === 1 ? ' fetchpriority="high"' : ' loading="lazy"';
+
 		return `
 			<figure>
-				<img src="${src}" alt=""${sizeAttributes} loading="lazy" decoding="async"/>
+				<img src="${src}" alt=""${sizeAttributes}${loadingAttributes} decoding="async"/>
 				<figcaption>${text}</figcaption>
 			</figure>
 		`;
