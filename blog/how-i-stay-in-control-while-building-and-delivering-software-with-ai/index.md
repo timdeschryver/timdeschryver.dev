@@ -1,7 +1,7 @@
 ---
 title: How I stay in control while building and delivering software with AI
 slug: how-i-stay-in-control-while-building-and-delivering-software-with-ai
-description: How I work with AI agents to focus my time where it adds value. The key is to maintain control and oversight throughout the rapid development process. In my experience, it starts with data quality and integrity to ensure reliable outcomes.
+description: As AI rapidly changes how we build software, it's important to stay in control and take ownership. The same standards should apply whether a human or a machine builds the software. For me, meeting those standards starts with data quality and integrity. In this post, I share what else I focus on to stay in control.
 date: 2026-11-10
 tags: AI, Architecture
 ---
