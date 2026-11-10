@@ -100,7 +100,7 @@ export function parseFileToHtmlAndMeta(file: string): {
 		const text = this.parser.parseInline(token.tokens);
 
 		const link = normalizeLink(href);
-		const href_attr = `href="${appendCreatorId(link)}"`;
+		const href_attr = `href="${appendTrackingParameters(link)}"`;
 		const title_attr = title ? `title="${title}"` : '';
 		const internal = link.startsWith('/');
 		const rel_attr = internal || link.startsWith('#') ? `` : 'rel="external"';
@@ -474,7 +474,7 @@ function normalizeLink(href: string) {
 	return `${resolved.pathname.replace(/\/index\.md$/, '')}${resolved.search}${resolved.hash}`;
 }
 
-function appendCreatorId(link: string) {
+function appendTrackingParameters(link: string) {
 	const allowedSites = [
 		`docs.microsoft.com`,
 		`social.technet.microsoft.com`,
@@ -497,6 +497,16 @@ function appendCreatorId(link: string) {
 		const u = new URL(link);
 		if (allowedSites.includes(u.hostname)) {
 			u.searchParams.append('WT.mc_id', variables.creator_id);
+		}
+		if (u.hostname === 'dotnetlab.eu' || u.hostname === 'www.dotnetlab.eu') {
+			const defaults = {
+				utm_source: 'timdeschryver.dev',
+				utm_medium: 'referral',
+				utm_campaign: 'blog-tim',
+			};
+			for (const [name, value] of Object.entries(defaults)) {
+				if (!u.searchParams.has(name)) u.searchParams.set(name, value);
+			}
 		}
 		return u.toString();
 	} catch {
