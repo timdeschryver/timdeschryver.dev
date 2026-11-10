@@ -10,7 +10,12 @@ const banner = { width: 1200, height: 627 };
 
 (async () => {
 	const generateBanners = [];
-	const posts = fs.readdirSync(content);
+	const posts = fs
+		.readdirSync(content, { withFileTypes: true })
+		.filter(
+			(post) => post.isDirectory() && fs.existsSync(path.join(content, post.name, 'index.md')),
+		)
+		.map((post) => post.name);
 	for (const post of posts) {
 		const bannerPath = path.join(content, post, 'images', 'banner.webp');
 		const bannerExists = fs.existsSync(bannerPath);
@@ -133,6 +138,7 @@ const banner = { width: 1200, height: 627 };
 					}
 
 					for (const { post, bannerPath } of generateBanners) {
+						fs.mkdirSync(path.dirname(bannerPath), { recursive: true });
 						fs.copyFileSync(path.join(temporaryDirectory, `${post}.webp`), bannerPath);
 					}
 				} catch (error) {
