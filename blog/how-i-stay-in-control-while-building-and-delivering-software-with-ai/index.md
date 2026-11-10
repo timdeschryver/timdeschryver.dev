@@ -10,7 +10,7 @@ Everyone can vibe code a project, and getting the first version working is excit
 
 In [Keep Agentic AI Simple](../keep-agentic-ai-simple-a-practical-workflow-for-software-development/index.md), I wrote about letting the agent handle implementation details. That doesn't mean we should blindly trust everything it produces or lose oversight of the project. I review the work differently than I used to: at a higher level, rather than going through every implementation detail. I focus on the reasoning behind the changes and check that the result conforms to the requirements and fits the overall design.
 
-I still need to understand how the parts fit together and how a change affects the rest of the application. That helps me judge the agent's suggestions and know when to step in. In this blog post, I want to share the practices I use to stay in control of the work, from the initial design to the data we eventually store. These choices shape the quality and reliability of the application.
+I still need to understand how the parts fit together and how a change affects the rest of the application. That helps me judge the agent's suggestions and know when to step in. In this post, I share the practices and key areas I focus on when working with AI agents, from the initial design to the data we store. These choices help me stay in control and protect the application's quality and reliability.
 
 ## Before building
 
@@ -90,8 +90,8 @@ Even if the agent builds them quickly, we still have to test and maintain them. 
 
 ## Conclusion
 
-The agent and I work as a team, so I can spend more time where I add the most value. **I still need to be in charge of the direction, and that requires understanding how the system works.** Without that understanding, I wouldn't be able to make informed decisions and communicate them effectively to the team and stakeholders.
+The agent and I work as a team, so I can spend more time where I add the most value. **I still need to be in charge of the direction, and that requires understanding how the system works.** Without that understanding, I wouldn't be able to make informed decisions and communicate them effectively to the team and stakeholders. Our understanding of the problem changes as we learn more. Revisiting decisions along the way gives us the opportunity to change direction before building further on assumptions that no longer hold.
 
-Our understanding of the problem changes as we learn more. Revisiting decisions along the way gives us the opportunity to change direction before building further on assumptions that no longer hold.
+In the end, it shouldn't matter whether a human or a machine built the software. The result needs to meet the same standards, and we remain responsible for it.
 
 We use this process and these techniques to build software with AI at dotNET lab. They help us work faster while our team stays responsible for the whole flow, including after launch. You can read more about it at [custom software](https://dotnetlab.eu/en/custom-software).
