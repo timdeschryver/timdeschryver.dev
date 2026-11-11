@@ -113,7 +113,8 @@
 		}
 	],
 	"globalHeaders": {
-		"Cloudflare-CDN-Cache-Control": "max-age=2592000, stale-while-revalidate=604800"
+		"Cloudflare-CDN-Cache-Control": "max-age=2592000, stale-while-revalidate=604800",
+		"Referrer-Policy": "strict-origin-when-cross-origin"
 	},
 	"mimeTypes": {
 		".md": "text/markdown; charset=utf-8",
