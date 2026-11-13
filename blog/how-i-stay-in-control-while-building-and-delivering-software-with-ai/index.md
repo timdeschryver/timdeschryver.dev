@@ -26,6 +26,8 @@ This step might take longer than before because I go back and forth with the age
 
 By discussing the alternatives, I get a better understanding of the trade-offs. This is particularly useful in domains I'm less familiar with, where I need to understand the reasoning well enough to explain our decisions to stakeholders and team members.
 
+The outcome isn't a full product requirements document (PRD), and I don't work out every implementation detail up front. The analysis gives us a direction and leaves room for the agent to fill in the details.
+
 ### Try quick prototypes with stakeholders
 
 Before the actual implementation, I make sure **everyone understands what we're building**. I ask the agent to build quick prototypes for stakeholders to see and ideally try out. In my experience, it's easier to discuss something we can visualize and interact with. The shorter feedback loop saves time and reduces misunderstandings before we invest in the full implementation.
