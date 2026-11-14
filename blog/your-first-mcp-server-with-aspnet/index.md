@@ -48,7 +48,7 @@ Then, in the `Program.cs` file, add the MCP server to the service collection and
 
 - `AddMcpServer()` registers the MCP server to the service collection with default options.
 - `WithHttpTransport()` adds the services necessary for `McpEndpointRouteBuilderExtensions.MapMcp` to handle MCP requests and sessions using the MCP Streamable HTTP transport.
-- `WithToolsFromAssembly()` scans the assembly for MCP tool classes (more on this later). If you want, you can also register your tools manually using `WithTools<ToolType>()` instead.
+- `WithToolsFromAssembly()` scans the assembly for MCP tool classes (more on this later). Alternatively, use `WithTools<CatalogTools>()` to register the `CatalogTools` class explicitly. Choose one of these approaches.
 - `MapMcp()` exposes the MCP endpoint over HTTP, and we set it to the path `/mcp`.
 
 ```cs [name=Program.cs] [highlight=5,7,11,15]
@@ -59,8 +59,8 @@ builder.Services
     .AddMcpServer()
     // Adds the services necessary for McpEndpointRouteBuilderExtensions.MapMcp to handle MCP requests and sessions using the MCP Streamable HTTP transport.
     .WithHttpTransport()
-    // Manually register your MCP tools.
-    .WithTools<CatalogTools>();
+    // Alternatively, replace WithToolsFromAssembly() below with this explicit registration:
+    // .WithTools<CatalogTools>();
     // Adds types marked with the ModelContextProtocol.Server.McpServerToolTypeAttribute attribute from the given assembly as tools to the server.
     .WithToolsFromAssembly();
 
