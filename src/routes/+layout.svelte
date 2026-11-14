@@ -190,8 +190,20 @@
 		if (typeof document !== 'undefined') {
 			document.documentElement.classList.remove('light', 'dark');
 			document.documentElement.classList.add($theme);
+			syncThemeColor();
 		}
 	});
+
+	// Keeps the browser chrome (mobile toolbar, title bar) in the same colour as the page background
+	function syncThemeColor() {
+		const background = getComputedStyle(document.documentElement)
+			.getPropertyValue('--background-color')
+			.trim();
+		if (!background) return;
+		for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+			meta.setAttribute('content', background);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -392,6 +404,32 @@
 		background:
 			linear-gradient(90deg, hsla(var(--accent-color), 0.1), transparent 42%), var(--header-color);
 		border-bottom-color: hsla(var(--accent-color), 0.3);
+	}
+
+	/* Reading progress, drawn over the bottom border of the header while scrolling an article */
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: scroll()) {
+			header.blog-header::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				bottom: -1px;
+				width: 100%;
+				height: 2px;
+				background: hsla(var(--accent-color), 1);
+				transform: scaleX(0);
+				transform-origin: 0 50%;
+				animation: reading-progress linear both;
+				animation-timeline: scroll(root block);
+				pointer-events: none;
+			}
+		}
+	}
+
+	@keyframes reading-progress {
+		to {
+			transform: scaleX(1);
+		}
 	}
 
 	header > div {

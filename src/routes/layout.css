@@ -28,7 +28,7 @@
 :root {
 	--head-font: 'Hubot Sans Variable', 'Helvetica', sans-serif;
 	--text-font: 'Mona Sans Variable', 'Helvetica', sans-serif;
-	--font-size: clamp(1rem, 0.96rem + 0.16vw, 1.08rem);
+	--font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.15rem);
 	--line-height: 1.72;
 	--spacing: 1.65em;
 	--spacing-half: calc(1.65em / 2);
@@ -217,8 +217,8 @@ p {
 }
 
 @media (max-width: 480px) {
-	p {
-		font-size: 1rem;
+	:root {
+		--font-size: 1rem;
 	}
 }
 
@@ -344,6 +344,36 @@ main > h6 {
 	text-wrap: balance;
 }
 
+/* Long-form content (blog posts and bits): a clear heading scale, with more room above a
+   heading than below it, so sections read as groups instead of evenly spaced blocks. */
+:is(main[data-segment^='blog/'], main[data-segment^='bits/'] > article) > h2 {
+	margin-top: 2.1em;
+	font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.85rem);
+}
+
+:is(main[data-segment^='blog/'], main[data-segment^='bits/'] > article) > h3 {
+	margin-top: 2em;
+	font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.45rem);
+	letter-spacing: -0.015em;
+}
+
+:is(main[data-segment^='blog/'], main[data-segment^='bits/'] > article) > :is(h4, h5, h6) {
+	margin-top: 1.8em;
+	font-size: 1.2rem;
+	letter-spacing: -0.01em;
+}
+
+/* Hanging markers: wrapped lines align with the text instead of running under the bullet. */
+:is(main[data-segment^='blog/'], main[data-segment^='bits/'] > article) > :is(ul, ol),
+:is(main[data-segment^='blog/'], main[data-segment^='bits/'] > article) > :is(ul, ol) :is(ul, ol) {
+	padding-left: 1.4em;
+	list-style-position: outside;
+}
+
+:is(main[data-segment^='blog/'], main[data-segment^='bits/'] > article) li::marker {
+	color: var(--text-color-light);
+}
+
 figure > figcaption {
 	margin-top: 0;
 	color: var(--text-color-light);
@@ -388,27 +418,37 @@ time {
 	font-variant-numeric: tabular-nums;
 }
 
-tr {
-	border: 1px solid;
-	border-bottom: 1px solid var(--text-color-subtle);
+.table-scroll {
+	border: 1px solid var(--line-color);
+	border-radius: 4px;
 }
 
-tr:last-child {
-	border: 1px solid;
+table {
+	font-size: 0.92rem;
+}
+
+tr {
+	border-bottom: 1px solid var(--line-color);
+}
+
+tbody tr:last-child {
+	border-bottom: 0;
+}
+
+tbody tr:hover {
+	background-color: var(--background-color-transparent);
 }
 
 th {
 	background-color: var(--background-color-subtle);
+	font-family: var(--head-font);
+	font-weight: 650;
 }
 
 td,
 th {
-	padding: 4px 7px;
+	padding: 0.5em 0.9em;
 	white-space: nowrap;
-}
-
-thead {
-	font-weight: bold;
 }
 
 [hidden] {

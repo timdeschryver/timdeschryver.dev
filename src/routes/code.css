@@ -54,6 +54,8 @@ pre {
 	position: relative;
 	border: 1px solid;
 	border-color: transparent;
+	/* Code blocks grow with the body text, so they keep reading as the larger of the two */
+	font-size: max(1.0625rem, var(--font-size));
 }
 
 pre:hover {

@@ -410,19 +410,19 @@
 	}
 
 	.article-summary {
-		max-width: 62ch;
 		margin-top: 0;
 		color: var(--text-color-light);
-		font-size: 1rem;
-		font-style: italic;
-		line-height: 1.7;
+		font-size: clamp(1.08rem, 2vw, 1.25rem);
+		line-height: 1.6;
+		text-wrap: pretty;
 	}
 
 	.article-tags {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.4rem 1rem;
-		margin-top: 0.5rem;
+		margin-top: 0.75rem;
+		padding-left: 0;
 		color: var(--text-color-light);
 		font-family: var(--head-font);
 		font-size: 0.78rem;
@@ -528,7 +528,6 @@
 	.left-nav > * {
 		display: block;
 		background: none;
-		cursor: pointer;
 		color: var(--text-color-light);
 		margin-top: 3px;
 		margin-bottom: 0;
@@ -563,14 +562,31 @@
 
 	.toc ul {
 		list-style: none;
-		font-size: 1rem;
+		border-left: 1px solid var(--line-color);
+		font-size: 0.9rem;
+		line-height: 1.45;
 		color: var(--text-color-light);
-		transition: all 0.25s;
+	}
+
+	/* The active and hover states only change colour, a heavier weight re-wraps the entries */
+	.toc ul li {
+		margin-top: 0;
+		margin-left: -1px;
+		padding: 0.3rem 0 0.3rem calc(0.9rem + var(--level) * 0.9em);
+		border-left: 2px solid transparent;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease;
 	}
 
 	.toc ul li.active {
-		color: hsla(var(--accent-color), 1);
-		font-weight: 600;
+		border-left-color: hsla(var(--accent-color), 1);
+		color: var(--text-color);
+		font-weight: 500;
+	}
+
+	.toc ul li a {
+		display: block;
 	}
 
 	.toc h3 {
@@ -581,17 +597,13 @@
 
 	.toc ul li:hover {
 		color: var(--text-color);
-		font-weight: 600;
-	}
-
-	.toc ul li {
-		margin-left: calc((var(--level)) * 1em);
 	}
 
 	:global(body > div > main) > header {
 		grid-column: 1 / 4;
 		position: relative;
-		min-height: calc(100dvh - var(--header-height));
+		/* Stops short of the full viewport so the start of the article peeks above the fold */
+		min-height: calc(86dvh - var(--header-height));
 		width: 100%;
 		display: flex;
 		flex-direction: column;
