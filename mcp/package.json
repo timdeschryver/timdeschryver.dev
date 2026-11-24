@@ -13,14 +13,14 @@
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@modelcontextprotocol/server": "2.3.1",
-		"agents": "0.28.1",
+		"@modelcontextprotocol/server": "2.4.0",
+		"agents": "0.34.0",
 		"zod": "^4.6.7"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^5.20261019.1",
 		"typescript": "6.0.3",
 		"vitest": "4.1.12",
-		"wrangler": "4.151.2"
+		"wrangler": "4.166.0"
 	}
 }
